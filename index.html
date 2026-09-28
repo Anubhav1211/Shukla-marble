@@ -948,13 +948,13 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
         <div style="background: #1E293B; color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
-          <b id="kTot" style="font-size: 18px;">0</b><br><small style="color: #94A3B8; font-weight: 600;">Active कारीगर</small>
+          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">0</b><br><small style="color: #94A3B8; font-weight: 600;">Active कारीगर</small>
         </div>
         <div style="background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
-          <b id="kDena" style="color: #166534; font-size: 18px;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small>
+          <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small>
         </div>
         <div style="background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #FECACA;">
-          <b id="kLena" style="color: #DC2626; font-size: 18px;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small>
+          <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small>
         </div>
       </div>
     </div>
@@ -1512,6 +1512,16 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <h3 id="efTitle" style="margin: 0 0 4px 0; color: #0F172A; font-size: 16px;">Edit</h3>
       <div id="efSub" style="font-size: 12px; color: #64748B; margin-bottom: 12px;"></div>
       <input id="efInput" type="number" class="input" placeholder="₹ राशि" style="text-align: center; font-size: 18px; font-weight: 800;" onkeydown="if(event.key==='Enter')saveEditField()">
+      <div id="wageModeBox" style="display: none; text-align: left; margin: 4px 0 10px 0;">
+        <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
+          <input type="radio" name="wageMode" value="today" checked> सिर्फ आज से आगे
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">पुरानी हाज़री पुराने रेट पर ही रहेगी</div>
+        </label>
+        <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
+          <input type="radio" name="wageMode" value="month"> इस पूरे महीने की हाज़री पर
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">इस महीने की 1 तारीख से सारी हाज़री नए रेट पर</div>
+        </label>
+      </div>
       <div style="display: flex; gap: 8px; margin-top: 4px;">
         <button class="btn" style="background: #F1F5F9; color: #64748B; margin: 0;" onclick="closeEditFieldModal()">Cancel</button>
         <button class="btn btn-gold" style="margin: 0;" onclick="saveEditField()">💾 Save</button>
@@ -1661,18 +1671,33 @@ function getMon() {
   const rMonth = document.getElementById("rMonth");
   return rMonth && rMonth.value ? rMonth.value : fmtLocalDate(new Date()).slice(0, 7);
 }
+// ---- Per-entry rate: each hazri keeps the rate it was earned at (e.rate).
+// Old entries without e.rate fall back to the labour's current wage.
+function entryRate(e, l) {
+  if (e && e.rate != null && e.rate !== "" && !isNaN(parseFloat(e.rate))) return parseFloat(e.rate);
+  return l ? (parseFloat(l.wage) || 0) : 0;
+}
+// Rate that applies to a NEW entry on a given date (handles backdated entries after a wage change)
+function rateForDate(l, date) {
+  if (!l) return 0;
+  const cur = parseFloat(l.wage) || 0;
+  if (l.wageFrom && l.prevWage != null && date && date < l.wageFrom) return parseFloat(l.prevWage) || 0;
+  return cur;
+}
 function calcLabour(id, mon) {
   const l = labs[id];
   if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, net: 0, bal: 0 };
   let d = 0;
   let w = 0;
+  let earn = 0;
   Object.values(ents).forEach((e) => {
     if (e.labourId === id && e.date && e.date.startsWith(mon)) {
-      d += parseFloat(e.days || 0);
+      const dd = parseFloat(e.days || 0);
+      d += dd;
       w += parseFloat(e.withdraw || 0);
+      earn += dd * entryRate(e, l);
     }
   });
-  const earn = d * (parseFloat(l.wage) || 0);
   const bal = parseFloat(l.balance) || 0;
   const rent = parseFloat(l.rent) || 0;
   const bijli = parseFloat(l.bijli) || 0;
@@ -1693,7 +1718,7 @@ function calcSite(siteId) {
     if (e.siteId === siteId) {
       const l = labs[e.labourId];
       if (!l) return;
-      const c = parseFloat(e.days || 0) * (parseFloat(l.wage) || 0);
+      const c = parseFloat(e.days || 0) * entryRate(e, l);
       cost += c;
       if (!labourMap[e.labourId]) labourMap[e.labourId] = { name: l.name, days: 0, cost: 0 };
       labourMap[e.labourId].days += parseFloat(e.days || 0);
@@ -2419,6 +2444,12 @@ function openEditField(id, field, title, sub) {
   if (titleEl) titleEl.innerText = (l.name ? l.name + " - " : "") + title;
   if (subEl) subEl.innerText = sub || "";
   if (inputEl) inputEl.value = l[field] || 0;
+  const wm = document.getElementById("wageModeBox");
+  if (wm) {
+    wm.style.display = field === "wage" ? "block" : "none";
+    const r0 = wm.querySelector('input[value="today"]');
+    if (r0) r0.checked = true;
+  }
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "flex";
   if (inputEl) setTimeout(() => { inputEl.focus(); inputEl.select(); }, 100);
@@ -2426,6 +2457,8 @@ function openEditField(id, field, title, sub) {
 function closeEditFieldModal() {
   efLabourId = null;
   efField = null;
+  const wmc = document.getElementById("wageModeBox");
+  if (wmc) wmc.style.display = "none";
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "none";
 }
@@ -2433,7 +2466,30 @@ function saveEditField() {
   if (!efLabourId || !efField) return;
   const inputEl = document.getElementById("efInput");
   const val = parseFloat(inputEl?.value) || 0;
-  db.ref("companies/" + company + "/labours/" + efLabourId + "/" + efField).set(val).then(() => {
+  const base = "companies/" + company + "/";
+  if (efField === "wage") {
+    const l = labs[efLabourId] || {};
+    const oldW = parseFloat(l.wage) || 0;
+    if (val === oldW) { closeEditFieldModal(); return; }
+    const modeEl = document.querySelector('input[name="wageMode"]:checked');
+    const mode = modeEl ? modeEl.value : "today";
+    const todayStr = fmtLocalDate(new Date());
+    const from = mode === "month" ? todayStr.slice(0, 7) + "-01" : todayStr;
+    // 1) entries from `from` onward -> new rate; older entries without a saved rate -> freeze at old rate
+    Object.entries(ents).forEach(([eid, e]) => {
+      if (e.labourId !== efLabourId || !e.date) return;
+      if (e.date >= from) db.ref(base + "entries/" + eid + "/rate").set(val);
+      else if (e.rate == null) db.ref(base + "entries/" + eid + "/rate").set(oldW);
+    });
+    // 2) labour: new wage + remember old wage & the date it changed (for backdated entries)
+    db.ref(base + "labours/" + efLabourId + "/prevWage").set(oldW);
+    db.ref(base + "labours/" + efLabourId + "/wageFrom").set(from);
+    db.ref(base + "labours/" + efLabourId + "/wage").set(val).then(() => {
+      closeEditFieldModal();
+    });
+    return;
+  }
+  db.ref(base + "labours/" + efLabourId + "/" + efField).set(val).then(() => {
     closeEditFieldModal();
   });
 }
@@ -2724,6 +2780,7 @@ function saveHazri() {
     labourId: lab,
     siteId: site,
     days,
+    rate: (editingId && ents[editingId] && ents[editingId].rate != null) ? ents[editingId].rate : rateForDate(labs[lab], date),
     withdraw: parseFloat(String(withd)),
     note: eNote?.value || "",
     ts: Date.now()
@@ -2896,7 +2953,9 @@ function makeReport() {
     else if (dayTotal < 1) absentCount += 1 - dayTotal;
   }
   absentCount = Math.round(absentCount * 10) / 10;
-  const earn = presentDays * (parseFloat(l.wage) || 0);
+  const earn = c.earn;
+  const rateSet = [...new Set(entries.map((e) => entryRate(e, l)))];
+  const rateTxt = rateSet.length ? rateSet.map((r) => "\u20B9" + r).join(" / ") : "\u20B9" + l.wage;
   const totalEarn = earn + c.bal - c.rent - c.bijli;
   const advList = entries.filter((e) => e.withdraw > 0);
   const totalAdv = advList.reduce((s, e) => s + parseFloat(e.withdraw || 0), 0);
@@ -2925,7 +2984,7 @@ function makeReport() {
           </div>
         </div>
         <div class="rc-wage-badge">
-          \u20B9${l.wage} / \u0926\u093F\u0928
+          ${rateTxt} / \u0926\u093F\u0928
         </div>
       </div>
 
@@ -2964,7 +3023,7 @@ function makeReport() {
         </div>
         <div class="rc-box">
           <div class="rc-row">
-            <span>\u0939\u093E\u091C\u093C\u093F\u0930\u0940 \u0915\u092E\u093E\u0908 (${presentDays} \u0926\u093F\u0928 \xD7 \u20B9${l.wage})</span>
+            <span>\u0939\u093E\u091C\u093C\u093F\u0930\u0940 \u0915\u092E\u093E\u0908 (${presentDays} \u0926\u093F\u0928 \xD7 ${rateTxt})</span>
             <b>\u20B9${earn.toLocaleString("en-IN")}</b>
           </div>
           <div class="rc-row">
@@ -5173,6 +5232,7 @@ function saveBulkHazri() {
     const eid = `${date}_${id}_${site || "nosite"}_${Date.now()}${i}`;
     db.ref("companies/" + company + "/entries/" + eid).set({
       date, labourId: id, siteId: site, days,
+      rate: rateForDate(labs[id], date),
       withdraw: parseFloat(s.withdraw || 0) || 0,
       note: "", ts: Date.now()
     });
