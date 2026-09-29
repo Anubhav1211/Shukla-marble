@@ -1176,6 +1176,55 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
   </div>
 
+<!-- ⚡ BIJLI BILL CALCULATOR MODULE -->
+    <div class="card" style="border: 2px solid #F59E0B; background: #FFFBEB;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: #92400E; display: flex; align-items: center; gap: 6px;">
+          <span>⚡</span> बिजली बिल कैलकुलेटर (Meter Reading)
+        </h3>
+        <!-- TOGGLE BUTTON -->
+        <label style="position: relative; display: inline-block; width: 46px; height: 24px;">
+          <input type="checkbox" id="bijliToggleBtn" onchange="toggleBijliCalculator()" style="opacity: 0; width: 0; height: 0;">
+          <span id="bijliToggleSlider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #CBD5E1; transition: .3s; border-radius: 24px;"></span>
+          <span id="bijliToggleKnob" style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;"></span>
+        </label>
+      </div>
+
+      <!-- Calculator Input Box (Initially Hidden) -->
+      <div id="bijliCalcBox" style="display: none; margin-top: 14px;">
+        <select id="bjLabour" class="input">
+          <option value="">-- कारीगर चुनें --</option>
+        </select>
+        
+        <div style="display: flex; gap: 8px;">
+          <input id="bjOld" type="number" step="any" class="input" placeholder="Old Reading" oninput="calcBijliUnits()">
+          <input id="bjNew" type="number" step="any" class="input" placeholder="New Reading" oninput="calcBijliUnits()">
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <input id="bjUnits" type="number" class="input" placeholder="कुल यूनिट्स (Units)" readonly style="background: #F1F5F9; font-weight: 800;">
+          <input id="bjRate" type="number" step="any" class="input" placeholder="यूनिट रेट ₹ (Price/Unit)" oninput="calcBijliUnits()">
+        </div>
+
+        <div style="background: #FEF3C7; border: 1.5px solid #FCD34D; border-radius: 12px; padding: 10px; margin-bottom: 10px; text-align: center;">
+          <span style="font-size: 12px; font-weight: 700; color: #92400E;">कुल बिजली बिल: </span>
+          <b id="bjTotalAmt" style="font-size: 18px; color: #B45309;">₹0</b>
+        </div>
+
+        <button class="btn btn-gold" onclick="addBijliBillEntry()">+ लिस्ट में जोड़ें (Add Bill)</button>
+      </div>
+
+      <!-- Final Calculated Bills Table & WhatsApp Share -->
+      <div id="bijliListContainer" style="display: none; margin-top: 14px; border-top: 1px dashed #FCD34D; padding-top: 10px;">
+        <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #78350F;">📋 तैयार किए गए बिजली बिल:</h4>
+        <div id="bijliBillList"></div>
+
+        <button class="btn" style="background: #25D366; color: white; font-weight: 800; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="shareBijliBillsWhatsApp()">
+          <span>📲 WhatsApp पर बिल विवरण भेजें</span>
+        </button>
+      </div>
+    </div>
+
   <!-- TAB: BUSINESS EXPENSES (व्यापार खर्च) -->
   <div id="t-x" style="display: none;">
     <div class="card">
@@ -1560,6 +1609,110 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
   <!-- Vite entry -->
   <script>
+  let calculatedBijliBills = [];
+
+function toggleBijliCalculator() {
+  const isChecked = document.getElementById("bijliToggleBtn").checked;
+  document.getElementById("bijliCalcBox").style.display = isChecked ? "block" : "none";
+  document.getElementById("bijliListContainer").style.display = (isChecked && calculatedBijliBills.length > 0) ? "block" : "none";
+  if (isChecked) populateBijliLabourDropdown();
+}
+
+function populateBijliLabourDropdown() {
+  const select = document.getElementById("bjLabour");
+  if (!select) return;
+  select.innerHTML = '<option value="">-- कारीगर चुनें --</option>';
+  if (typeof labs !== 'undefined') {
+    Object.entries(labs).forEach(([id, l]) => {
+      if (l.status !== "archived") {
+        select.innerHTML += `<option value="${id}">${l.name}</option>`;
+      }
+    });
+  }
+}
+
+function calcBijliUnits() {
+  const oldR = parseFloat(document.getElementById("bjOld").value) || 0;
+  const newR = parseFloat(document.getElementById("bjNew").value) || 0;
+  const rate = parseFloat(document.getElementById("bjRate").value) || 0;
+  const units = newR >= oldR ? (newR - oldR) : 0;
+  const total = units * rate;
+  document.getElementById("bjUnits").value = units.toFixed(1);
+  document.getElementById("bjTotalAmt").innerText = "₹" + total.toLocaleString("en-IN");
+}
+
+function addBijliBillEntry() {
+  const labId = document.getElementById("bjLabour").value;
+  const oldR = parseFloat(document.getElementById("bjOld").value);
+  const newR = parseFloat(document.getElementById("bjNew").value);
+  const rate = parseFloat(document.getElementById("bjRate").value);
+  const units = parseFloat(document.getElementById("bjUnits").value);
+
+  if (!labId) { alert("कृपया कारीगर चुनें!"); return; }
+  if (isNaN(oldR) || isNaN(newR) || newR < oldR) { alert("कृपया सही Meter Readings दर्ज करें!"); return; }
+  if (isNaN(rate) || rate <= 0) { alert("कृपया 1 Unit का रेट दर्ज करें!"); return; }
+
+  const total = units * rate;
+  const labName = (typeof labs !== 'undefined' && labs[labId]) ? labs[labId].name : "कारीगर";
+
+  calculatedBijliBills.push({ labId, labName, oldR, newR, units, rate, total });
+  
+  document.getElementById("bjLabour").value = "";
+  document.getElementById("bjOld").value = "";
+  document.getElementById("bjNew").value = "";
+  document.getElementById("bjUnits").value = "";
+  document.getElementById("bjTotalAmt").innerText = "₹0";
+
+  renderBijliBillList();
+}
+
+function renderBijliBillList() {
+  const container = document.getElementById("bijliBillList");
+  const listWrapper = document.getElementById("bijliListContainer");
+  if (!calculatedBijliBills.length) {
+    if (listWrapper) listWrapper.style.display = "none";
+    return;
+  }
+  if (listWrapper) listWrapper.style.display = "block";
+  let html = "";
+  calculatedBijliBills.forEach((b, index) => {
+    html += `
+      <div style="background: white; border: 1px solid #CBD5E1; border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <b>👷 ${b.labName}</b><br>
+          <small style="color: #64748B;">(${b.oldR} → ${b.newR}) = <b>${b.units} Units</b> @ ₹${b.rate}/unit</small>
+        </div>
+        <div style="text-align: right;">
+          <b style="color: #B45309; font-size: 14px;">₹${b.total.toLocaleString("en-IN")}</b><br>
+          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 2px 6px; font-size: 10px; margin-top: 2px;" onclick="removeBijliBill(${index})">X हटाएं</button>
+        </div>
+      </div>
+    `;
+  });
+  if (container) container.innerHTML = html;
+}
+
+function removeBijliBill(index) {
+  calculatedBijliBills.splice(index, 1);
+  renderBijliBillList();
+}
+
+function shareBijliBillsWhatsApp() {
+  if (!calculatedBijliBills.length) return;
+  let text = "⚡ *SHUKLA MARBLE - बिजली बिल हिसाब* ⚡\n\n";
+  let grandTotal = 0;
+  calculatedBijliBills.forEach((b, i) => {
+    text += `${i + 1}. *${b.labName}*\n`;
+    text += `   • रीडिंग: ${b.oldR} से ${b.newR}\n`;
+    text += `   • कुल यूनिट: ${b.units} U @ ₹${b.rate}/unit\n`;
+    text += `   • *कुल बिजली बिल: ₹${b.total.toLocaleString("en-IN")}*\n\n`;
+    grandTotal += b.total;
+  });
+  text += `--------------------------------\n`;
+  text += `💰 *कुल बिजली बिल राशि: ₹${grandTotal.toLocaleString("en-IN")}*\n`;
+  text += `_नोट: यह राशि आपके इस महीने के हिसाब से काट ली जाएगी।_`;
+  window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
+}
 if (typeof html2canvas !== "undefined") {
   window.html2canvas = html2canvas;
 }
