@@ -1694,6 +1694,11 @@ function rateForDate(l, date) {
   if (l.wageFrom && l.prevWage != null && date && date < l.wageFrom) return parseFloat(l.prevWage) || 0;
   return cur;
 }
+function shareHazriToWhatsapp(idx) {
+  const msg = window.__hazriShareData && window.__hazriShareData[idx];
+  if (!msg) return;
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
 function calcLabour(id, mon) {
   const l = labs[id];
   if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, net: 0, bal: 0 };
@@ -2162,6 +2167,8 @@ function renderAll() {
     if (!siteGroups[key]) siteGroups[key] = { name: s ? s.house : "\u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902", rows: [] };
     siteGroups[key].rows.push([eid, e, l]);
   });
+  window.__hazriShareData = [];
+  const todayDateForShare = today ? new Date(today).toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" }) : "";
   Object.keys(siteGroups)
     .sort((a, b) => {
       if (a === "__none__") return 1;
@@ -2172,7 +2179,22 @@ function renderAll() {
       const g = siteGroups[key];
       g.rows.sort((x, y) => (x[2].name || "").localeCompare(y[2].name || ""));
       const totalDays = g.rows.reduce((sum, r) => sum + (parseFloat(r[1].days) || 0), 0);
-      tHtml += `<tr><td colspan="4" style="text-align:left;background:#EEF2FF;color:#3730A3;font-weight:800;font-size:12.5px;padding:8px 10px">\u{1F3E0} ${g.name} <span style="font-weight:700;font-size:11px;color:#64748B">\u2022 ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930 \u2022 ${totalDays} \u0926\u093F\u0928</span></td></tr>`;
+      const totalWithdraw = g.rows.reduce((sum, r) => sum + (parseFloat(r[1].withdraw) || 0), 0);
+      const shareIdx = window.__hazriShareData.length;
+      let shareMsg = `\u{1F3E0} *${g.name}*\n\u{1F4C5} ${todayDateForShare}\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
+      g.rows.forEach(([, e, l]) => {
+        const wTxt = parseFloat(e.withdraw || 0) > 0 ? ` (\u{1F4B8} \u20B9${e.withdraw})` : "";
+        shareMsg += `\u2022 ${l.name} \u2013 ${e.days} \u0926\u093F\u0928${wTxt}\n`;
+      });
+      shareMsg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u0915\u0941\u0932: ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930, ${totalDays} \u0926\u093F\u0928`;
+      if (totalWithdraw > 0) shareMsg += `, \u0916\u0930\u094D\u091A \u20B9${totalWithdraw}`;
+      window.__hazriShareData.push(shareMsg);
+      tHtml += `<tr><td colspan="4" style="text-align:left;background:#EEF2FF;color:#3730A3;font-weight:800;font-size:12.5px;padding:8px 10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <span>\u{1F3E0} ${g.name} <span style="font-weight:700;font-size:11px;color:#64748B">\u2022 ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930 \u2022 ${totalDays} \u0926\u093F\u0928</span></span>
+          <button class="btn-sm" style="background:#DCFCE7;color:#166534;flex-shrink:0" onclick="shareHazriToWhatsapp(${shareIdx})">\u{1F4E4} Share</button>
+        </div>
+      </td></tr>`;
       g.rows.forEach(([eid, e, l]) => {
         tHtml += `<tr>
       <td style="text-align:left"><b>${l.name}</b></td>
