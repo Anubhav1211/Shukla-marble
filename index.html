@@ -1517,9 +1517,16 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
           <input type="radio" name="wageMode" value="today" checked> सिर्फ आज से आगे
           <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">पुरानी हाज़री पुराने रेट पर ही रहेगी</div>
         </label>
-        <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
+        <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
           <input type="radio" name="wageMode" value="month"> इस पूरे महीने की हाज़री पर
           <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">इस महीने की 1 तारीख से सारी हाज़री नए रेट पर</div>
+        </label>
+        <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;" onclick="setTimeout(()=>{const d=document.getElementById('wageCustomDate'); if(d) d.focus();},0)">
+          <input type="radio" name="wageMode" value="custom" onchange="document.getElementById('wageCustomDateBox').style.display = this.checked ? 'block' : 'none'"> किसी और तारीख़ से
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">चुनी हुई तारीख़ से आगे की हाज़री नए रेट पर</div>
+          <div id="wageCustomDateBox" style="display: none; margin: 8px 0 0 20px;">
+            <input id="wageCustomDate" type="date" class="input" style="font-size: 13px; padding: 8px;">
+          </div>
         </label>
       </div>
       <div style="display: flex; gap: 8px; margin-top: 4px;">
@@ -2449,6 +2456,10 @@ function openEditField(id, field, title, sub) {
     wm.style.display = field === "wage" ? "block" : "none";
     const r0 = wm.querySelector('input[value="today"]');
     if (r0) r0.checked = true;
+    const cdBox = document.getElementById("wageCustomDateBox");
+    if (cdBox) cdBox.style.display = "none";
+    const cd = document.getElementById("wageCustomDate");
+    if (cd) cd.value = fmtLocalDate(new Date());
   }
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "flex";
@@ -2474,7 +2485,13 @@ function saveEditField() {
     const modeEl = document.querySelector('input[name="wageMode"]:checked');
     const mode = modeEl ? modeEl.value : "today";
     const todayStr = fmtLocalDate(new Date());
-    const from = mode === "month" ? todayStr.slice(0, 7) + "-01" : todayStr;
+    let from = mode === "month" ? todayStr.slice(0, 7) + "-01" : todayStr;
+    if (mode === "custom") {
+      const cd = document.getElementById("wageCustomDate");
+      const cdVal = cd?.value || "";
+      if (!cdVal) { alert("तारीख़ चुनें"); return; }
+      from = cdVal;
+    }
     // 1) entries from `from` onward -> new rate; older entries without a saved rate -> freeze at old rate
     Object.entries(ents).forEach(([eid, e]) => {
       if (e.labourId !== efLabourId || !e.date) return;
