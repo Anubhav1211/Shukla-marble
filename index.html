@@ -1522,10 +1522,13 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
           <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">इस महीने की 1 तारीख से सारी हाज़री नए रेट पर</div>
         </label>
         <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;" onclick="setTimeout(()=>{const d=document.getElementById('wageCustomDate'); if(d) d.focus();},0)">
-          <input type="radio" name="wageMode" value="custom" onchange="document.getElementById('wageCustomDateBox').style.display = this.checked ? 'block' : 'none'"> किसी और तारीख़ से
-          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">चुनी हुई तारीख़ से आगे की हाज़री नए रेट पर</div>
+          <input type="radio" name="wageMode" value="custom" onchange="document.getElementById('wageCustomDateBox').style.display = this.checked ? 'block' : 'none'"> तारीख़ चुनकर
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">शुरू तारीख़ से (चाहें तो अंतिम तारीख़ तक ही) नया रेट</div>
           <div id="wageCustomDateBox" style="display: none; margin: 8px 0 0 20px;">
-            <input id="wageCustomDate" type="date" class="input" style="font-size: 13px; padding: 8px;">
+            <div style="font-size: 10.5px; font-weight: 700; color: #64748B; margin-bottom: 2px;">शुरू तारीख़</div>
+            <input id="wageCustomDate" type="date" class="input" style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
+            <div style="font-size: 10.5px; font-weight: 700; color: #64748B; margin-bottom: 2px;">अंतिम तारीख़ (खाली छोड़ें तो आगे तक चलेगा)</div>
+            <input id="wageCustomDateEnd" type="date" class="input" style="font-size: 13px; padding: 8px;">
           </div>
         </label>
       </div>
@@ -2460,6 +2463,8 @@ function openEditField(id, field, title, sub) {
     if (cdBox) cdBox.style.display = "none";
     const cd = document.getElementById("wageCustomDate");
     if (cd) cd.value = fmtLocalDate(new Date());
+    const cdE = document.getElementById("wageCustomDateEnd");
+    if (cdE) cdE.value = "";
   }
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "flex";
@@ -2486,11 +2491,24 @@ function saveEditField() {
     const mode = modeEl ? modeEl.value : "today";
     const todayStr = fmtLocalDate(new Date());
     let from = mode === "month" ? todayStr.slice(0, 7) + "-01" : todayStr;
+    let to = "";
     if (mode === "custom") {
       const cd = document.getElementById("wageCustomDate");
       const cdVal = cd?.value || "";
       if (!cdVal) { alert("तारीख़ चुनें"); return; }
       from = cdVal;
+      const cdE = document.getElementById("wageCustomDateEnd");
+      to = cdE?.value || "";
+      if (to && to < from) { alert("अंतिम तारीख़, शुरू तारीख़ के बाद की होनी चाहिए"); return; }
+    }
+    if (to) {
+      // Closed range: only entries between from..to get the new rate. Current wage / future entries untouched.
+      Object.entries(ents).forEach(([eid, e]) => {
+        if (e.labourId !== efLabourId || !e.date) return;
+        if (e.date >= from && e.date <= to) db.ref(base + "entries/" + eid + "/rate").set(val);
+      });
+      closeEditFieldModal();
+      return;
     }
     // 1) entries from `from` onward -> new rate; older entries without a saved rate -> freeze at old rate
     Object.entries(ents).forEach(([eid, e]) => {
