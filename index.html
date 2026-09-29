@@ -981,6 +981,33 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <!-- Bijli Bill Calculator -->
+    <div class="card">
+      <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center; background: #FEF9C3; color: #854D0E;">
+        <span>⚡ बिजली बिल कैलकुलेटर (मीटर रीडिंग से)</span><span>▼</span>
+      </button>
+      <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
+        <input id="bcMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box;" onchange="bcRenderList()">
+        <select id="bcLab" class="input"></select>
+        <div style="display: flex; gap: 8px;">
+          <input id="bcOld" type="number" class="input" placeholder="पुरानी रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
+          <input id="bcNew" type="number" class="input" placeholder="नई रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
+        </div>
+        <input id="bcRate" type="number" class="input" placeholder="बिजली रेट ₹ / यूनिट" oninput="bcUpdatePreview()">
+        <div id="bcPreview" style="background: #F1F5F9; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 10px; text-align: center;">यूनिट: 0 &nbsp;×&nbsp; रेट ₹0 &nbsp;=&nbsp; बिल ₹0</div>
+        <button class="btn btn-gold" onclick="bcAddEntry()">+ Add करो</button>
+        <div id="bcMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px 0;">
+          <h4 style="margin: 0; font-size: 13.5px;">⚡ <span id="bcMonthLabel"></span> के बिल</h4>
+          <b id="bcTotal" style="color: #B45309; font-size: 14px;">कुल ₹0</b>
+        </div>
+        <div id="bcList"></div>
+        <div id="bcEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 14px 0;">इस महीने कोई बिजली बिल नहीं बना</div>
+        <button class="btn-sm" id="bcShareBtn" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="bcShareWhatsapp()">📤 WhatsApp पर शेयर करो</button>
+      </div>
+    </div>
+
     <!-- Ongoing Sites -->
     <div class="card" style="border: 2px solid #16A34A;">
       <h3 style="margin: 0 0 10px 0; color: #166534; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
@@ -1175,55 +1202,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="reportBox" style="margin-top: 14px;"></div>
     </div>
   </div>
-
-<!-- ⚡ BIJLI BILL CALCULATOR MODULE -->
-    <div class="card" style="border: 2px solid #F59E0B; background: #FFFBEB;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: #92400E; display: flex; align-items: center; gap: 6px;">
-          <span>⚡</span> बिजली बिल कैलकुलेटर (Meter Reading)
-        </h3>
-        <!-- TOGGLE BUTTON -->
-        <label style="position: relative; display: inline-block; width: 46px; height: 24px;">
-          <input type="checkbox" id="bijliToggleBtn" onchange="toggleBijliCalculator()" style="opacity: 0; width: 0; height: 0;">
-          <span id="bijliToggleSlider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #CBD5E1; transition: .3s; border-radius: 24px;"></span>
-          <span id="bijliToggleKnob" style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;"></span>
-        </label>
-      </div>
-
-      <!-- Calculator Input Box (Initially Hidden) -->
-      <div id="bijliCalcBox" style="display: none; margin-top: 14px;">
-        <select id="bjLabour" class="input">
-          <option value="">-- कारीगर चुनें --</option>
-        </select>
-        
-        <div style="display: flex; gap: 8px;">
-          <input id="bjOld" type="number" step="any" class="input" placeholder="Old Reading" oninput="calcBijliUnits()">
-          <input id="bjNew" type="number" step="any" class="input" placeholder="New Reading" oninput="calcBijliUnits()">
-        </div>
-
-        <div style="display: flex; gap: 8px;">
-          <input id="bjUnits" type="number" class="input" placeholder="कुल यूनिट्स (Units)" readonly style="background: #F1F5F9; font-weight: 800;">
-          <input id="bjRate" type="number" step="any" class="input" placeholder="यूनिट रेट ₹ (Price/Unit)" oninput="calcBijliUnits()">
-        </div>
-
-        <div style="background: #FEF3C7; border: 1.5px solid #FCD34D; border-radius: 12px; padding: 10px; margin-bottom: 10px; text-align: center;">
-          <span style="font-size: 12px; font-weight: 700; color: #92400E;">कुल बिजली बिल: </span>
-          <b id="bjTotalAmt" style="font-size: 18px; color: #B45309;">₹0</b>
-        </div>
-
-        <button class="btn btn-gold" onclick="addBijliBillEntry()">+ लिस्ट में जोड़ें (Add Bill)</button>
-      </div>
-
-      <!-- Final Calculated Bills Table & WhatsApp Share -->
-      <div id="bijliListContainer" style="display: none; margin-top: 14px; border-top: 1px dashed #FCD34D; padding-top: 10px;">
-        <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #78350F;">📋 तैयार किए गए बिजली बिल:</h4>
-        <div id="bijliBillList"></div>
-
-        <button class="btn" style="background: #25D366; color: white; font-weight: 800; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="shareBijliBillsWhatsApp()">
-          <span>📲 WhatsApp पर बिल विवरण भेजें</span>
-        </button>
-      </div>
-    </div>
 
   <!-- TAB: BUSINESS EXPENSES (व्यापार खर्च) -->
   <div id="t-x" style="display: none;">
@@ -1609,110 +1587,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
   <!-- Vite entry -->
   <script>
-  let calculatedBijliBills = [];
-
-function toggleBijliCalculator() {
-  const isChecked = document.getElementById("bijliToggleBtn").checked;
-  document.getElementById("bijliCalcBox").style.display = isChecked ? "block" : "none";
-  document.getElementById("bijliListContainer").style.display = (isChecked && calculatedBijliBills.length > 0) ? "block" : "none";
-  if (isChecked) populateBijliLabourDropdown();
-}
-
-function populateBijliLabourDropdown() {
-  const select = document.getElementById("bjLabour");
-  if (!select) return;
-  select.innerHTML = '<option value="">-- कारीगर चुनें --</option>';
-  if (typeof labs !== 'undefined') {
-    Object.entries(labs).forEach(([id, l]) => {
-      if (l.status !== "archived") {
-        select.innerHTML += `<option value="${id}">${l.name}</option>`;
-      }
-    });
-  }
-}
-
-function calcBijliUnits() {
-  const oldR = parseFloat(document.getElementById("bjOld").value) || 0;
-  const newR = parseFloat(document.getElementById("bjNew").value) || 0;
-  const rate = parseFloat(document.getElementById("bjRate").value) || 0;
-  const units = newR >= oldR ? (newR - oldR) : 0;
-  const total = units * rate;
-  document.getElementById("bjUnits").value = units.toFixed(1);
-  document.getElementById("bjTotalAmt").innerText = "₹" + total.toLocaleString("en-IN");
-}
-
-function addBijliBillEntry() {
-  const labId = document.getElementById("bjLabour").value;
-  const oldR = parseFloat(document.getElementById("bjOld").value);
-  const newR = parseFloat(document.getElementById("bjNew").value);
-  const rate = parseFloat(document.getElementById("bjRate").value);
-  const units = parseFloat(document.getElementById("bjUnits").value);
-
-  if (!labId) { alert("कृपया कारीगर चुनें!"); return; }
-  if (isNaN(oldR) || isNaN(newR) || newR < oldR) { alert("कृपया सही Meter Readings दर्ज करें!"); return; }
-  if (isNaN(rate) || rate <= 0) { alert("कृपया 1 Unit का रेट दर्ज करें!"); return; }
-
-  const total = units * rate;
-  const labName = (typeof labs !== 'undefined' && labs[labId]) ? labs[labId].name : "कारीगर";
-
-  calculatedBijliBills.push({ labId, labName, oldR, newR, units, rate, total });
-  
-  document.getElementById("bjLabour").value = "";
-  document.getElementById("bjOld").value = "";
-  document.getElementById("bjNew").value = "";
-  document.getElementById("bjUnits").value = "";
-  document.getElementById("bjTotalAmt").innerText = "₹0";
-
-  renderBijliBillList();
-}
-
-function renderBijliBillList() {
-  const container = document.getElementById("bijliBillList");
-  const listWrapper = document.getElementById("bijliListContainer");
-  if (!calculatedBijliBills.length) {
-    if (listWrapper) listWrapper.style.display = "none";
-    return;
-  }
-  if (listWrapper) listWrapper.style.display = "block";
-  let html = "";
-  calculatedBijliBills.forEach((b, index) => {
-    html += `
-      <div style="background: white; border: 1px solid #CBD5E1; border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <b>👷 ${b.labName}</b><br>
-          <small style="color: #64748B;">(${b.oldR} → ${b.newR}) = <b>${b.units} Units</b> @ ₹${b.rate}/unit</small>
-        </div>
-        <div style="text-align: right;">
-          <b style="color: #B45309; font-size: 14px;">₹${b.total.toLocaleString("en-IN")}</b><br>
-          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 2px 6px; font-size: 10px; margin-top: 2px;" onclick="removeBijliBill(${index})">X हटाएं</button>
-        </div>
-      </div>
-    `;
-  });
-  if (container) container.innerHTML = html;
-}
-
-function removeBijliBill(index) {
-  calculatedBijliBills.splice(index, 1);
-  renderBijliBillList();
-}
-
-function shareBijliBillsWhatsApp() {
-  if (!calculatedBijliBills.length) return;
-  let text = "⚡ *SHUKLA MARBLE - बिजली बिल हिसाब* ⚡\n\n";
-  let grandTotal = 0;
-  calculatedBijliBills.forEach((b, i) => {
-    text += `${i + 1}. *${b.labName}*\n`;
-    text += `   • रीडिंग: ${b.oldR} से ${b.newR}\n`;
-    text += `   • कुल यूनिट: ${b.units} U @ ₹${b.rate}/unit\n`;
-    text += `   • *कुल बिजली बिल: ₹${b.total.toLocaleString("en-IN")}*\n\n`;
-    grandTotal += b.total;
-  });
-  text += `--------------------------------\n`;
-  text += `💰 *कुल बिजली बिल राशि: ₹${grandTotal.toLocaleString("en-IN")}*\n`;
-  text += `_नोट: यह राशि आपके इस महीने के हिसाब से काट ली जाएगी।_`;
-  window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
-}
 if (typeof html2canvas !== "undefined") {
   window.html2canvas = html2canvas;
 }
@@ -1749,6 +1623,7 @@ let sites = {};
 let sitePays = {};
 let agreements = {};
 let expenses = {};
+let bijliBills = {};
 let siteCosts = {};
 let selDay = 1;
 let editingId = null;
@@ -1828,6 +1703,10 @@ function startListen() {
     expenses = s.val() || {};
     renderExpenses();
   });
+  db.ref("companies/" + company + "/bijliBills").on("value", (s) => {
+    bijliBills = s.val() || {};
+    bcRenderList();
+  });
   startMatSectionsListener();
 }
 function getMon() {
@@ -1846,6 +1725,98 @@ function rateForDate(l, date) {
   const cur = parseFloat(l.wage) || 0;
   if (l.wageFrom && l.prevWage != null && date && date < l.wageFrom) return parseFloat(l.prevWage) || 0;
   return cur;
+}
+// ---- Bijli Bill Calculator (meter reading based, saved month-wise) ----
+function bcGetMonth() {
+  const m = document.getElementById("bcMonth");
+  return m && m.value ? m.value : fmtLocalDate(new Date()).slice(0, 7);
+}
+function bcUpdatePreview() {
+  const oldR = parseFloat(document.getElementById("bcOld")?.value) || 0;
+  const newR = parseFloat(document.getElementById("bcNew")?.value) || 0;
+  const rate = parseFloat(document.getElementById("bcRate")?.value) || 0;
+  const units = Math.max(0, newR - oldR);
+  const bill = units * rate;
+  const prev = document.getElementById("bcPreview");
+  if (prev) prev.innerText = `\u092F\u0942\u0928\u093F\u091F: ${units}  \u00D7  \u0930\u0947\u091F \u20B9${rate}  =  \u092C\u093F\u0932 \u20B9${bill.toLocaleString("en-IN")}`;
+}
+function bcAddEntry() {
+  const sel = document.getElementById("bcLab");
+  const labId = sel?.value || "";
+  const msg = document.getElementById("bcMsg");
+  if (msg) msg.innerText = "";
+  if (!labId) { if (msg) msg.innerText = "\u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u0947\u0902"; return; }
+  const oldR = parseFloat(document.getElementById("bcOld")?.value);
+  const newR = parseFloat(document.getElementById("bcNew")?.value);
+  const rate = parseFloat(document.getElementById("bcRate")?.value);
+  if (isNaN(oldR) || isNaN(newR)) { if (msg) msg.innerText = "\u0926\u094B\u0928\u094B\u0902 \u0930\u0940\u0921\u093F\u0902\u0917 \u0921\u093E\u0932\u0947\u0902"; return; }
+  if (newR < oldR) { if (msg) msg.innerText = "\u0928\u0908 \u0930\u0940\u0921\u093F\u0902\u0917, \u092A\u0941\u0930\u093E\u0928\u0940 \u0938\u0947 \u0915\u092E \u0939\u0948"; return; }
+  if (isNaN(rate) || rate <= 0) { if (msg) msg.innerText = "\u092C\u093F\u091C\u0932\u0940 \u0930\u0947\u091F \u0921\u093E\u0932\u0947\u0902"; return; }
+  const units = newR - oldR;
+  const bill = units * rate;
+  const mon = bcGetMonth();
+  const newRef = db.ref("companies/" + company + "/bijliBills").push();
+  newRef.set({ labourId: labId, month: mon, oldReading: oldR, newReading: newR, units, rate, bill, ts: Date.now() });
+  const bcOldEl = document.getElementById("bcOld");
+  const bcNewEl = document.getElementById("bcNew");
+  if (bcOldEl) bcOldEl.value = "";
+  if (bcNewEl) bcNewEl.value = "";
+  if (sel) sel.value = "";
+  bcUpdatePreview();
+}
+function bcRenderList() {
+  const list = document.getElementById("bcList");
+  const emptyEl = document.getElementById("bcEmpty");
+  const totalEl = document.getElementById("bcTotal");
+  const labelEl = document.getElementById("bcMonthLabel");
+  const shareBtn = document.getElementById("bcShareBtn");
+  if (!list) return;
+  const mon = bcGetMonth();
+  if (labelEl) labelEl.innerText = mon ? new Date(mon + "-01").toLocaleDateString("hi-IN", { month: "long", year: "numeric" }) : "";
+  const rows = Object.entries(bijliBills)
+    .filter(([, b]) => b.month === mon)
+    .sort((a, b) => (a[1].ts || 0) - (b[1].ts || 0));
+  let html = "";
+  let total = 0;
+  rows.forEach(([bid, b]) => {
+    total += parseFloat(b.bill) || 0;
+    const nm = labs[b.labourId]?.name || "?";
+    html += `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F1F5F9;">
+        <div>
+          <b style="font-size: 13px;">${nm}</b><br>
+          <small style="color: #64748B;">${b.oldReading} \u2192 ${b.newReading} (${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate})</small>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <b style="color: #B45309; font-size: 14px;">\u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}</b>
+          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px;" onclick="bcDeleteEntry('${bid}')">X</button>
+        </div>
+      </div>`;
+  });
+  list.innerHTML = html;
+  if (emptyEl) emptyEl.style.display = rows.length ? "none" : "block";
+  if (shareBtn) shareBtn.style.display = rows.length ? "block" : "none";
+  if (totalEl) totalEl.innerText = `\u0915\u0941\u0932 \u20B9${total.toLocaleString("en-IN")}`;
+}
+function bcDeleteEntry(bid) {
+  if (!confirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?")) return;
+  db.ref("companies/" + company + "/bijliBills/" + bid).remove();
+}
+function bcShareWhatsapp() {
+  const mon = bcGetMonth();
+  const rows = Object.values(bijliBills)
+    .filter((b) => b.month === mon)
+    .sort((a, b) => (a.ts || 0) - (b.ts || 0));
+  if (!rows.length) return;
+  const total = rows.reduce((s, b) => s + (parseFloat(b.bill) || 0), 0);
+  const monLabel = mon ? new Date(mon + "-01").toLocaleDateString("hi-IN", { month: "long", year: "numeric" }) : "";
+  let msg = `\u26A1 *\u092C\u093F\u091C\u0932\u0940 \u092C\u093F\u0932 \u2013 ${monLabel}*\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
+  rows.forEach((b) => {
+    const nm = labs[b.labourId]?.name || "?";
+    msg += `\u2022 ${nm}: ${b.oldReading} \u2192 ${b.newReading} = ${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate} = \u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}\n`;
+  });
+  msg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u0915\u0941\u0932 \u092C\u093F\u0932: \u20B9${total.toLocaleString("en-IN")}`;
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 function shareHazriToWhatsapp(idx) {
   const msg = window.__hazriShareData && window.__hazriShareData[idx];
@@ -2219,6 +2190,12 @@ function renderAll() {
   });
   const activeIds = sortedLabIds.filter((id) => !labs[id].archived);
   const archivedIds = sortedLabIds.filter((id) => labs[id].archived);
+  const bcSel = document.getElementById("bcLab");
+  if (bcSel) {
+    const curBc = bcSel.value;
+    bcSel.innerHTML = '<option value="">\u{1F477} \u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u094B</option>' + activeIds.map((id) => `<option value="${id}">${labs[id].name}</option>`).join("");
+    if (activeIds.includes(curBc)) bcSel.value = curBc;
+  }
   const filteredForDropdown = activeIds.filter((id) => {
     const n = (labs[id].name || "").toLowerCase();
     return n.includes(eLabQ);
@@ -5560,7 +5537,7 @@ const PIN_PROTECTED_FNS = [
   "addSite", "toggleSiteStatus", "deleteSite", "addSitePayment", "addSiteCost", "deleteSiteCost",
   "saveHazri", "deleteEntry", "saveAgreement", "deleteSavedAg", "addExpense", "deleteExpense",
   "addMatSection", "editMatSection", "deleteMatSection", "saveMatItem", "deleteMatItem",
-  "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat"
+  "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat", "bcAddEntry", "bcDeleteEntry"
 ];
 function startAdminPinListener() {
   if (!db) return;
@@ -5669,6 +5646,8 @@ function bootstrap() {
   const scMonth = document.getElementById("scMonth");
   if (scMonth) scMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   if (xMonth) xMonth.value = fmtLocalDate(new Date()).slice(0, 7);
+  const bcMonth = document.getElementById("bcMonth");
+  if (bcMonth) bcMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   const meDate = document.getElementById("meDate");
   if (meDate) meDate.value = fmtLocalDate(new Date());
   const mrDay = document.getElementById("mrDay");
