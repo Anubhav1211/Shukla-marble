@@ -1002,7 +1002,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px 0;">
           <h4 style="margin: 0; font-size: 13.5px;">⚡ <span id="bcMonthLabel"></span> के बिल</h4>
-          <b id="bcTotal" style="color: #B45309; font-size: 14px;">कुल ₹0</b>
+          <b id="bcTotal" style="color: #B45309; font-size: 14px; white-space: nowrap;">कुल ₹0</b>
         </div>
         <div id="bcList"></div>
         <div id="bcEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 14px 0;">इस महीने कोई बिजली बिल नहीं बना</div>
@@ -1865,16 +1865,16 @@ function bcRenderList() {
       ? `<br><small style="color:#94A3B8;">\u{1F465} ${b.splitCount} \u0915\u093E\u0930\u0940\u0917\u0930 \u092E\u0947\u0902 \u092C\u0902\u091F\u093E \u2022 \u0915\u0941\u0932 \u092C\u093F\u0932 \u20B9${(parseFloat(b.fullBill) || 0).toLocaleString("en-IN")} \u2022 ${(b.splitNames || []).join(", ")}</small>`
       : "";
     html += `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid #F1F5F9; ${activeStyle}">
-        <div>
+      <div style="display: flex; flex-wrap: wrap; row-gap: 8px; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid #F1F5F9; ${activeStyle}">
+        <div style="flex: 1 1 140px; min-width: 0;">
           <b style="font-size: 13px;">${nm}</b><br>
           <small style="color: #64748B;">${b.oldReading} \u2192 ${b.newReading} (${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate})</small>
           ${splitNote}
         </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <b style="color: #B45309; font-size: 14px;">\u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}</b>
-          <button class="btn-sm" style="background: #F1F5F9; color: #334155; padding: 4px 8px;" onclick="bcEditEntry('${bid}')">\u270F\uFE0F</button>
-          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px;" onclick="bcDeleteEntry('${bid}')">X</button>
+        <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: auto;">
+          <b style="color: #B45309; font-size: 14px; white-space: nowrap;">\u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}</b>
+          <button class="btn-sm" style="background: #F1F5F9; color: #334155; padding: 4px 8px; flex-shrink: 0;" onclick="bcEditEntry('${bid}')">\u270F\uFE0F</button>
+          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px; flex-shrink: 0;" onclick="bcDeleteEntry('${bid}')">X</button>
         </div>
       </div>`;
   });
