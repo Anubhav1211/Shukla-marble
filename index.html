@@ -1772,6 +1772,11 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
           </div>
         </label>
       </div>
+      <div id="rbMonthBox" style="display: none; text-align: left; margin: 4px 0 10px 0;">
+        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">किस महीने के लिए?</div>
+        <input id="rbMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box; margin-bottom: 0;" onchange="rbMonthChanged()">
+        <div style="font-size: 10.5px; font-weight: 500; color: #94A3B8; margin-top: 4px;">सिर्फ इसी महीने पर लागू होगा — अगले/पिछले महीने अपने आप नहीं बदलेंगे</div>
+      </div>
       <div style="display: flex; gap: 8px; margin-top: 4px;">
         <button class="btn" style="background: #F1F5F9; color: #64748B; margin: 0;" onclick="closeEditFieldModal()">Cancel</button>
         <button class="btn btn-gold" style="margin: 0;" onclick="saveEditField()">💾 Save</button>
@@ -1834,6 +1839,7 @@ let labs = {};
 let ents = {};
 let sites = {};
 let sitePays = {};
+let labourMonthly = {};
 let agreements = {};
 let expenses = {};
 let bijliBills = {};
@@ -1976,6 +1982,10 @@ function startListen() {
   });
   db.ref("companies/" + company + "/entries").on("value", (s) => {
     ents = s.val() || {};
+    renderAll();
+  });
+  db.ref("companies/" + company + "/labourMonthly").on("value", (s) => {
+    labourMonthly = s.val() || {};
     renderAll();
   });
   db.ref("companies/" + company + "/sites").on("value", (s) => {
@@ -2223,9 +2233,10 @@ function shareHazriToWhatsapp(idx) {
   if (!msg) return;
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
-function calcLabour(id, mon) {
+// Pure per-month calc given an explicit opening balance for that month.
+// rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 — never carried forward).
+function calcLabourForMonth(id, mon, bal) {
   const l = labs[id];
-  if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, net: 0, bal: 0 };
   let d = 0;
   let w = 0;
   let earn = 0;
@@ -2237,9 +2248,9 @@ function calcLabour(id, mon) {
       earn += dd * entryRate(e, l);
     }
   });
-  const bal = parseFloat(l.balance) || 0;
-  const rent = parseFloat(l.rent) || 0;
-  const bijli = parseFloat(l.bijli) || 0;
+  const monthly = (labourMonthly[id] && labourMonthly[id][mon]) || {};
+  const rent = parseFloat(monthly.rent) || 0;
+  const bijli = parseFloat(monthly.bijli) || 0;
   let bijliCalc = 0;
   Object.values(bijliBills).forEach((b) => {
     if (b.labourId === id && b.month === mon) bijliCalc += parseFloat(b.bill) || 0;
@@ -2254,6 +2265,28 @@ function calcLabour(id, mon) {
     net: earn + bal - w - rent - bijli - bijliCalc,
     bal
   };
+}
+// Walks every month from the labour's opening balance (l.balance, a one-time manual seed)
+// forward through history, carrying each month's final net as the next month's opening
+// बकाया — so September's देना/लेना automatically becomes October's opening balance.
+function calcLabour(id, mon) {
+  const l = labs[id];
+  if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, bijliCalc: 0, net: 0, bal: 0 };
+  const openingBal = parseFloat(l.balance) || 0;
+  const monthsSet = new Set();
+  Object.values(ents).forEach((e) => { if (e.labourId === id && e.date) monthsSet.add(e.date.slice(0, 7)); });
+  if (labourMonthly[id]) Object.keys(labourMonthly[id]).forEach((m) => monthsSet.add(m));
+  Object.values(bijliBills).forEach((b) => { if (b.labourId === id && b.month) monthsSet.add(b.month); });
+  monthsSet.add(mon);
+  const allMonths = Array.from(monthsSet).sort();
+  let runningBal = openingBal;
+  let result = null;
+  for (const m of allMonths) {
+    const r = calcLabourForMonth(id, m, runningBal);
+    if (m === mon) { result = r; break; }
+    runningBal = r.net;
+  }
+  return result || calcLabourForMonth(id, mon, runningBal);
 }
 function calcSite(siteId) {
   let cost = 0;
@@ -2645,7 +2678,7 @@ function renderAll() {
       <div style="display:flex;justify-content:space-between;padding:14px;border:1px solid #EEF2FF;border-radius:16px;margin-bottom:10px;background:#FBFDFF">
         <div>
           <b>${l.name}</b> <small style="color:#6366F1;font-weight:700">\u20B9${l.wage || 0}</small><br>
-          <small style="color:#64748B">\u092C\u0915\u093E\u092F\u093E \u20B9${l.balance || 0} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E \u20B9${l.rent || 0} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${l.bijli || 0}</small>
+          <small style="color:#64748B">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
         </div>
         <div style="text-align:right">
           <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:4px 8px;border-radius:10px;font-size:11px;font-weight:800">
@@ -2676,7 +2709,7 @@ function renderAll() {
         <div class="archived-card" style="display:flex;justify-content:space-between;padding:14px;border-radius:16px;margin-bottom:10px">
           <div>
             <b>${l.name}</b> <small style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px">Archived</small><br>
-            <small style="color:#64748B">\u092C\u0915\u093E\u092F\u093E \u20B9${l.balance || 0}</small>
+            <small style="color:#64748B">\u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")}</small>
           </div>
           <div style="text-align:right">
             <div style="background:#EEF2FF;padding:4px 8px;border-radius:10px;font-size:11px;font-weight:700">
@@ -3004,7 +3037,7 @@ function editWage(id) {
   openEditField(id, "wage", "\u0926\u093F\u0939\u093E\u0921\u093C\u0940 \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B", "\u0930\u094B\u091C\u093C\u093E\u0928\u093E \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940");
 }
 function editBalance(id) {
-  openEditField(id, "balance", "\u092C\u0915\u093E\u092F\u093E \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B", "+ \u0926\u0947\u0928\u093E \u0939\u0948, \u2013 \u0932\u0947\u0928\u093E \u0939\u0948 (\u091C\u0948\u0938\u0947 -500)");
+  openEditField(id, "balance", "\u0936\u0941\u0930\u0942\u0906\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B", "\u0910\u092A \u0907\u0938\u094D\u0924\u0947\u092E\u093E\u0932 \u0915\u0930\u0928\u0947 \u0938\u0947 \u092A\u0939\u0932\u0947 \u0915\u093E \u092C\u0915\u093E\u092F\u093E (+ \u0926\u0947\u0928\u093E, \u2013 \u0932\u0947\u0928\u093E) \u2013 \u0939\u0930 \u092E\u0939\u0940\u0928\u0947 \u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0916\u0941\u0926 \u0905\u0917\u0932\u0947 \u092E\u0939\u0940\u0928\u0947 \u092E\u0947\u0902 \u0906\u0917\u0947 \u092C\u0922\u093C\u0924\u093E \u0939\u0948");
 }
 function openEditField(id, field, title, sub) {
   const l = labs[id];
@@ -3016,7 +3049,16 @@ function openEditField(id, field, title, sub) {
   const inputEl = document.getElementById("efInput");
   if (titleEl) titleEl.innerText = (l.name ? l.name + " - " : "") + title;
   if (subEl) subEl.innerText = sub || "";
-  if (inputEl) inputEl.value = l[field] || 0;
+  const curMon = fmtLocalDate(new Date()).slice(0, 7);
+  const isMonthly = field === "rent" || field === "bijli";
+  if (inputEl) {
+    if (isMonthly) {
+      const existing = (labourMonthly[id] && labourMonthly[id][curMon] && labourMonthly[id][curMon][field]) || 0;
+      inputEl.value = existing || "";
+    } else {
+      inputEl.value = l[field] || 0;
+    }
+  }
   const wm = document.getElementById("wageModeBox");
   if (wm) {
     wm.style.display = field === "wage" ? "block" : "none";
@@ -3029,15 +3071,30 @@ function openEditField(id, field, title, sub) {
     const cdE = document.getElementById("wageCustomDateEnd");
     if (cdE) cdE.value = "";
   }
+  const rbm = document.getElementById("rbMonthBox");
+  if (rbm) {
+    rbm.style.display = isMonthly ? "block" : "none";
+    const rbMonthEl = document.getElementById("rbMonth");
+    if (rbMonthEl) rbMonthEl.value = curMon;
+  }
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "flex";
   if (inputEl) setTimeout(() => { inputEl.focus(); inputEl.select(); }, 100);
+}
+function rbMonthChanged() {
+  if (!efLabourId || !efField) return;
+  const mon = document.getElementById("rbMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
+  const inputEl = document.getElementById("efInput");
+  const existing = (labourMonthly[efLabourId] && labourMonthly[efLabourId][mon] && labourMonthly[efLabourId][mon][efField]) || 0;
+  if (inputEl) inputEl.value = existing || "";
 }
 function closeEditFieldModal() {
   efLabourId = null;
   efField = null;
   const wmc = document.getElementById("wageModeBox");
   if (wmc) wmc.style.display = "none";
+  const rbm = document.getElementById("rbMonthBox");
+  if (rbm) rbm.style.display = "none";
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "none";
 }
@@ -3083,6 +3140,14 @@ function saveEditField() {
     db.ref(base + "labours/" + efLabourId + "/prevWage").set(oldW);
     db.ref(base + "labours/" + efLabourId + "/wageFrom").set(from);
     db.ref(base + "labours/" + efLabourId + "/wage").set(val).then(() => {
+      closeEditFieldModal();
+    });
+    return;
+  }
+  if (efField === "rent" || efField === "bijli") {
+    const mon = document.getElementById("rbMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
+    db.ref(base + "labourMonthly/" + efLabourId + "/" + mon + "/" + efField).set(val).then(() => {
+      showToast("\u2705 " + mon + " \u0915\u0947 \u0932\u093F\u090F \u0938\u0947\u0935 \u0939\u094B \u0917\u092F\u093E", "success");
       closeEditFieldModal();
     });
     return;
