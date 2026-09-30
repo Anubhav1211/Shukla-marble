@@ -995,7 +995,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         </div>
         <input id="bcRate" type="number" class="input" placeholder="बिजली रेट ₹ / यूनिट" oninput="bcUpdatePreview()">
         <div id="bcPreview" style="background: #F1F5F9; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 10px; text-align: center;">यूनिट: 0 &nbsp;×&nbsp; रेट ₹0 &nbsp;=&nbsp; बिल ₹0</div>
-        <button class="btn btn-gold" onclick="bcAddEntry()">+ Add करो</button>
+        <button class="btn btn-gold" id="bcSaveBtn" onclick="bcAddEntry()">+ Add करो</button>
+        <button class="btn-sm" id="bcCancelEditBtn" style="background: #F1F5F9; color: #64748B; width: 100%; padding: 8px; margin-top: 6px; font-size: 12px; display: none;" onclick="bcCancelEdit()">Cancel</button>
         <div id="bcMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px 0;">
@@ -1727,6 +1728,7 @@ function rateForDate(l, date) {
   return cur;
 }
 // ---- Bijli Bill Calculator (meter reading based, saved month-wise) ----
+let bcEditId = null;
 function bcGetMonth() {
   const m = document.getElementById("bcMonth");
   return m && m.value ? m.value : fmtLocalDate(new Date()).slice(0, 7);
@@ -1755,14 +1757,51 @@ function bcAddEntry() {
   const units = newR - oldR;
   const bill = units * rate;
   const mon = bcGetMonth();
-  const newRef = db.ref("companies/" + company + "/bijliBills").push();
-  newRef.set({ labourId: labId, month: mon, oldReading: oldR, newReading: newR, units, rate, bill, ts: Date.now() });
+  const data = { labourId: labId, month: mon, oldReading: oldR, newReading: newR, units, rate, bill, ts: Date.now() };
+  if (bcEditId) {
+    db.ref("companies/" + company + "/bijliBills/" + bcEditId).update(data);
+  } else {
+    db.ref("companies/" + company + "/bijliBills").push().set(data);
+  }
+  bcCancelEdit();
+}
+function bcEditEntry(bid) {
+  const b = bijliBills[bid];
+  if (!b) return;
+  bcEditId = bid;
+  const sel = document.getElementById("bcLab");
+  const mEl = document.getElementById("bcMonth");
+  const oEl = document.getElementById("bcOld");
+  const nEl = document.getElementById("bcNew");
+  const rEl = document.getElementById("bcRate");
+  if (sel) sel.value = b.labourId || "";
+  if (mEl) mEl.value = b.month || bcGetMonth();
+  if (oEl) oEl.value = b.oldReading;
+  if (nEl) nEl.value = b.newReading;
+  if (rEl) rEl.value = b.rate;
+  bcUpdatePreview();
+  const saveBtn = document.getElementById("bcSaveBtn");
+  const cancelBtn = document.getElementById("bcCancelEditBtn");
+  if (saveBtn) saveBtn.innerText = "\u2713 Update \u0915\u0930\u094B";
+  if (cancelBtn) cancelBtn.style.display = "block";
+  bcRenderList();
+  const box = document.getElementById("bijliCalcBox");
+  if (box) box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function bcCancelEdit() {
+  bcEditId = null;
   const bcOldEl = document.getElementById("bcOld");
   const bcNewEl = document.getElementById("bcNew");
+  const sel = document.getElementById("bcLab");
+  const saveBtn = document.getElementById("bcSaveBtn");
+  const cancelBtn = document.getElementById("bcCancelEditBtn");
   if (bcOldEl) bcOldEl.value = "";
   if (bcNewEl) bcNewEl.value = "";
   if (sel) sel.value = "";
+  if (saveBtn) saveBtn.innerText = "+ Add \u0915\u0930\u094B";
+  if (cancelBtn) cancelBtn.style.display = "none";
   bcUpdatePreview();
+  bcRenderList();
 }
 function bcRenderList() {
   const list = document.getElementById("bcList");
@@ -1781,14 +1820,16 @@ function bcRenderList() {
   rows.forEach(([bid, b]) => {
     total += parseFloat(b.bill) || 0;
     const nm = labs[b.labourId]?.name || "?";
+    const activeStyle = bid === bcEditId ? "background:#FEF9C3;border-radius:10px;padding-left:6px;padding-right:6px;" : "";
     html += `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F1F5F9;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid #F1F5F9; ${activeStyle}">
         <div>
           <b style="font-size: 13px;">${nm}</b><br>
           <small style="color: #64748B;">${b.oldReading} \u2192 ${b.newReading} (${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate})</small>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 6px;">
           <b style="color: #B45309; font-size: 14px;">\u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}</b>
+          <button class="btn-sm" style="background: #F1F5F9; color: #334155; padding: 4px 8px;" onclick="bcEditEntry('${bid}')">\u270F\uFE0F</button>
           <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px;" onclick="bcDeleteEntry('${bid}')">X</button>
         </div>
       </div>`;
@@ -1800,6 +1841,7 @@ function bcRenderList() {
 }
 function bcDeleteEntry(bid) {
   if (!confirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?")) return;
+  if (bcEditId === bid) bcCancelEdit();
   db.ref("companies/" + company + "/bijliBills/" + bid).remove();
 }
 function bcShareWhatsapp() {
