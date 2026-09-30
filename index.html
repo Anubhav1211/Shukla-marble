@@ -988,7 +988,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </button>
       <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
         <input id="bcMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box;" onchange="bcRenderList()">
-        <select id="bcLab" class="input"></select>
+        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin: 2px 0 6px 2px;">कारीगर चुनो <span style="font-weight: 500;">(एक से ज़्यादा चुनोगे तो बिल बराबर बंट जाएगा)</span></div>
+        <div id="bcLabPicker" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;"></div>
         <div style="display: flex; gap: 8px;">
           <input id="bcOld" type="number" class="input" placeholder="पुरानी रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
           <input id="bcNew" type="number" class="input" placeholder="नई रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
@@ -1729,6 +1730,7 @@ function rateForDate(l, date) {
 }
 // ---- Bijli Bill Calculator (meter reading based, saved month-wise) ----
 let bcEditId = null;
+let bcEditRemoveIds = null;
 function bcGetMonth() {
   const m = document.getElementById("bcMonth");
   return m && m.value ? m.value : fmtLocalDate(new Date()).slice(0, 7);
@@ -1739,15 +1741,42 @@ function bcUpdatePreview() {
   const rate = parseFloat(document.getElementById("bcRate")?.value) || 0;
   const units = Math.max(0, newR - oldR);
   const bill = units * rate;
+  const n = (window.bcSelectedLabIds || []).length || 1;
+  const share = n > 1 ? Math.round((bill / n) * 100) / 100 : bill;
   const prev = document.getElementById("bcPreview");
-  if (prev) prev.innerText = `\u092F\u0942\u0928\u093F\u091F: ${units}  \u00D7  \u0930\u0947\u091F \u20B9${rate}  =  \u092C\u093F\u0932 \u20B9${bill.toLocaleString("en-IN")}`;
+  if (prev) {
+    let txt = `\u092F\u0942\u0928\u093F\u091F: ${units}  \u00D7  \u0930\u0947\u091F \u20B9${rate}  =  \u092C\u093F\u0932 \u20B9${bill.toLocaleString("en-IN")}`;
+    if (n > 1) txt += `  \u00F7 ${n} \u0915\u093E\u0930\u0940\u0917\u0930 = \u20B9${share.toLocaleString("en-IN")} \u0939\u0930 \u090F\u0915`;
+    prev.innerText = txt;
+  }
+}
+function bcNewId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+function renderBcLabPicker() {
+  const box = document.getElementById("bcLabPicker");
+  if (!box) return;
+  if (!window.bcSelectedLabIds) window.bcSelectedLabIds = [];
+  const activeIds = Object.keys(labs).filter((id) => !labs[id].archived).sort((a, b) => (labs[a].name || "").localeCompare(labs[b].name || ""));
+  window.bcSelectedLabIds = window.bcSelectedLabIds.filter((id) => activeIds.includes(id));
+  box.innerHTML = activeIds.map((id) => {
+    const sel = window.bcSelectedLabIds.includes(id);
+    return `<button type="button" onclick="bcToggleLab('${id}')" style="padding:7px 12px;border-radius:20px;border:1.5px solid ${sel ? "#4F46E5" : "#E2E8F0"};background:${sel ? "#EEF2FF" : "#fff"};color:${sel ? "#4338CA" : "#334155"};font-size:12.5px;font-weight:700;">${sel ? "\u2713 " : ""}${labs[id].name}</button>`;
+  }).join("");
+}
+function bcToggleLab(id) {
+  if (!window.bcSelectedLabIds) window.bcSelectedLabIds = [];
+  const i = window.bcSelectedLabIds.indexOf(id);
+  if (i >= 0) window.bcSelectedLabIds.splice(i, 1);
+  else window.bcSelectedLabIds.push(id);
+  renderBcLabPicker();
+  bcUpdatePreview();
 }
 function bcAddEntry() {
-  const sel = document.getElementById("bcLab");
-  const labId = sel?.value || "";
+  const ids = window.bcSelectedLabIds || [];
   const msg = document.getElementById("bcMsg");
   if (msg) msg.innerText = "";
-  if (!labId) { if (msg) msg.innerText = "\u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u0947\u0902"; return; }
+  if (!ids.length) { if (msg) msg.innerText = "\u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u0947\u0902"; return; }
   const oldR = parseFloat(document.getElementById("bcOld")?.value);
   const newR = parseFloat(document.getElementById("bcNew")?.value);
   const rate = parseFloat(document.getElementById("bcRate")?.value);
@@ -1757,21 +1786,34 @@ function bcAddEntry() {
   const units = newR - oldR;
   const bill = units * rate;
   const mon = bcGetMonth();
-  const data = { labourId: labId, month: mon, oldReading: oldR, newReading: newR, units, rate, bill, ts: Date.now() };
-  const bid = bcEditId || (Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
-  db.ref("companies/" + company + "/bijliBills/" + bid).set(bcEditId ? Object.assign({}, bijliBills[bcEditId], data) : data);
+  const n = ids.length;
+  const share = n > 1 ? Math.round((bill / n) * 100) / 100 : bill;
+  const namesList = ids.map((id) => labs[id]?.name || "?");
+  const groupId = n > 1 ? bcNewId() : null;
+  (bcEditRemoveIds || []).forEach((rid) => db.ref("companies/" + company + "/bijliBills/" + rid).remove());
+  ids.forEach((labId) => {
+    const bid = bcNewId();
+    const data = {
+      labourId: labId, month: mon, oldReading: oldR, newReading: newR, units, rate,
+      bill: share, fullBill: n > 1 ? bill : null, splitCount: n > 1 ? n : null,
+      splitNames: n > 1 ? namesList : null, groupId, ts: Date.now()
+    };
+    db.ref("companies/" + company + "/bijliBills/" + bid).set(data);
+  });
   bcCancelEdit();
 }
 function bcEditEntry(bid) {
   const b = bijliBills[bid];
   if (!b) return;
+  const groupIds = b.groupId ? Object.keys(bijliBills).filter((k) => bijliBills[k].groupId === b.groupId) : [bid];
+  bcEditRemoveIds = groupIds;
   bcEditId = bid;
-  const sel = document.getElementById("bcLab");
+  window.bcSelectedLabIds = groupIds.map((k) => bijliBills[k]?.labourId).filter(Boolean);
+  renderBcLabPicker();
   const mEl = document.getElementById("bcMonth");
   const oEl = document.getElementById("bcOld");
   const nEl = document.getElementById("bcNew");
   const rEl = document.getElementById("bcRate");
-  if (sel) sel.value = b.labourId || "";
   if (mEl) mEl.value = b.month || bcGetMonth();
   if (oEl) oEl.value = b.oldReading;
   if (nEl) nEl.value = b.newReading;
@@ -1787,14 +1829,15 @@ function bcEditEntry(bid) {
 }
 function bcCancelEdit() {
   bcEditId = null;
+  bcEditRemoveIds = null;
+  window.bcSelectedLabIds = [];
   const bcOldEl = document.getElementById("bcOld");
   const bcNewEl = document.getElementById("bcNew");
-  const sel = document.getElementById("bcLab");
   const saveBtn = document.getElementById("bcSaveBtn");
   const cancelBtn = document.getElementById("bcCancelEditBtn");
   if (bcOldEl) bcOldEl.value = "";
   if (bcNewEl) bcNewEl.value = "";
-  if (sel) sel.value = "";
+  renderBcLabPicker();
   if (saveBtn) saveBtn.innerText = "+ Add \u0915\u0930\u094B";
   if (cancelBtn) cancelBtn.style.display = "none";
   bcUpdatePreview();
@@ -1817,12 +1860,16 @@ function bcRenderList() {
   rows.forEach(([bid, b]) => {
     total += parseFloat(b.bill) || 0;
     const nm = labs[b.labourId]?.name || "?";
-    const activeStyle = bid === bcEditId ? "background:#FEF9C3;border-radius:10px;padding-left:6px;padding-right:6px;" : "";
+    const activeStyle = (bcEditRemoveIds || []).includes(bid) ? "background:#FEF9C3;border-radius:10px;padding-left:6px;padding-right:6px;" : "";
+    const splitNote = b.splitCount > 1
+      ? `<br><small style="color:#94A3B8;">\u{1F465} ${b.splitCount} \u0915\u093E\u0930\u0940\u0917\u0930 \u092E\u0947\u0902 \u092C\u0902\u091F\u093E \u2022 \u0915\u0941\u0932 \u092C\u093F\u0932 \u20B9${(parseFloat(b.fullBill) || 0).toLocaleString("en-IN")} \u2022 ${(b.splitNames || []).join(", ")}</small>`
+      : "";
     html += `
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid #F1F5F9; ${activeStyle}">
         <div>
           <b style="font-size: 13px;">${nm}</b><br>
           <small style="color: #64748B;">${b.oldReading} \u2192 ${b.newReading} (${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate})</small>
+          ${splitNote}
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
           <b style="color: #B45309; font-size: 14px;">\u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}</b>
@@ -1838,6 +1885,10 @@ function bcRenderList() {
 }
 function bcDeleteEntry(bid) {
   if (!confirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?")) return;
+  const b = bijliBills[bid];
+  if (b && b.groupId) {
+    if (!confirm("\u092F\u0939 \u0915\u093F\u0938\u0940 \u0938\u093E\u0902\u091D\u0947 \u0915\u093F\u090F \u0917\u090F \u092E\u0940\u091F\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u0948 \u2013 \u0938\u093F\u0930\u094D\u092B \u0907\u0938\u0940 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u091F\u0947\u0917\u093E, \u092C\u093E\u0915\u0940 \u0932\u094B\u0917\u094B\u0902 \u0915\u093E \u0935\u0948\u0938\u093E \u0939\u0940 \u0930\u0939\u0947\u0917\u093E. \u0920\u0940\u0915 \u0939\u0948?")) return;
+  }
   if (bcEditId === bid) bcCancelEdit();
   db.ref("companies/" + company + "/bijliBills/" + bid).remove();
 }
@@ -1852,7 +1903,8 @@ function bcShareWhatsapp() {
   let msg = `\u26A1 *\u092C\u093F\u091C\u0932\u0940 \u092C\u093F\u0932 \u2013 ${monLabel}*\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
   rows.forEach((b) => {
     const nm = labs[b.labourId]?.name || "?";
-    msg += `\u2022 ${nm}: ${b.oldReading} \u2192 ${b.newReading} = ${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate} = \u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}\n`;
+    const splitTxt = b.splitCount > 1 ? ` (${b.splitCount} \u092E\u0947\u0902 \u092C\u0902\u091F\u093E, \u0915\u0941\u0932 \u20B9${(parseFloat(b.fullBill) || 0).toLocaleString("en-IN")})` : "";
+    msg += `\u2022 ${nm}: ${b.oldReading} \u2192 ${b.newReading} = ${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate} = \u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}${splitTxt}\n`;
   });
   msg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u0915\u0941\u0932 \u092C\u093F\u0932: \u20B9${total.toLocaleString("en-IN")}`;
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
@@ -2234,12 +2286,8 @@ function renderAll() {
   });
   const activeIds = sortedLabIds.filter((id) => !labs[id].archived);
   const archivedIds = sortedLabIds.filter((id) => labs[id].archived);
-  const bcSel = document.getElementById("bcLab");
-  if (bcSel) {
-    const curBc = bcSel.value;
-    bcSel.innerHTML = '<option value="">\u{1F477} \u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u094B</option>' + activeIds.map((id) => `<option value="${id}">${labs[id].name}</option>`).join("");
-    if (activeIds.includes(curBc)) bcSel.value = curBc;
-  }
+  const bcSel = document.getElementById("bcLabPicker");
+  if (bcSel) renderBcLabPicker();
   const filteredForDropdown = activeIds.filter((id) => {
     const n = (labs[id].name || "").toLowerCase();
     return n.includes(eLabQ);
