@@ -1307,6 +1307,42 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <!-- Commission Payment Received -->
+    <div class="card" style="border: 2px solid #C7D2FE;">
+      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (कमीशन प्राप्ति)</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
+        <div style="background: #EEF2FF; padding: 10px 4px; border-radius: 14px; text-align: center;">
+          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">कुल कमीशन (अब तक)</small><br>
+          <b id="mpEarned" style="font-size: 13px; color: #4338CA; white-space: nowrap;">₹0</b>
+        </div>
+        <div style="background: #DCFCE7; padding: 10px 4px; border-radius: 14px; text-align: center;">
+          <small style="color: #166534; font-weight: 700; font-size: 9.5px;">कुल मिला</small><br>
+          <b id="mpReceived" style="font-size: 13px; color: #166534; white-space: nowrap;">₹0</b>
+        </div>
+        <div style="background: #FEE2E2; padding: 10px 4px; border-radius: 14px; text-align: center;">
+          <small style="color: #991B1B; font-weight: 700; font-size: 9.5px;">बकाया</small><br>
+          <b id="mpPending" style="font-size: 13px; color: #991B1B; white-space: nowrap;">₹0</b>
+        </div>
+      </div>
+      <button class="btn btn-gold" onclick="toggleBox('mpBox')" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>+ पेमेंट मिला जोड़ो</span><span>▼</span>
+      </button>
+      <div id="mpBox" style="display: none; margin-top: 12px;">
+        <input id="mpDate" type="date" class="input" style="max-width: 100%; box-sizing: border-box;">
+        <input id="mpAmount" type="number" class="input" placeholder="₹ कितना मिला">
+        <input id="mpNote" class="input" placeholder="Note (जैसे: cheque नं. / bank transfer)">
+        <button class="btn btn-save" id="mpSaveBtn" onclick="matPaymentAdd()">💾 पेमेंट सेव करो</button>
+        <button class="btn" id="mpCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="matPaymentCancelEdit()">Cancel</button>
+        <div id="mpMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
+      </div>
+      <div id="mpListWrap" style="margin-top: 14px;">
+        <h4 style="margin: 0 0 8px 0; font-size: 13px;">🧾 पेमेंट हिस्ट्री</h4>
+        <div id="mpList"></div>
+        <div id="mpEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 12px 0;">अभी कोई पेमेंट दर्ज नहीं</div>
+      </div>
+      <button class="btn-sm" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="matPaymentShareWhatsapp()">📤 WhatsApp पर हिसाब भेजो</button>
+    </div>
+
     <!-- Item Master -->
     <div class="card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('mItemBox')">
@@ -4449,6 +4485,8 @@ let matItems = {};
 let matEntries = {};
 let matItemsBySection = {};
 let matEntriesBySection = {};
+let matPayments = {};
+let matPaymentsBySection = {};
 let matSectionListeners = {};
 const MAT_NS_COLORS = ["#4F46E5", "#EA580C", "#16A34A", "#DB2777", "#0891B2", "#CA8A04", "#9333EA", "#DC2626"];
 let matSections = { nova: { name: "NOVA", color: "#4F46E5" }, acc: { name: "ACC", color: "#EA580C" } };
@@ -4469,6 +4507,10 @@ function matItemsPath(id) {
 function matEntriesPath(id) {
   id = id || matNS;
   return "companies/" + company + "/materialEntries" + matSectionSuffix(id);
+}
+function matPaymentsPath(id) {
+  id = id || matNS;
+  return "companies/" + company + "/materialPayments" + matSectionSuffix(id);
 }
 function matNSName(id) {
   id = id || matNS;
@@ -4497,6 +4539,11 @@ function attachMatSectionListeners(id) {
     const ov3 = document.getElementById("siteDetailOverlay");
     if (_currentSiteId && ov3 && ov3.style.display === "flex") showSiteDetail(_currentSiteId);
   });
+  db.ref(matPaymentsPath(id)).on("value", (s) => {
+    matPaymentsBySection[id] = s.val() || {};
+    if (matNS === id) matPayments = matPaymentsBySection[id];
+    renderMaterial();
+  });
 }
 function startMatSectionsListener() {
   if (!db) return;
@@ -4511,6 +4558,7 @@ function startMatSectionsListener() {
     if (!matSections[matNS]) matNS = Object.keys(matSections)[0] || "nova";
     matItems = matItemsBySection[matNS] || {};
     matEntries = matEntriesBySection[matNS] || {};
+    matPayments = matPaymentsBySection[matNS] || {};
     renderMatSectionTabs();
     renderMaterial();
   });
@@ -4580,14 +4628,17 @@ function setMatNS(ns) {
   try { localStorage.setItem("matNS", ns); } catch (e) {}
   matItems = matItemsBySection[ns] || {};
   matEntries = matEntriesBySection[ns] || {};
+  matPayments = matPaymentsBySection[ns] || {};
   cancelMatItemEdit();
   cancelMatEntryEdit();
+  matPaymentCancelEdit();
   renderMatSectionTabs();
   renderMaterial();
 }
 window.setMatNS = setMatNS;
 let editingMatItemId = null;
 let editingMatEntryId = null;
+let editingMatPaymentId = null;
 let matMode = "month";
 function mEsc(v) {
   return String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -4769,6 +4820,81 @@ function deleteMatEntry(id) {
     db.ref(matEntriesPath() + "/" + id).remove();
   }
 }
+// ---- Commission Payment Received (per material section: NOVA / ACC / custom) ----
+function matPaymentAdd() {
+  const dateEl = document.getElementById("mpDate");
+  const amtEl = document.getElementById("mpAmount");
+  const noteEl = document.getElementById("mpNote");
+  const msg = document.getElementById("mpMsg");
+  if (msg) msg.innerText = "";
+  const date = dateEl?.value || mToday();
+  const amount = parseFloat(amtEl?.value) || 0;
+  const note = (noteEl?.value || "").trim();
+  if (!amount || amount <= 0) { if (msg) msg.innerText = "\u0930\u093E\u0936\u093F \u0938\u0939\u0940 \u0921\u093E\u0932\u0947\u0902"; return; }
+  const payload = { date, amount, note, ts: editingMatPaymentId ? (matPayments[editingMatPaymentId]?.ts || Date.now()) : Date.now() };
+  const id = editingMatPaymentId || Date.now().toString();
+  db.ref(matPaymentsPath() + "/" + id).set(payload).then(() => {
+    matPaymentCancelEdit();
+  });
+}
+function matPaymentEdit(id) {
+  const p = matPayments[id];
+  if (!p) return;
+  editingMatPaymentId = id;
+  const dateEl = document.getElementById("mpDate");
+  const amtEl = document.getElementById("mpAmount");
+  const noteEl = document.getElementById("mpNote");
+  if (dateEl) dateEl.value = p.date || mToday();
+  if (amtEl) amtEl.value = p.amount || "";
+  if (noteEl) noteEl.value = p.note || "";
+  const saveBtn = document.getElementById("mpSaveBtn");
+  const cancelBtn = document.getElementById("mpCancelBtn");
+  if (saveBtn) saveBtn.innerText = "\u2713 \u092A\u0947\u092E\u0947\u0902\u091F \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B";
+  if (cancelBtn) cancelBtn.style.display = "block";
+  const box = document.getElementById("mpBox");
+  if (box) box.style.display = "block";
+  renderMaterial();
+  box?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function matPaymentCancelEdit() {
+  editingMatPaymentId = null;
+  const dateEl = document.getElementById("mpDate");
+  const amtEl = document.getElementById("mpAmount");
+  const noteEl = document.getElementById("mpNote");
+  if (amtEl) amtEl.value = "";
+  if (noteEl) noteEl.value = "";
+  if (dateEl) dateEl.value = mToday();
+  const saveBtn = document.getElementById("mpSaveBtn");
+  const cancelBtn = document.getElementById("mpCancelBtn");
+  if (saveBtn) saveBtn.innerText = "\u{1F4BE} \u092A\u0947\u092E\u0947\u0902\u091F \u0938\u0947\u0935 \u0915\u0930\u094B";
+  if (cancelBtn) cancelBtn.style.display = "none";
+  renderMaterial();
+}
+function matPaymentDelete(id) {
+  const p = matPayments[id];
+  if (!p) return;
+  if (!confirm("\u092F\u0939 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902? " + mRs(p.amount))) return;
+  if (editingMatPaymentId === id) matPaymentCancelEdit();
+  db.ref(matPaymentsPath() + "/" + id).remove();
+}
+function matPaymentShareWhatsapp() {
+  const nsName = matNSName();
+  const rows = Object.values(matPayments).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  let earned = 0;
+  Object.values(matEntries).forEach((e) => { earned += parseFloat(e.total) || 0; });
+  let received = 0;
+  rows.forEach((p) => { received += parseFloat(p.amount) || 0; });
+  const pending = earned - received;
+  let msg = `\u{1F4B0} *${nsName} \u0915\u092E\u0940\u0936\u0928 \u0939\u093F\u0938\u093E\u092C*\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
+  msg += `\u0915\u0941\u0932 \u0915\u092E\u0940\u0936\u0928: ${mRs(earned)}\n\u0915\u0941\u0932 \u092E\u093F\u0932\u093E: ${mRs(received)}\n\u092C\u0915\u093E\u092F\u093E: ${mRs(pending)}\n`;
+  if (rows.length) {
+    msg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u092A\u0947\u092E\u0947\u0902\u091F \u0939\u093F\u0938\u094D\u091F\u094D\u0930\u0940:\n`;
+    rows.forEach((p) => {
+      msg += `\u2022 ${p.date}: ${mRs(p.amount)}${p.note ? " (" + p.note + ")" : ""}\n`;
+    });
+  }
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
 function setMatMode(m) {
   matMode = m;
   document.querySelectorAll(".m-mode").forEach((b) => b.classList.remove("active"));
@@ -4899,6 +5025,42 @@ function renderMaterial() {
   document.getElementById("mTodayAmt").innerText = mRs(tAmt);
   document.getElementById("mMonthAmt").innerText = mRs(mAmt);
   document.getElementById("mYearAmt").innerText = mRs(yAmt);
+  // ---- commission payment received summary
+  const mpNSLabelEl = document.getElementById("mpNSLabel");
+  if (mpNSLabelEl) mpNSLabelEl.innerText = matNSName();
+  let mpEarnedTotal = 0;
+  Object.values(matEntries).forEach((e) => { mpEarnedTotal += parseFloat(e.total) || 0; });
+  let mpReceivedTotal = 0;
+  Object.values(matPayments).forEach((p) => { mpReceivedTotal += parseFloat(p.amount) || 0; });
+  const mpPendingTotal = mpEarnedTotal - mpReceivedTotal;
+  const mpEarnedEl = document.getElementById("mpEarned");
+  const mpReceivedEl = document.getElementById("mpReceived");
+  const mpPendingEl = document.getElementById("mpPending");
+  if (mpEarnedEl) mpEarnedEl.innerText = mRs(mpEarnedTotal);
+  if (mpReceivedEl) mpReceivedEl.innerText = mRs(mpReceivedTotal);
+  if (mpPendingEl) {
+    mpPendingEl.innerText = mRs(mpPendingTotal);
+    mpPendingEl.style.color = mpPendingTotal > 0 ? "#991B1B" : "#166534";
+  }
+  const mpDateEl = document.getElementById("mpDate");
+  if (mpDateEl && !mpDateEl.value) mpDateEl.value = mToday();
+  const mpList = document.getElementById("mpList");
+  const mpEmpty = document.getElementById("mpEmpty");
+  if (mpList) {
+    const payRows = Object.entries(matPayments).sort((a, b) => (a[1].ts || 0) - (b[1].ts || 0));
+    mpList.innerHTML = payRows.map(([pid, p]) => `
+      <div style="display: flex; flex-wrap: wrap; row-gap: 6px; justify-content: space-between; align-items: center; padding: 9px 4px; border-bottom: 1px solid #F1F5F9;">
+        <div style="flex: 1 1 120px; min-width: 0;">
+          <b style="font-size: 13px;">${mRs(p.amount)}</b><br>
+          <small style="color: #64748B;">${new Date((p.date || mToday()) + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" })}${p.note ? " \u2022 " + mEsc(p.note) : ""}</small>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: auto;">
+          <button class="btn-sm" style="background: #F1F5F9; color: #334155; padding: 4px 8px;" onclick="matPaymentEdit('${pid}')">\u270F\uFE0F</button>
+          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px;" onclick="matPaymentDelete('${pid}')">X</button>
+        </div>
+      </div>`).join("");
+    if (mpEmpty) mpEmpty.style.display = payRows.length ? "none" : "block";
+  }
   // ---- selected day list
   const selDate = document.getElementById("meDate").value || today;
   document.getElementById("mDayTxt").innerText = new Date(selDate + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
@@ -5634,7 +5796,8 @@ const PIN_PROTECTED_FNS = [
   "addSite", "toggleSiteStatus", "deleteSite", "addSitePayment", "addSiteCost", "deleteSiteCost",
   "saveHazri", "deleteEntry", "saveAgreement", "deleteSavedAg", "addExpense", "deleteExpense",
   "addMatSection", "editMatSection", "deleteMatSection", "saveMatItem", "deleteMatItem",
-  "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat", "bcAddEntry", "bcDeleteEntry"
+  "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat", "bcAddEntry", "bcDeleteEntry",
+  "matPaymentAdd", "matPaymentDelete"
 ];
 function startAdminPinListener() {
   if (!db) return;
