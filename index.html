@@ -137,7 +137,13 @@ header {
   border-radius: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.97);
+  filter: brightness(0.94);
 }
 
 .btn-navy, .btn-save {
@@ -154,6 +160,14 @@ header {
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-navy:active, .btn-save:active {
+  transform: scale(0.97);
+  filter: brightness(1.15);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15) !important;
 }
 
 .btn-gold {
@@ -167,12 +181,144 @@ header {
   font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, filter 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-sm:active {
+  transform: scale(0.94);
+  filter: brightness(0.93);
+}
+
+.tab, .ag-subtab, .pt {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab:active, .ag-subtab:active, .pt:active {
   transform: scale(0.96);
 }
+
+@keyframes boxSlideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.box-anim-in {
+  animation: boxSlideIn 0.24s ease;
+}
+
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tab-anim-in {
+  animation: tabFadeIn 0.2s ease;
+}
+
+/* ---- Toast notifications ---- */
+#toastStack {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  padding: 0 14px;
+}
+.toast {
+  pointer-events: auto;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  animation: toastIn 0.22s ease;
+}
+.toast.success { background: #166534; }
+.toast.error { background: #991B1B; }
+.toast.info { background: #1E293B; }
+.toast.out { animation: toastOut 0.22s ease forwards; }
+.toast button {
+  background: rgba(255, 255, 255, 0.18);
+  border: none;
+  color: white;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.toast button:active { transform: scale(0.94); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(14px) scale(0.97); }
+}
+
+/* ---- Custom confirm modal ---- */
+#confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 99998;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeInBg 0.15s ease;
+}
+@keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
+#confirmSheet {
+  background: white;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 22px 22px 0 0;
+  padding: 22px 20px calc(20px + env(safe-area-inset-bottom, 0px)) 20px;
+  animation: sheetUp 0.22s ease;
+}
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+#confirmSheet .cs-icon { font-size: 30px; text-align: center; margin-bottom: 8px; }
+#confirmSheet .cs-msg { font-size: 14.5px; font-weight: 700; color: #0F172A; text-align: center; margin-bottom: 18px; line-height: 1.4; }
+#confirmSheet .cs-row { display: flex; gap: 10px; }
+#confirmSheet button { flex: 1; padding: 13px; border-radius: 14px; border: none; font-weight: 800; font-size: 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+#confirmSheet button:active { transform: scale(0.97); }
+#csCancel { background: #F1F5F9; color: #334155; }
+#csOk { background: #DC2626; color: white; }
+
+/* ---- Skeleton loading ---- */
+.skeleton {
+  background: linear-gradient(90deg, #EEF1F5 25%, #E2E8F0 37%, #EEF1F5 63%);
+  background-size: 400% 100%;
+  animation: skeletonShine 1.3s ease infinite;
+  border-radius: 10px;
+}
+@keyframes skeletonShine {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* ---- Empty state ---- */
+.empty-state {
+  text-align: center;
+  padding: 28px 14px;
+  color: #94A3B8;
+}
+.empty-state .es-icon { font-size: 34px; margin-bottom: 8px; }
+.empty-state .es-msg { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
 
 .pt {
   background: #FFFFFF;
@@ -909,6 +1055,20 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   </style>
 </head>
 <body>
+  <!-- Initial loading skeleton (shown until first data arrives from Firebase) -->
+  <div id="appSkeleton" style="position: fixed; inset: 0; background: #F8FAFC; z-index: 999999; padding: 14px; overflow: hidden;">
+    <div class="skeleton" style="height: 56px; border-radius: 16px; margin-bottom: 14px;"></div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px;">
+      <div class="skeleton" style="height: 70px;"></div>
+      <div class="skeleton" style="height: 70px;"></div>
+      <div class="skeleton" style="height: 70px;"></div>
+      <div class="skeleton" style="height: 70px;"></div>
+    </div>
+    <div class="skeleton" style="height: 130px; border-radius: 20px; margin-bottom: 14px;"></div>
+    <div class="skeleton" style="height: 90px; border-radius: 20px; margin-bottom: 14px;"></div>
+    <div class="skeleton" style="height: 180px; border-radius: 20px;"></div>
+  </div>
+
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 6px;">
@@ -1570,6 +1730,21 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
   </div>
 
+  <!-- Toast notifications -->
+  <div id="toastStack"></div>
+
+  <!-- Custom confirm sheet (replaces browser confirm()) -->
+  <div id="confirmOverlay" onclick="if(event.target===this)_confirmResolve(false)">
+    <div id="confirmSheet">
+      <div class="cs-icon">⚠️</div>
+      <div class="cs-msg" id="csMsg"></div>
+      <div class="cs-row">
+        <button id="csCancel" onclick="_confirmResolve(false)">रद्द करो</button>
+        <button id="csOk" onclick="_confirmResolve(true)">हाँ, करो</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Labour Field Edit Popup (दिहाड़ी / किराया / बिजली / बकाया) -->
   <div id="editFieldModal" class="popup-overlay">
     <div class="popup-box">
@@ -1687,12 +1862,24 @@ function toggleBox(id) {
   const el = document.getElementById(id);
   if (!el) return;
   const d = el.style.display;
-  el.style.display = d === "none" || d === "" ? "block" : "none";
+  const opening = d === "none" || d === "";
+  el.style.display = opening ? "block" : "none";
+  if (opening) {
+    el.classList.remove("box-anim-in");
+    void el.offsetWidth;
+    el.classList.add("box-anim-in");
+  }
+  vibrateTap();
 }
 function showTab(id) {
   document.querySelectorAll("[id^=t-]").forEach((e) => e.style.display = "none");
   const target = document.getElementById("t-" + id);
-  if (target) target.style.display = "block";
+  if (target) {
+    target.style.display = "block";
+    target.classList.remove("tab-anim-in");
+    void target.offsetWidth;
+    target.classList.add("tab-anim-in");
+  }
   document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
   const bt = document.getElementById("bt-" + id);
   if (bt) {
@@ -1700,6 +1887,85 @@ function showTab(id) {
     try { bt.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch (e) {}
   }
   if (id === "m" && typeof renderMaterial === "function") renderMaterial();
+}
+
+// ================= UX Utilities: haptic tap, toast, custom confirm =================
+function vibrateTap(ms) {
+  try { if (navigator.vibrate) navigator.vibrate(ms || 10); } catch (e) {}
+}
+let _skeletonHidden = false;
+function hideAppSkeleton() {
+  if (_skeletonHidden) return;
+  _skeletonHidden = true;
+  const el = document.getElementById("appSkeleton");
+  if (!el) return;
+  el.style.transition = "opacity 0.25s ease";
+  el.style.opacity = "0";
+  setTimeout(() => el.remove(), 260);
+}
+// Global delegated tap feedback for every button-like element in the app
+document.addEventListener("click", (ev) => {
+  const t = ev.target.closest(".btn, .btn-sm, .btn-gold, .btn-save, .btn-navy, .tab, .ag-subtab");
+  if (t) vibrateTap(t.classList.contains("btn-sm") ? 8 : 12);
+}, true);
+
+let _toastTimer = null;
+function showToast(msg, type, durationMs) {
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  type = type || "info";
+  const el = document.createElement("div");
+  el.className = "toast " + type;
+  el.innerHTML = `<span>${msg}</span>`;
+  stack.appendChild(el);
+  vibrateTap(type === "error" ? 20 : 10);
+  setTimeout(() => {
+    el.classList.add("out");
+    setTimeout(() => el.remove(), 220);
+  }, durationMs || 2200);
+}
+function showUndoToast(msg, onUndo, durationMs) {
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  const el = document.createElement("div");
+  el.className = "toast info";
+  const btnId = "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  el.innerHTML = `<span>${msg}</span><button id="${btnId}">\u21B6 Undo</button>`;
+  stack.appendChild(el);
+  vibrateTap(14);
+  let done = false;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    el.classList.add("out");
+    setTimeout(() => el.remove(), 220);
+  };
+  document.getElementById(btnId).onclick = () => {
+    if (done) return;
+    finish();
+    vibrateTap(16);
+    if (onUndo) onUndo();
+  };
+  setTimeout(finish, durationMs || 5000);
+}
+let _confirmResolve = null;
+function showConfirm(msg, onYes, opts) {
+  const overlay = document.getElementById("confirmOverlay");
+  const msgEl = document.getElementById("csMsg");
+  const okBtn = document.getElementById("csOk");
+  const cancelBtn = document.getElementById("csCancel");
+  if (!overlay || !msgEl) { if (window.confirm(msg)) onYes && onYes(); else if (opts && opts.onNo) opts.onNo(); return; }
+  msgEl.innerText = msg;
+  if (okBtn) okBtn.innerText = (opts && opts.okLabel) || "\u0939\u093E\u0901, \u0915\u0930\u094B";
+  if (cancelBtn) cancelBtn.innerText = (opts && opts.cancelLabel) || "\u0930\u0926\u094D\u0926 \u0915\u0930\u094B";
+  overlay.style.display = "flex";
+  vibrateTap(10);
+  _confirmResolve = (ok) => {
+    overlay.style.display = "none";
+    _confirmResolve = null;
+    if (ok) { vibrateTap(14); onYes && onYes(); }
+    else if (opts && opts.onNo) { vibrateTap(8); opts.onNo(); }
+  };
 }
 function startListen() {
   if (!db) return;
@@ -1920,13 +2186,20 @@ function bcRenderList() {
   if (totalEl) totalEl.innerText = `\u0915\u0941\u0932 \u20B9${total.toLocaleString("en-IN")}`;
 }
 function bcDeleteEntry(bid) {
-  if (!confirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?")) return;
   const b = bijliBills[bid];
+  const doIt = () => {
+    if (bcEditId === bid) bcCancelEdit();
+    const snapshot = bijliBills[bid];
+    db.ref("companies/" + company + "/bijliBills/" + bid).remove();
+    showUndoToast("\u092C\u093F\u0932 \u0939\u091F\u093E \u0926\u093F\u092F\u093E", () => {
+      if (snapshot) db.ref("companies/" + company + "/bijliBills/" + bid).set(snapshot);
+    });
+  };
   if (b && b.groupId) {
-    if (!confirm("\u092F\u0939 \u0915\u093F\u0938\u0940 \u0938\u093E\u0902\u091D\u0947 \u0915\u093F\u090F \u0917\u090F \u092E\u0940\u091F\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u0948 \u2013 \u0938\u093F\u0930\u094D\u092B \u0907\u0938\u0940 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u091F\u0947\u0917\u093E, \u092C\u093E\u0915\u0940 \u0932\u094B\u0917\u094B\u0902 \u0915\u093E \u0935\u0948\u0938\u093E \u0939\u0940 \u0930\u0939\u0947\u0917\u093E. \u0920\u0940\u0915 \u0939\u0948?")) return;
+    showConfirm("\u092F\u0939 \u0915\u093F\u0938\u0940 \u0938\u093E\u0902\u091D\u0947 \u0915\u093F\u090F \u0917\u090F \u092E\u0940\u091F\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u0948 \u2013 \u0938\u093F\u0930\u094D\u092B \u0907\u0938\u0940 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u091F\u0947\u0917\u093E, \u092C\u093E\u0915\u0940 \u0932\u094B\u0917\u094B\u0902 \u0915\u093E \u0935\u0948\u0938\u093E \u0939\u0940 \u0930\u0939\u0947\u0917\u093E. \u0920\u0940\u0915 \u0939\u0948?", doIt);
+  } else {
+    showConfirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?", doIt);
   }
-  if (bcEditId === bid) bcCancelEdit();
-  db.ref("companies/" + company + "/bijliBills/" + bid).remove();
 }
 function bcShareWhatsapp() {
   const mon = bcGetMonth();
@@ -2156,8 +2429,13 @@ function closeSiteDetail() {
   _currentSiteId = null;
 }
 function deletePay(pid) {
-  if (!confirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) return;
-  db.ref("companies/" + company + "/sitePayments/" + pid).remove();
+  showConfirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?", () => {
+    const snapshot = sitePays[pid];
+    db.ref("companies/" + company + "/sitePayments/" + pid).remove();
+    showUndoToast("\u092A\u0947\u092E\u0947\u0902\u091F \u0939\u091F\u093E \u0926\u093F\u092F\u093E", () => {
+      if (snapshot) db.ref("companies/" + company + "/sitePayments/" + pid).set(snapshot);
+    });
+  });
 }
 function renderCalendar() {
   const eLabour = document.getElementById("eLabour");
@@ -2285,11 +2563,16 @@ function filterRLab() {
 }
 function toggleArchive(id, arch) {
   if (arch) {
-    if (!confirm("Archive \u0915\u0930\u0928\u093E \u0939\u0948? \u0939\u093E\u091C\u093C\u0930\u0940 \u0932\u093F\u0938\u094D\u091F \u0938\u0947 \u0939\u091F \u091C\u093E\u092F\u0947\u0917\u093E \u092A\u0930 \u0939\u093F\u0938\u093E\u092C \u0930\u0939\u0947\u0917\u093E")) return;
+    showConfirm("Archive \u0915\u0930\u0928\u093E \u0939\u0948? \u0939\u093E\u091C\u093C\u0930\u0940 \u0932\u093F\u0938\u094D\u091F \u0938\u0947 \u0939\u091F \u091C\u093E\u092F\u0947\u0917\u093E \u092A\u0930 \u0939\u093F\u0938\u093E\u092C \u0930\u0939\u0947\u0917\u093E", () => {
+      db.ref("companies/" + company + "/labours/" + id + "/archived").set(true);
+      showToast("\u2705 Archive \u0939\u094B \u0917\u092F\u093E", "success");
+    });
+    return;
   }
-  db.ref("companies/" + company + "/labours/" + id + "/archived").set(arch ? true : false);
+  db.ref("companies/" + company + "/labours/" + id + "/archived").set(false);
 }
 function renderAll() {
+  hideAppSkeleton();
   const eSel = document.getElementById("eLabour");
   const rSel = document.getElementById("rLabour");
   const eSiteSel = document.getElementById("eSite");
@@ -2809,7 +3092,14 @@ function saveEditField() {
   });
 }
 function deleteLab(id) {
-  if (confirm("Delete?")) db.ref("companies/" + company + "/labours/" + id).remove();
+  const nm = labs[id]?.name || "\u0915\u093E\u0930\u0940\u0917\u0930";
+  showConfirm(nm + " \u0915\u094B \u0939\u091F\u093E\u0926\u0947\u0902?", () => {
+    const snapshot = labs[id];
+    db.ref("companies/" + company + "/labours/" + id).remove();
+    showUndoToast(nm + " \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
+      if (snapshot) db.ref("companies/" + company + "/labours/" + id).set(snapshot);
+    });
+  });
 }
 function addSite() {
   const sHouse = document.getElementById("sHouse");
@@ -2886,11 +3176,24 @@ function toggleSiteStatus(id, close) {
   const s = sites[id];
   if (!s) return;
   const newStatus = close ? "\u092A\u0942\u0930\u093E" : "\u091A\u0932 \u0930\u0939\u093E";
-  if (close && !confirm("\u092F\u0947 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 (Archived) \u0915\u0930\u0928\u0940 \u0939\u0948?")) return;
+  if (close) {
+    showConfirm("\u092F\u0947 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 (Archived) \u0915\u0930\u0928\u0940 \u0939\u0948?", () => {
+      db.ref("companies/" + company + "/sites/" + id + "/status").set(newStatus);
+      showToast("\u2705 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 \u0939\u094B \u0917\u0908", "success");
+    });
+    return;
+  }
   db.ref("companies/" + company + "/sites/" + id + "/status").set(newStatus);
 }
 function deleteSite(id) {
-  if (confirm("\u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?")) db.ref("companies/" + company + "/sites/" + id).remove();
+  const nm = sites[id]?.house || "\u0938\u093E\u0907\u091F";
+  showConfirm(nm + " \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
+    const snapshot = sites[id];
+    db.ref("companies/" + company + "/sites/" + id).remove();
+    showUndoToast(nm + " \u0939\u091F\u093E\u0908 \u0917\u0908", () => {
+      if (snapshot) db.ref("companies/" + company + "/sites/" + id).set(snapshot);
+    });
+  });
 }
 function addSitePayment() {
   const spSite = document.getElementById("spSite");
@@ -2980,8 +3283,13 @@ function addSiteCost() {
   });
 }
 function deleteSiteCost(cid) {
-  if (!confirm("ये पिछली लागत डिलीट करनी है?")) return;
-  db.ref("companies/" + company + "/siteCosts/" + cid).remove();
+  showConfirm("ये पिछली लागत डिलीट करनी है?", () => {
+    const snapshot = siteCosts[cid];
+    db.ref("companies/" + company + "/siteCosts/" + cid).remove();
+    showUndoToast("लागत हटाई गई", () => {
+      if (snapshot) db.ref("companies/" + company + "/siteCosts/" + cid).set(snapshot);
+    });
+  });
 }
 function showHazriPopup(labName, days, siteName, dateStr, withdraw, isDup = false) {
   const det = document.getElementById("popupDetails");
@@ -3157,11 +3465,15 @@ function cancelEdit() {
   updateDupInfo();
 }
 function deleteEntry(eid) {
-  if (confirm("\u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?")) {
+  showConfirm("\u0939\u093E\u095B\u0930\u0940 \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
+    const snapshot = ents[eid];
     db.ref("companies/" + company + "/entries/" + eid).remove().then(() => {
       if (editingId === eid) cancelEdit();
     });
-  }
+    showUndoToast("\u0939\u093E\u095B\u0930\u0940 \u0939\u091F\u093E\u0908 \u0917\u0908", () => {
+      if (snapshot) db.ref("companies/" + company + "/entries/" + eid).set(snapshot);
+    });
+  });
 }
 async function shareAsImage() {
   const card = document.querySelector(".rc-wrap");
@@ -3575,11 +3887,11 @@ function removeItemIt(si, side, ii) {
   renderItalian();
 }
 function removeSecIt(si) {
-  if (confirm("Delete?")) {
+  showConfirm("\u0938\u0947\u0915\u094D\u0936\u0928 \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
     italianData.splice(si, 1);
     renderEditorItalian();
     renderItalian();
-  }
+  });
 }
 function addSecItalian() {
   italianData.push({ title: "NEW SECTION", type: "single", items: [{ n: "", r: "" }] });
@@ -3587,11 +3899,11 @@ function addSecItalian() {
   renderItalian();
 }
 function resetItalian() {
-  if (confirm("Reset?")) {
+  showConfirm("\u0938\u092C \u0921\u093F\u095B\u093E\u0907\u0928 \u0930\u0940\u0938\u0947\u091F \u0915\u0930\u0947\u0902?", () => {
     italianData = JSON.parse(JSON.stringify(italianDefault));
     renderEditorItalian();
     renderItalian();
-  }
+  });
 }
 const tileDefault = [
   {
@@ -3709,11 +4021,11 @@ function removeItemTile(si, ii) {
   renderTile();
 }
 function removeSecTile(si) {
-  if (confirm("Delete?")) {
+  showConfirm("\u0938\u0947\u0915\u094D\u0936\u0928 \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
     tileData.splice(si, 1);
     renderEditorTile();
     renderTile();
-  }
+  });
 }
 function addSecTile() {
   tileData.push({ title: "NEW SECTION", items: [{ n: "", r: "" }] });
@@ -3721,11 +4033,11 @@ function addSecTile() {
   renderTile();
 }
 function resetTile() {
-  if (confirm("Reset?")) {
+  showConfirm("\u0938\u092C \u0921\u093F\u095B\u093E\u0907\u0928 \u0930\u0940\u0938\u0947\u091F \u0915\u0930\u0947\u0902?", () => {
     tileData = JSON.parse(JSON.stringify(tileDefault));
     renderEditorTile();
     renderTile();
-  }
+  });
 }
 async function shareImg(id) {
   const card = document.getElementById(id);
@@ -3876,9 +4188,13 @@ function shareSavedAg(aid) {
   }
 }
 function deleteSavedAg(aid) {
-  if (confirm("Delete?")) {
+  showConfirm("\u090F\u0917\u094D\u0930\u0940\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
+    const snapshot = agreements[aid];
     db.ref("companies/" + company + "/agreements/" + aid).remove();
-  }
+    showUndoToast("\u090F\u0917\u094D\u0930\u0940\u092E\u0947\u0902\u091F \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
+      if (snapshot) db.ref("companies/" + company + "/agreements/" + aid).set(snapshot);
+    });
+  });
 }
 window.toggleBox = toggleBox;
 window.showTab = showTab;
@@ -4012,9 +4328,13 @@ function cancelExpenseEdit() {
 window.editExpense = editExpense;
 window.cancelExpenseEdit = cancelExpenseEdit;
 function deleteExpense(id) {
-  if (confirm("\u0907\u0938 \u0916\u0930\u094D\u091A \u0915\u094B \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) {
+  showConfirm("\u0907\u0938 \u0916\u0930\u094D\u091A \u0915\u094B \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?", () => {
+    const snapshot = expenses[id];
     db.ref("companies/" + company + "/expenses/" + id).remove();
-  }
+    showUndoToast("\u0916\u0930\u094D\u091A \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
+      if (snapshot) db.ref("companies/" + company + "/expenses/" + id).set(snapshot);
+    });
+  });
 }
 function renderExpenses() {
   const monthInput = document.getElementById("xMonth");
@@ -4603,22 +4923,28 @@ function editMatSection(id, evt) {
   const idx = Object.keys(matSections).indexOf(id);
   const color = MAT_NS_COLORS[idx >= 0 ? idx % MAT_NS_COLORS.length : 0];
   const useColor = sec.color || color;
-  const changeColor = confirm("\u0915\u094D\u092F\u093E \u0907\u0938 \u0938\u0947\u0915\u094D\u0936\u0928 \u0915\u093E \u0930\u0902\u0917 \u092D\u0940 \u092C\u0926\u0932\u0928\u093E \u0939\u0948? (OK = \u0928\u092F\u093E \u0930\u0902\u0917, Cancel = \u0935\u0939\u0940 \u0930\u0902\u0917 \u0930\u0916\u0947\u0902)");
-  const newColor = changeColor ? MAT_NS_COLORS[(MAT_NS_COLORS.indexOf(useColor) + 1 + MAT_NS_COLORS.length) % MAT_NS_COLORS.length] : useColor;
-  db.ref("companies/" + company + "/materialSections/" + id).update({ name: trimmed, color: newColor });
+  showConfirm("\u0915\u094D\u092F\u093E \u0907\u0938 \u0938\u0947\u0915\u094D\u0936\u0928 \u0915\u093E \u0930\u0902\u0917 \u092D\u0940 \u092C\u0926\u0932\u0928\u093E \u0939\u0948?", () => {
+    const newColor = MAT_NS_COLORS[(MAT_NS_COLORS.indexOf(useColor) + 1 + MAT_NS_COLORS.length) % MAT_NS_COLORS.length];
+    db.ref("companies/" + company + "/materialSections/" + id).update({ name: trimmed, color: newColor });
+  }, {
+    okLabel: "\u0939\u093E\u0901, \u092C\u0926\u0932\u094B",
+    cancelLabel: "\u0928\u0939\u0940\u0902, \u0935\u0939\u0940 \u0930\u0902\u0917",
+    onNo: () => db.ref("companies/" + company + "/materialSections/" + id).update({ name: trimmed, color: useColor })
+  });
 }
 window.editMatSection = editMatSection;
 function deleteMatSection(id, evt) {
   if (evt) evt.stopPropagation();
   const ids = Object.keys(matSections);
-  if (ids.length <= 1) { alert("\u0915\u092E \u0938\u0947 \u0915\u092E \u090F\u0915 \u0938\u0947\u0915\u094D\u0936\u0928 \u0939\u094B\u0928\u093E \u091C\u0930\u0942\u0930\u0940 \u0939\u0948\u0964"); return; }
+  if (ids.length <= 1) { showToast("\u0915\u092E \u0938\u0947 \u0915\u092E \u090F\u0915 \u0938\u0947\u0915\u094D\u0936\u0928 \u0939\u094B\u0928\u093E \u091C\u0930\u0942\u0930\u0940 \u0939\u0948\u0964", "error"); return; }
   const sec = matSections[id];
-  if (!confirm("\u0938\u0947\u0915\u094D\u0936\u0928 \"" + (sec ? sec.name : id) + "\" \u0939\u091F\u093E\u090F\u0902? (\u092A\u0941\u0930\u093E\u0928\u093E \u0921\u0947\u091F\u093E \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0930\u0939\u0947\u0917\u093E, \u0938\u093F\u0930\u094D\u092B \u091F\u0948\u092C \u0939\u091F \u091C\u093E\u090F\u0917\u093E)")) return;
-  db.ref("companies/" + company + "/materialSections/" + id).remove().then(() => {
-    if (matNS === id) {
-      const remaining = Object.keys(matSections).filter((x) => x !== id);
-      setMatNS(remaining[0] || "nova");
-    }
+  showConfirm("\u0938\u0947\u0915\u094D\u0936\u0928 \"" + (sec ? sec.name : id) + "\" \u0939\u091F\u093E\u090F\u0902? (\u092A\u0941\u0930\u093E\u0928\u093E \u0921\u0947\u091F\u093E \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0930\u0939\u0947\u0917\u093E, \u0938\u093F\u0930\u094D\u092B \u091F\u0948\u092C \u0939\u091F \u091C\u093E\u090F\u0917\u093E)", () => {
+    db.ref("companies/" + company + "/materialSections/" + id).remove().then(() => {
+      if (matNS === id) {
+        const remaining = Object.keys(matSections).filter((x) => x !== id);
+        setMatNS(remaining[0] || "nova");
+      }
+    });
   });
 }
 window.deleteMatSection = deleteMatSection;
@@ -4707,9 +5033,13 @@ function cancelMatItemEdit() {
 function deleteMatItem(id) {
   const it = matItems[id];
   if (!it) return;
-  if (confirm("आइटम \"" + it.name + "\" डिलीट करें? (पुरानी एंट्री सुरक्षित रहेंगी)")) {
+  showConfirm("आइटम \"" + it.name + "\" डिलीट करें? (पुरानी एंट्री सुरक्षित रहेंगी)", () => {
+    const snapshot = it;
     db.ref(matItemsPath() + "/" + id).remove();
-  }
+    showUndoToast("आइटम हटाया गया", () => {
+      db.ref(matItemsPath() + "/" + id).set(snapshot);
+    });
+  });
 }
 function onMatItemPick() {
   const id = document.getElementById("meItem").value;
@@ -4816,9 +5146,13 @@ function cancelMatEntryEdit(keepSelections) {
 function deleteMatEntry(id) {
   const e = matEntries[id];
   if (!e) return;
-  if (confirm("एंट्री डिलीट करें? " + (e.itemName || "") + " " + mNum(e.qty) + " " + (e.unit || "") + " = " + mRs(e.total))) {
+  showConfirm("एंट्री डिलीट करें? " + (e.itemName || "") + " " + mNum(e.qty) + " " + (e.unit || "") + " = " + mRs(e.total), () => {
+    const snapshot = e;
     db.ref(matEntriesPath() + "/" + id).remove();
-  }
+    showUndoToast("मटेरियल एंट्री हटाई गई", () => {
+      db.ref(matEntriesPath() + "/" + id).set(snapshot);
+    });
+  });
 }
 // ---- Commission Payment Received (per material section: NOVA / ACC / custom) ----
 function matPaymentAdd() {
@@ -4873,9 +5207,14 @@ function matPaymentCancelEdit() {
 function matPaymentDelete(id) {
   const p = matPayments[id];
   if (!p) return;
-  if (!confirm("\u092F\u0939 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902? " + mRs(p.amount))) return;
-  if (editingMatPaymentId === id) matPaymentCancelEdit();
-  db.ref(matPaymentsPath() + "/" + id).remove();
+  showConfirm("\u092F\u0939 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902? " + mRs(p.amount), () => {
+    if (editingMatPaymentId === id) matPaymentCancelEdit();
+    const snapshot = p;
+    db.ref(matPaymentsPath() + "/" + id).remove();
+    showUndoToast("\u092A\u0947\u092E\u0947\u0902\u091F \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
+      db.ref(matPaymentsPath() + "/" + id).set(snapshot);
+    });
+  });
 }
 function matPaymentShareWhatsapp() {
   const nsName = matNSName();
@@ -5629,7 +5968,7 @@ function renderBulkHazri(force) {
       </div>
     </div>`;
   });
-  list.innerHTML = html || '<div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">कोई Active कारीगर नहीं</div>';
+  list.innerHTML = html || '<div class="empty-state"><div class="es-icon">👷</div><div class="es-msg">कोई Active कारीगर नहीं</div><button class="btn btn-gold" style="width:auto;padding:10px 20px;" onclick="toggleBox(\'addLabourBoxMain\')">+ पहला कारीगर जोड़ो</button></div>';
   updateBulkHazriSummary();
 }
 function bulkHazriPick(id, v) {
@@ -5850,10 +6189,12 @@ function submitPin() {
 }
 window.submitPin = submitPin;
 function lockApp() {
-  if (!confirm("\u0910\u092A \u0932\u0949\u0915 \u0915\u0930\u0947\u0902? (Edit / Add / Delete / \u0939\u093E\u095B\u0930\u0940 \u0926\u0941\u092C\u093E\u0930\u093E PIN \u092E\u093E\u0902\u0917\u0947\u0917\u093E)")) return;
-  appUnlocked = false;
-  try { localStorage.removeItem("adminUnlocked"); } catch (e) {}
-  updateLockUI();
+  showConfirm("\u0910\u092A \u0932\u0949\u0915 \u0915\u0930\u0947\u0902? (Edit / Add / Delete / \u0939\u093E\u095B\u0930\u0940 \u0926\u0941\u092C\u093E\u0930\u093E PIN \u092E\u093E\u0902\u0917\u0947\u0917\u093E)", () => {
+    appUnlocked = false;
+    try { localStorage.removeItem("adminUnlocked"); } catch (e) {}
+    updateLockUI();
+    showToast("\u{1F512} \u0910\u092A \u0932\u0949\u0915 \u0939\u094B \u0917\u092F\u093E", "info");
+  }, { okLabel: "\u0939\u093E\u0901, \u0932\u0949\u0915 \u0915\u0930\u094B" });
 }
 function toggleLockBtn() {
   if (appUnlocked) lockApp(); else openPinModal();
@@ -5928,6 +6269,12 @@ function bootstrap() {
   document.getElementById("tDate")?.addEventListener("change", renderTile);
   initFirebase();
   guardPinProtectedFns();
+  setTimeout(() => {
+    if (!_skeletonHidden) {
+      hideAppSkeleton();
+      showToast("\u26A0\uFE0F \u0921\u0947\u091F\u093E \u0932\u094B\u0921 \u0939\u094B\u0928\u0947 \u092E\u0947\u0902 \u0926\u0947\u0930 \u0939\u094B \u0930\u0939\u0940 \u0939\u0948 \u2013 \u0907\u0902\u091F\u0930\u0928\u0947\u091F \u091A\u0947\u0915 \u0915\u0930\u0947\u0902", "error", 4000);
+    }
+  }, 7000);
 }
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", bootstrap);
