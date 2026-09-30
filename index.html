@@ -1879,13 +1879,18 @@ function calcLabour(id, mon) {
   const bal = parseFloat(l.balance) || 0;
   const rent = parseFloat(l.rent) || 0;
   const bijli = parseFloat(l.bijli) || 0;
+  let bijliCalc = 0;
+  Object.values(bijliBills).forEach((b) => {
+    if (b.labourId === id && b.month === mon) bijliCalc += parseFloat(b.bill) || 0;
+  });
   return {
     days: d,
     earn,
     with: w,
     rent,
     bijli,
-    net: earn + bal - w - rent - bijli,
+    bijliCalc,
+    net: earn + bal - w - rent - bijli - bijliCalc,
     bal
   };
 }
@@ -3182,7 +3187,7 @@ function makeReport() {
   const earn = c.earn;
   const rateSet = [...new Set(entries.map((e) => entryRate(e, l)))];
   const rateTxt = rateSet.length ? rateSet.map((r) => "\u20B9" + r).join(" / ") : "\u20B9" + l.wage;
-  const totalEarn = earn + c.bal - c.rent - c.bijli;
+  const totalEarn = earn + c.bal - c.rent - c.bijli - c.bijliCalc;
   const advList = entries.filter((e) => e.withdraw > 0);
   const totalAdv = advList.reduce((s, e) => s + parseFloat(e.withdraw || 0), 0);
   const advHtml = advList.map((e) => {
@@ -3265,6 +3270,11 @@ function makeReport() {
           <div class="rc-row deduct">
             <span>\u092C\u093F\u091C\u0932\u0940 \u092C\u093F\u0932 \u0915\u091F\u094C\u0924\u0940</span>
             <b>-\u20B9${c.bijli.toLocaleString("en-IN")}</b>
+          </div>` : ""}
+          ${c.bijliCalc > 0 ? `
+          <div class="rc-row deduct">
+            <span>\u26A1 \u092C\u093F\u091C\u0932\u0940 \u092C\u093F\u0932 (\u092E\u0940\u091F\u0930 \u0930\u0940\u0921\u093F\u0902\u0917)</span>
+            <b>-\u20B9${c.bijliCalc.toLocaleString("en-IN")}</b>
           </div>` : ""}
           <div class="rc-subtotal">
             <span>\u0915\u0941\u0932 \u0938\u0915\u0932 \u0915\u092E\u093E\u0908 (Gross Total)</span>
@@ -4030,7 +4040,7 @@ function renderPdfPreview() {
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${c.days}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">\u20B9${c.earn}</td>
       <td style="padding: 6px; color: #DC2626; border: 1px solid #CBD5E1;">\u20B9${c.with}</td>
-      <td style="padding: 6px; border: 1px solid #CBD5E1;">\u20B9${c.rent + c.bijli}</td>
+      <td style="padding: 6px; border: 1px solid #CBD5E1;">\u20B9${c.rent + c.bijli + c.bijliCalc}</td>
       <td style="padding: 6px; font-weight: 800; color: ${c.net >= 0 ? "#166534" : "#DC2626"}; border: 1px solid #CBD5E1;">${c.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c.net).toLocaleString("en-IN")}</td>
     </tr>`;
   });
@@ -4311,7 +4321,7 @@ function downloadExcelBackup() {
   Object.keys(labs).forEach((id) => {
     const l = labs[id];
     const c = calcLabour(id, mon);
-    labData.push([l.name, l.phone || "", l.wage, c.days, c.earn, c.with, c.rent, c.bijli, c.bal, c.net]);
+    labData.push([l.name, l.phone || "", l.wage, c.days, c.earn, c.with, c.rent, c.bijli + c.bijliCalc, c.bal, c.net]);
   });
   const wsLab = window.XLSX.utils.aoa_to_sheet(labData);
   window.XLSX.utils.book_append_sheet(wb, wsLab, "\u0915\u093E\u0930\u0940\u0917\u0930 \u0939\u093F\u0938\u093E\u092C");
