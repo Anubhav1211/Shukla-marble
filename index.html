@@ -1758,11 +1758,8 @@ function bcAddEntry() {
   const bill = units * rate;
   const mon = bcGetMonth();
   const data = { labourId: labId, month: mon, oldReading: oldR, newReading: newR, units, rate, bill, ts: Date.now() };
-  if (bcEditId) {
-    db.ref("companies/" + company + "/bijliBills/" + bcEditId).update(data);
-  } else {
-    db.ref("companies/" + company + "/bijliBills").push().set(data);
-  }
+  const bid = bcEditId || (Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
+  db.ref("companies/" + company + "/bijliBills/" + bid).set(bcEditId ? Object.assign({}, bijliBills[bcEditId], data) : data);
   bcCancelEdit();
 }
 function bcEditEntry(bid) {
