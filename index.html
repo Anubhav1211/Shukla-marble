@@ -1784,9 +1784,12 @@ function shiftKMonth(delta) {
   const el = document.getElementById("kMonth");
   if (!el) return;
   const cur = el.value || fmtLocalDate(new Date()).slice(0, 7);
-  const d = new Date(cur + "-01T00:00:00");
-  d.setMonth(d.getMonth() + delta);
-  el.value = d.toISOString().slice(0, 7);
+  const parts = cur.split("-");
+  let y = parseInt(parts[0], 10);
+  let m = parseInt(parts[1], 10) - 1 + delta;
+  y += Math.floor(m / 12);
+  m = ((m % 12) + 12) % 12;
+  el.value = y + "-" + String(m + 1).padStart(2, "0");
   syncMonthFrom("kMonth");
 }
 // ---- Per-entry rate: each hazri keeps the rate it was earned at (e.rate).
@@ -1959,19 +1962,13 @@ function bcRenderList() {
 }
 function bcDeleteEntry(bid) {
   const b = bijliBills[bid];
-  const doIt = () => {
-    if (bcEditId === bid) bcCancelEdit();
-    const snapshot = bijliBills[bid];
-    db.ref("companies/" + company + "/bijliBills/" + bid).remove();
-    showUndoToast("\u092C\u093F\u0932 \u0939\u091F\u093E \u0926\u093F\u092F\u093E", () => {
-      if (snapshot) db.ref("companies/" + company + "/bijliBills/" + bid).set(snapshot);
-    });
-  };
   if (b && b.groupId) {
-    showConfirm("\u092F\u0939 \u0915\u093F\u0938\u0940 \u0938\u093E\u0902\u091D\u0947 \u0915\u093F\u090F \u0917\u090F \u092E\u0940\u091F\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u0948 \u2013 \u0938\u093F\u0930\u094D\u092B \u0907\u0938\u0940 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u091F\u0947\u0917\u093E, \u092C\u093E\u0915\u0940 \u0932\u094B\u0917\u094B\u0902 \u0915\u093E \u0935\u0948\u0938\u093E \u0939\u0940 \u0930\u0939\u0947\u0917\u093E. \u0920\u0940\u0915 \u0939\u0948?", doIt);
+    if (!confirm("\u092F\u0939 \u0915\u093F\u0938\u0940 \u0938\u093E\u0902\u091D\u0947 \u0915\u093F\u090F \u0917\u090F \u092E\u0940\u091F\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u0948 \u2013 \u0938\u093F\u0930\u094D\u092B \u0907\u0938\u0940 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u093E \u0939\u093F\u0938\u094D\u0938\u093E \u0939\u091F\u0947\u0917\u093E, \u092C\u093E\u0915\u0940 \u0932\u094B\u0917\u094B\u0902 \u0915\u093E \u0935\u0948\u0938\u093E \u0939\u0940 \u0930\u0939\u0947\u0917\u093E. \u0920\u0940\u0915 \u0939\u0948?")) return;
   } else {
-    showConfirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?", doIt);
+    if (!confirm("\u092F\u0939 \u092C\u093F\u0932 \u0939\u091F\u093E\u0926\u0947\u0902?")) return;
   }
+  if (bcEditId === bid) bcCancelEdit();
+  db.ref("companies/" + company + "/bijliBills/" + bid).remove();
 }
 function bcShareWhatsapp() {
   const mon = bcGetMonth();
@@ -2224,13 +2221,8 @@ function closeSiteDetail() {
   _currentSiteId = null;
 }
 function deletePay(pid) {
-  showConfirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?", () => {
-    const snapshot = sitePays[pid];
-    db.ref("companies/" + company + "/sitePayments/" + pid).remove();
-    showUndoToast("\u092A\u0947\u092E\u0947\u0902\u091F \u0939\u091F\u093E \u0926\u093F\u092F\u093E", () => {
-      if (snapshot) db.ref("companies/" + company + "/sitePayments/" + pid).set(snapshot);
-    });
-  });
+  if (!confirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) return;
+  db.ref("companies/" + company + "/sitePayments/" + pid).remove();
 }
 function renderCalendar() {
   const eLabour = document.getElementById("eLabour");
@@ -2358,13 +2350,9 @@ function filterRLab() {
 }
 function toggleArchive(id, arch) {
   if (arch) {
-    showConfirm("Archive \u0915\u0930\u0928\u093E \u0939\u0948? \u0939\u093E\u091C\u093C\u0930\u0940 \u0932\u093F\u0938\u094D\u091F \u0938\u0947 \u0939\u091F \u091C\u093E\u092F\u0947\u0917\u093E \u092A\u0930 \u0939\u093F\u0938\u093E\u092C \u0930\u0939\u0947\u0917\u093E", () => {
-      db.ref("companies/" + company + "/labours/" + id + "/archived").set(true);
-      showToast("\u2705 Archive \u0939\u094B \u0917\u092F\u093E", "success");
-    });
-    return;
+    if (!confirm("Archive \u0915\u0930\u0928\u093E \u0939\u0948? \u0939\u093E\u091C\u093C\u0930\u0940 \u0932\u093F\u0938\u094D\u091F \u0938\u0947 \u0939\u091F \u091C\u093E\u092F\u0947\u0917\u093E \u092A\u0930 \u0939\u093F\u0938\u093E\u092C \u0930\u0939\u0947\u0917\u093E")) return;
   }
-  db.ref("companies/" + company + "/labours/" + id + "/archived").set(false);
+  db.ref("companies/" + company + "/labours/" + id + "/archived").set(arch ? true : false);
 }
 function renderAll() {
   const eSel = document.getElementById("eLabour");
@@ -2908,7 +2896,6 @@ function saveEditField() {
   if (efField === "rent" || efField === "bijli") {
     const mon = document.getElementById("rbMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
     db.ref(base + "labourMonthly/" + efLabourId + "/" + mon + "/" + efField).set(val).then(() => {
-      showToast("\u2705 " + mon + " \u0915\u0947 \u0932\u093F\u090F \u0938\u0947\u0935 \u0939\u094B \u0917\u092F\u093E", "success");
       closeEditFieldModal();
     });
     return;
@@ -2918,14 +2905,7 @@ function saveEditField() {
   });
 }
 function deleteLab(id) {
-  const nm = labs[id]?.name || "\u0915\u093E\u0930\u0940\u0917\u0930";
-  showConfirm(nm + " \u0915\u094B \u0939\u091F\u093E\u0926\u0947\u0902?", () => {
-    const snapshot = labs[id];
-    db.ref("companies/" + company + "/labours/" + id).remove();
-    showUndoToast(nm + " \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
-      if (snapshot) db.ref("companies/" + company + "/labours/" + id).set(snapshot);
-    });
-  });
+  if (confirm("Delete?")) db.ref("companies/" + company + "/labours/" + id).remove();
 }
 function addSite() {
   const sHouse = document.getElementById("sHouse");
@@ -3002,24 +2982,11 @@ function toggleSiteStatus(id, close) {
   const s = sites[id];
   if (!s) return;
   const newStatus = close ? "\u092A\u0942\u0930\u093E" : "\u091A\u0932 \u0930\u0939\u093E";
-  if (close) {
-    showConfirm("\u092F\u0947 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 (Archived) \u0915\u0930\u0928\u0940 \u0939\u0948?", () => {
-      db.ref("companies/" + company + "/sites/" + id + "/status").set(newStatus);
-      showToast("\u2705 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 \u0939\u094B \u0917\u0908", "success");
-    });
-    return;
-  }
+  if (close && !confirm("\u092F\u0947 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 (Archived) \u0915\u0930\u0928\u0940 \u0939\u0948?")) return;
   db.ref("companies/" + company + "/sites/" + id + "/status").set(newStatus);
 }
 function deleteSite(id) {
-  const nm = sites[id]?.house || "\u0938\u093E\u0907\u091F";
-  showConfirm(nm + " \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
-    const snapshot = sites[id];
-    db.ref("companies/" + company + "/sites/" + id).remove();
-    showUndoToast(nm + " \u0939\u091F\u093E\u0908 \u0917\u0908", () => {
-      if (snapshot) db.ref("companies/" + company + "/sites/" + id).set(snapshot);
-    });
-  });
+  if (confirm("\u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?")) db.ref("companies/" + company + "/sites/" + id).remove();
 }
 function addSitePayment() {
   const spSite = document.getElementById("spSite");
@@ -3109,13 +3076,8 @@ function addSiteCost() {
   });
 }
 function deleteSiteCost(cid) {
-  showConfirm("ये पिछली लागत डिलीट करनी है?", () => {
-    const snapshot = siteCosts[cid];
-    db.ref("companies/" + company + "/siteCosts/" + cid).remove();
-    showUndoToast("लागत हटाई गई", () => {
-      if (snapshot) db.ref("companies/" + company + "/siteCosts/" + cid).set(snapshot);
-    });
-  });
+  if (!confirm("ये पिछली लागत डिलीट करनी है?")) return;
+  db.ref("companies/" + company + "/siteCosts/" + cid).remove();
 }
 function showHazriPopup(labName, days, siteName, dateStr, withdraw, isDup = false) {
   const det = document.getElementById("popupDetails");
@@ -3291,15 +3253,11 @@ function cancelEdit() {
   updateDupInfo();
 }
 function deleteEntry(eid) {
-  showConfirm("\u0939\u093E\u095B\u0930\u0940 \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
-    const snapshot = ents[eid];
+  if (confirm("\u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?")) {
     db.ref("companies/" + company + "/entries/" + eid).remove().then(() => {
       if (editingId === eid) cancelEdit();
     });
-    showUndoToast("\u0939\u093E\u095B\u0930\u0940 \u0939\u091F\u093E\u0908 \u0917\u0908", () => {
-      if (snapshot) db.ref("companies/" + company + "/entries/" + eid).set(snapshot);
-    });
-  });
+  }
 }
 async function shareAsImage() {
   const card = document.querySelector(".rc-wrap");
@@ -3713,11 +3671,11 @@ function removeItemIt(si, side, ii) {
   renderItalian();
 }
 function removeSecIt(si) {
-  showConfirm("\u0938\u0947\u0915\u094D\u0936\u0928 \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
+  if (confirm("Delete?")) {
     italianData.splice(si, 1);
     renderEditorItalian();
     renderItalian();
-  });
+  }
 }
 function addSecItalian() {
   italianData.push({ title: "NEW SECTION", type: "single", items: [{ n: "", r: "" }] });
@@ -3725,11 +3683,11 @@ function addSecItalian() {
   renderItalian();
 }
 function resetItalian() {
-  showConfirm("\u0938\u092C \u0921\u093F\u095B\u093E\u0907\u0928 \u0930\u0940\u0938\u0947\u091F \u0915\u0930\u0947\u0902?", () => {
+  if (confirm("Reset?")) {
     italianData = JSON.parse(JSON.stringify(italianDefault));
     renderEditorItalian();
     renderItalian();
-  });
+  }
 }
 const tileDefault = [
   {
@@ -3847,11 +3805,11 @@ function removeItemTile(si, ii) {
   renderTile();
 }
 function removeSecTile(si) {
-  showConfirm("\u0938\u0947\u0915\u094D\u0936\u0928 \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
+  if (confirm("Delete?")) {
     tileData.splice(si, 1);
     renderEditorTile();
     renderTile();
-  });
+  }
 }
 function addSecTile() {
   tileData.push({ title: "NEW SECTION", items: [{ n: "", r: "" }] });
@@ -3859,11 +3817,11 @@ function addSecTile() {
   renderTile();
 }
 function resetTile() {
-  showConfirm("\u0938\u092C \u0921\u093F\u095B\u093E\u0907\u0928 \u0930\u0940\u0938\u0947\u091F \u0915\u0930\u0947\u0902?", () => {
+  if (confirm("Reset?")) {
     tileData = JSON.parse(JSON.stringify(tileDefault));
     renderEditorTile();
     renderTile();
-  });
+  }
 }
 async function shareImg(id) {
   const card = document.getElementById(id);
@@ -4014,13 +3972,9 @@ function shareSavedAg(aid) {
   }
 }
 function deleteSavedAg(aid) {
-  showConfirm("\u090F\u0917\u094D\u0930\u0940\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?", () => {
-    const snapshot = agreements[aid];
+  if (confirm("Delete?")) {
     db.ref("companies/" + company + "/agreements/" + aid).remove();
-    showUndoToast("\u090F\u0917\u094D\u0930\u0940\u092E\u0947\u0902\u091F \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
-      if (snapshot) db.ref("companies/" + company + "/agreements/" + aid).set(snapshot);
-    });
-  });
+  }
 }
 window.toggleBox = toggleBox;
 window.showTab = showTab;
@@ -4154,13 +4108,9 @@ function cancelExpenseEdit() {
 window.editExpense = editExpense;
 window.cancelExpenseEdit = cancelExpenseEdit;
 function deleteExpense(id) {
-  showConfirm("\u0907\u0938 \u0916\u0930\u094D\u091A \u0915\u094B \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?", () => {
-    const snapshot = expenses[id];
+  if (confirm("\u0907\u0938 \u0916\u0930\u094D\u091A \u0915\u094B \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) {
     db.ref("companies/" + company + "/expenses/" + id).remove();
-    showUndoToast("\u0916\u0930\u094D\u091A \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
-      if (snapshot) db.ref("companies/" + company + "/expenses/" + id).set(snapshot);
-    });
-  });
+  }
 }
 function renderExpenses() {
   const monthInput = document.getElementById("xMonth");
@@ -4749,28 +4699,22 @@ function editMatSection(id, evt) {
   const idx = Object.keys(matSections).indexOf(id);
   const color = MAT_NS_COLORS[idx >= 0 ? idx % MAT_NS_COLORS.length : 0];
   const useColor = sec.color || color;
-  showConfirm("\u0915\u094D\u092F\u093E \u0907\u0938 \u0938\u0947\u0915\u094D\u0936\u0928 \u0915\u093E \u0930\u0902\u0917 \u092D\u0940 \u092C\u0926\u0932\u0928\u093E \u0939\u0948?", () => {
-    const newColor = MAT_NS_COLORS[(MAT_NS_COLORS.indexOf(useColor) + 1 + MAT_NS_COLORS.length) % MAT_NS_COLORS.length];
-    db.ref("companies/" + company + "/materialSections/" + id).update({ name: trimmed, color: newColor });
-  }, {
-    okLabel: "\u0939\u093E\u0901, \u092C\u0926\u0932\u094B",
-    cancelLabel: "\u0928\u0939\u0940\u0902, \u0935\u0939\u0940 \u0930\u0902\u0917",
-    onNo: () => db.ref("companies/" + company + "/materialSections/" + id).update({ name: trimmed, color: useColor })
-  });
+  const changeColor = confirm("\u0915\u094D\u092F\u093E \u0907\u0938 \u0938\u0947\u0915\u094D\u0936\u0928 \u0915\u093E \u0930\u0902\u0917 \u092D\u0940 \u092C\u0926\u0932\u0928\u093E \u0939\u0948? (OK = \u0928\u092F\u093E \u0930\u0902\u0917, Cancel = \u0935\u0939\u0940 \u0930\u0902\u0917 \u0930\u0916\u0947\u0902)");
+  const newColor = changeColor ? MAT_NS_COLORS[(MAT_NS_COLORS.indexOf(useColor) + 1 + MAT_NS_COLORS.length) % MAT_NS_COLORS.length] : useColor;
+  db.ref("companies/" + company + "/materialSections/" + id).update({ name: trimmed, color: newColor });
 }
 window.editMatSection = editMatSection;
 function deleteMatSection(id, evt) {
   if (evt) evt.stopPropagation();
   const ids = Object.keys(matSections);
-  if (ids.length <= 1) { showToast("\u0915\u092E \u0938\u0947 \u0915\u092E \u090F\u0915 \u0938\u0947\u0915\u094D\u0936\u0928 \u0939\u094B\u0928\u093E \u091C\u0930\u0942\u0930\u0940 \u0939\u0948\u0964", "error"); return; }
+  if (ids.length <= 1) { alert("\u0915\u092E \u0938\u0947 \u0915\u092E \u090F\u0915 \u0938\u0947\u0915\u094D\u0936\u0928 \u0939\u094B\u0928\u093E \u091C\u0930\u0942\u0930\u0940 \u0939\u0948\u0964"); return; }
   const sec = matSections[id];
-  showConfirm("\u0938\u0947\u0915\u094D\u0936\u0928 \"" + (sec ? sec.name : id) + "\" \u0939\u091F\u093E\u090F\u0902? (\u092A\u0941\u0930\u093E\u0928\u093E \u0921\u0947\u091F\u093E \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0930\u0939\u0947\u0917\u093E, \u0938\u093F\u0930\u094D\u092B \u091F\u0948\u092C \u0939\u091F \u091C\u093E\u090F\u0917\u093E)", () => {
-    db.ref("companies/" + company + "/materialSections/" + id).remove().then(() => {
-      if (matNS === id) {
-        const remaining = Object.keys(matSections).filter((x) => x !== id);
-        setMatNS(remaining[0] || "nova");
-      }
-    });
+  if (!confirm("\u0938\u0947\u0915\u094D\u0936\u0928 \"" + (sec ? sec.name : id) + "\" \u0939\u091F\u093E\u090F\u0902? (\u092A\u0941\u0930\u093E\u0928\u093E \u0921\u0947\u091F\u093E \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0930\u0939\u0947\u0917\u093E, \u0938\u093F\u0930\u094D\u092B \u091F\u0948\u092C \u0939\u091F \u091C\u093E\u090F\u0917\u093E)")) return;
+  db.ref("companies/" + company + "/materialSections/" + id).remove().then(() => {
+    if (matNS === id) {
+      const remaining = Object.keys(matSections).filter((x) => x !== id);
+      setMatNS(remaining[0] || "nova");
+    }
   });
 }
 window.deleteMatSection = deleteMatSection;
@@ -4859,13 +4803,9 @@ function cancelMatItemEdit() {
 function deleteMatItem(id) {
   const it = matItems[id];
   if (!it) return;
-  showConfirm("आइटम \"" + it.name + "\" डिलीट करें? (पुरानी एंट्री सुरक्षित रहेंगी)", () => {
-    const snapshot = it;
+  if (confirm("आइटम \"" + it.name + "\" डिलीट करें? (पुरानी एंट्री सुरक्षित रहेंगी)")) {
     db.ref(matItemsPath() + "/" + id).remove();
-    showUndoToast("आइटम हटाया गया", () => {
-      db.ref(matItemsPath() + "/" + id).set(snapshot);
-    });
-  });
+  }
 }
 function onMatItemPick() {
   const id = document.getElementById("meItem").value;
@@ -4972,13 +4912,9 @@ function cancelMatEntryEdit(keepSelections) {
 function deleteMatEntry(id) {
   const e = matEntries[id];
   if (!e) return;
-  showConfirm("एंट्री डिलीट करें? " + (e.itemName || "") + " " + mNum(e.qty) + " " + (e.unit || "") + " = " + mRs(e.total), () => {
-    const snapshot = e;
+  if (confirm("एंट्री डिलीट करें? " + (e.itemName || "") + " " + mNum(e.qty) + " " + (e.unit || "") + " = " + mRs(e.total))) {
     db.ref(matEntriesPath() + "/" + id).remove();
-    showUndoToast("मटेरियल एंट्री हटाई गई", () => {
-      db.ref(matEntriesPath() + "/" + id).set(snapshot);
-    });
-  });
+  }
 }
 // ---- Commission Payment Received (per material section: NOVA / ACC / custom) ----
 function matPaymentAdd() {
@@ -5033,14 +4969,9 @@ function matPaymentCancelEdit() {
 function matPaymentDelete(id) {
   const p = matPayments[id];
   if (!p) return;
-  showConfirm("\u092F\u0939 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902? " + mRs(p.amount), () => {
-    if (editingMatPaymentId === id) matPaymentCancelEdit();
-    const snapshot = p;
-    db.ref(matPaymentsPath() + "/" + id).remove();
-    showUndoToast("\u092A\u0947\u092E\u0947\u0902\u091F \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E", () => {
-      db.ref(matPaymentsPath() + "/" + id).set(snapshot);
-    });
-  });
+  if (!confirm("\u092F\u0939 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902? " + mRs(p.amount))) return;
+  if (editingMatPaymentId === id) matPaymentCancelEdit();
+  db.ref(matPaymentsPath() + "/" + id).remove();
 }
 function matPaymentShareWhatsapp() {
   const nsName = matNSName();
@@ -5794,7 +5725,7 @@ function renderBulkHazri(force) {
       </div>
     </div>`;
   });
-  list.innerHTML = html || '<div class="empty-state"><div class="es-icon">👷</div><div class="es-msg">कोई Active कारीगर नहीं</div><button class="btn btn-gold" style="width:auto;padding:10px 20px;" onclick="toggleBox(\'addLabourBoxMain\')">+ पहला कारीगर जोड़ो</button></div>';
+  list.innerHTML = html || '<div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">कोई Active कारीगर नहीं</div>';
   updateBulkHazriSummary();
 }
 function bulkHazriPick(id, v) {
@@ -6015,12 +5946,10 @@ function submitPin() {
 }
 window.submitPin = submitPin;
 function lockApp() {
-  showConfirm("\u0910\u092A \u0932\u0949\u0915 \u0915\u0930\u0947\u0902? (Edit / Add / Delete / \u0939\u093E\u095B\u0930\u0940 \u0926\u0941\u092C\u093E\u0930\u093E PIN \u092E\u093E\u0902\u0917\u0947\u0917\u093E)", () => {
-    appUnlocked = false;
-    try { localStorage.removeItem("adminUnlocked"); } catch (e) {}
-    updateLockUI();
-    showToast("\u{1F512} \u0910\u092A \u0932\u0949\u0915 \u0939\u094B \u0917\u092F\u093E", "info");
-  }, { okLabel: "\u0939\u093E\u0901, \u0932\u0949\u0915 \u0915\u0930\u094B" });
+  if (!confirm("\u0910\u092A \u0932\u0949\u0915 \u0915\u0930\u0947\u0902? (Edit / Add / Delete / \u0939\u093E\u095B\u0930\u0940 \u0926\u0941\u092C\u093E\u0930\u093E PIN \u092E\u093E\u0902\u0917\u0947\u0917\u093E)")) return;
+  appUnlocked = false;
+  try { localStorage.removeItem("adminUnlocked"); } catch (e) {}
+  updateLockUI();
 }
 function toggleLockBtn() {
   if (appUnlocked) lockApp(); else openPinModal();
