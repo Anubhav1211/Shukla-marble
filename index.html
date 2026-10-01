@@ -137,13 +137,7 @@ header {
   border-radius: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn:active {
-  transform: scale(0.97);
-  filter: brightness(0.94);
+  transition: all 0.12s ease;
 }
 
 .btn-navy, .btn-save {
@@ -160,14 +154,6 @@ header {
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-  transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-navy:active, .btn-save:active {
-  transform: scale(0.97);
-  filter: brightness(1.15);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15) !important;
 }
 
 .btn-gold {
@@ -181,144 +167,12 @@ header {
   font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: transform 0.1s ease, filter 0.1s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease;
 }
 
 .btn-sm:active {
-  transform: scale(0.94);
-  filter: brightness(0.93);
-}
-
-.tab, .ag-subtab, .pt {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.tab:active, .ag-subtab:active, .pt:active {
   transform: scale(0.96);
 }
-
-@keyframes boxSlideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.box-anim-in {
-  animation: boxSlideIn 0.24s ease;
-}
-
-@keyframes tabFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.tab-anim-in {
-  animation: tabFadeIn 0.2s ease;
-}
-
-/* ---- Toast notifications ---- */
-#toastStack {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 18px;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-  padding: 0 14px;
-}
-.toast {
-  pointer-events: auto;
-  max-width: 420px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: white;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-  animation: toastIn 0.22s ease;
-}
-.toast.success { background: #166534; }
-.toast.error { background: #991B1B; }
-.toast.info { background: #1E293B; }
-.toast.out { animation: toastOut 0.22s ease forwards; }
-.toast button {
-  background: rgba(255, 255, 255, 0.18);
-  border: none;
-  color: white;
-  font-weight: 800;
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  flex-shrink: 0;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.toast button:active { transform: scale(0.94); }
-@keyframes toastIn {
-  from { opacity: 0; transform: translateY(14px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes toastOut {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to { opacity: 0; transform: translateY(14px) scale(0.97); }
-}
-
-/* ---- Custom confirm modal ---- */
-#confirmOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.55);
-  z-index: 99998;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  animation: fadeInBg 0.15s ease;
-}
-@keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
-#confirmSheet {
-  background: white;
-  width: 100%;
-  max-width: 460px;
-  border-radius: 22px 22px 0 0;
-  padding: 22px 20px calc(20px + env(safe-area-inset-bottom, 0px)) 20px;
-  animation: sheetUp 0.22s ease;
-}
-@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-#confirmSheet .cs-icon { font-size: 30px; text-align: center; margin-bottom: 8px; }
-#confirmSheet .cs-msg { font-size: 14.5px; font-weight: 700; color: #0F172A; text-align: center; margin-bottom: 18px; line-height: 1.4; }
-#confirmSheet .cs-row { display: flex; gap: 10px; }
-#confirmSheet button { flex: 1; padding: 13px; border-radius: 14px; border: none; font-weight: 800; font-size: 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-#confirmSheet button:active { transform: scale(0.97); }
-#csCancel { background: #F1F5F9; color: #334155; }
-#csOk { background: #DC2626; color: white; }
-
-/* ---- Skeleton loading ---- */
-.skeleton {
-  background: linear-gradient(90deg, #EEF1F5 25%, #E2E8F0 37%, #EEF1F5 63%);
-  background-size: 400% 100%;
-  animation: skeletonShine 1.3s ease infinite;
-  border-radius: 10px;
-}
-@keyframes skeletonShine {
-  0% { background-position: 100% 50%; }
-  100% { background-position: 0 50%; }
-}
-
-/* ---- Empty state ---- */
-.empty-state {
-  text-align: center;
-  padding: 28px 14px;
-  color: #94A3B8;
-}
-.empty-state .es-icon { font-size: 34px; margin-bottom: 8px; }
-.empty-state .es-msg { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
 
 .pt {
   background: #FFFFFF;
@@ -1055,20 +909,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   </style>
 </head>
 <body>
-  <!-- Initial loading skeleton (shown until first data arrives from Firebase) -->
-  <div id="appSkeleton" style="position: fixed; inset: 0; background: #F8FAFC; z-index: 999999; padding: 14px; overflow: hidden;">
-    <div class="skeleton" style="height: 56px; border-radius: 16px; margin-bottom: 14px;"></div>
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px;">
-      <div class="skeleton" style="height: 70px;"></div>
-      <div class="skeleton" style="height: 70px;"></div>
-      <div class="skeleton" style="height: 70px;"></div>
-      <div class="skeleton" style="height: 70px;"></div>
-    </div>
-    <div class="skeleton" style="height: 130px; border-radius: 20px; margin-bottom: 14px;"></div>
-    <div class="skeleton" style="height: 90px; border-radius: 20px; margin-bottom: 14px;"></div>
-    <div class="skeleton" style="height: 180px; border-radius: 20px;"></div>
-  </div>
-
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 6px;">
@@ -1253,6 +1093,12 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <div id="t-l" style="display: none;">
     <div class="card">
       <h3 style="margin-top: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3>
+      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(-1)">◀</button>
+        <input id="kMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('kMonth')">
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(1)">▶</button>
+      </div>
+      <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">इस महीने का पूरा हिसाब — दिहाड़ी, किराया, बिजली, बकाया — यहीं देखो और बदलो</div>
       <input id="labSearch" class="input" placeholder="🔍 नाम से खोजो..." oninput="renderAll()">
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
@@ -1730,21 +1576,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
   </div>
 
-  <!-- Toast notifications -->
-  <div id="toastStack"></div>
-
-  <!-- Custom confirm sheet (replaces browser confirm()) -->
-  <div id="confirmOverlay" onclick="if(event.target===this)_confirmResolve(false)">
-    <div id="confirmSheet">
-      <div class="cs-icon">⚠️</div>
-      <div class="cs-msg" id="csMsg"></div>
-      <div class="cs-row">
-        <button id="csCancel" onclick="_confirmResolve(false)">रद्द करो</button>
-        <button id="csOk" onclick="_confirmResolve(true)">हाँ, करो</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Labour Field Edit Popup (दिहाड़ी / किराया / बिजली / बकाया) -->
   <div id="editFieldModal" class="popup-overlay">
     <div class="popup-box">
@@ -1868,24 +1699,12 @@ function toggleBox(id) {
   const el = document.getElementById(id);
   if (!el) return;
   const d = el.style.display;
-  const opening = d === "none" || d === "";
-  el.style.display = opening ? "block" : "none";
-  if (opening) {
-    el.classList.remove("box-anim-in");
-    void el.offsetWidth;
-    el.classList.add("box-anim-in");
-  }
-  vibrateTap();
+  el.style.display = d === "none" || d === "" ? "block" : "none";
 }
 function showTab(id) {
   document.querySelectorAll("[id^=t-]").forEach((e) => e.style.display = "none");
   const target = document.getElementById("t-" + id);
-  if (target) {
-    target.style.display = "block";
-    target.classList.remove("tab-anim-in");
-    void target.offsetWidth;
-    target.classList.add("tab-anim-in");
-  }
+  if (target) target.style.display = "block";
   document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
   const bt = document.getElementById("bt-" + id);
   if (bt) {
@@ -1893,85 +1712,6 @@ function showTab(id) {
     try { bt.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch (e) {}
   }
   if (id === "m" && typeof renderMaterial === "function") renderMaterial();
-}
-
-// ================= UX Utilities: haptic tap, toast, custom confirm =================
-function vibrateTap(ms) {
-  try { if (navigator.vibrate) navigator.vibrate(ms || 10); } catch (e) {}
-}
-let _skeletonHidden = false;
-function hideAppSkeleton() {
-  if (_skeletonHidden) return;
-  _skeletonHidden = true;
-  const el = document.getElementById("appSkeleton");
-  if (!el) return;
-  el.style.transition = "opacity 0.25s ease";
-  el.style.opacity = "0";
-  setTimeout(() => el.remove(), 260);
-}
-// Global delegated tap feedback for every button-like element in the app
-document.addEventListener("click", (ev) => {
-  const t = ev.target.closest(".btn, .btn-sm, .btn-gold, .btn-save, .btn-navy, .tab, .ag-subtab");
-  if (t) vibrateTap(t.classList.contains("btn-sm") ? 8 : 12);
-}, true);
-
-let _toastTimer = null;
-function showToast(msg, type, durationMs) {
-  const stack = document.getElementById("toastStack");
-  if (!stack) return;
-  type = type || "info";
-  const el = document.createElement("div");
-  el.className = "toast " + type;
-  el.innerHTML = `<span>${msg}</span>`;
-  stack.appendChild(el);
-  vibrateTap(type === "error" ? 20 : 10);
-  setTimeout(() => {
-    el.classList.add("out");
-    setTimeout(() => el.remove(), 220);
-  }, durationMs || 2200);
-}
-function showUndoToast(msg, onUndo, durationMs) {
-  const stack = document.getElementById("toastStack");
-  if (!stack) return;
-  const el = document.createElement("div");
-  el.className = "toast info";
-  const btnId = "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-  el.innerHTML = `<span>${msg}</span><button id="${btnId}">\u21B6 Undo</button>`;
-  stack.appendChild(el);
-  vibrateTap(14);
-  let done = false;
-  const finish = () => {
-    if (done) return;
-    done = true;
-    el.classList.add("out");
-    setTimeout(() => el.remove(), 220);
-  };
-  document.getElementById(btnId).onclick = () => {
-    if (done) return;
-    finish();
-    vibrateTap(16);
-    if (onUndo) onUndo();
-  };
-  setTimeout(finish, durationMs || 5000);
-}
-let _confirmResolve = null;
-function showConfirm(msg, onYes, opts) {
-  const overlay = document.getElementById("confirmOverlay");
-  const msgEl = document.getElementById("csMsg");
-  const okBtn = document.getElementById("csOk");
-  const cancelBtn = document.getElementById("csCancel");
-  if (!overlay || !msgEl) { if (window.confirm(msg)) onYes && onYes(); else if (opts && opts.onNo) opts.onNo(); return; }
-  msgEl.innerText = msg;
-  if (okBtn) okBtn.innerText = (opts && opts.okLabel) || "\u0939\u093E\u0901, \u0915\u0930\u094B";
-  if (cancelBtn) cancelBtn.innerText = (opts && opts.cancelLabel) || "\u0930\u0926\u094D\u0926 \u0915\u0930\u094B";
-  overlay.style.display = "flex";
-  vibrateTap(10);
-  _confirmResolve = (ok) => {
-    overlay.style.display = "none";
-    _confirmResolve = null;
-    if (ok) { vibrateTap(14); onYes && onYes(); }
-    else if (opts && opts.onNo) { vibrateTap(8); opts.onNo(); }
-  };
 }
 function startListen() {
   if (!db) return;
@@ -2026,6 +1766,28 @@ function startListen() {
 function getMon() {
   const rMonth = document.getElementById("rMonth");
   return rMonth && rMonth.value ? rMonth.value : fmtLocalDate(new Date()).slice(0, 7);
+}
+// कारीगर tab's month picker (kMonth) and हिसाब tab's month picker (rMonth) share one
+// underlying "current month" — changing either one keeps the other in sync.
+function syncMonthFrom(sourceId) {
+  const src = document.getElementById(sourceId);
+  if (!src) return;
+  const val = src.value || fmtLocalDate(new Date()).slice(0, 7);
+  ["kMonth", "rMonth"].forEach((id) => {
+    if (id === sourceId) return;
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+  renderAll();
+}
+function shiftKMonth(delta) {
+  const el = document.getElementById("kMonth");
+  if (!el) return;
+  const cur = el.value || fmtLocalDate(new Date()).slice(0, 7);
+  const d = new Date(cur + "-01T00:00:00");
+  d.setMonth(d.getMonth() + delta);
+  el.value = d.toISOString().slice(0, 7);
+  syncMonthFrom("kMonth");
 }
 // ---- Per-entry rate: each hazri keeps the rate it was earned at (e.rate).
 // Old entries without e.rate fall back to the labour's current wage.
@@ -2605,7 +2367,6 @@ function toggleArchive(id, arch) {
   db.ref("companies/" + company + "/labours/" + id + "/archived").set(false);
 }
 function renderAll() {
-  hideAppSkeleton();
   const eSel = document.getElementById("eLabour");
   const rSel = document.getElementById("rLabour");
   const eSiteSel = document.getElementById("eSite");
@@ -2668,7 +2429,7 @@ function renderAll() {
   if (kTot) kTot.innerText = String(activeIds.length);
   if (kDena) kDena.innerText = "\u20B9" + td.toLocaleString("en-IN");
   if (kLena) kLena.innerText = "\u20B9" + tl.toLocaleString("en-IN");
-  if (monTxt) monTxt.innerText = (/* @__PURE__ */ new Date()).toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  if (monTxt) monTxt.innerText = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
   let labHtml = "";
   activeIds.forEach((id) => {
     const l = labs[id];
@@ -3049,7 +2810,7 @@ function openEditField(id, field, title, sub) {
   const inputEl = document.getElementById("efInput");
   if (titleEl) titleEl.innerText = (l.name ? l.name + " - " : "") + title;
   if (subEl) subEl.innerText = sub || "";
-  const curMon = fmtLocalDate(new Date()).slice(0, 7);
+  const curMon = document.getElementById("kMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
   const isMonthly = field === "rent" || field === "bijli";
   if (inputEl) {
     if (isMonthly) {
@@ -6305,6 +6066,8 @@ function bootstrap() {
   if (eDate) eDate.value = fmtLocalDate(new Date());
   if (spDate) spDate.value = fmtLocalDate(new Date());
   if (rMonth) rMonth.value = fmtLocalDate(new Date()).slice(0, 7);
+  const kMonth = document.getElementById("kMonth");
+  if (kMonth) kMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   if (monTxt) monTxt.innerText = (/* @__PURE__ */ new Date()).toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
   if (tDate) tDate.value = fmtLocalDate(new Date());
   if (cDate) cDate.value = fmtLocalDate(new Date());
@@ -6334,12 +6097,6 @@ function bootstrap() {
   document.getElementById("tDate")?.addEventListener("change", renderTile);
   initFirebase();
   guardPinProtectedFns();
-  setTimeout(() => {
-    if (!_skeletonHidden) {
-      hideAppSkeleton();
-      showToast("\u26A0\uFE0F \u0921\u0947\u091F\u093E \u0932\u094B\u0921 \u0939\u094B\u0928\u0947 \u092E\u0947\u0902 \u0926\u0947\u0930 \u0939\u094B \u0930\u0939\u0940 \u0939\u0948 \u2013 \u0907\u0902\u091F\u0930\u0928\u0947\u091F \u091A\u0947\u0915 \u0915\u0930\u0947\u0902", "error", 4000);
-    }
-  }, 7000);
 }
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", bootstrap);
