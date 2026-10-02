@@ -2519,23 +2519,25 @@ function renderAll() {
     if (labSearchQ && !(l.name || "").toLowerCase().includes(labSearchQ)) return;
     const c = calcLabour(id, mon);
     labHtml += `
-      <div style="display:flex;justify-content:space-between;padding:14px;border:1px solid #EEF2FF;border-radius:16px;margin-bottom:10px;background:#FBFDFF">
-        <div>
-          <b style="font-size:14.5px">${l.name}</b> <small style="color:#94A3B8;font-weight:600">\u20B9${l.wage || 0}/\u0926\u093F\u0928</small><br>
-          <small style="color:#94A3B8">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
-        </div>
-        <div style="text-align:right">
-          <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:7px 12px;border-radius:12px;font-size:16px;font-weight:800;white-space:nowrap">
+      <div style="padding:14px;border:1px solid #EEF2FF;border-radius:16px;margin-bottom:10px;background:#FBFDFF">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+          <div>
+            <b style="font-size:14.5px">${l.name}</b> <small style="color:#94A3B8;font-weight:600">\u20B9${l.wage || 0}/\u0926\u093F\u0928</small>
+          </div>
+          <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:7px 12px;border-radius:12px;font-size:16px;font-weight:800;white-space:nowrap;flex-shrink:0">
             ${c.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c.net).toLocaleString("en-IN")}
           </div>
-          <div style="margin-top:6px;display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end">
-            <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF" onclick="editWage('${id}')">\u0926\u093F\u0939\u093E\u0921\u093C\u0940</button>
-            <button class="btn-sm" style="background:#FEF3C7;color:#92400E" onclick="editBalance('${id}')">\u092C\u0915\u093E\u092F\u093E</button>
-            <button class="btn-sm" style="background:#EEF2FF;color:#4338CA" onclick="editRent('${id}')">\u0915\u093F\u0930\u093E\u092F\u093E</button>
-            <button class="btn-sm" style="background:#FEF9C3;color:#854D0E" onclick="editBijli('${id}')">\u092C\u093F\u091C\u0932\u0940</button>
-            <button class="btn-sm" style="background:#FCE7F3;color:#9D174D" onclick="toggleArchive('${id}',true)">Archive</button>
-            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteLab('${id}')">X</button>
-          </div>
+        </div>
+        <small style="color:#94A3B8">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
+        <div style="margin-top:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
+          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:7px 4px" onclick="editWage('${id}')">\u0926\u093F\u0939\u093E\u0921\u093C\u0940</button>
+          <button class="btn-sm" style="background:#FEF3C7;color:#92400E;padding:7px 4px" onclick="editBalance('${id}')">\u092C\u0915\u093E\u092F\u093E</button>
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:7px 4px" onclick="editRent('${id}')">\u0915\u093F\u0930\u093E\u092F\u093E</button>
+          <button class="btn-sm" style="background:#FEF9C3;color:#854D0E;padding:7px 4px" onclick="editBijli('${id}')">\u092C\u093F\u091C\u0932\u0940</button>
+        </div>
+        <div style="margin-top:6px;display:flex;gap:5px">
+          <button class="btn-sm" style="background:#FCE7F3;color:#9D174D;flex:1;padding:7px 6px" onclick="toggleArchive('${id}',true)">\u{1F4E6} Archive</button>
+          <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;width:40px;flex-shrink:0;padding:7px 0" onclick="deleteLab('${id}')">\u{1F5D1}\uFE0F</button>
         </div>
       </div>
     `;
