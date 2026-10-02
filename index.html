@@ -50,6 +50,7 @@ header {
   background: #0F172A;
   color: white;
   padding: 12px 16px;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,6 +68,10 @@ header {
   top: 0;
   z-index: 10;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+body {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .tab {
@@ -982,8 +987,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
 
     <!-- Bijli Bill Calculator -->
-    <div class="card">
-      <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center; background: #FEF9C3; color: #854D0E;">
+    <div class="card" style="border: 2px solid #FCD34D;">
+      <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
         <span>⚡ बिजली बिल कैलकुलेटर (मीटर रीडिंग से)</span><span>▼</span>
       </button>
       <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
@@ -1423,8 +1428,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
 
     <!-- BULK MATERIAL -->
-    <div class="card" style="border: 2px solid #FDE68A;">
-      <button class="btn" style="background: #B45309; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bmBox'); renderBulkMat(true);">
+    <div class="card" style="border: 2px solid #C7D2FE;">
+      <button class="btn" style="background: #4338CA; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bmBox'); renderBulkMat(true);">
         <span>📦 एक साथ कई मटेरियल</span><span>▼</span>
       </button>
       <div id="bmBox" style="display: none; margin-top: 12px;">
@@ -1640,7 +1645,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
 
   <!-- PIN Lock Floating Button -->
-  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: 18px; right: 16px; width: 52px; height: 52px; border-radius: 50%; background: #0F172A; color: white; border: none; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); z-index: 500; cursor: pointer;">🔒</button>
+  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: #0F172A; color: white; border: none; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); z-index: 500; cursor: pointer;">🔒</button>
 
   <!-- PIN Entry Modal -->
   <div id="pinOverlay" class="popup-overlay">
@@ -2516,14 +2521,14 @@ function renderAll() {
     labHtml += `
       <div style="display:flex;justify-content:space-between;padding:14px;border:1px solid #EEF2FF;border-radius:16px;margin-bottom:10px;background:#FBFDFF">
         <div>
-          <b>${l.name}</b> <small style="color:#6366F1;font-weight:700">\u20B9${l.wage || 0}</small><br>
-          <small style="color:#64748B">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
+          <b style="font-size:14.5px">${l.name}</b> <small style="color:#94A3B8;font-weight:600">\u20B9${l.wage || 0}/\u0926\u093F\u0928</small><br>
+          <small style="color:#94A3B8">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
         </div>
         <div style="text-align:right">
-          <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:4px 8px;border-radius:10px;font-size:11px;font-weight:800">
+          <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:7px 12px;border-radius:12px;font-size:16px;font-weight:800;white-space:nowrap">
             ${c.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c.net).toLocaleString("en-IN")}
           </div>
-          <div style="margin-top:4px;display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end">
+          <div style="margin-top:6px;display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end">
             <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF" onclick="editWage('${id}')">\u0926\u093F\u0939\u093E\u0921\u093C\u0940</button>
             <button class="btn-sm" style="background:#FEF3C7;color:#92400E" onclick="editBalance('${id}')">\u092C\u0915\u093E\u092F\u093E</button>
             <button class="btn-sm" style="background:#EEF2FF;color:#4338CA" onclick="editRent('${id}')">\u0915\u093F\u0930\u093E\u092F\u093E</button>
