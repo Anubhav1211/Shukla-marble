@@ -964,6 +964,33 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <!-- Monthly Summary (सब कारीगर मिलाकर, महीना-वार) -->
+    <div class="card" style="border: 2px solid #E2E8F0;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 15px; font-weight: 800;">📊 मासिक सारांश</h3>
+        <span id="msMonTxt" style="background: #F1F5F9; color: #475569; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;">
+        <div style="background: #EEF2FF; padding: 12px 4px; border-radius: 16px; text-align: center;">
+          <small style="color: #4338CA; font-weight: 700; font-size: 10px;">इस महीने की कुल दिहाड़ी बनी</small><br>
+          <b id="msEarn" style="color: #4338CA; font-size: 15px; white-space: nowrap;">₹0</b>
+        </div>
+        <div style="background: #FEF3C7; padding: 12px 4px; border-radius: 16px; text-align: center;">
+          <small style="color: #92400E; font-weight: 700; font-size: 10px;">पिछले महीने से बकाया (Opening)</small><br>
+          <b id="msOpening" style="color: #B45309; font-size: 15px; white-space: nowrap;">₹0</b>
+        </div>
+        <div style="background: #DCFCE7; padding: 12px 4px; border-radius: 16px; text-align: center;">
+          <small style="color: #166534; font-weight: 700; font-size: 10px;">इस महीने कुल दिया गया</small><br>
+          <b id="msPaid" style="color: #166534; font-size: 15px; white-space: nowrap;">₹0</b>
+        </div>
+        <div style="background: #FEE2E2; padding: 12px 4px; border-radius: 16px; text-align: center;">
+          <small style="color: #991B1B; font-weight: 700; font-size: 10px;">अभी भी कुल कितना देना है</small><br>
+          <b id="msRemaining" style="color: #991B1B; font-size: 15px; white-space: nowrap;">₹0</b>
+        </div>
+      </div>
+      <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर कारीगर tab के महीना-चुनने वाले बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
+    </div>
+
     <!-- Add Labour Quick Box -->
     <div class="card">
       <button class="btn btn-gold" onclick="toggleBox('addLabourBoxMain')" style="display: flex; justify-content: space-between; align-items: center;">
@@ -2463,6 +2490,7 @@ function renderAll() {
   if (spSiteSel) spSiteSel.innerHTML = '<option value="">\u0938\u093E\u0907\u091F \u091A\u0941\u0928\u094B</option>';
   const mon = getMon();
   let td = 0, tl = 0;
+  let msEarnTotal = 0, msOpeningTotal = 0, msPaidTotal = 0;
   Object.keys(sites).forEach((id) => {
     const s = sites[id];
     if (eSiteSel) eSiteSel.innerHTML += `<option value="${id}">${s.house}</option>`;
@@ -2500,7 +2528,20 @@ function renderAll() {
     const c = calcLabour(id, mon);
     if (c.net >= 0) td += c.net;
     else tl += Math.abs(c.net);
+    msEarnTotal += c.earn;
+    msOpeningTotal += c.bal;
+    msPaidTotal += c.with;
   });
+  const msMonTxt = document.getElementById("msMonTxt");
+  const msEarnEl = document.getElementById("msEarn");
+  const msOpeningEl = document.getElementById("msOpening");
+  const msPaidEl = document.getElementById("msPaid");
+  const msRemainingEl = document.getElementById("msRemaining");
+  if (msMonTxt) msMonTxt.innerText = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  if (msEarnEl) msEarnEl.innerText = "\u20B9" + msEarnTotal.toLocaleString("en-IN");
+  if (msOpeningEl) msOpeningEl.innerText = "\u20B9" + msOpeningTotal.toLocaleString("en-IN");
+  if (msPaidEl) msPaidEl.innerText = "\u20B9" + msPaidTotal.toLocaleString("en-IN");
+  if (msRemainingEl) msRemainingEl.innerText = "\u20B9" + td.toLocaleString("en-IN");
   if (rSel && (sortedLabIds.includes(curR) || curR === "all")) rSel.value = curR;
   if (eSel && curE && filteredForDropdown.includes(curE)) eSel.value = curE;
   if (eSiteSel && curESite) eSiteSel.value = curESite;
