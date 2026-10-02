@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -918,49 +917,49 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 6px;">
-      <span>ðï¸</span>
+      <span>🏛️</span>
       <div>
         SHUKLA <span style="color: #4F46E5;">MARBLE</span>
         <div style="font-size: 9px; color: #94A3B8; font-weight: 600; letter-spacing: 0.5px;">CONTRACTOR V27.6 FINAL</div>
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 6px;">
-      <button class="btn-sm" style="background: #1E293B; color: white; padding: 6px 12px; border-radius: 20px; font-weight: 700; cursor: pointer;" onclick="openPdfBackup()">ð¥ PDF à¤¬à¥à¤à¤à¤ª</button>
-      <button id="installBtn" class="btn-sm" style="display: none; background: #4F46E5; color: white; padding: 6px 10px; border-radius: 20px; font-weight: 800; cursor: pointer; align-items: center; gap: 4px;" onclick="installApp()">ð² à¤à¤à¤¸à¥à¤à¥à¤²</button>
+      <button class="btn-sm" style="background: #1E293B; color: white; padding: 6px 12px; border-radius: 20px; font-weight: 700; cursor: pointer;" onclick="openPdfBackup()">📥 PDF बैकअप</button>
+      <button id="installBtn" class="btn-sm" style="display: none; background: #4F46E5; color: white; padding: 6px 10px; border-radius: 20px; font-weight: 800; cursor: pointer; align-items: center; gap: 4px;" onclick="installApp()">📲 इंस्टॉल</button>
       <div id="syncBadge" style="background: #DCFCE7; color: #166534; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
-        <span style="font-size: 8px;">â</span> LIVE SYNC
+        <span style="font-size: 8px;">●</span> LIVE SYNC
       </div>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
   <div class="tabs">
-    <button class="tab active" id="bt-d" onclick="showTab('d')"><span class="ti">ð</span><span class="tl">à¤¡à¥à¤¶</span></button>
-    <button class="tab" id="bt-s" onclick="showTab('s')"><span class="ti">ð </span><span class="tl">à¤¸à¤¾à¤à¤</span></button>
-    <button class="tab" id="bt-l" onclick="showTab('l')"><span class="ti">ð·</span><span class="tl">à¤à¤¾à¤°à¥à¤à¤°</span></button>
-    <button class="tab" id="bt-e" onclick="showTab('e')"><span class="ti">ð</span><span class="tl">à¤¹à¤¾à¤à¤¼à¤°à¥</span></button>
-    <button class="tab" id="bt-r" onclick="showTab('r')"><span class="ti">ð§¾</span><span class="tl">à¤¹à¤¿à¤¸à¤¾à¤¬</span></button>
-    <button class="tab" id="bt-x" onclick="showTab('x')"><span class="ti">ð¸</span><span class="tl">à¤à¤°à¥à¤</span></button>
-    <button class="tab" id="bt-m" onclick="showTab('m')"><span class="ti">ð§±</span><span class="tl">à¤®à¤à¥à¤°à¤¿à¤¯à¤²</span></button>
-    <button class="tab" id="bt-a" onclick="showTab('a')"><span class="ti">ð</span><span class="tl">à¤à¤à¥à¤°à¥à¤®à¥à¤à¤</span></button>
+    <button class="tab active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab" id="bt-s" onclick="showTab('s')"><span class="ti">🏠</span><span class="tl">साइट</span></button>
+    <button class="tab" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
+    <button class="tab" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
+    <button class="tab" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
+    <button class="tab" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
+    <button class="tab" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
+    <button class="tab" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
   </div>
 
   <!-- TAB 1: DASHBOARD -->
   <div id="t-d">
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">à¤à¤µà¤°à¤µà¥à¤¯à¥</h3>
+        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">ओवरव्यू</h3>
         <span id="monTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
         <div style="background: #1E293B; color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
-          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">0</b><br><small style="color: #94A3B8; font-weight: 600;">Active à¤à¤¾à¤°à¥à¤à¤°</small>
+          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">0</b><br><small style="color: #94A3B8; font-weight: 600;">Active कारीगर</small>
         </div>
         <div style="background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
-          <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">â¹0</b><br><small style="color: #166534; font-weight: 700;">à¤à¥à¤² à¤¦à¥à¤¨à¤¾</small>
+          <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small>
         </div>
         <div style="background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #FECACA;">
-          <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">â¹0</b><br><small style="color: #DC2626; font-weight: 700;">à¤à¥à¤² à¤²à¥à¤¨à¤¾</small>
+          <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small>
         </div>
       </div>
     </div>
@@ -968,21 +967,21 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- Add Labour Quick Box -->
     <div class="card">
       <button class="btn btn-gold" onclick="toggleBox('addLabourBoxMain')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>+ à¤¨à¤¯à¤¾ à¤à¤¾à¤°à¥à¤à¤° à¤à¥à¤¡à¤¼à¥</span><span>â¼</span>
+        <span>+ नया कारीगर जोड़ो</span><span>▼</span>
       </button>
       <div id="addLabourBoxMain" style="display: none; margin-top: 12px;">
-        <input id="fName" class="input" placeholder="à¤à¤¾à¤°à¥à¤à¤° à¤à¤¾ à¤¨à¤¾à¤®">
-        <input id="fPhone" class="input" placeholder="à¤®à¥à¤¬à¤¾à¤à¤² à¤¨à¤à¤¬à¤°">
+        <input id="fName" class="input" placeholder="कारीगर का नाम">
+        <input id="fPhone" class="input" placeholder="मोबाइल नंबर">
         <div style="display: flex; gap: 8px;">
-          <input id="fWage" class="input" type="number" placeholder="à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥ â¹">
-          <input id="fRent" class="input" type="number" placeholder="à¤à¤®à¤°à¤¾ à¤à¤¿à¤°à¤¾à¤¯à¤¾ â¹">
+          <input id="fWage" class="input" type="number" placeholder="दिहाड़ी ₹">
+          <input id="fRent" class="input" type="number" placeholder="कमरा किराया ₹">
         </div>
         <div style="display: flex; gap: 8px;">
-          <input id="fBijli" class="input" type="number" placeholder="à¤¬à¤¿à¤à¤²à¥ â¹">
-          <input id="fDena" class="input" type="number" placeholder="à¤ªà¤¿à¤à¤²à¤¾ à¤¦à¥à¤¨à¤¾ â¹">
-          <input id="fLena" class="input" type="number" placeholder="à¤ªà¤¿à¤à¤²à¤¾ à¤²à¥à¤¨à¤¾ â¹">
+          <input id="fBijli" class="input" type="number" placeholder="बिजली ₹">
+          <input id="fDena" class="input" type="number" placeholder="पिछला देना ₹">
+          <input id="fLena" class="input" type="number" placeholder="पिछला लेना ₹">
         </div>
-        <button class="btn btn-gold" onclick="addLabour()">à¤à¤¾à¤°à¥à¤à¤° à¤à¥à¤¡à¤¼à¥</button>
+        <button class="btn btn-gold" onclick="addLabour()">कारीगर जोड़ो</button>
         <div id="addMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
     </div>
@@ -990,49 +989,49 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- Bijli Bill Calculator -->
     <div class="card" style="border: 2px solid #FCD34D;">
       <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>â¡ à¤¬à¤¿à¤à¤²à¥ à¤¬à¤¿à¤² à¤à¥à¤²à¤à¥à¤²à¥à¤à¤° (à¤®à¥à¤à¤° à¤°à¥à¤¡à¤¿à¤à¤ à¤¸à¥)</span><span>â¼</span>
+        <span>⚡ बिजली बिल कैलकुलेटर (मीटर रीडिंग से)</span><span>▼</span>
       </button>
       <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
         <input id="bcMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box;" onchange="bcRenderList()">
-        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin: 2px 0 6px 2px;">à¤à¤¾à¤°à¥à¤à¤° à¤à¥à¤¨à¥ <span style="font-weight: 500;">(à¤à¤ à¤¸à¥ à¤à¤¼à¥à¤¯à¤¾à¤¦à¤¾ à¤à¥à¤¨à¥à¤à¥ à¤¤à¥ à¤¬à¤¿à¤² à¤¬à¤°à¤¾à¤¬à¤° à¤¬à¤à¤ à¤à¤¾à¤à¤à¤¾)</span></div>
+        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin: 2px 0 6px 2px;">कारीगर चुनो <span style="font-weight: 500;">(एक से ज़्यादा चुनोगे तो बिल बराबर बंट जाएगा)</span></div>
         <div id="bcLabPicker" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;"></div>
         <div style="display: flex; gap: 8px;">
-          <input id="bcOld" type="number" class="input" placeholder="à¤ªà¥à¤°à¤¾à¤¨à¥ à¤°à¥à¤¡à¤¿à¤à¤" style="flex: 1;" oninput="bcUpdatePreview()">
-          <input id="bcNew" type="number" class="input" placeholder="à¤¨à¤ à¤°à¥à¤¡à¤¿à¤à¤" style="flex: 1;" oninput="bcUpdatePreview()">
+          <input id="bcOld" type="number" class="input" placeholder="पुरानी रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
+          <input id="bcNew" type="number" class="input" placeholder="नई रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
         </div>
-        <input id="bcRate" type="number" class="input" placeholder="à¤¬à¤¿à¤à¤²à¥ à¤°à¥à¤ â¹ / à¤¯à¥à¤¨à¤¿à¤" oninput="bcUpdatePreview()">
-        <div id="bcPreview" style="background: #F1F5F9; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 10px; text-align: center;">à¤¯à¥à¤¨à¤¿à¤: 0 &nbsp;Ã&nbsp; à¤°à¥à¤ â¹0 &nbsp;=&nbsp; à¤¬à¤¿à¤² â¹0</div>
-        <button class="btn btn-gold" id="bcSaveBtn" onclick="bcAddEntry()">+ Add à¤à¤°à¥</button>
+        <input id="bcRate" type="number" class="input" placeholder="बिजली रेट ₹ / यूनिट" oninput="bcUpdatePreview()">
+        <div id="bcPreview" style="background: #F1F5F9; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 10px; text-align: center;">यूनिट: 0 &nbsp;×&nbsp; रेट ₹0 &nbsp;=&nbsp; बिल ₹0</div>
+        <button class="btn btn-gold" id="bcSaveBtn" onclick="bcAddEntry()">+ Add करो</button>
         <button class="btn-sm" id="bcCancelEditBtn" style="background: #F1F5F9; color: #64748B; width: 100%; padding: 8px; margin-top: 6px; font-size: 12px; display: none;" onclick="bcCancelEdit()">Cancel</button>
         <div id="bcMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px 0;">
-          <h4 style="margin: 0; font-size: 13.5px;">â¡ <span id="bcMonthLabel"></span> à¤à¥ à¤¬à¤¿à¤²</h4>
-          <b id="bcTotal" style="color: #B45309; font-size: 14px; white-space: nowrap;">à¤à¥à¤² â¹0</b>
+          <h4 style="margin: 0; font-size: 13.5px;">⚡ <span id="bcMonthLabel"></span> के बिल</h4>
+          <b id="bcTotal" style="color: #B45309; font-size: 14px; white-space: nowrap;">कुल ₹0</b>
         </div>
         <div id="bcList"></div>
-        <div id="bcEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 14px 0;">à¤à¤¸ à¤®à¤¹à¥à¤¨à¥ à¤à¥à¤ à¤¬à¤¿à¤à¤²à¥ à¤¬à¤¿à¤² à¤¨à¤¹à¥à¤ à¤¬à¤¨à¤¾</div>
-        <button class="btn-sm" id="bcShareBtn" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="bcShareWhatsapp()">ð¤ WhatsApp à¤ªà¤° à¤¶à¥à¤¯à¤° à¤à¤°à¥</button>
+        <div id="bcEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 14px 0;">इस महीने कोई बिजली बिल नहीं बना</div>
+        <button class="btn-sm" id="bcShareBtn" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="bcShareWhatsapp()">📤 WhatsApp पर शेयर करो</button>
       </div>
     </div>
 
     <!-- Ongoing Sites -->
     <div class="card" style="border: 2px solid #16A34A;">
       <h3 style="margin: 0 0 10px 0; color: #166534; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
-        <span>ð¢ On Going Running Sites</span>
+        <span>🟢 On Going Running Sites</span>
         <span id="ongoingCount" style="background: #DCFCE7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 11px;"></span>
       </h3>
-      <input id="dashSearchOngoing" class="input" placeholder="ð On Going à¤à¥à¤à¥ - House No / Client" oninput="renderAll()">
+      <input id="dashSearchOngoing" class="input" placeholder="🔍 On Going खोजो - House No / Client" oninput="renderAll()">
       <div id="ongoingList"></div>
     </div>
 
     <!-- Archived Sites -->
     <div class="card" style="border: 2px solid #94A3B8;">
       <h3 style="margin: 0 0 10px 0; color: #475569; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
-        <span>ð¦ Archived Sites</span>
+        <span>📦 Archived Sites</span>
         <span id="closedCount" style="background: #F1F5F9; color: #475569; padding: 4px 10px; border-radius: 20px; font-size: 11px;"></span>
       </h3>
-      <input id="dashSearchClosed" class="input" placeholder="ð Archived à¤à¥à¤à¥..." oninput="renderAll()">
+      <input id="dashSearchClosed" class="input" placeholder="🔍 Archived खोजो..." oninput="renderAll()">
       <div id="closedList"></div>
     </div>
   </div>
@@ -1041,56 +1040,56 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <div id="t-s" style="display: none;">
     <div class="card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" id="addSiteToggleBtn" onclick="toggleBox('addSiteBox2')">
-        <span id="addSiteToggleTxt">ð  à¤¨à¤ à¤¸à¤¾à¤à¤ à¤à¥à¤¡à¤¼à¥</span><span>â¼</span>
+        <span id="addSiteToggleTxt">🏠 नई साइट जोड़ो</span><span>▼</span>
       </button>
       <div id="addSiteBox2" style="display: none; margin-top: 12px;">
         <input id="sHouse" class="input" placeholder="House No">
-        <input id="sAddress" class="input" placeholder="à¤ªà¤¤à¤¾ / à¤²à¥à¤à¥à¤¶à¤¨">
-        <input id="sClient" class="input" placeholder="à¤à¥à¤²à¤¾à¤à¤à¤ à¤à¤¾ à¤¨à¤¾à¤®">
+        <input id="sAddress" class="input" placeholder="पता / लोकेशन">
+        <input id="sClient" class="input" placeholder="क्लाइंट का नाम">
         <select id="sStatus" class="input">
-          <option>à¤à¤² à¤°à¤¹à¤¾</option>
-          <option>à¤ªà¥à¤°à¤¾</option>
+          <option>चल रहा</option>
+          <option>पूरा</option>
         </select>
-        <button class="btn btn-gold" id="siteSaveBtn" onclick="addSite()">+ à¤¸à¤¾à¤à¤ à¤à¥à¤¡à¤¼à¥</button>
+        <button class="btn btn-gold" id="siteSaveBtn" onclick="addSite()">+ साइट जोड़ो</button>
         <button class="btn" id="siteCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelSiteEdit()">Cancel</button>
       </div>
     </div>
 
     <div class="card">
       <button class="btn" style="background: #065F46; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('addPayBox2')">
-        <span>ð° à¤ªà¥à¤¸à¤¾ à¤²à¤¿à¤¯à¤¾ (Payment Received)</span><span>â¼</span>
+        <span>💰 पैसा लिया (Payment Received)</span><span>▼</span>
       </button>
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
-          <input id="spAmt" type="number" class="input" placeholder="à¤°à¤à¤® â¹">
+          <input id="spAmt" type="number" class="input" placeholder="रकम ₹">
           <input id="spDate" type="date" class="input">
         </div>
-        <input id="spNote" class="input" placeholder="Note / à¤à¤¿à¤ªà¥à¤ªà¤£à¥">
-        <button class="btn" id="spSaveBtn" onclick="addSitePayment()">à¤¸à¥à¤µ à¤à¤°à¥</button>
+        <input id="spNote" class="input" placeholder="Note / टिप्पणी">
+        <button class="btn" id="spSaveBtn" onclick="addSitePayment()">सेव करो</button>
         <button class="btn" id="spCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelSitePayEdit()">Cancel</button>
       </div>
     </div>
 
     <div class="card">
       <button class="btn" style="background: #B45309; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('addCostBox2')">
-        <span>ð§¾ à¤ªà¤¿à¤à¤²à¥ à¤²à¤¾à¤à¤¤ à¤à¥à¤¡à¤¼à¥ (Month Wise)</span><span>â¼</span>
+        <span>🧾 पिछली लागत जोड़ो (Month Wise)</span><span>▼</span>
       </button>
       <div id="addCostBox2" style="display: none; margin-top: 12px;">
         <select id="scSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
           <input id="scMonth" type="month" class="input">
-          <input id="scAmt" type="number" class="input" placeholder="à¤²à¤¾à¤à¤¤ â¹">
+          <input id="scAmt" type="number" class="input" placeholder="लागत ₹">
         </div>
-        <input id="scNote" class="input" placeholder="Note / à¤à¤¿à¤ªà¥à¤ªà¤£à¥ (à¤à¥à¤¸à¥: à¤ªà¥à¤°à¤¾à¤¨à¤¾ à¤¹à¤¿à¤¸à¤¾à¤¬)">
-        <button class="btn btn-gold" onclick="addSiteCost()">à¤¸à¥à¤µ à¤à¤°à¥</button>
+        <input id="scNote" class="input" placeholder="Note / टिप्पणी (जैसे: पुराना हिसाब)">
+        <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
         <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
     </div>
 
     <div class="card">
-      <h3 style="margin-top: 0; font-size: 15px;">ð à¤¸à¤¾à¤à¤ à¤µà¤¾à¤à¤ à¤°à¤¿à¤à¥à¤°à¥à¤¡</h3>
-      <input id="siteSearch" class="input" placeholder="ð à¤¸à¤¾à¤à¤ à¤à¥à¤à¥ - House No / Client" oninput="renderAll()">
+      <h3 style="margin-top: 0; font-size: 15px;">📊 साइट वाइज रिकॉर्ड</h3>
+      <input id="siteSearch" class="input" placeholder="🔍 साइट खोजो - House No / Client" oninput="renderAll()">
       <div id="siteList"></div>
     </div>
   </div>
@@ -1098,14 +1097,14 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <!-- TAB 3: LABOURS -->
   <div id="t-l" style="display: none;">
     <div class="card">
-      <h3 style="margin-top: 0; font-size: 15px;">ð· à¤¸à¤­à¥ à¤à¤¾à¤°à¥à¤à¤° à¤¸à¥à¤à¥</h3>
+      <h3 style="margin-top: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(-1)">â</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(-1)">◀</button>
         <input id="kMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('kMonth')">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(1)">â¶</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(1)">▶</button>
       </div>
-      <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">à¤à¤¸ à¤®à¤¹à¥à¤¨à¥ à¤à¤¾ à¤ªà¥à¤°à¤¾ à¤¹à¤¿à¤¸à¤¾à¤¬ â à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥, à¤à¤¿à¤°à¤¾à¤¯à¤¾, à¤¬à¤¿à¤à¤²à¥, à¤¬à¤à¤¾à¤¯à¤¾ â à¤¯à¤¹à¥à¤ à¤¦à¥à¤à¥ à¤à¤° à¤¬à¤¦à¤²à¥</div>
-      <input id="labSearch" class="input" placeholder="ð à¤¨à¤¾à¤® à¤¸à¥ à¤à¥à¤à¥..." oninput="renderAll()">
+      <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">इस महीने का पूरा हिसाब — दिहाड़ी, किराया, बिजली, बकाया — यहीं देखो और बदलो</div>
+      <input id="labSearch" class="input" placeholder="🔍 नाम से खोजो..." oninput="renderAll()">
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
     </div>
@@ -1114,34 +1113,34 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <!-- TAB 4: HAZRI / ATTENDANCE -->
   <div id="t-e" style="display: none;">
     <div class="card">
-      <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">ð à¤¤à¤¾à¤°à¥à¤ à¤à¥à¤¨à¥ (à¤à¤¿à¤¸à¥ à¤­à¥ à¤¦à¤¿à¤¨ à¤à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤¦à¥à¤à¥ / à¤à¤¡à¤¿à¤ à¤à¤°à¥)</div>
+      <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(-1)">â</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(-1)">◀</button>
         <input id="eDate" type="date" class="input" style="margin-bottom: 0; flex: 1;" onchange="renderAll()">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(1)">â¶</button>
-        <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setEDateToday()">à¤à¤</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(1)">▶</button>
+        <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setEDateToday()">आज</button>
       </div>
       <input id="eLabSearch" type="hidden" oninput="renderAll()">
-      <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">âï¸ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤à¤¡à¤¿à¤ à¤¹à¥ à¤°à¤¹à¥ à¤¹à¥ (<span id="eDateTxt"></span>)</div>
+      <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ हाज़री एडिट हो रही है (<span id="eDateTxt"></span>)</div>
       
       <select id="eLabour" class="input" onchange="renderAll()"></select>
       <select id="eSite" class="input">
-        <option value="">ð  à¤¸à¤¾à¤à¤ (Optional)</option>
+        <option value="">🏠 साइट (Optional)</option>
       </select>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0;">
-        <div class="pt" data-v="0" onclick="pickDay(this)">A - à¤à¥à¤à¥à¤à¥</div>
-        <div class="pt sel" data-v="1" onclick="pickDay(this)">P - à¤¹à¤¾à¤à¤¼à¤¿à¤°</div>
-        <div class="pt" data-v="0.5" onclick="pickDay(this)">H - à¤à¤§à¤¾</div>
-        <div class="pt" data-v="1.5" onclick="pickDay(this)">1.5 - à¤¡à¥à¤¢à¤¼</div>
-        <div class="pt" data-v="2" onclick="pickDay(this)">2 - à¤¡à¤¬à¤²</div>
-        <div class="pt" data-v="custom" onclick="pickDay(this)">âï¸ à¤à¤¸à¥à¤à¤®</div>
+        <div class="pt" data-v="0" onclick="pickDay(this)">A - छुट्टी</div>
+        <div class="pt sel" data-v="1" onclick="pickDay(this)">P - हाज़िर</div>
+        <div class="pt" data-v="0.5" onclick="pickDay(this)">H - आधा</div>
+        <div class="pt" data-v="1.5" onclick="pickDay(this)">1.5 - डेढ़</div>
+        <div class="pt" data-v="2" onclick="pickDay(this)">2 - डबल</div>
+        <div class="pt" data-v="custom" onclick="pickDay(this)">⚙️ कस्टम</div>
       </div>
-      <input id="eCustom" type="number" step="0.1" class="input" placeholder="à¤à¤¸à¥à¤à¤® à¤¦à¤¿à¤¨ à¤¦à¤°à¥à¤ à¤à¤°à¥à¤" style="display: none;">
+      <input id="eCustom" type="number" step="0.1" class="input" placeholder="कस्टम दिन दर्ज करें" style="display: none;">
       <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-        <input id="eWith" type="number" class="input" placeholder="à¤¨à¤¿à¤à¤¾à¤¸à¥ â¹ (Advance)" style="margin-bottom: 0;">
-        <input id="eNote" class="input" placeholder="à¤à¤¾à¤® à¤µà¤¿à¤µà¤°à¤£ / Note" style="margin-bottom: 0;">
+        <input id="eWith" type="number" class="input" placeholder="निकासी ₹ (Advance)" style="margin-bottom: 0;">
+        <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0;">
       </div>
-      <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">ð¾ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤¸à¥à¤µ</button>
+      <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">💾 हाज़री सेव</button>
       <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
       <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
@@ -1150,22 +1149,22 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
     <div class="card" style="border: 2px solid #FCA5A5;">
       <button class="btn" style="background: #DC2626; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('whBox'); whRenderList();">
-        <span>ð¸ à¤à¤ à¤¦à¤¿à¤¨ à¤®à¥à¤ à¤¦à¥à¤¬à¤¾à¤°à¤¾ à¤ªà¥à¤¸à¤¾ à¤¦à¤¿à¤¯à¤¾ (Extra à¤ªà¥à¤®à¥à¤à¤)</span><span>â¼</span>
+        <span>💸 एक दिन में दोबारा पैसा दिया (Extra पेमेंट)</span><span>▼</span>
       </button>
       <div id="whBox" style="display: none; margin-top: 12px;">
-        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">à¤à¤ªà¤° à¤à¥ à¤¨à¤¿à¤à¤¾à¤¸à¥ à¤µà¤¾à¤²à¤¾ à¤¬à¥à¤à¥à¤¸ à¤¹à¥ à¤µà¥ à¤¹à¤¾à¤à¤¼à¤¿à¤°à¥ à¤à¥ à¤¸à¤¾à¤¥ à¤à¤ à¤¹à¥ à¤à¤à¤à¥à¤°à¥ à¤¹à¥ â à¤¯à¤¹à¤¾à¤ à¤¸à¥ à¤à¤¸à¥ à¤¦à¤¿à¤¨, à¤à¤¸à¥ à¤à¤¾à¤°à¥à¤à¤° à¤à¥ à¤¦à¥à¤¸à¤°à¥/à¤¤à¥à¤¸à¤°à¥ à¤¬à¤¾à¤° à¤¦à¤¿à¤¯à¤¾ à¤à¤¯à¤¾ à¤ªà¥à¤¸à¤¾ à¤à¤²à¤ à¤¸à¥ à¤à¥à¤¡à¤¼à¥</div>
+        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
         <input id="whDate" type="date" class="input" onchange="whRenderList()">
         <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-          <input id="whAmt" type="number" class="input" placeholder="â¹ à¤à¤¿à¤¤à¤¨à¤¾ à¤¦à¤¿à¤¯à¤¾" style="margin-bottom: 0;">
+          <input id="whAmt" type="number" class="input" placeholder="₹ कितना दिया" style="margin-bottom: 0;">
           <input id="whNote" class="input" placeholder="Note (optional)" style="margin-bottom: 0;">
         </div>
-        <button class="btn btn-save" onclick="whAdd()">ð¾ à¤ªà¥à¤®à¥à¤à¤ à¤à¥à¤¡à¤¼à¥</button>
+        <button class="btn btn-save" onclick="whAdd()">💾 पेमेंट जोड़ो</button>
         <div id="whMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
         <div id="whListWrap" style="margin-top: 14px;">
-          <h4 style="margin: 0 0 8px 0; font-size: 13px;">ð§¾ <span id="whDateLabel"></span> à¤à¥ Extra à¤ªà¥à¤®à¥à¤à¤</h4>
+          <h4 style="margin: 0 0 8px 0; font-size: 13px;">🧾 <span id="whDateLabel"></span> के Extra पेमेंट</h4>
           <div id="whList"></div>
-          <div id="whEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">à¤à¤¸ à¤¤à¤¾à¤°à¥à¤à¤¼ à¤à¥ à¤à¥à¤ Extra à¤ªà¥à¤®à¥à¤à¤ à¤¨à¤¹à¥à¤</div>
+          <div id="whEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस तारीख़ को कोई Extra पेमेंट नहीं</div>
         </div>
       </div>
     </div>
@@ -1173,26 +1172,26 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- BULK HAZRI -->
     <div class="card" style="border: 2px solid #C7D2FE;">
       <button class="btn" style="background: #4338CA; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bhBox'); renderBulkHazri(true);">
-        <span>ð¥ à¤¸à¤¬à¤à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤à¤ à¤¸à¤¾à¤¥</span><span>â¼</span>
+        <span>👥 सबकी हाज़री एक साथ</span><span>▼</span>
       </button>
       <div id="bhBox" style="display: none; margin-top: 12px;">
-        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">ð à¤¤à¤¾à¤°à¥à¤: <span id="bhDateTxt"></span> (à¤à¤ªà¤° à¤¸à¥ à¤¬à¤¦à¤²à¥à¤)</div>
-        <select id="bhSite" class="input"><option value="">ð  à¤¸à¤¾à¤à¤ (à¤¸à¤¬à¤à¥ à¤²à¤¿à¤, Optional)</option></select>
+        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
+        <select id="bhSite" class="input"><option value="">🏠 साइट (सबके लिए, Optional)</option></select>
         <div style="display: flex; gap: 6px; margin-bottom: 10px;">
-          <button class="btn-sm" style="flex: 1; background: #DCFCE7; color: #166534; padding: 10px 6px;" onclick="bulkHazriAll(1)">à¤¸à¤¬à¤à¥ P</button>
-          <button class="btn-sm" style="flex: 1; background: #FEF3C7; color: #92400E; padding: 10px 6px;" onclick="bulkHazriAll(0.5)">à¤¸à¤¬à¤à¥ à¤à¤§à¤¾</button>
-          <button class="btn-sm" style="flex: 1; background: #F1F5F9; color: #475569; padding: 10px 6px;" onclick="bulkHazriAll(null)">à¤¸à¤¬ à¤¸à¤¾à¤«</button>
+          <button class="btn-sm" style="flex: 1; background: #DCFCE7; color: #166534; padding: 10px 6px;" onclick="bulkHazriAll(1)">सबको P</button>
+          <button class="btn-sm" style="flex: 1; background: #FEF3C7; color: #92400E; padding: 10px 6px;" onclick="bulkHazriAll(0.5)">सबको आधा</button>
+          <button class="btn-sm" style="flex: 1; background: #F1F5F9; color: #475569; padding: 10px 6px;" onclick="bulkHazriAll(null)">सब साफ</button>
         </div>
         <div id="bhList"></div>
         <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;"></div>
-        <button class="btn btn-save" onclick="saveBulkHazri()">ð¾ à¤¸à¤¬à¤à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤¸à¥à¤µ à¤à¤°à¥à¤</button>
+        <button class="btn btn-save" onclick="saveBulkHazri()">💾 सबकी हाज़री सेव करें</button>
         <div id="bhMsg" style="font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       </div>
     </div>
 
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-        <span>ð à¤¹à¤¾à¤à¤¼à¤°à¥ - <span id="todayDateTxt"></span></span>
+        <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
       </h3>
       <div id="todayTable"></div>
@@ -1200,20 +1199,20 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
 
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px;">ðï¸ à¤à¥à¤²à¥à¤à¤¡à¤° - <span id="selLabName2" style="color: #4F46E5;"></span></h3>
+      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px;">🗓️ कैलेंडर - <span id="selLabName2" style="color: #4F46E5;"></span></h3>
       <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center;">
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DCFCE7; border-color: #16A34A;"></span>à¤¹à¤¾à¤à¤¼à¤¿à¤° 1P</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEF3C7; border-color: #F59E0B;"></span>à¤à¤§à¤¾ 0.5</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #F3E8FF; border-color: #A855F7;"></span>à¤¡à¥à¤¢à¤¼ 1.5</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DBEAFE; border-color: #2563EB;"></span>à¤¡à¤¬à¤² 2P</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEE2E2; border-color: #EF4444;"></span>à¤à¥à¤à¥à¤à¥ A</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FFFFFF; border: 1.5px dashed #CBD5E1;"></span>à¤­à¤µà¤¿à¤·à¥à¤¯</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DCFCE7; border-color: #16A34A;"></span>हाज़िर 1P</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEF3C7; border-color: #F59E0B;"></span>आधा 0.5</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #F3E8FF; border-color: #A855F7;"></span>डेढ़ 1.5</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DBEAFE; border-color: #2563EB;"></span>डबल 2P</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEE2E2; border-color: #EF4444;"></span>छुट्टी A</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FFFFFF; border: 1.5px dashed #CBD5E1;"></span>भविष्य</span>
       </div>
       <div id="calendarBox"></div>
     </div>
 
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px;">ðï¸ <span id="selLabName">à¤à¤¾à¤°à¥à¤à¤°</span> à¤à¤¾ à¤®à¤¹à¥à¤¨à¤¾ à¤°à¤¿à¤à¥à¤°à¥à¤¡</h3>
+      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px;">🗓️ <span id="selLabName">कारीगर</span> का महीना रिकॉर्ड</h3>
       <div id="fullHistory"></div>
     </div>
   </div>
@@ -1222,17 +1221,17 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <div id="t-r" style="display: none;">
     <div class="card">
       <h3 style="margin-top: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
-        <span>ð§¾</span> à¤¹à¤¿à¤¸à¤¾à¤¬ - à¤®à¤à¤¦à¥à¤° à¤°à¥à¤ à¤à¤¾à¤°à¥à¤¡ à¤à¤¨à¤°à¥à¤à¤°
+        <span>🧾</span> हिसाब - मजदूर रेट कार्ड जनरेटर
       </h3>
       <div style="display: flex; gap: 8px;">
         <input id="rMonth" type="month" class="input">
         <select id="rLabour" class="input">
-          <option value="all">à¤¸à¤¬à¤à¤¾ à¤¹à¤¿à¤¸à¤¾à¤¬</option>
+          <option value="all">सबका हिसाब</option>
         </select>
       </div>
-      <input id="rLabSearch" class="input" placeholder="ð à¤¹à¤¿à¤¸à¤¾à¤¬ à¤à¥ à¤²à¤¿à¤ à¤à¤¾à¤°à¥à¤à¤° à¤à¥à¤à¥..." oninput="filterRLab()">
+      <input id="rLabSearch" class="input" placeholder="🔍 हिसाब के लिए कारीगर खोजो..." oninput="filterRLab()">
       <button class="btn btn-gold" onclick="makeReport()" style="display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px;">
-        <span>ð à¤°à¥à¤ à¤à¤¾à¤°à¥à¤¡ à¤¦à¥à¤à¥à¤ à¤à¤µà¤ WhatsApp à¤ªà¤°à¥à¤à¥ à¤¬à¤¨à¤¾à¤à¤</span>
+        <span>📄 रेट कार्ड देखें एवं WhatsApp पर्ची बनाएं</span>
       </button>
 
       <!-- The Rate Card Output Box -->
@@ -1240,12 +1239,12 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
   </div>
 
-  <!-- TAB: BUSINESS EXPENSES (à¤µà¥à¤¯à¤¾à¤ªà¤¾à¤° à¤à¤°à¥à¤) -->
+  <!-- TAB: BUSINESS EXPENSES (व्यापार खर्च) -->
   <div id="t-x" style="display: none;">
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="margin: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
-          <span>ð¸</span> à¤µà¥à¤¯à¤¾à¤ªà¤¾à¤°à¤¿à¤ à¤à¤°à¥à¤ (Business Expenses)
+          <span>💸</span> व्यापारिक खर्च (Business Expenses)
         </h3>
         <input id="xMonth" type="month" class="input" style="width: auto; margin: 0; padding: 6px 10px;" onchange="renderExpenses()">
       </div>
@@ -1253,20 +1252,20 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <!-- Bento Overview of Expenses -->
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;">
         <div style="background: #1E293B; color: white; padding: 14px 8px; border-radius: 16px; text-align: center;">
-          <small style="color: #94A3B8; font-weight: 700;">à¤à¥à¤² à¤µà¥à¤¯à¤¾à¤ªà¤¾à¤° à¤à¤°à¥à¤</small><br>
-          <b id="xTotAmt" style="font-size: 20px; color: #F87171;">â¹0</b>
+          <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च</small><br>
+          <b id="xTotAmt" style="font-size: 20px; color: #F87171;">₹0</b>
         </div>
         <div style="background: #FEF3C7; padding: 14px 8px; border-radius: 16px; text-align: center; border: 1.5px solid #FCD34D;">
-          <small style="color: #92400E; font-weight: 700;">â½ à¤ªà¥à¤à¥à¤°à¥à¤² / à¤¡à¥à¤à¤²</small><br>
-          <b id="xPetrolAmt" style="color: #B45309; font-size: 18px;">â¹0</b>
+          <small style="color: #92400E; font-weight: 700;">⛽ पेट्रोल / डीजल</small><br>
+          <b id="xPetrolAmt" style="color: #B45309; font-size: 18px;">₹0</b>
         </div>
         <div style="background: #DCFCE7; padding: 12px 8px; border-radius: 16px; text-align: center; border: 1.5px solid #BBF7D0;">
-          <small style="color: #166534; font-weight: 700;">ð ï¸ à¤®à¤¶à¥à¤¨ & à¤à¥à¤²à¥à¤¸</small><br>
-          <b id="xToolsAmt" style="color: #15803D; font-size: 16px;">â¹0</b>
+          <small style="color: #166534; font-weight: 700;">🛠️ मशीन & टूल्स</small><br>
+          <b id="xToolsAmt" style="color: #15803D; font-size: 16px;">₹0</b>
         </div>
         <div style="background: #EEF2FF; padding: 12px 8px; border-radius: 16px; text-align: center; border: 1.5px solid #C7D2FE;">
-          <small style="color: #3730A3; font-weight: 700;">ð± à¤°à¤¿à¤à¤¾à¤°à¥à¤ & à¤à¤¨à¥à¤¯</small><br>
-          <b id="xOtherAmt" style="color: #4338CA; font-size: 16px;">â¹0</b>
+          <small style="color: #3730A3; font-weight: 700;">📱 रिचार्ज & अन्य</small><br>
+          <b id="xOtherAmt" style="color: #4338CA; font-size: 16px;">₹0</b>
         </div>
       </div>
     </div>
@@ -1274,30 +1273,30 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- Add New Expense Form -->
     <div class="card">
       <button class="btn btn-gold" onclick="toggleBox('addExpBox')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>+ à¤¨à¤¯à¤¾ à¤µà¥à¤¯à¤¾à¤ªà¤¾à¤° à¤à¤°à¥à¤ à¤à¥à¤¡à¤¼à¥à¤</span><span>â¼</span>
+        <span>+ नया व्यापार खर्च जोड़ें</span><span>▼</span>
       </button>
       <div id="addExpBox" style="display: none; margin-top: 12px;">
         <div style="display: flex; gap: 8px;">
           <input id="xDate" type="date" class="input" style="flex: 1;">
           <select id="xCat" class="input" style="flex: 1;">
-            <option value="petrol">â½ à¤ªà¥à¤à¥à¤°à¥à¤² / à¤¡à¥à¤à¤²</option>
-            <option value="recharge">ð± à¤®à¥à¤¬à¤¾à¤à¤² / à¤¨à¥à¤ à¤°à¤¿à¤à¤¾à¤°à¥à¤</option>
-            <option value="repair">ð ï¸ à¤®à¤¶à¥à¤¨ / à¤à¤à¤° à¤°à¤¿à¤ªà¥à¤¯à¤°</option>
-            <option value="tools">ðª à¤à¤à¤¾à¤° / à¤¬à¥à¤²à¥à¤¡ / à¤ªà¤¤à¥à¤¤à¥ à¤à¤°à¥à¤¦</option>
-            <option value="food">â à¤à¤¾à¤¯ / à¤¨à¤¾à¤¶à¥à¤¤à¤¾ / à¤à¤¾à¤¨à¤¾</option>
-            <option value="others">ð¦ à¤à¤¨à¥à¤¯ à¤µà¤¿à¤µà¤¿à¤§ à¤à¤°à¥à¤</option>
+            <option value="petrol">⛽ पेट्रोल / डीजल</option>
+            <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
+            <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
+            <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
+            <option value="food">☕ चाय / नाश्ता / खाना</option>
+            <option value="others">📦 अन्य विविध खर्च</option>
           </select>
         </div>
         <div style="display: flex; gap: 8px;">
-          <input id="xAmt" type="number" class="input" placeholder="à¤°à¤à¤® â¹" style="flex: 1;">
+          <input id="xAmt" type="number" class="input" placeholder="रकम ₹" style="flex: 1;">
           <select id="xPayMode" class="input" style="flex: 1;">
-            <option value="cash">ðµ à¤¨à¤à¤¦ (Cash)</option>
-            <option value="upi">ð² UPI / Online</option>
+            <option value="cash">💵 नकद (Cash)</option>
+            <option value="upi">📲 UPI / Online</option>
           </select>
         </div>
-        <input id="xNote" class="input" placeholder="à¤µà¤¿à¤µà¤°à¤£ / à¤¨à¥à¤ (à¤à¤¦à¤¾. à¤®à¤¾à¤°à¥à¤¤à¤¿ à¤µà¥à¤¨ à¤®à¥à¤ à¤ªà¥à¤à¥à¤°à¥à¤², 4 à¤à¤à¤ à¤¬à¥à¤²à¥à¤¡)">
-        <div id="xEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">âï¸ à¤à¤°à¥à¤ à¤à¤¡à¤¿à¤ à¤¹à¥ à¤°à¤¹à¤¾ à¤¹à¥</div>
-        <button class="btn btn-gold" id="xSaveBtn" onclick="addExpense()">ð¾ à¤à¤°à¥à¤ à¤¦à¤°à¥à¤ à¤à¤°à¥à¤</button>
+        <input id="xNote" class="input" placeholder="विवरण / नोट (उदा. मारुति वैन में पेट्रोल, 4 इंच ब्लेड)">
+        <div id="xEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ खर्च एडिट हो रहा है</div>
+        <button class="btn btn-gold" id="xSaveBtn" onclick="addExpense()">💾 खर्च दर्ज करें</button>
         <button class="btn" id="xCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelExpenseEdit()">Cancel</button>
         <div id="xMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
@@ -1306,15 +1305,15 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- Expenses List -->
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <h3 style="margin: 0; font-size: 15px;">ð à¤à¤¸ à¤®à¤¹à¥à¤¨à¥ à¤à¥ à¤à¤°à¥à¤à¥</h3>
-        <span id="xCountBadge" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">0 à¤à¤°à¥à¤à¥</span>
+        <h3 style="margin: 0; font-size: 15px;">📋 इस महीने के खर्चे</h3>
+        <span id="xCountBadge" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">0 खर्चे</span>
       </div>
-      <input id="xSearch" class="input" placeholder="ð à¤¨à¥à¤ à¤¯à¤¾ à¤¶à¥à¤°à¥à¤£à¥ à¤¸à¥ à¤à¥à¤à¥à¤..." oninput="renderExpenses()">
+      <input id="xSearch" class="input" placeholder="🔍 नोट या श्रेणी से खोजें..." oninput="renderExpenses()">
       <div id="expenseList"></div>
     </div>
   </div>
 
-  <!-- TAB: MATERIAL (à¤®à¤à¥à¤°à¤¿à¤¯à¤²) -->
+  <!-- TAB: MATERIAL (मटेरियल) -->
   <div id="t-m" style="display: none;">
     <!-- Section Toggle: dynamic (NOVA / ACC / user-added) -->
     <div class="card" style="padding: 12px;">
@@ -1323,78 +1322,78 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- Summary -->
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">ð§± à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤¹à¤¿à¤¸à¤¾à¤¬ <span id="mNSLabel" style="font-size:11px;background:#4F46E5;color:white;padding:3px 9px;border-radius:20px;vertical-align:middle;">NOVA</span></h3>
+        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">🧱 मटेरियल हिसाब <span id="mNSLabel" style="font-size:11px;background:#4F46E5;color:white;padding:3px 9px;border-radius:20px;vertical-align:middle;">NOVA</span></h3>
         <span id="mPeriodTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
         <div style="background: #1E293B; color: white; padding: 12px 4px; border-radius: 16px; text-align: center;">
-          <small style="color: #94A3B8; font-weight: 700; font-size: 10px;">à¤à¤ à¤à¤¾ à¤à¥à¤²</small><br>
-          <b id="mTodayAmt" style="font-size: 15px; color: #FBBF24;">â¹0</b>
+          <small style="color: #94A3B8; font-weight: 700; font-size: 10px;">आज का कुल</small><br>
+          <b id="mTodayAmt" style="font-size: 15px; color: #FBBF24;">₹0</b>
         </div>
         <div style="background: #FEF3C7; padding: 12px 4px; border-radius: 16px; text-align: center; border: 1.5px solid #FCD34D;">
-          <small style="color: #92400E; font-weight: 700; font-size: 10px;">à¤à¤¸ à¤®à¤¹à¥à¤¨à¥</small><br>
-          <b id="mMonthAmt" style="color: #B45309; font-size: 15px;">â¹0</b>
+          <small style="color: #92400E; font-weight: 700; font-size: 10px;">इस महीने</small><br>
+          <b id="mMonthAmt" style="color: #B45309; font-size: 15px;">₹0</b>
         </div>
         <div style="background: #DCFCE7; padding: 12px 4px; border-radius: 16px; text-align: center; border: 1.5px solid #BBF7D0;">
-          <small style="color: #166534; font-weight: 700; font-size: 10px;">à¤à¤¸ à¤¸à¤¾à¤²</small><br>
-          <b id="mYearAmt" style="color: #15803D; font-size: 15px;">â¹0</b>
+          <small style="color: #166534; font-weight: 700; font-size: 10px;">इस साल</small><br>
+          <b id="mYearAmt" style="color: #15803D; font-size: 15px;">₹0</b>
         </div>
       </div>
     </div>
 
     <!-- Commission Payment Received -->
     <div class="card" style="border: 2px solid #C7D2FE;">
-      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">ð° <span id="mpNSLabel">NOVA</span> à¤¸à¥ à¤ªà¥à¤®à¥à¤à¤ (à¤à¤®à¥à¤¶à¤¨ à¤ªà¥à¤°à¤¾à¤ªà¥à¤¤à¤¿)</h3>
+      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (कमीशन प्राप्ति)</h3>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
         <div style="background: #EEF2FF; padding: 10px 4px; border-radius: 14px; text-align: center;">
-          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">à¤à¥à¤² à¤à¤®à¥à¤¶à¤¨ (à¤à¤¬ à¤¤à¤)</small><br>
-          <b id="mpEarned" style="font-size: 13px; color: #4338CA; white-space: nowrap;">â¹0</b>
+          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">कुल कमीशन (अब तक)</small><br>
+          <b id="mpEarned" style="font-size: 13px; color: #4338CA; white-space: nowrap;">₹0</b>
         </div>
         <div style="background: #DCFCE7; padding: 10px 4px; border-radius: 14px; text-align: center;">
-          <small style="color: #166534; font-weight: 700; font-size: 9.5px;">à¤à¥à¤² à¤®à¤¿à¤²à¤¾</small><br>
-          <b id="mpReceived" style="font-size: 13px; color: #166534; white-space: nowrap;">â¹0</b>
+          <small style="color: #166534; font-weight: 700; font-size: 9.5px;">कुल मिला</small><br>
+          <b id="mpReceived" style="font-size: 13px; color: #166534; white-space: nowrap;">₹0</b>
         </div>
         <div style="background: #FEE2E2; padding: 10px 4px; border-radius: 14px; text-align: center;">
-          <small style="color: #991B1B; font-weight: 700; font-size: 9.5px;">à¤¬à¤à¤¾à¤¯à¤¾</small><br>
-          <b id="mpPending" style="font-size: 13px; color: #991B1B; white-space: nowrap;">â¹0</b>
+          <small style="color: #991B1B; font-weight: 700; font-size: 9.5px;">बकाया</small><br>
+          <b id="mpPending" style="font-size: 13px; color: #991B1B; white-space: nowrap;">₹0</b>
         </div>
       </div>
       <button class="btn btn-gold" onclick="toggleBox('mpBox')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>+ à¤ªà¥à¤®à¥à¤à¤ à¤®à¤¿à¤²à¤¾ à¤à¥à¤¡à¤¼à¥</span><span>â¼</span>
+        <span>+ पेमेंट मिला जोड़ो</span><span>▼</span>
       </button>
       <div id="mpBox" style="display: none; margin-top: 12px;">
         <input id="mpDate" type="date" class="input" style="max-width: 100%; box-sizing: border-box;">
-        <input id="mpAmount" type="number" class="input" placeholder="â¹ à¤à¤¿à¤¤à¤¨à¤¾ à¤®à¤¿à¤²à¤¾">
-        <input id="mpNote" class="input" placeholder="Note (à¤à¥à¤¸à¥: cheque à¤¨à¤. / bank transfer)">
-        <button class="btn btn-save" id="mpSaveBtn" onclick="matPaymentAdd()">ð¾ à¤ªà¥à¤®à¥à¤à¤ à¤¸à¥à¤µ à¤à¤°à¥</button>
+        <input id="mpAmount" type="number" class="input" placeholder="₹ कितना मिला">
+        <input id="mpNote" class="input" placeholder="Note (जैसे: cheque नं. / bank transfer)">
+        <button class="btn btn-save" id="mpSaveBtn" onclick="matPaymentAdd()">💾 पेमेंट सेव करो</button>
         <button class="btn" id="mpCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="matPaymentCancelEdit()">Cancel</button>
         <div id="mpMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       </div>
       <div id="mpListWrap" style="margin-top: 14px;">
-        <h4 style="margin: 0 0 8px 0; font-size: 13px;">ð§¾ à¤ªà¥à¤®à¥à¤à¤ à¤¹à¤¿à¤¸à¥à¤à¥à¤°à¥</h4>
+        <h4 style="margin: 0 0 8px 0; font-size: 13px;">🧾 पेमेंट हिस्ट्री</h4>
         <div id="mpList"></div>
-        <div id="mpEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 12px 0;">à¤à¤­à¥ à¤à¥à¤ à¤ªà¥à¤®à¥à¤à¤ à¤¦à¤°à¥à¤ à¤¨à¤¹à¥à¤</div>
+        <div id="mpEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 12px 0;">अभी कोई पेमेंट दर्ज नहीं</div>
       </div>
-      <button class="btn-sm" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="matPaymentShareWhatsapp()">ð¤ WhatsApp à¤ªà¤° à¤¹à¤¿à¤¸à¤¾à¤¬ à¤­à¥à¤à¥</button>
+      <button class="btn-sm" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="matPaymentShareWhatsapp()">📤 WhatsApp पर हिसाब भेजो</button>
     </div>
 
     <!-- Item Master -->
     <div class="card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('mItemBox')">
-        <span>ð¦ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¤® à¤µ à¤°à¥à¤ (à¤à¤ à¤¬à¤¾à¤° à¤¸à¥à¤µ à¤à¤°à¥à¤)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0</span>
+        <span>📦 मटेरियल आइटम व रेट (एक बार सेव करें)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0</span>
       </button>
       <div id="mItemBox" style="display: none; margin-top: 12px;">
-        <input id="miName" class="input" placeholder="à¤à¤à¤à¤® à¤à¤¾ à¤¨à¤¾à¤® (à¤à¥à¤¸à¥: Chemical, Epoxy, Cement)">
+        <input id="miName" class="input" placeholder="आइटम का नाम (जैसे: Chemical, Epoxy, Cement)">
         <div style="display: flex; gap: 8px;">
-          <input id="miUnit" class="input" list="miUnitList" placeholder="à¤¯à¥à¤¨à¤¿à¤ (à¤¬à¥à¤ / à¤¬à¤¾à¤²à¥à¤à¥)" style="flex: 1;">
+          <input id="miUnit" class="input" list="miUnitList" placeholder="यूनिट (बैग / बाल्टी)" style="flex: 1;">
           <datalist id="miUnitList">
-            <option value="à¤¬à¥à¤"></option><option value="à¤¬à¤¾à¤²à¥à¤à¥"></option><option value="à¤à¤¿à¤²à¥"></option>
-            <option value="à¤²à¥à¤à¤°"></option><option value="à¤ªà¥à¤¸"></option><option value="à¤¬à¥à¤à¥à¤¸"></option>
-            <option value="à¤¡à¤¿à¤¬à¥à¤¬à¤¾"></option><option value="à¤«à¥à¤"></option><option value="à¤à¥à¤°à¥à¤²à¥"></option>
+            <option value="बैग"></option><option value="बाल्टी"></option><option value="किलो"></option>
+            <option value="लीटर"></option><option value="पीस"></option><option value="बॉक्स"></option>
+            <option value="डिब्बा"></option><option value="फीट"></option><option value="ट्रॉली"></option>
           </datalist>
-          <input id="miRate" type="number" class="input" placeholder="à¤°à¥à¤ â¹ (à¤ªà¥à¤°à¤¤à¤¿ à¤¯à¥à¤¨à¤¿à¤)" style="flex: 1;">
+          <input id="miRate" type="number" class="input" placeholder="रेट ₹ (प्रति यूनिट)" style="flex: 1;">
         </div>
-        <button class="btn btn-gold" id="miSaveBtn" onclick="saveMatItem()">+ à¤à¤à¤à¤® à¤¸à¥à¤µ à¤à¤°à¥à¤</button>
+        <button class="btn btn-gold" id="miSaveBtn" onclick="saveMatItem()">+ आइटम सेव करें</button>
         <button class="btn" id="miCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelMatItemEdit()">Cancel</button>
         <div id="miMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
         <div id="mItemList" style="margin-top: 10px;"></div>
@@ -1403,27 +1402,27 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
     <!-- Entry Form -->
     <div class="card">
-      <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">ð à¤¤à¤¾à¤°à¥à¤ à¤à¥à¤¨à¥à¤</div>
+      <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनें</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftMDate(-1)">â</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftMDate(-1)">◀</button>
         <input id="meDate" type="date" class="input" style="margin-bottom: 0; flex: 1;" onchange="renderMaterial()">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftMDate(1)">â¶</button>
-        <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setMDateToday()">à¤à¤</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftMDate(1)">▶</button>
+        <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setMDateToday()">आज</button>
       </div>
-      <div id="meEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">âï¸ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¥à¤°à¥ à¤à¤¡à¤¿à¤ à¤¹à¥ à¤°à¤¹à¥ à¤¹à¥</div>
+      <div id="meEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ मटेरियल एंट्री एडिट हो रही है</div>
       <select id="meItem" class="input" onchange="onMatItemPick()"></select>
       <div style="display: flex; gap: 8px;">
-        <input id="meQty" type="number" step="any" class="input" placeholder="à¤®à¤¾à¤¤à¥à¤°à¤¾ (Qty)" oninput="updateMatTotal()" style="flex: 1;">
-        <input id="meRate" type="number" step="any" class="input" placeholder="à¤°à¥à¤ â¹" oninput="updateMatTotal()" style="flex: 1;">
+        <input id="meQty" type="number" step="any" class="input" placeholder="मात्रा (Qty)" oninput="updateMatTotal()" style="flex: 1;">
+        <input id="meRate" type="number" step="any" class="input" placeholder="रेट ₹" oninput="updateMatTotal()" style="flex: 1;">
       </div>
       <div id="meTotalBox" style="background: #0F172A; color: white; padding: 12px 14px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-        <span id="meCalcTxt" style="font-size: 12px; color: #CBD5E1; font-weight: 600;">0 Ã â¹0</span>
-        <b id="meTotalTxt" style="font-size: 18px; color: #FBBF24;">â¹0</b>
+        <span id="meCalcTxt" style="font-size: 12px; color: #CBD5E1; font-weight: 600;">0 × ₹0</span>
+        <b id="meTotalTxt" style="font-size: 18px; color: #FBBF24;">₹0</b>
       </div>
       <select id="meSite" class="input"></select>
-      <input id="meCustomer" class="input" placeholder="à¤¯à¤¾ à¤à¥à¤°à¤¾à¤¹à¤ à¤à¤¾ à¤¨à¤¾à¤® à¤²à¤¿à¤à¥à¤ (à¤à¤à¤° à¤¸à¤¾à¤à¤ à¤²à¤¿à¤¸à¥à¤ à¤®à¥à¤ à¤¨à¤¹à¥à¤ à¤¹à¥)">
-      <input id="meNote" class="input" placeholder="Note / à¤à¤¿à¤ªà¥à¤ªà¤£à¥ (à¤à¥à¤¸à¥: à¤¦à¥à¤à¤¾à¤¨ à¤à¤¾ à¤¨à¤¾à¤®, à¤¬à¤¿à¤² à¤¨à¤.)">
-      <button class="btn btn-save" id="meSaveBtn" onclick="saveMatEntry()">ð¾ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¥à¤°à¥ à¤¸à¥à¤µ</button>
+      <input id="meCustomer" class="input" placeholder="या ग्राहक का नाम लिखें (अगर साइट लिस्ट में नहीं है)">
+      <input id="meNote" class="input" placeholder="Note / टिप्पणी (जैसे: दुकान का नाम, बिल नं.)">
+      <button class="btn btn-save" id="meSaveBtn" onclick="saveMatEntry()">💾 मटेरियल एंट्री सेव</button>
       <button class="btn" id="meCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelMatEntryEdit()">Cancel</button>
       <div id="meMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
     </div>
@@ -1431,20 +1430,20 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- BULK MATERIAL -->
     <div class="card" style="border: 2px solid #C7D2FE;">
       <button class="btn" style="background: #4338CA; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bmBox'); renderBulkMat(true);">
-        <span>ð¦ à¤à¤ à¤¸à¤¾à¤¥ à¤à¤ à¤®à¤à¥à¤°à¤¿à¤¯à¤²</span><span>â¼</span>
+        <span>📦 एक साथ कई मटेरियल</span><span>▼</span>
       </button>
       <div id="bmBox" style="display: none; margin-top: 12px;">
-        <div style="background: #FEF3C7; color: #92400E; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">ð à¤¤à¤¾à¤°à¥à¤: <span id="bmDateTxt"></span> (à¤à¤ªà¤° à¤¸à¥ à¤¬à¤¦à¤²à¥à¤)</div>
+        <div style="background: #FEF3C7; color: #92400E; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bmDateTxt"></span> (ऊपर से बदलें)</div>
         <select id="bmSite" class="input"></select>
-        <input id="bmCustomer" class="input" placeholder="à¤¯à¤¾ à¤à¥à¤°à¤¾à¤¹à¤ à¤à¤¾ à¤¨à¤¾à¤® à¤²à¤¿à¤à¥à¤">
+        <input id="bmCustomer" class="input" placeholder="या ग्राहक का नाम लिखें">
         <div id="bmRows"></div>
-        <button class="btn-sm" style="width: 100%; background: #FFF7ED; color: #9A3412; padding: 11px; border: 1.5px dashed #FDBA74; margin-bottom: 10px;" onclick="addBulkMatRow()">+ à¤à¤ à¤à¤° à¤²à¤¾à¤à¤¨</button>
-        <input id="bmNote" class="input" placeholder="Note (à¤¸à¤¬ à¤²à¤¾à¤à¤¨à¥à¤ à¤à¥ à¤²à¤¿à¤ - à¤à¥à¤¸à¥ à¤¦à¥à¤à¤¾à¤¨ / à¤¬à¤¿à¤² à¤¨à¤.)">
+        <button class="btn-sm" style="width: 100%; background: #FFF7ED; color: #9A3412; padding: 11px; border: 1.5px dashed #FDBA74; margin-bottom: 10px;" onclick="addBulkMatRow()">+ एक और लाइन</button>
+        <input id="bmNote" class="input" placeholder="Note (सब लाइनों के लिए - जैसे दुकान / बिल नं.)">
         <div style="background: #0F172A; color: white; padding: 12px 14px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-          <span id="bmCount" style="font-size: 12px; color: #CBD5E1; font-weight: 600;">0 à¤²à¤¾à¤à¤¨</span>
-          <b id="bmGrand" style="font-size: 18px; color: #FBBF24;">â¹0</b>
+          <span id="bmCount" style="font-size: 12px; color: #CBD5E1; font-weight: 600;">0 लाइन</span>
+          <b id="bmGrand" style="font-size: 18px; color: #FBBF24;">₹0</b>
         </div>
-        <button class="btn btn-save" onclick="saveBulkMat()">ð¾ à¤¸à¤¬ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤¸à¥à¤µ à¤à¤°à¥à¤</button>
+        <button class="btn btn-save" onclick="saveBulkMat()">💾 सब मटेरियल सेव करें</button>
         <div id="bmMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       </div>
     </div>
@@ -1452,7 +1451,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <!-- Selected day entries -->
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
-        <span>ð§¾ à¤®à¤à¥à¤°à¤¿à¤¯à¤² - <span id="mDayTxt"></span></span>
+        <span>🧾 मटेरियल - <span id="mDayTxt"></span></span>
         <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;"></span>
       </h3>
       <div id="mDayList"></div>
@@ -1460,12 +1459,12 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
     <!-- Reports -->
     <div class="card">
-      <h3 style="font-size: 15px; margin-top: 0; margin-bottom: 10px;">ð à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤°à¤¿à¤ªà¥à¤°à¥à¤</h3>
+      <h3 style="font-size: 15px; margin-top: 0; margin-bottom: 10px;">📊 मटेरियल रिपोर्ट</h3>
       <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px;">
-        <button class="ag-subtab m-mode" id="mMode-day" onclick="setMatMode('day')">à¤¦à¤¿à¤¨</button>
-        <button class="ag-subtab m-mode active" id="mMode-month" onclick="setMatMode('month')">à¤®à¤¹à¥à¤¨à¤¾</button>
-        <button class="ag-subtab m-mode" id="mMode-year" onclick="setMatMode('year')">à¤¸à¤¾à¤²</button>
-        <button class="ag-subtab m-mode" id="mMode-all" onclick="setMatMode('all')">à¤¸à¤¬</button>
+        <button class="ag-subtab m-mode" id="mMode-day" onclick="setMatMode('day')">दिन</button>
+        <button class="ag-subtab m-mode active" id="mMode-month" onclick="setMatMode('month')">महीना</button>
+        <button class="ag-subtab m-mode" id="mMode-year" onclick="setMatMode('year')">साल</button>
+        <button class="ag-subtab m-mode" id="mMode-all" onclick="setMatMode('all')">सब</button>
       </div>
       <input id="mrDay" type="date" class="input" style="display: none;" onchange="renderMaterial()">
       <input id="mrMonth" type="month" class="input" onchange="renderMaterial()">
@@ -1475,8 +1474,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <select id="mrItem" class="input" style="flex: 1;" onchange="renderMaterial()"></select>
       </div>
       <div id="mReportBox"></div>
-      <button class="btn" style="background: #16A34A; margin-top: 10px;" onclick="downloadMatExcel()">ð à¤ªà¥à¤°à¥ Excel à¤¶à¥à¤ à¤¡à¤¾à¤à¤¨à¤²à¥à¤¡ (à¤¤à¤¾à¤°à¥à¤ à¤µ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤µà¤¾à¤à¤)</button>
-      <button id="matShareBtn" class="btn" style="background: #25D366; margin-top: 10px;" onclick="shareMatReport()">ð¤ PDF à¤°à¤¿à¤ªà¥à¤°à¥à¤ WhatsApp à¤ªà¤° à¤­à¥à¤à¥à¤</button>
+      <button class="btn" style="background: #16A34A; margin-top: 10px;" onclick="downloadMatExcel()">📊 पूरी Excel शीट डाउनलोड (तारीख व मटेरियल वाइज)</button>
+      <button id="matShareBtn" class="btn" style="background: #25D366; margin-top: 10px;" onclick="shareMatReport()">📤 PDF रिपोर्ट WhatsApp पर भेजें</button>
     </div>
   </div>
 
@@ -1485,8 +1484,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <div class="card">
       <h3 style="text-align: center; margin-top: 0; font-size: 16px; font-weight: 800;">AGREEMENT RATE CARDS</h3>
       <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;">
-        <button class="ag-subtab active" id="ag-bt-i" onclick="showAg('i')">ð®ð¹ Italian Marble</button>
-        <button class="ag-subtab" id="ag-bt-t" onclick="showAg('t')">ð§± Tile Work</button>
+        <button class="ag-subtab active" id="ag-bt-i" onclick="showAg('i')">🇮🇹 Italian Marble</button>
+        <button class="ag-subtab" id="ag-bt-t" onclick="showAg('t')">🧱 Tile Work</button>
       </div>
 
       <!-- Italian Agreement Tab -->
@@ -1500,7 +1499,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <div style="display: flex; gap: 8px; margin-top: 8px;">
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="resetItalian()">Reset</button>
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="addSecItalian()">+ Section</button>
-          <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px;" onclick="saveAgreement('italian')">ð¾ Website Par Save</button>
+          <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px;" onclick="saveAgreement('italian')">💾 Website Par Save</button>
         </div>
         <div id="editorItalian" style="margin-top: 12px;"></div>
 
@@ -1508,8 +1507,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <b>Rate Card Preview</b>
             <div style="display: flex; gap: 6px;">
-              <button class="btn-sm" style="background: #0F172A; color: white; padding: 6px 12px; font-weight: 700;" onclick="downloadAgreementPdf('italianCard')">ð PDF à¤¡à¤¾à¤à¤¨à¤²à¥à¤¡</button>
-              <button class="btn-sm" style="background: #25D366; color: white; padding: 6px 12px; font-weight: 800;" onclick="shareImg('italianCard')">ð¸ WhatsApp</button>
+              <button class="btn-sm" style="background: #0F172A; color: white; padding: 6px 12px; font-weight: 700;" onclick="downloadAgreementPdf('italianCard')">📄 PDF डाउनलोड</button>
+              <button class="btn-sm" style="background: #25D366; color: white; padding: 6px 12px; font-weight: 800;" onclick="shareImg('italianCard')">📸 WhatsApp</button>
             </div>
           </div>
           <div id="italianCard" class="italian-preview">
@@ -1530,7 +1529,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <div style="display: flex; gap: 8px; margin-top: 8px;">
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="resetTile()">Reset</button>
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="addSecTile()">+ Section</button>
-          <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px; background: linear-gradient(135deg, #B68A4C, #8C5E2F);" onclick="saveAgreement('tile')">ð¾ Website Par Save</button>
+          <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px; background: linear-gradient(135deg, #B68A4C, #8C5E2F);" onclick="saveAgreement('tile')">💾 Website Par Save</button>
         </div>
         <div id="editorTile" style="margin-top: 12px;"></div>
 
@@ -1538,8 +1537,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <b>Rate Card Preview</b>
             <div style="display: flex; gap: 6px;">
-              <button class="btn-sm" style="background: #0F172A; color: white; padding: 6px 12px; font-weight: 700;" onclick="downloadAgreementPdf('tileCard')">ð PDF à¤¡à¤¾à¤à¤¨à¤²à¥à¤¡</button>
-              <button class="btn-sm" style="background: #25D366; color: white; padding: 6px 12px; font-weight: 800;" onclick="shareImg('tileCard')">ð¸ WhatsApp</button>
+              <button class="btn-sm" style="background: #0F172A; color: white; padding: 6px 12px; font-weight: 700;" onclick="downloadAgreementPdf('tileCard')">📄 PDF डाउनलोड</button>
+              <button class="btn-sm" style="background: #25D366; color: white; padding: 6px 12px; font-weight: 800;" onclick="shareImg('tileCard')">📸 WhatsApp</button>
             </div>
           </div>
           <div id="tileCard" class="tile-preview">
@@ -1551,8 +1550,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
     <!-- Saved Agreements List -->
     <div class="card">
-      <h3 style="text-align: center; margin-top: 0; font-size: 15px;">ð Saved Agreements</h3>
-      <input id="agSearch" class="input" placeholder="ð Search House No / Client" oninput="renderSavedList()">
+      <h3 style="text-align: center; margin-top: 0; font-size: 15px;">📁 Saved Agreements</h3>
+      <input id="agSearch" class="input" placeholder="🔍 Search House No / Client" oninput="renderSavedList()">
       <div id="savedAgList">Loading...</div>
     </div>
   </div>
@@ -1561,8 +1560,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <div id="siteDetailOverlay" class="site-detail-modal" onclick="if(event.target===this)closeSiteDetail()">
     <div class="site-detail-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 id="sdTitle" style="margin: 0; font-size: 16px; font-weight: 800;">à¤¸à¤¾à¤à¤ à¤µà¤¿à¤µà¤°à¤£</h3>
-        <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closeSiteDetail()">â à¤¬à¤à¤¦ à¤à¤°à¥à¤</button>
+        <h3 id="sdTitle" style="margin: 0; font-size: 16px; font-weight: 800;">साइट विवरण</h3>
+        <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closeSiteDetail()">✕ बंद करें</button>
       </div>
       <div id="sdSummary"></div>
       <div id="sdTable"></div>
@@ -1573,14 +1572,14 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <div id="pdfBackupModal" class="site-detail-modal">
     <div class="site-detail-box" style="max-width: 650px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">ð¥ à¤¸à¤®à¥à¤ªà¥à¤°à¥à¤£ PDF à¤¬à¥à¤à¤à¤ª à¤à¤µà¤ Excel</h3>
-        <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closePdfBackup()">â à¤¬à¤à¤¦ à¤à¤°à¥à¤</button>
+        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">📥 सम्पूर्ण PDF बैकअप एवं Excel</h3>
+        <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closePdfBackup()">✕ बंद करें</button>
       </div>
       <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap;">
         <input id="pdfMonth" type="month" class="input" style="margin: 0; flex: 1; min-width: 140px;" onchange="renderPdfPreview()">
-        <button class="btn-sm" style="background: #0F172A; color: white; padding: 10px 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="downloadMonthlyPdf()">ð PDF à¤¡à¤¾à¤à¤¨à¤²à¥à¤¡</button>
-        <button class="btn-sm" style="background: #16A34A; color: white; padding: 10px 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="downloadExcelBackup()">ð Excel à¤¡à¤¾à¤à¤¨à¤²à¥à¤¡</button>
-        <button class="btn-sm" style="background: #64748B; color: white; padding: 10px 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="printPdfReport()">ð¨ï¸ à¤ªà¥à¤°à¤¿à¤à¤</button>
+        <button class="btn-sm" style="background: #0F172A; color: white; padding: 10px 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="downloadMonthlyPdf()">📄 PDF डाउनलोड</button>
+        <button class="btn-sm" style="background: #16A34A; color: white; padding: 10px 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="downloadExcelBackup()">📊 Excel डाउनलोड</button>
+        <button class="btn-sm" style="background: #64748B; color: white; padding: 10px 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;" onclick="printPdfReport()">🖨️ प्रिंट</button>
       </div>
 
       <!-- Printable area -->
@@ -1598,67 +1597,67 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <!-- Custom Success Popup -->
   <div id="customPopup" class="popup-overlay">
     <div class="popup-box">
-      <div style="font-size: 40px; margin-bottom: 8px;">â</div>
-      <h3 style="margin: 0 0 8px 0; color: #16A34A; font-size: 18px;">à¤¹à¤¾à¤à¤¼à¤°à¥ à¤¸à¤«à¤²à¤¤à¤¾à¤ªà¥à¤°à¥à¤µà¤ à¤¸à¥à¤µ à¤¹à¥à¤!</h3>
+      <div style="font-size: 40px; margin-bottom: 8px;">✅</div>
+      <h3 style="margin: 0 0 8px 0; color: #16A34A; font-size: 18px;">हाज़री सफलतापूर्वक सेव हुई!</h3>
       <div id="popupDetails" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 10px; margin-bottom: 14px; font-size: 12px; color: #334155; text-align: left;"></div>
-      <button class="btn btn-gold" style="width: 100%; padding: 10px;" onclick="closePopup()">à¤ à¥à¤ à¤¹à¥ (OK)</button>
+      <button class="btn btn-gold" style="width: 100%; padding: 10px;" onclick="closePopup()">ठीक है (OK)</button>
     </div>
   </div>
 
-  <!-- Labour Field Edit Popup (à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥ / à¤à¤¿à¤°à¤¾à¤¯à¤¾ / à¤¬à¤¿à¤à¤²à¥ / à¤¬à¤à¤¾à¤¯à¤¾) -->
+  <!-- Labour Field Edit Popup (दिहाड़ी / किराया / बिजली / बकाया) -->
   <div id="editFieldModal" class="popup-overlay">
     <div class="popup-box">
-      <div style="font-size: 32px; margin-bottom: 8px;">âï¸</div>
+      <div style="font-size: 32px; margin-bottom: 8px;">✏️</div>
       <h3 id="efTitle" style="margin: 0 0 4px 0; color: #0F172A; font-size: 16px;">Edit</h3>
       <div id="efSub" style="font-size: 12px; color: #64748B; margin-bottom: 12px;"></div>
-      <input id="efInput" type="number" class="input" placeholder="â¹ à¤°à¤¾à¤¶à¤¿" style="text-align: center; font-size: 18px; font-weight: 800;" onkeydown="if(event.key==='Enter')saveEditField()">
+      <input id="efInput" type="number" class="input" placeholder="₹ राशि" style="text-align: center; font-size: 18px; font-weight: 800;" onkeydown="if(event.key==='Enter')saveEditField()">
       <div id="wageModeBox" style="display: none; text-align: left; margin: 4px 0 10px 0;">
         <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
-          <input type="radio" name="wageMode" value="today" checked> à¤¸à¤¿à¤°à¥à¤« à¤à¤ à¤¸à¥ à¤à¤à¥
-          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">à¤ªà¥à¤°à¤¾à¤¨à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤ªà¥à¤°à¤¾à¤¨à¥ à¤°à¥à¤ à¤ªà¤° à¤¹à¥ à¤°à¤¹à¥à¤à¥</div>
+          <input type="radio" name="wageMode" value="today" checked> सिर्फ आज से आगे
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">पुरानी हाज़री पुराने रेट पर ही रहेगी</div>
         </label>
         <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
-          <input type="radio" name="wageMode" value="month"> à¤à¤¸ à¤ªà¥à¤°à¥ à¤®à¤¹à¥à¤¨à¥ à¤à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤ªà¤°
-          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">à¤à¤¸ à¤®à¤¹à¥à¤¨à¥ à¤à¥ 1 à¤¤à¤¾à¤°à¥à¤ à¤¸à¥ à¤¸à¤¾à¤°à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤¨à¤ à¤°à¥à¤ à¤ªà¤°</div>
+          <input type="radio" name="wageMode" value="month"> इस पूरे महीने की हाज़री पर
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">इस महीने की 1 तारीख से सारी हाज़री नए रेट पर</div>
         </label>
         <label style="display: block; padding: 10px; border: 1.5px solid #E2E8F0; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;" onclick="setTimeout(()=>{const d=document.getElementById('wageCustomDate'); if(d) d.focus();},0)">
-          <input type="radio" name="wageMode" value="custom" onchange="document.getElementById('wageCustomDateBox').style.display = this.checked ? 'block' : 'none'"> à¤¤à¤¾à¤°à¥à¤à¤¼ à¤à¥à¤¨à¤à¤°
-          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">à¤¶à¥à¤°à¥ à¤¤à¤¾à¤°à¥à¤à¤¼ à¤¸à¥ (à¤à¤¾à¤¹à¥à¤ à¤¤à¥ à¤à¤à¤¤à¤¿à¤® à¤¤à¤¾à¤°à¥à¤à¤¼ à¤¤à¤ à¤¹à¥) à¤¨à¤¯à¤¾ à¤°à¥à¤</div>
+          <input type="radio" name="wageMode" value="custom" onchange="document.getElementById('wageCustomDateBox').style.display = this.checked ? 'block' : 'none'"> तारीख़ चुनकर
+          <div style="font-size: 11px; font-weight: 500; color: #64748B; margin-left: 20px;">शुरू तारीख़ से (चाहें तो अंतिम तारीख़ तक ही) नया रेट</div>
           <div id="wageCustomDateBox" style="display: none; margin: 8px 0 0 20px;">
-            <div style="font-size: 10.5px; font-weight: 700; color: #64748B; margin-bottom: 2px;">à¤¶à¥à¤°à¥ à¤¤à¤¾à¤°à¥à¤à¤¼</div>
+            <div style="font-size: 10.5px; font-weight: 700; color: #64748B; margin-bottom: 2px;">शुरू तारीख़</div>
             <input id="wageCustomDate" type="date" class="input" style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
-            <div style="font-size: 10.5px; font-weight: 700; color: #64748B; margin-bottom: 2px;">à¤à¤à¤¤à¤¿à¤® à¤¤à¤¾à¤°à¥à¤à¤¼ (à¤à¤¾à¤²à¥ à¤à¥à¤¡à¤¼à¥à¤ à¤¤à¥ à¤à¤à¥ à¤¤à¤ à¤à¤²à¥à¤à¤¾)</div>
+            <div style="font-size: 10.5px; font-weight: 700; color: #64748B; margin-bottom: 2px;">अंतिम तारीख़ (खाली छोड़ें तो आगे तक चलेगा)</div>
             <input id="wageCustomDateEnd" type="date" class="input" style="font-size: 13px; padding: 8px;">
           </div>
         </label>
       </div>
       <div id="rbMonthBox" style="display: none; text-align: left; margin: 4px 0 10px 0;">
-        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">à¤à¤¿à¤¸ à¤®à¤¹à¥à¤¨à¥ à¤à¥ à¤²à¤¿à¤?</div>
+        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">किस महीने के लिए?</div>
         <input id="rbMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box; margin-bottom: 0;" onchange="rbMonthChanged()">
-        <div style="font-size: 10.5px; font-weight: 500; color: #94A3B8; margin-top: 4px;">à¤¸à¤¿à¤°à¥à¤« à¤à¤¸à¥ à¤®à¤¹à¥à¤¨à¥ à¤ªà¤° à¤²à¤¾à¤à¥ à¤¹à¥à¤à¤¾ â à¤à¤à¤²à¥/à¤ªà¤¿à¤à¤²à¥ à¤®à¤¹à¥à¤¨à¥ à¤à¤ªà¤¨à¥ à¤à¤ª à¤¨à¤¹à¥à¤ à¤¬à¤¦à¤²à¥à¤à¤à¥</div>
+        <div style="font-size: 10.5px; font-weight: 500; color: #94A3B8; margin-top: 4px;">सिर्फ इसी महीने पर लागू होगा — अगले/पिछले महीने अपने आप नहीं बदलेंगे</div>
       </div>
       <div style="display: flex; gap: 8px; margin-top: 4px;">
         <button class="btn" style="background: #F1F5F9; color: #64748B; margin: 0;" onclick="closeEditFieldModal()">Cancel</button>
-        <button class="btn btn-gold" style="margin: 0;" onclick="saveEditField()">ð¾ Save</button>
+        <button class="btn btn-gold" style="margin: 0;" onclick="saveEditField()">💾 Save</button>
       </div>
     </div>
   </div>
 
 
   <!-- PIN Lock Floating Button -->
-  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: #0F172A; color: white; border: none; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); z-index: 500; cursor: pointer;">ð</button>
+  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: #0F172A; color: white; border: none; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); z-index: 500; cursor: pointer;">🔒</button>
 
   <!-- PIN Entry Modal -->
   <div id="pinOverlay" class="popup-overlay">
     <div class="popup-box">
-      <div style="font-size: 32px; margin-bottom: 8px;">ð</div>
-      <h3 style="margin: 0 0 4px 0; color: #0F172A; font-size: 16px;">PIN à¤¡à¤¾à¤²à¥à¤ (Unlock)</h3>
-      <div style="font-size: 12px; color: #64748B; margin-bottom: 12px;">Edit / Add / Delete / à¤¹à¤¾à¤à¤¼à¤°à¥ à¤à¥ à¤²à¤¿à¤ PIN à¤à¤¾à¤¹à¤¿à¤</div>
-      <input id="pinInput" type="password" inputmode="numeric" class="input" placeholder="â¢â¢â¢â¢ PIN" style="text-align: center; font-size: 20px; font-weight: 800; letter-spacing: 4px;" onkeydown="if(event.key==='Enter')submitPin()">
-      <div id="pinError" style="display: none; color: #DC2626; font-size: 12px; font-weight: 700; margin-top: -6px; margin-bottom: 10px;">â à¤à¤²à¤¤ PIN, à¤¦à¥à¤¬à¤¾à¤°à¤¾ à¤à¥à¤¶à¤¿à¤¶ à¤à¤°à¥à¤</div>
+      <div style="font-size: 32px; margin-bottom: 8px;">🔐</div>
+      <h3 style="margin: 0 0 4px 0; color: #0F172A; font-size: 16px;">PIN डालें (Unlock)</h3>
+      <div style="font-size: 12px; color: #64748B; margin-bottom: 12px;">Edit / Add / Delete / हाज़री के लिए PIN चाहिए</div>
+      <input id="pinInput" type="password" inputmode="numeric" class="input" placeholder="•••• PIN" style="text-align: center; font-size: 20px; font-weight: 800; letter-spacing: 4px;" onkeydown="if(event.key==='Enter')submitPin()">
+      <div id="pinError" style="display: none; color: #DC2626; font-size: 12px; font-weight: 700; margin-top: -6px; margin-bottom: 10px;">❌ गलत PIN, दोबारा कोशिश करें</div>
       <div style="display: flex; gap: 8px; margin-top: 4px;">
         <button class="btn" style="background: #F1F5F9; color: #64748B; margin: 0;" onclick="closePinModal()">Cancel</button>
-        <button class="btn btn-gold" style="margin: 0;" onclick="submitPin()">ð Unlock</button>
+        <button class="btn btn-gold" style="margin: 0;" onclick="submitPin()">🔓 Unlock</button>
       </div>
     </div>
   </div>
@@ -1802,8 +1801,8 @@ function getMon() {
   const rMonth = document.getElementById("rMonth");
   return rMonth && rMonth.value ? rMonth.value : fmtLocalDate(new Date()).slice(0, 7);
 }
-// à¤à¤¾à¤°à¥à¤à¤° tab's month picker (kMonth) and à¤¹à¤¿à¤¸à¤¾à¤¬ tab's month picker (rMonth) share one
-// underlying "current month" â changing either one keeps the other in sync.
+// कारीगर tab's month picker (kMonth) and हिसाब tab's month picker (rMonth) share one
+// underlying "current month" — changing either one keeps the other in sync.
 function syncMonthFrom(sourceId) {
   const src = document.getElementById(sourceId);
   if (!src) return;
@@ -2075,7 +2074,7 @@ function shareHazriToWhatsapp(idx) {
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 // Pure per-month calc given an explicit opening balance for that month.
-// rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 â never carried forward).
+// rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 — never carried forward).
 function calcLabourForMonth(id, mon, bal) {
   const l = labs[id];
   let d = 0;
@@ -2089,7 +2088,7 @@ function calcLabourForMonth(id, mon, bal) {
       earn += dd * entryRate(e, l);
     }
   });
-  // Extra/standalone payments (same labourer, same day, more than one payment) â tracked separately from attendance
+  // Extra/standalone payments (same labourer, same day, more than one payment) — tracked separately from attendance
   Object.values(withdrawals).forEach((wd) => {
     if (wd.labourId === id && wd.date && wd.date.startsWith(mon)) {
       w += parseFloat(wd.amount || 0);
@@ -2115,7 +2114,7 @@ function calcLabourForMonth(id, mon, bal) {
 }
 // Walks every month from the labour's opening balance (l.balance, a one-time manual seed)
 // forward through history, carrying each month's final net as the next month's opening
-// à¤¬à¤à¤¾à¤¯à¤¾ â so September's à¤¦à¥à¤¨à¤¾/à¤²à¥à¤¨à¤¾ automatically becomes October's opening balance.
+// बकाया — so September's देना/लेना automatically becomes October's opening balance.
 function calcLabour(id, mon) {
   const l = labs[id];
   if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, bijliCalc: 0, net: 0, bal: 0 };
@@ -2209,7 +2208,7 @@ function showSiteDetail(siteId) {
         <td>${d}<br><small style="font-size:9px;color:#64748B">${p.date || ""}</small></td>
         <td style="color:#166534;font-weight:800">\u20B9${Number(p.amount || 0).toLocaleString("en-IN")}</td>
         <td style="font-size:11px;text-align:left">${p.note || "-"}</td>
-        <td style="white-space:nowrap"><button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;margin-right:4px" onclick="event.stopPropagation();editSitePayment('${pid}')">âï¸</button><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">X</button></td>
+        <td style="white-space:nowrap"><button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;margin-right:4px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️</button><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">X</button></td>
       </tr>`;
     });
     payHtml += "</table>";
@@ -2229,14 +2228,14 @@ function showSiteDetail(siteId) {
   const costs = Object.entries(siteCosts).filter(([_, c]) => c.siteId === siteId).sort((a, b) => (b[1].month || "").localeCompare(a[1].month || ""));
   let costHtml = "";
   if (costs.length === 0) {
-    costHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">à¤à¥à¤ à¤ªà¤¿à¤à¤²à¥ à¤²à¤¾à¤à¤¤ à¤¨à¤¹à¥à¤ à¤à¥à¤¡à¤¼à¥</div>';
+    costHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">कोई पिछली लागत नहीं जोड़ी</div>';
   } else {
-    costHtml = '<table style="margin-top:8px"><tr><th>à¤®à¤¹à¥à¤¨à¤¾</th><th>à¤°à¤à¤®</th><th>Note</th><th>X</th></tr>';
+    costHtml = '<table style="margin-top:8px"><tr><th>महीना</th><th>रकम</th><th>Note</th><th>X</th></tr>';
     costs.forEach(([cid, c]) => {
       const mTxt = c.month ? new Date(c.month + "-01").toLocaleDateString("hi-IN", { month: "short", year: "numeric" }) : "-";
       costHtml += `<tr>
         <td>${mTxt}</td>
-        <td style="color:#B45309;font-weight:800">â¹${Number(c.amount || 0).toLocaleString("en-IN")}</td>
+        <td style="color:#B45309;font-weight:800">₹${Number(c.amount || 0).toLocaleString("en-IN")}</td>
         <td style="font-size:11px;text-align:left">${c.note || "-"}</td>
         <td><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deleteSiteCost('${cid}')">X</button></td>
       </tr>`;
@@ -2245,11 +2244,11 @@ function showSiteDetail(siteId) {
   }
   sumHtml += `
     <div style="margin-top:14px">
-      <b>ð§¾ à¤ªà¤¿à¤à¤²à¥ à¤²à¤¾à¤à¤¤ (Month Wise)</b>
+      <b>🧾 पिछली लागत (Month Wise)</b>
       <div style="background:#FFFBEB;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #FDE68A">
         <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
-          <span>à¤à¥à¤² ${costs.length} à¤à¤à¤à¥à¤°à¥</span>
-          <span style="color:#B45309">â¹${sc.prevCost.toLocaleString("en-IN")}</span>
+          <span>कुल ${costs.length} एंट्री</span>
+          <span style="color:#B45309">₹${sc.prevCost.toLocaleString("en-IN")}</span>
         </div>
         ${costHtml}
       </div>
@@ -2258,21 +2257,21 @@ function showSiteDetail(siteId) {
   const mats = Object.entries(matEntriesAll()).filter(([_, e]) => e.siteId === siteId).sort((a, b) => (b[1].date || "").localeCompare(a[1].date || ""));
   let matHtml = "";
   if (mats.length === 0) {
-    matHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">à¤à¤¸ à¤¸à¤¾à¤à¤ à¤ªà¤° à¤à¥à¤ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤¨à¤¹à¥à¤</div>';
+    matHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">इस साइट पर कोई मटेरियल नहीं</div>';
   } else {
-    matHtml = '<table style="margin-top:8px"><tr><th>à¤¤à¤¾à¤°à¥à¤</th><th>à¤à¤à¤à¤®</th><th>à¤®à¤¾à¤¤à¥à¤°à¤¾ Ã à¤°à¥à¤</th><th>à¤à¥à¤²</th></tr>';
+    matHtml = '<table style="margin-top:8px"><tr><th>तारीख</th><th>आइटम</th><th>मात्रा × रेट</th><th>कुल</th></tr>';
     mats.forEach(([_, e]) => {
       const d = e.date ? new Date(e.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short" }) : "-";
-      matHtml += `<tr><td>${d}</td><td style="text-align:left;font-weight:700">${mEsc(e.itemName || "?")}</td><td>${mNum(e.qty)} ${mEsc(e.unit || "")} Ã ${mRs(e.rate)}</td><td style="color:#B45309;font-weight:800">${mRs(e.total)}</td></tr>`;
+      matHtml += `<tr><td>${d}</td><td style="text-align:left;font-weight:700">${mEsc(e.itemName || "?")}</td><td>${mNum(e.qty)} ${mEsc(e.unit || "")} × ${mRs(e.rate)}</td><td style="color:#B45309;font-weight:800">${mRs(e.total)}</td></tr>`;
     });
     matHtml += "</table>";
   }
   sumHtml += `
     <div style="margin-top:14px">
-      <b>ð§± à¤®à¤à¥à¤°à¤¿à¤¯à¤² (à¤¸à¤¿à¤°à¥à¤« à¤à¤¾à¤¨à¤à¤¾à¤°à¥ - à¤²à¤¾à¤­ à¤®à¥à¤ à¤¨à¤¹à¥à¤ à¤à¥à¤¡à¤¼à¤¾)</b>
+      <b>🧱 मटेरियल (सिर्फ जानकारी - लाभ में नहीं जुड़ा)</b>
       <div style="background:#FFF7ED;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #FED7AA">
         <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
-          <span>à¤à¥à¤² ${mats.length} à¤à¤à¤à¥à¤°à¥</span>
+          <span>कुल ${mats.length} एंट्री</span>
           <span style="color:#B45309">${mRs(sc.materialCost)}</span>
         </div>
         ${matHtml}
@@ -2815,7 +2814,7 @@ function renderSiteCostSelect() {
   const sel = document.getElementById("scSite");
   if (!sel) return;
   const cur = sel.value;
-  let h = '<option value="">à¤¸à¤¾à¤à¤ à¤à¥à¤¨à¥</option>';
+  let h = '<option value="">साइट चुनो</option>';
   Object.keys(sites).forEach((id) => {
     h += `<option value="${id}">${sites[id].house}</option>`;
   });
@@ -2960,11 +2959,11 @@ function saveEditField() {
     if (mode === "custom") {
       const cd = document.getElementById("wageCustomDate");
       const cdVal = cd?.value || "";
-      if (!cdVal) { alert("à¤¤à¤¾à¤°à¥à¤à¤¼ à¤à¥à¤¨à¥à¤"); return; }
+      if (!cdVal) { alert("तारीख़ चुनें"); return; }
       from = cdVal;
       const cdE = document.getElementById("wageCustomDateEnd");
       to = cdE?.value || "";
-      if (to && to < from) { alert("à¤à¤à¤¤à¤¿à¤® à¤¤à¤¾à¤°à¥à¤à¤¼, à¤¶à¥à¤°à¥ à¤¤à¤¾à¤°à¥à¤à¤¼ à¤à¥ à¤¬à¤¾à¤¦ à¤à¥ à¤¹à¥à¤¨à¥ à¤à¤¾à¤¹à¤¿à¤"); return; }
+      if (to && to < from) { alert("अंतिम तारीख़, शुरू तारीख़ के बाद की होनी चाहिए"); return; }
     }
     if (to) {
       // Closed range: only entries between from..to get the new rate. Current wage / future entries untouched.
@@ -3126,7 +3125,7 @@ function editSitePayment(pid) {
   if (spNote) spNote.value = p.note || "";
   const saveBtn = document.getElementById("spSaveBtn");
   const cancelBtn = document.getElementById("spCancelBtn");
-  if (saveBtn) saveBtn.innerText = "ð Update à¤à¤°à¥";
+  if (saveBtn) saveBtn.innerText = "🔄 Update करो";
   if (cancelBtn) cancelBtn.style.display = "block";
   if (box) box.scrollIntoView({ behavior: "smooth", block: "center" });
 }
@@ -3140,7 +3139,7 @@ function cancelSitePayEdit() {
   if (spDate) spDate.value = fmtLocalDate(new Date());
   const saveBtn = document.getElementById("spSaveBtn");
   const cancelBtn = document.getElementById("spCancelBtn");
-  if (saveBtn) saveBtn.innerText = "à¤¸à¥à¤µ à¤à¤°à¥";
+  if (saveBtn) saveBtn.innerText = "सेव करो";
   if (cancelBtn) cancelBtn.style.display = "none";
 }
 function addSiteCost() {
@@ -3149,7 +3148,7 @@ function addSiteCost() {
   const amt = parseFloat(document.getElementById("scAmt")?.value || "0");
   const note = document.getElementById("scNote")?.value.trim() || "";
   if (!sid || !month || !amt || amt <= 0) {
-    alert("à¤¸à¤¾à¤à¤, à¤®à¤¹à¥à¤¨à¤¾ à¤à¤° à¤¸à¤¹à¥ à¤°à¤à¤® à¤¤à¥à¤¨à¥à¤ à¤­à¤°à¥à¤");
+    alert("साइट, महीना और सही रकम तीनों भरें");
     return;
   }
   const id = Date.now().toString();
@@ -3166,13 +3165,13 @@ function addSiteCost() {
     if (noteEl) noteEl.value = "";
     const msg = document.getElementById("scMsg");
     if (msg) {
-      msg.innerText = "â à¤²à¤¾à¤à¤¤ à¤à¥à¤¡à¤¼ à¤à¤!";
+      msg.innerText = "✅ लागत जुड़ गई!";
       setTimeout(() => { msg.innerText = ""; }, 2000);
     }
   });
 }
 function deleteSiteCost(cid) {
-  if (!confirm("à¤¯à¥ à¤ªà¤¿à¤à¤²à¥ à¤²à¤¾à¤à¤¤ à¤¡à¤¿à¤²à¥à¤ à¤à¤°à¤¨à¥ à¤¹à¥?")) return;
+  if (!confirm("ये पिछली लागत डिलीट करनी है?")) return;
   db.ref("companies/" + company + "/siteCosts/" + cid).remove();
 }
 function showHazriPopup(labName, days, siteName, dateStr, withdraw, isDup = false) {
@@ -4163,7 +4162,7 @@ function addExpense() {
   if (wasEdit) obj.updated = Date.now();
   db.ref("companies/" + company + "/expenses/" + id).set(obj).then(() => {
     const msg = document.getElementById("xMsg");
-    if (msg) msg.innerText = wasEdit ? "â à¤à¤°à¥à¤ à¤à¤ªà¤¡à¥à¤ à¤¹à¥ à¤à¤¯à¤¾!" : "\u2705 \u0916\u0930\u094D\u091A \u0926\u0930\u094D\u091C \u0939\u094B \u0917\u092F\u093E!";
+    if (msg) msg.innerText = wasEdit ? "✅ खर्च अपडेट हो गया!" : "\u2705 \u0916\u0930\u094D\u091A \u0926\u0930\u094D\u091C \u0939\u094B \u0917\u092F\u093E!";
     if (wasEdit) cancelExpenseEdit();
     const xAmt = document.getElementById("xAmt");
     const xNote = document.getElementById("xNote");
@@ -4186,7 +4185,7 @@ function editExpense(id) {
   document.getElementById("xAmt").value = e.amt || "";
   document.getElementById("xPayMode").value = e.payMode || "cash";
   document.getElementById("xNote").value = e.note || "";
-  document.getElementById("xSaveBtn").innerText = "ð¾ à¤à¤°à¥à¤ à¤à¤ªà¤¡à¥à¤ à¤à¤°à¥à¤";
+  document.getElementById("xSaveBtn").innerText = "💾 खर्च अपडेट करें";
   document.getElementById("xCancelBtn").style.display = "block";
   document.getElementById("xEditTag").style.display = "block";
   showTab("x");
@@ -4196,7 +4195,7 @@ function cancelExpenseEdit() {
   editingExpId = null;
   document.getElementById("xAmt").value = "";
   document.getElementById("xNote").value = "";
-  document.getElementById("xSaveBtn").innerText = "ð¾ à¤à¤°à¥à¤ à¤¦à¤°à¥à¤ à¤à¤°à¥à¤";
+  document.getElementById("xSaveBtn").innerText = "💾 खर्च दर्ज करें";
   document.getElementById("xCancelBtn").style.display = "none";
   document.getElementById("xEditTag").style.display = "none";
 }
@@ -4269,7 +4268,7 @@ function renderExpenses() {
         </div>
         <div style="text-align: right; display: flex; align-items: center; gap: 8px;">
           <b style="color: #DC2626; font-size: 15px;">- \u20B9${Number(exp.amt || 0).toLocaleString("en-IN")}</b>
-          <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editExpense('${id}')">âï¸</button>
+          <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editExpense('${id}')">✏️</button>
           <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 6px 10px;" onclick="deleteExpense('${id}')">X</button>
         </div>
       </div>
@@ -4647,15 +4646,15 @@ function downloadExcelBackup() {
   });
   const wsCost = window.XLSX.utils.aoa_to_sheet(costData);
   window.XLSX.utils.book_append_sheet(wb, wsCost, "\u092A\u093F\u091B\u0932\u0940 \u0932\u093E\u0917\u0924");
-  const matData = [["à¤¤à¤¾à¤°à¥à¤", "à¤à¤à¤à¤®", "à¤®à¤¾à¤¤à¥à¤°à¤¾", "à¤¯à¥à¤¨à¤¿à¤", "à¤°à¥à¤ â¹", "à¤à¥à¤² â¹", "à¤¸à¤¾à¤à¤ / à¤à¥à¤°à¤¾à¤¹à¤", "à¤¨à¥à¤"]];
+  const matData = [["तारीख", "आइटम", "मात्रा", "यूनिट", "रेट ₹", "कुल ₹", "साइट / ग्राहक", "नोट"]];
   Object.values(matEntries).sort((a, b) => (a.date || "").localeCompare(b.date || "")).forEach((e) => {
     matData.push([e.date || "", e.itemName || "", e.qty || 0, e.unit || "", e.rate || 0, e.total || 0, matCustLabel(e), e.note || ""]);
   });
   const wsMat = window.XLSX.utils.aoa_to_sheet(matData);
-  window.XLSX.utils.book_append_sheet(wb, wsMat, "à¤®à¤à¥à¤°à¤¿à¤¯à¤²");
-  const itemData = [["à¤à¤à¤à¤®", "à¤¯à¥à¤¨à¤¿à¤", "à¤°à¥à¤ â¹"]];
+  window.XLSX.utils.book_append_sheet(wb, wsMat, "मटेरियल");
+  const itemData = [["आइटम", "यूनिट", "रेट ₹"]];
   Object.values(matItems).forEach((it) => itemData.push([it.name || "", it.unit || "", it.rate || 0]));
-  window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(itemData), "à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤°à¥à¤ à¤²à¤¿à¤¸à¥à¤");
+  window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(itemData), "मटेरियल रेट लिस्ट");
   const fileName = `Shukla-Marble-Complete-Backup-${mon}.xlsx`;
   window.XLSX.writeFile(wb, fileName);
 }
@@ -4671,7 +4670,7 @@ window.downloadAgreementPdf = downloadAgreementPdf;
 window.printPdfReport = printPdfReport;
 window.downloadExcelBackup = downloadExcelBackup;
 window.exportExcel = downloadExcelBackup;
-// ================= MATERIAL (à¤®à¤à¥à¤°à¤¿à¤¯à¤²) - multi-section (NOVA / ACC / +user-added) =================
+// ================= MATERIAL (मटेरियल) - multi-section (NOVA / ACC / +user-added) =================
 let matItems = {};
 let matEntries = {};
 let matItemsBySection = {};
@@ -4836,7 +4835,7 @@ function mEsc(v) {
 }
 function mRs(n) {
   const v = Math.round((parseFloat(n) || 0) * 100) / 100;
-  return "â¹" + v.toLocaleString("en-IN");
+  return "₹" + v.toLocaleString("en-IN");
 }
 function mNum(n) {
   const v = Math.round((parseFloat(n) || 0) * 100) / 100;
@@ -4854,25 +4853,25 @@ function matCustLabel(e) {
   if (e.siteId) {
     const s = sites[e.siteId];
     if (s) return s.house + (s.client ? " - " + s.client : "");
-    return "(à¤¹à¤à¤¾à¤ à¤à¤ à¤¸à¤¾à¤à¤)";
+    return "(हटाई गई साइट)";
   }
   if (e.customer) return e.customer;
-  return "à¤¬à¤¿à¤¨à¤¾ à¤à¥à¤°à¤¾à¤¹à¤";
+  return "बिना ग्राहक";
 }
 function saveMatItem() {
   const name = (document.getElementById("miName").value || "").trim();
-  const unit = (document.getElementById("miUnit").value || "").trim() || "à¤ªà¥à¤¸";
+  const unit = (document.getElementById("miUnit").value || "").trim() || "पीस";
   const rate = parseFloat(document.getElementById("miRate").value || "0") || 0;
-  if (!name) { alert("à¤à¤à¤à¤® à¤à¤¾ à¤¨à¤¾à¤® à¤²à¤¿à¤à¥à¤"); return; }
+  if (!name) { alert("आइटम का नाम लिखें"); return; }
   const dup = Object.entries(matItems).find(([id, it]) => id !== editingMatItemId && (it.name || "").trim().toLowerCase() === name.toLowerCase());
-  if (dup) { alert("à¤¯à¤¹ à¤à¤à¤à¤® à¤ªà¤¹à¤²à¥ à¤¸à¥ à¤¸à¥à¤µ à¤¹à¥: " + name); return; }
+  if (dup) { alert("यह आइटम पहले से सेव है: " + name); return; }
   const id = editingMatItemId || Date.now().toString();
   const payload = { name, unit, rate, updated: Date.now() };
   const ref = db.ref(matItemsPath() + "/" + id);
   const p = editingMatItemId ? ref.update(payload) : ref.set({ ...payload, created: Date.now() });
   p.then(() => {
     const msg = document.getElementById("miMsg");
-    msg.innerText = editingMatItemId ? "â à¤à¤à¤à¤® à¤à¤ªà¤¡à¥à¤ à¤¹à¥ à¤à¤¯à¤¾" : "â à¤à¤à¤à¤® à¤¸à¥à¤µ à¤¹à¥ à¤à¤¯à¤¾";
+    msg.innerText = editingMatItemId ? "✅ आइटम अपडेट हो गया" : "✅ आइटम सेव हो गया";
     setTimeout(() => { msg.innerText = ""; }, 2000);
     cancelMatItemEdit();
   });
@@ -4884,7 +4883,7 @@ function editMatItem(id) {
   document.getElementById("miName").value = it.name || "";
   document.getElementById("miUnit").value = it.unit || "";
   document.getElementById("miRate").value = it.rate || "";
-  document.getElementById("miSaveBtn").innerText = "ð¾ à¤à¤à¤à¤® à¤à¤ªà¤¡à¥à¤ à¤à¤°à¥à¤";
+  document.getElementById("miSaveBtn").innerText = "💾 आइटम अपडेट करें";
   document.getElementById("miCancelBtn").style.display = "block";
   document.getElementById("mItemBox").style.display = "block";
   document.getElementById("miName").focus();
@@ -4892,13 +4891,13 @@ function editMatItem(id) {
 function cancelMatItemEdit() {
   editingMatItemId = null;
   ["miName", "miUnit", "miRate"].forEach((i) => { document.getElementById(i).value = ""; });
-  document.getElementById("miSaveBtn").innerText = "+ à¤à¤à¤à¤® à¤¸à¥à¤µ à¤à¤°à¥à¤";
+  document.getElementById("miSaveBtn").innerText = "+ आइटम सेव करें";
   document.getElementById("miCancelBtn").style.display = "none";
 }
 function deleteMatItem(id) {
   const it = matItems[id];
   if (!it) return;
-  if (confirm("à¤à¤à¤à¤® \"" + it.name + "\" à¤¡à¤¿à¤²à¥à¤ à¤à¤°à¥à¤? (à¤ªà¥à¤°à¤¾à¤¨à¥ à¤à¤à¤à¥à¤°à¥ à¤¸à¥à¤°à¤à¥à¤·à¤¿à¤¤ à¤°à¤¹à¥à¤à¤à¥)")) {
+  if (confirm("आइटम \"" + it.name + "\" डिलीट करें? (पुरानी एंट्री सुरक्षित रहेंगी)")) {
     db.ref(matItemsPath() + "/" + id).remove();
   }
 }
@@ -4920,7 +4919,7 @@ function updateMatTotal() {
   const qty = parseFloat(document.getElementById("meQty").value || "0") || 0;
   const rate = parseFloat(document.getElementById("meRate").value || "0") || 0;
   const unit = it ? it.unit : "";
-  document.getElementById("meCalcTxt").innerText = mNum(qty) + " " + unit + " Ã " + mRs(rate);
+  document.getElementById("meCalcTxt").innerText = mNum(qty) + " " + unit + " × " + mRs(rate);
   document.getElementById("meTotalTxt").innerText = mRs(qty * rate);
 }
 function shiftMDate(n) {
@@ -4943,8 +4942,8 @@ function saveMatEntry() {
   const siteId = document.getElementById("meSite").value || "";
   const customer = siteId ? "" : (document.getElementById("meCustomer").value || "").trim();
   const note = (document.getElementById("meNote").value || "").trim();
-  if (!it && !editingMatEntryId) { alert("à¤ªà¤¹à¤²à¥ à¤à¤à¤à¤® à¤à¥à¤¨à¥à¤"); return; }
-  if (!qty || qty <= 0) { alert("à¤®à¤¾à¤¤à¥à¤°à¤¾ (Qty) à¤¸à¤¹à¥ à¤²à¤¿à¤à¥à¤"); return; }
+  if (!it && !editingMatEntryId) { alert("पहले आइटम चुनें"); return; }
+  if (!qty || qty <= 0) { alert("मात्रा (Qty) सही लिखें"); return; }
   const old = editingMatEntryId ? matEntries[editingMatEntryId] : null;
   const payload = {
     date,
@@ -4965,7 +4964,7 @@ function saveMatEntry() {
   const p = wasEdit ? ref.update(payload) : ref.set({ ...payload, created: Date.now() });
   p.then(() => {
     const msg = document.getElementById("meMsg");
-    msg.innerText = (wasEdit ? "â à¤à¤à¤à¥à¤°à¥ à¤à¤ªà¤¡à¥à¤: " : "â à¤¸à¥à¤µ: ") + payload.itemName + " " + mNum(qty) + " " + payload.unit + " Ã " + mRs(rate) + " = " + mRs(payload.total);
+    msg.innerText = (wasEdit ? "✅ एंट्री अपडेट: " : "✅ सेव: ") + payload.itemName + " " + mNum(qty) + " " + payload.unit + " × " + mRs(rate) + " = " + mRs(payload.total);
     setTimeout(() => { msg.innerText = ""; }, 3000);
     cancelMatEntryEdit(true);
   });
@@ -4983,7 +4982,7 @@ function editMatEntry(id) {
   document.getElementById("meSite").value = e.siteId || "";
   document.getElementById("meCustomer").value = e.customer || "";
   document.getElementById("meNote").value = e.note || "";
-  document.getElementById("meSaveBtn").innerText = "ð¾ à¤à¤à¤à¥à¤°à¥ à¤à¤ªà¤¡à¥à¤ à¤à¤°à¥à¤";
+  document.getElementById("meSaveBtn").innerText = "💾 एंट्री अपडेट करें";
   document.getElementById("meCancelBtn").style.display = "block";
   document.getElementById("meEditTag").style.display = "block";
   updateMatTotal();
@@ -4999,7 +4998,7 @@ function cancelMatEntryEdit(keepSelections) {
   }
   const it = matItems[document.getElementById("meItem").value];
   document.getElementById("meRate").value = it ? (it.rate || "") : "";
-  document.getElementById("meSaveBtn").innerText = "ð¾ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¥à¤°à¥ à¤¸à¥à¤µ";
+  document.getElementById("meSaveBtn").innerText = "💾 मटेरियल एंट्री सेव";
   document.getElementById("meCancelBtn").style.display = "none";
   document.getElementById("meEditTag").style.display = "none";
   updateMatTotal();
@@ -5007,7 +5006,7 @@ function cancelMatEntryEdit(keepSelections) {
 function deleteMatEntry(id) {
   const e = matEntries[id];
   if (!e) return;
-  if (confirm("à¤à¤à¤à¥à¤°à¥ à¤¡à¤¿à¤²à¥à¤ à¤à¤°à¥à¤? " + (e.itemName || "") + " " + mNum(e.qty) + " " + (e.unit || "") + " = " + mRs(e.total))) {
+  if (confirm("एंट्री डिलीट करें? " + (e.itemName || "") + " " + mNum(e.qty) + " " + (e.unit || "") + " = " + mRs(e.total))) {
     db.ref(matEntriesPath() + "/" + id).remove();
   }
 }
@@ -5106,9 +5105,9 @@ function matPeriodInfo() {
   }
   if (matMode === "year") {
     const y = document.getElementById("mrYear").value || mToday().slice(0, 4);
-    return { prefix: y, label: "à¤¸à¤¾à¤² " + y };
+    return { prefix: y, label: "साल " + y };
   }
-  return { prefix: "", label: "à¤¸à¤¾à¤°à¤¾ à¤°à¤¿à¤à¥à¤°à¥à¤¡" };
+  return { prefix: "", label: "सारा रिकॉर्ड" };
 }
 function matFilteredEntries() {
   const per = matPeriodInfo();
@@ -5129,13 +5128,13 @@ function matEntryRow(id, e, showDate) {
       <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
         <div style="min-width: 0;">
           <div style="font-weight: 800; font-size: 14px; color: #0F172A;">${mEsc(e.itemName || "?")}</div>
-          <div style="font-size: 12px; color: #475569; margin-top: 2px; font-weight: 600;">${mNum(e.qty)} ${mEsc(e.unit || "")} Ã ${mRs(e.rate)}</div>
-          <div style="font-size: 11px; color: #64748B; margin-top: 2px;">${showDate ? "ð " + d + " Â· " : ""}ð¤ ${mEsc(matCustLabel(e))}${e.note ? " Â· " + mEsc(e.note) : ""}</div>
+          <div style="font-size: 12px; color: #475569; margin-top: 2px; font-weight: 600;">${mNum(e.qty)} ${mEsc(e.unit || "")} × ${mRs(e.rate)}</div>
+          <div style="font-size: 11px; color: #64748B; margin-top: 2px;">${showDate ? "📅 " + d + " · " : ""}👤 ${mEsc(matCustLabel(e))}${e.note ? " · " + mEsc(e.note) : ""}</div>
         </div>
         <div style="text-align: right; flex-shrink: 0;">
           <b style="color: #B45309; font-size: 15px; white-space: nowrap;">${mRs(e.total)}</b>
           <div style="display: flex; gap: 4px; margin-top: 6px; justify-content: flex-end;">
-            <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editMatEntry('${id}')">âï¸</button>
+            <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editMatEntry('${id}')">✏️</button>
             <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 6px 10px;" onclick="deleteMatEntry('${id}')">X</button>
           </div>
         </div>
@@ -5153,21 +5152,21 @@ function renderMaterial() {
   // ---- item master list + dropdown
   const itemIds = Object.keys(matItems).sort((a, b) => (matItems[a].name || "").localeCompare(matItems[b].name || ""));
   const curItem = itemSel.value;
-  itemSel.innerHTML = '<option value="">ð¦ à¤à¤à¤à¤® à¤à¥à¤¨à¥à¤</option>' + itemIds.map((id) => {
+  itemSel.innerHTML = '<option value="">📦 आइटम चुनें</option>' + itemIds.map((id) => {
     const it = matItems[id];
     return `<option value="${id}">${mEsc(it.name)} (${mRs(it.rate)} / ${mEsc(it.unit || "")})</option>`;
   }).join("");
   if (curItem && matItems[curItem]) itemSel.value = curItem;
-  document.getElementById("mItemCount").innerText = itemIds.length + " à¤à¤à¤à¤®";
+  document.getElementById("mItemCount").innerText = itemIds.length + " आइटम";
   const itemListEl = document.getElementById("mItemList");
   itemListEl.innerHTML = itemIds.length === 0
-    ? '<div style="color:#94A3B8;padding:10px;text-align:center;font-size:12px;">à¤à¤­à¥ à¤à¥à¤ à¤à¤à¤à¤® à¤¨à¤¹à¥à¤à¥¤ à¤à¤ªà¤° à¤¨à¤¾à¤®, à¤¯à¥à¤¨à¤¿à¤ à¤à¤° à¤°à¥à¤ à¤¡à¤¾à¤²à¤à¤° à¤¸à¥à¤µ à¤à¤°à¥à¤à¥¤</div>'
+    ? '<div style="color:#94A3B8;padding:10px;text-align:center;font-size:12px;">अभी कोई आइटम नहीं। ऊपर नाम, यूनिट और रेट डालकर सेव करें।</div>'
     : itemIds.map((id) => {
       const it = matItems[id];
       return `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border:1px solid #E2E8F0;border-radius:12px;margin-bottom:6px;">
-        <div style="min-width:0;"><b style="font-size:13px;">${mEsc(it.name)}</b><br><small style="color:#64748B;font-weight:600;">${mRs(it.rate)} à¤ªà¥à¤°à¤¤à¤¿ ${mEsc(it.unit || "")}</small></div>
+        <div style="min-width:0;"><b style="font-size:13px;">${mEsc(it.name)}</b><br><small style="color:#64748B;font-weight:600;">${mRs(it.rate)} प्रति ${mEsc(it.unit || "")}</small></div>
         <div style="display:flex;gap:4px;flex-shrink:0;">
-          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;" onclick="editMatItem('${id}')">âï¸ à¤°à¥à¤</button>
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;" onclick="editMatItem('${id}')">✏️ रेट</button>
           <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;" onclick="deleteMatItem('${id}')">X</button>
         </div>
       </div>`;
@@ -5176,7 +5175,7 @@ function renderMaterial() {
   const siteIds = Object.keys(sites).sort((a, b) => (sites[a].house || "").localeCompare(sites[b].house || ""));
   const siteSel = document.getElementById("meSite");
   const curSite = siteSel.value;
-  siteSel.innerHTML = '<option value="">ð  à¤¸à¤¾à¤à¤ / à¤à¥à¤°à¤¾à¤¹à¤ à¤à¥à¤¨à¥à¤ (Optional)</option>' + siteIds.map((id) => {
+  siteSel.innerHTML = '<option value="">🏠 साइट / ग्राहक चुनें (Optional)</option>' + siteIds.map((id) => {
     const s = sites[id];
     return `<option value="${id}">${mEsc(s.house)}${s.client ? " - " + mEsc(s.client) : ""}</option>`;
   }).join("");
@@ -5186,7 +5185,7 @@ function renderMaterial() {
   const curCust = custSel.value;
   const custMap = {};
   Object.values(matEntries).forEach((e) => { custMap[matCustKey(e)] = matCustLabel(e); });
-  custSel.innerHTML = '<option value="">ð¤ à¤¸à¤­à¥ à¤à¥à¤°à¤¾à¤¹à¤</option>' + Object.keys(custMap).sort((a, b) => custMap[a].localeCompare(custMap[b])).map((k) => `<option value="${mEsc(k)}">${mEsc(custMap[k])}</option>`).join("");
+  custSel.innerHTML = '<option value="">👤 सभी ग्राहक</option>' + Object.keys(custMap).sort((a, b) => custMap[a].localeCompare(custMap[b])).map((k) => `<option value="${mEsc(k)}">${mEsc(custMap[k])}</option>`).join("");
   if (curCust && custMap[curCust]) custSel.value = curCust;
   // item filter
   const itemFSel = document.getElementById("mrItem");
@@ -5194,7 +5193,7 @@ function renderMaterial() {
   const ifMap = {};
   itemIds.forEach((id) => { ifMap[id] = matItems[id].name; });
   Object.values(matEntries).forEach((e) => { const k = e.itemId || "n:" + e.itemName; if (!ifMap[k]) ifMap[k] = e.itemName || "?"; });
-  itemFSel.innerHTML = '<option value="">ð¦ à¤¸à¤­à¥ à¤à¤à¤à¤®</option>' + Object.keys(ifMap).sort((a, b) => ifMap[a].localeCompare(ifMap[b])).map((k) => `<option value="${mEsc(k)}">${mEsc(ifMap[k])}</option>`).join("");
+  itemFSel.innerHTML = '<option value="">📦 सभी आइटम</option>' + Object.keys(ifMap).sort((a, b) => ifMap[a].localeCompare(ifMap[b])).map((k) => `<option value="${mEsc(k)}">${mEsc(ifMap[k])}</option>`).join("");
   if (curIF && ifMap[curIF]) itemFSel.value = curIF;
   // year options
   const yearSel = document.getElementById("mrYear");
@@ -5258,11 +5257,11 @@ function renderMaterial() {
   const dayEnts = Object.entries(matEntries).filter(([_, e]) => e.date === selDate).sort((a, b) => (a[1].created || 0) - (b[1].created || 0));
   let dayTot = 0;
   dayEnts.forEach(([_, e]) => { dayTot += parseFloat(e.total) || 0; });
-  document.getElementById("mDayTotal").innerText = dayEnts.length + " à¤à¤à¤à¥à¤°à¥ Â· " + mRs(dayTot);
+  document.getElementById("mDayTotal").innerText = dayEnts.length + " एंट्री · " + mRs(dayTot);
   document.getElementById("mDayList").innerHTML = dayEnts.length === 0
-    ? '<div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">à¤à¤¸ à¤¤à¤¾à¤°à¥à¤ à¤à¥ à¤à¥à¤ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¥à¤°à¥ à¤¨à¤¹à¥à¤</div>'
+    ? '<div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">इस तारीख को कोई मटेरियल एंट्री नहीं</div>'
     : dayEnts.map(([id, e]) => matEntryRow(id, e, false)).join("") +
-      `<div style="display:flex;justify-content:space-between;padding:10px 12px;background:#0F172A;color:white;border-radius:12px;font-weight:800;"><span>à¤¦à¤¿à¤¨ à¤à¤¾ à¤à¥à¤²</span><span style="color:#FBBF24;">${mRs(dayTot)}</span></div>`;
+      `<div style="display:flex;justify-content:space-between;padding:10px 12px;background:#0F172A;color:white;border-radius:12px;font-weight:800;"><span>दिन का कुल</span><span style="color:#FBBF24;">${mRs(dayTot)}</span></div>`;
   // ---- report
   const { per, list } = matFilteredEntries();
   document.getElementById("mPeriodTxt").innerText = per.label;
@@ -5286,25 +5285,25 @@ function renderMaterial() {
   });
   let html = `
     <div style="background:#0F172A;color:white;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
-      <div><small style="color:#94A3B8;font-weight:700;">${mEsc(per.label)} Â· à¤à¥à¤² à¤®à¤à¥à¤°à¤¿à¤¯à¤²</small><br><small style="color:#CBD5E1;">${list.length} à¤à¤à¤à¥à¤°à¥</small></div>
+      <div><small style="color:#94A3B8;font-weight:700;">${mEsc(per.label)} · कुल मटेरियल</small><br><small style="color:#CBD5E1;">${list.length} एंट्री</small></div>
       <b style="font-size:20px;color:#FBBF24;">${mRs(total)}</b>
     </div>`;
   if (list.length === 0) {
-    html += '<div style="color:#94A3B8;padding:14px;text-align:center;font-size:12px;">à¤à¤¸ à¤à¤µà¤§à¤¿ à¤®à¥à¤ à¤à¥à¤ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¥à¤°à¥ à¤¨à¤¹à¥à¤</div>';
+    html += '<div style="color:#94A3B8;padding:14px;text-align:center;font-size:12px;">इस अवधि में कोई मटेरियल एंट्री नहीं</div>';
   } else {
-    html += '<b style="font-size:13px;">ð¦ à¤à¤à¤à¤® à¤µà¤¾à¤à¤</b><table style="margin:6px 0 14px;"><tr><th style="text-align:left;">à¤à¤à¤à¤®</th><th>à¤®à¤¾à¤¤à¥à¤°à¤¾</th><th>à¤à¥à¤² â¹</th></tr>';
+    html += '<b style="font-size:13px;">📦 आइटम वाइज</b><table style="margin:6px 0 14px;"><tr><th style="text-align:left;">आइटम</th><th>मात्रा</th><th>कुल ₹</th></tr>';
     Object.values(byItem).sort((a, b) => b.amt - a.amt).forEach((v) => {
       html += `<tr><td style="text-align:left;font-weight:700;">${mEsc(v.name)}</td><td>${mNum(v.qty)} ${mEsc(v.unit)}</td><td style="color:#B45309;font-weight:800;">${mRs(v.amt)}</td></tr>`;
     });
     html += "</table>";
-    html += '<b style="font-size:13px;">ð¤ à¤à¥à¤°à¤¾à¤¹à¤ / à¤¸à¤¾à¤à¤ à¤µà¤¾à¤à¤</b><table style="margin:6px 0 14px;"><tr><th style="text-align:left;">à¤à¥à¤°à¤¾à¤¹à¤</th><th>à¤à¤à¤à¥à¤°à¥</th><th>à¤à¥à¤² â¹</th></tr>';
+    html += '<b style="font-size:13px;">👤 ग्राहक / साइट वाइज</b><table style="margin:6px 0 14px;"><tr><th style="text-align:left;">ग्राहक</th><th>एंट्री</th><th>कुल ₹</th></tr>';
     Object.values(byCust).sort((a, b) => b.amt - a.amt).forEach((v) => {
       html += `<tr><td style="text-align:left;font-weight:700;">${mEsc(v.name)}</td><td>${v.n}</td><td style="color:#B45309;font-weight:800;">${mRs(v.amt)}</td></tr>`;
     });
     html += "</table>";
     if (matMode !== "day") {
       const isMonthGroup = matMode === "year" || matMode === "all";
-      html += `<b style="font-size:13px;">ð ${isMonthGroup ? "à¤®à¤¹à¥à¤¨à¤¾ à¤µà¤¾à¤à¤" : "à¤¤à¤¾à¤°à¥à¤ à¤µà¤¾à¤à¤"}</b><table style="margin:6px 0 14px;"><tr><th style="text-align:left;">${isMonthGroup ? "à¤®à¤¹à¥à¤¨à¤¾" : "à¤¤à¤¾à¤°à¥à¤"}</th><th>à¤à¤à¤à¥à¤°à¥</th><th>à¤à¥à¤² â¹</th></tr>`;
+      html += `<b style="font-size:13px;">📅 ${isMonthGroup ? "महीना वाइज" : "तारीख वाइज"}</b><table style="margin:6px 0 14px;"><tr><th style="text-align:left;">${isMonthGroup ? "महीना" : "तारीख"}</th><th>एंट्री</th><th>कुल ₹</th></tr>`;
       Object.keys(byGroup).sort().reverse().forEach((k) => {
         const lbl = isMonthGroup
           ? new Date(k + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" })
@@ -5314,7 +5313,7 @@ function renderMaterial() {
       html += "</table>";
     }
     html += matPivotHtml(list);
-    html += '<b style="font-size:13px;">ð§¾ à¤¸à¤­à¥ à¤à¤à¤à¥à¤°à¥</b><div style="margin-top:6px;">' + list.map(([id, e]) => matEntryRow(id, e, true)).join("") + "</div>";
+    html += '<b style="font-size:13px;">🧾 सभी एंट्री</b><div style="margin-top:6px;">' + list.map(([id, e]) => matEntryRow(id, e, true)).join("") + "</div>";
   }
   document.getElementById("mReportBox").innerHTML = html;
   renderBulkMat(false);
@@ -5342,12 +5341,12 @@ function matPivotHtml(list) {
   const { items, rows, itemKeys, dates } = matPivot(list);
   if (!dates.length) return "";
   const thS = "position:sticky;top:0;white-space:nowrap;padding:8px 6px;font-size:11px;";
-  let h = '<b style="font-size:13px;">ð à¤ªà¥à¤°à¥ à¤¶à¥à¤ - à¤¤à¤¾à¤°à¥à¤ Ã à¤®à¤à¥à¤°à¤¿à¤¯à¤²</b>';
+  let h = '<b style="font-size:13px;">📋 पूरी शीट - तारीख × मटेरियल</b>';
   h += '<div style="overflow:auto;max-height:420px;margin:6px 0 14px;border:1px solid #E2E8F0;border-radius:12px;">';
   h += '<table style="min-width:100%;font-size:11px;"><tr>';
-  h += `<th style="${thS}left:0;z-index:2;text-align:left;">à¤¤à¤¾à¤°à¥à¤</th>`;
+  h += `<th style="${thS}left:0;z-index:2;text-align:left;">तारीख</th>`;
   itemKeys.forEach((k) => { h += `<th style="${thS}">${mEsc(items[k].name)}<br><small style="color:#CBD5E1;font-weight:600;">${mEsc(items[k].unit)}</small></th>`; });
-  h += `<th style="${thS}background:#B45309;">à¤¦à¤¿à¤¨ à¤à¤¾ à¤à¥à¤²</th></tr>`;
+  h += `<th style="${thS}background:#B45309;">दिन का कुल</th></tr>`;
   dates.forEach((d, i) => {
     const bg = i % 2 ? "#F8FAFC" : "#FFFFFF";
     const lbl = d ? new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "2-digit" }) : "-";
@@ -5359,25 +5358,25 @@ function matPivotHtml(list) {
     h += `<td style="font-weight:800;color:#B45309;white-space:nowrap;">${mRs(rows[d].amt)}</td></tr>`;
   });
   let grand = 0;
-  h += '<tr style="background:#0F172A;color:white;font-weight:800;"><td style="position:sticky;left:0;background:#0F172A;text-align:left;">à¤à¥à¤²</td>';
+  h += '<tr style="background:#0F172A;color:white;font-weight:800;"><td style="position:sticky;left:0;background:#0F172A;text-align:left;">कुल</td>';
   itemKeys.forEach((k) => { grand += items[k].amt; h += `<td style="white-space:nowrap;">${mNum(items[k].qty)} ${mEsc(items[k].unit)}<br><span style="color:#FBBF24;">${mRs(items[k].amt)}</span></td>`; });
   h += `<td style="color:#FBBF24;white-space:nowrap;">${mRs(grand)}</td></tr></table></div>`;
   return h;
 }
 function downloadMatExcel() {
-  if (!window.XLSX) { alert("Excel à¤²à¤¾à¤à¤¬à¥à¤°à¥à¤°à¥ à¤²à¥à¤¡ à¤¹à¥ à¤°à¤¹à¥ à¤¹à¥, 2 à¤¸à¥à¤à¤à¤¡ à¤¬à¤¾à¤¦ à¤ªà¥à¤¨à¤ à¤à¥à¤²à¤¿à¤ à¤à¤°à¥à¤"); return; }
+  if (!window.XLSX) { alert("Excel लाइब्रेरी लोड हो रही है, 2 सेकंड बाद पुनः क्लिक करें"); return; }
   const { per, list } = matFilteredEntries();
-  if (!list.length) { alert("à¤à¤¸ à¤à¤µà¤§à¤¿ à¤®à¥à¤ à¤à¥à¤ à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤à¤à¤à¥à¤°à¥ à¤¨à¤¹à¥à¤"); return; }
+  if (!list.length) { alert("इस अवधि में कोई मटेरियल एंट्री नहीं"); return; }
   const asc = list.slice().sort((a, b) => (a[1].date || "").localeCompare(b[1].date || "") || (a[1].created || 0) - (b[1].created || 0));
   const custSel = document.getElementById("mrCust"), itemSel = document.getElementById("mrItem");
-  const custTxt = custSel.value ? custSel.options[custSel.selectedIndex].text : "à¤¸à¤­à¥ à¤à¥à¤°à¤¾à¤¹à¤";
-  const itemTxt = itemSel.value ? itemSel.options[itemSel.selectedIndex].text : "à¤¸à¤­à¥ à¤à¤à¤à¤®";
-  const head = [["SHUKLA MARBLE CONTRACTOR - à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤¶à¥à¤"], ["à¤à¤µà¤§à¤¿: " + per.label, "à¤à¥à¤°à¤¾à¤¹à¤: " + custTxt, "à¤à¤à¤à¤®: " + itemTxt], []];
+  const custTxt = custSel.value ? custSel.options[custSel.selectedIndex].text : "सभी ग्राहक";
+  const itemTxt = itemSel.value ? itemSel.options[itemSel.selectedIndex].text : "सभी आइटम";
+  const head = [["SHUKLA MARBLE CONTRACTOR - मटेरियल शीट"], ["अवधि: " + per.label, "ग्राहक: " + custTxt, "आइटम: " + itemTxt], []];
   const wb = window.XLSX.utils.book_new();
   // 1. Register with daily subtotals
-  const reg = head.concat([["à¤à¥à¤°.", "à¤¤à¤¾à¤°à¥à¤", "à¤à¤à¤à¤®", "à¤®à¤¾à¤¤à¥à¤°à¤¾", "à¤¯à¥à¤¨à¤¿à¤", "à¤°à¥à¤ â¹", "à¤à¥à¤² â¹", "à¤¸à¤¾à¤à¤ / à¤à¥à¤°à¤¾à¤¹à¤", "à¤¨à¥à¤"]]);
+  const reg = head.concat([["क्र.", "तारीख", "आइटम", "मात्रा", "यूनिट", "रेट ₹", "कुल ₹", "साइट / ग्राहक", "नोट"]]);
   let sn = 0, grand = 0, curD = null, dayTot = 0;
-  const flush = () => { if (curD !== null) { reg.push(["", "", "", "", "", curD + " à¤à¤¾ à¤à¥à¤²", dayTot]); reg.push([]); } };
+  const flush = () => { if (curD !== null) { reg.push(["", "", "", "", "", curD + " का कुल", dayTot]); reg.push([]); } };
   asc.forEach(([_, e]) => {
     if (e.date !== curD) { flush(); curD = e.date; dayTot = 0; }
     sn++;
@@ -5386,15 +5385,15 @@ function downloadMatExcel() {
     reg.push([sn, e.date || "", e.itemName || "", parseFloat(e.qty) || 0, e.unit || "", parseFloat(e.rate) || 0, t, matCustLabel(e), e.note || ""]);
   });
   flush();
-  reg.push(["", "", "", "", "", "à¤à¥à¤² à¤¯à¥à¤", grand]);
+  reg.push(["", "", "", "", "", "कुल योग", grand]);
   const wsReg = window.XLSX.utils.aoa_to_sheet(reg);
   wsReg["!cols"] = [{ wch: 5 }, { wch: 12 }, { wch: 18 }, { wch: 9 }, { wch: 9 }, { wch: 16 }, { wch: 12 }, { wch: 24 }, { wch: 24 }];
-  window.XLSX.utils.book_append_sheet(wb, wsReg, "à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤°à¤à¤¿à¤¸à¥à¤à¤°");
+  window.XLSX.utils.book_append_sheet(wb, wsReg, "मटेरियल रजिस्टर");
   // 2. Date x Material pivot
   const { items, rows, itemKeys, dates } = matPivot(list);
-  const h1 = ["à¤¤à¤¾à¤°à¥à¤"], h2 = [""];
-  itemKeys.forEach((k) => { h1.push(items[k].name + " (" + items[k].unit + ")", ""); h2.push("à¤®à¤¾à¤¤à¥à¤°à¤¾", "â¹ à¤°à¤à¤®"); });
-  h1.push("à¤¦à¤¿à¤¨ à¤à¤¾ à¤à¥à¤² â¹"); h2.push("");
+  const h1 = ["तारीख"], h2 = [""];
+  itemKeys.forEach((k) => { h1.push(items[k].name + " (" + items[k].unit + ")", ""); h2.push("मात्रा", "₹ रकम"); });
+  h1.push("दिन का कुल ₹"); h2.push("");
   const pv = head.concat([h1, h2]);
   dates.forEach((d) => {
     const r = [d];
@@ -5402,7 +5401,7 @@ function downloadMatExcel() {
     r.push(rows[d].amt);
     pv.push(r);
   });
-  const tr = ["à¤à¥à¤²"];
+  const tr = ["कुल"];
   let g2 = 0;
   itemKeys.forEach((k) => { tr.push(items[k].qty, items[k].amt); g2 += items[k].amt; });
   tr.push(g2);
@@ -5410,17 +5409,17 @@ function downloadMatExcel() {
   const wsPv = window.XLSX.utils.aoa_to_sheet(pv);
   wsPv["!cols"] = [{ wch: 12 }].concat(itemKeys.flatMap(() => [{ wch: 10 }, { wch: 12 }]), [{ wch: 14 }]);
   wsPv["!merges"] = itemKeys.map((_, i) => ({ s: { r: 3, c: 1 + i * 2 }, e: { r: 3, c: 2 + i * 2 } }));
-  window.XLSX.utils.book_append_sheet(wb, wsPv, "à¤¤à¤¾à¤°à¥à¤ x à¤®à¤à¥à¤°à¤¿à¤¯à¤²");
+  window.XLSX.utils.book_append_sheet(wb, wsPv, "तारीख x मटेरियल");
   // 3. Item summary
-  const it = head.concat([["à¤à¤à¤à¤®", "à¤¯à¥à¤¨à¤¿à¤", "à¤à¥à¤² à¤®à¤¾à¤¤à¥à¤°à¤¾", "à¤à¤¸à¤¤ à¤°à¥à¤ â¹", "à¤à¥à¤² â¹"]]);
+  const it = head.concat([["आइटम", "यूनिट", "कुल मात्रा", "औसत रेट ₹", "कुल ₹"]]);
   itemKeys.slice().sort((a, b) => items[b].amt - items[a].amt).forEach((k) => {
     const v = items[k];
     it.push([v.name, v.unit, v.qty, v.qty ? Math.round((v.amt / v.qty) * 100) / 100 : 0, v.amt]);
   });
-  it.push(["à¤à¥à¤²", "", "", "", g2]);
+  it.push(["कुल", "", "", "", g2]);
   const wsIt = window.XLSX.utils.aoa_to_sheet(it);
   wsIt["!cols"] = [{ wch: 20 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 14 }];
-  window.XLSX.utils.book_append_sheet(wb, wsIt, "à¤à¤à¤à¤® à¤µà¤¾à¤à¤");
+  window.XLSX.utils.book_append_sheet(wb, wsIt, "आइटम वाइज");
   // 4. Customer summary (customer x item)
   const cm = {};
   list.forEach(([_, e]) => {
@@ -5430,14 +5429,14 @@ function downloadMatExcel() {
     cm[ck].n++; cm[ck].amt += parseFloat(e.total) || 0;
     cm[ck].it[ik] = (cm[ck].it[ik] || 0) + (parseFloat(e.total) || 0);
   });
-  const cs = head.concat([["à¤à¥à¤°à¤¾à¤¹à¤ / à¤¸à¤¾à¤à¤", "à¤à¤à¤à¥à¤°à¥"].concat(itemKeys.map((k) => items[k].name + " â¹"), ["à¤à¥à¤² â¹"])]);
+  const cs = head.concat([["ग्राहक / साइट", "एंट्री"].concat(itemKeys.map((k) => items[k].name + " ₹"), ["कुल ₹"])]);
   Object.values(cm).sort((a, b) => b.amt - a.amt).forEach((v) => {
     cs.push([v.name, v.n].concat(itemKeys.map((k) => v.it[k] || ""), [v.amt]));
   });
-  cs.push(["à¤à¥à¤²", list.length].concat(itemKeys.map((k) => items[k].amt), [g2]));
+  cs.push(["कुल", list.length].concat(itemKeys.map((k) => items[k].amt), [g2]));
   const wsCs = window.XLSX.utils.aoa_to_sheet(cs);
   wsCs["!cols"] = [{ wch: 26 }, { wch: 7 }].concat(itemKeys.map(() => ({ wch: 13 })), [{ wch: 14 }]);
-  window.XLSX.utils.book_append_sheet(wb, wsCs, "à¤à¥à¤°à¤¾à¤¹à¤ à¤µà¤¾à¤à¤");
+  window.XLSX.utils.book_append_sheet(wb, wsCs, "ग्राहक वाइज");
   const safe = per.label.replace(/[^\w\u0900-\u097F-]+/g, "-");
   window.XLSX.writeFile(wb, "Shukla-Marble-Material-" + matNSName().replace(/[^A-Za-z0-9]+/g, "-") + "-" + (per.prefix || "All") + ".xlsx");
 }
@@ -5697,7 +5696,7 @@ function smSend(rawDb, o) {
     console.error("Sync error", err);
     smOutbox = smOutbox.filter((x) => x.id !== o.id);
     smSaveOutbox();
-    alert("â ï¸ à¤¡à¥à¤à¤¾ à¤¸à¥à¤µ à¤¨à¤¹à¥à¤ à¤¹à¥ à¤ªà¤¾à¤¯à¤¾: " + (err && err.message ? err.message : err));
+    alert("⚠️ डेटा सेव नहीं हो पाया: " + (err && err.message ? err.message : err));
   });
 }
 function makeOfflineDb(rawDb) {
@@ -5752,11 +5751,11 @@ function updateSyncBadge() {
   if (smOnline && navigator.onLine) {
     b.style.background = n ? "#FEF3C7" : "#DCFCE7";
     b.style.color = n ? "#92400E" : "#166534";
-    b.innerHTML = n ? `<span style="font-size:8px;">â</span> SYNC ${n}` : '<span style="font-size:8px;">â</span> LIVE SYNC';
+    b.innerHTML = n ? `<span style="font-size:8px;">●</span> SYNC ${n}` : '<span style="font-size:8px;">●</span> LIVE SYNC';
   } else {
     b.style.background = "#FEE2E2";
     b.style.color = "#991B1B";
-    b.innerHTML = `<span style="font-size:8px;">â</span> OFFLINE${n ? " Â· " + n + " à¤¬à¤¾à¤à¥" : ""}`;
+    b.innerHTML = `<span style="font-size:8px;">●</span> OFFLINE${n ? " · " + n + " बाकी" : ""}`;
   }
 }
 window.addEventListener("online", updateSyncBadge);
@@ -5775,7 +5774,7 @@ window.addEventListener("appinstalled", () => {
 });
 function installApp() {
   if (!smInstallEvt) {
-    alert("Chrome à¤®à¥à¤¨à¥ (â®) à¤®à¥à¤ 'Add to Home screen' / 'Install app' à¤¦à¤¬à¤¾à¤à¤à¥¤\niPhone: Share â 'Add to Home Screen'.");
+    alert("Chrome मेनू (⋮) में 'Add to Home screen' / 'Install app' दबाएं।\niPhone: Share → 'Add to Home Screen'.");
     return;
   }
   smInstallEvt.prompt();
@@ -5800,7 +5799,7 @@ function renderBulkHazri(force) {
   document.getElementById("bhDateTxt").innerText = new Date(date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
   const siteSel = document.getElementById("bhSite");
   const curSite = siteSel.value;
-  siteSel.innerHTML = '<option value="">ð  à¤¸à¤¾à¤à¤ (à¤¸à¤¬à¤à¥ à¤²à¤¿à¤, Optional)</option>' + Object.keys(sites).map((id) => `<option value="${id}">${mEsc(sites[id].house)}${sites[id].client ? " - " + mEsc(sites[id].client) : ""}</option>`).join("");
+  siteSel.innerHTML = '<option value="">🏠 साइट (सबके लिए, Optional)</option>' + Object.keys(sites).map((id) => `<option value="${id}">${mEsc(sites[id].house)}${sites[id].client ? " - " + mEsc(sites[id].client) : ""}</option>`).join("");
   if (curSite && sites[curSite]) siteSel.value = curSite;
   const ids = Object.keys(labs).filter((id) => !labs[id].archived).sort((a, b) => (labs[a].name || "").localeCompare(labs[b].name || ""));
   const opts = [[0, "A"], [0.5, "H"], [1, "P"], [1.5, "1.5"], [2, "2"]];
@@ -5812,15 +5811,15 @@ function renderBulkHazri(force) {
     html += `<div style="padding: 10px; border: 1px solid ${st.days != null ? "#A5B4FC" : "#E2E8F0"}; background: ${st.days != null ? "#F5F7FF" : "#FFFFFF"}; border-radius: 12px; margin-bottom: 6px;">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 6px;">
         <b style="font-size: 13px;">${mEsc(labs[id].name)}</b>
-        ${hasAny ? `<small style="background:#DCFCE7;color:#166534;padding:2px 8px;border-radius:8px;font-weight:700;">â à¤ªà¤¹à¤²à¥ à¤¸à¥ ${already} à¤¦à¤¿à¤¨</small>` : ""}
+        ${hasAny ? `<small style="background:#DCFCE7;color:#166534;padding:2px 8px;border-radius:8px;font-weight:700;">✅ पहले से ${already} दिन</small>` : ""}
       </div>
       <div style="display: flex; gap: 4px; align-items: center;">
         ${opts.map(([v, l]) => `<button class="btn-sm" style="flex:1;padding:8px 0;font-weight:800;${st.days === v ? "background:#0F172A;color:white;" : "background:#F1F5F9;color:#334155;"}" onclick="bulkHazriPick('${id}',${v})">${l}</button>`).join("")}
-        <input type="number" class="input" placeholder="à¤¨à¤¿à¤à¤¾à¤¸à¥ â¹" value="${st.withdraw || ""}" oninput="bulkHazriWith('${id}',this.value)" style="width:86px;margin:0;padding:8px;font-size:12px;">
+        <input type="number" class="input" placeholder="निकासी ₹" value="${st.withdraw || ""}" oninput="bulkHazriWith('${id}',this.value)" style="width:86px;margin:0;padding:8px;font-size:12px;">
       </div>
     </div>`;
   });
-  list.innerHTML = html || '<div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">à¤à¥à¤ Active à¤à¤¾à¤°à¥à¤à¤° à¤¨à¤¹à¥à¤</div>';
+  list.innerHTML = html || '<div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">कोई Active कारीगर नहीं</div>';
   updateBulkHazriSummary();
 }
 function bulkHazriPick(id, v) {
@@ -5850,20 +5849,20 @@ function updateBulkHazriSummary() {
     w += parseFloat(s.withdraw || 0) || 0;
   });
   const el = document.getElementById("bhSummary");
-  if (el) el.innerText = `${n} à¤à¤¾à¤°à¥à¤à¤° à¤à¥à¤¨à¥ Â· à¤à¥à¤² ${d} à¤¦à¤¿à¤¨${w ? " Â· à¤¨à¤¿à¤à¤¾à¤¸à¥ â¹" + w.toLocaleString("en-IN") : ""}`;
+  if (el) el.innerText = `${n} कारीगर चुने · कुल ${d} दिन${w ? " · निकासी ₹" + w.toLocaleString("en-IN") : ""}`;
 }
 function saveBulkHazri() {
   const date = document.getElementById("eDate").value;
-  if (!date) { alert("à¤¤à¤¾à¤°à¥à¤ à¤à¥à¤¨à¥"); return; }
+  if (!date) { alert("तारीख चुनो"); return; }
   const site = document.getElementById("bhSite").value || "";
   const chosen = Object.entries(bhState).filter(([id, s]) => labs[id] && (s.days != null || parseFloat(s.withdraw || 0) > 0));
-  if (!chosen.length) { alert("à¤à¤® à¤¸à¥ à¤à¤® à¤à¤ à¤à¤¾à¤°à¥à¤à¤° à¤à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤à¥à¤¨à¥à¤"); return; }
+  if (!chosen.length) { alert("कम से कम एक कारीगर की हाज़री चुनें"); return; }
   const saved = [], skipped = [];
   chosen.forEach(([id, s], i) => {
     const days = s.days != null ? s.days : 0;
     const sameDay = Object.values(ents).filter((e) => e.date === date && e.labourId === id);
     const dupSite = sameDay.find((e) => (e.siteId || "") === site);
-    if (dupSite) { skipped.push(labs[id].name + " (à¤ªà¤¹à¤²à¥ à¤¸à¥ à¤à¤à¤à¥à¤°à¥)"); return; }
+    if (dupSite) { skipped.push(labs[id].name + " (पहले से एंट्री)"); return; }
     const eid = `${date}_${id}_${site || "nosite"}_${Date.now()}${i}`;
     db.ref("companies/" + company + "/entries/" + eid).set({
       date, labourId: id, siteId: site, days,
@@ -5875,7 +5874,7 @@ function saveBulkHazri() {
   });
   const msg = document.getElementById("bhMsg");
   msg.style.color = skipped.length ? "#B45309" : "#16A34A";
-  msg.innerHTML = `â ${saved.length} à¤à¤¾à¤°à¥à¤à¤° à¤à¥ à¤¹à¤¾à¤à¤¼à¤°à¥ à¤¸à¥à¤µ à¤¹à¥à¤` + (skipped.length ? `<br>â ï¸ à¤à¥à¤¡à¤¼à¥ à¤à¤: ${skipped.map(mEsc).join(", ")}` : "");
+  msg.innerHTML = `✅ ${saved.length} कारीगर की हाज़री सेव हुई` + (skipped.length ? `<br>⚠️ छोड़े गए: ${skipped.map(mEsc).join(", ")}` : "");
   bhState = {};
   setTimeout(() => renderBulkHazri(true), 50);
   setTimeout(() => { msg.innerHTML = ""; }, 6000);
@@ -5891,7 +5890,7 @@ function renderBulkMat(force) {
   document.getElementById("bmDateTxt").innerText = new Date(date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
   const siteSel = document.getElementById("bmSite");
   const cur = siteSel.value;
-  siteSel.innerHTML = '<option value="">ð  à¤¸à¤¾à¤à¤ / à¤à¥à¤°à¤¾à¤¹à¤ à¤à¥à¤¨à¥à¤ (Optional)</option>' + Object.keys(sites).sort((a, b) => (sites[a].house || "").localeCompare(sites[b].house || "")).map((id) => `<option value="${id}">${mEsc(sites[id].house)}${sites[id].client ? " - " + mEsc(sites[id].client) : ""}</option>`).join("");
+  siteSel.innerHTML = '<option value="">🏠 साइट / ग्राहक चुनें (Optional)</option>' + Object.keys(sites).sort((a, b) => (sites[a].house || "").localeCompare(sites[b].house || "")).map((id) => `<option value="${id}">${mEsc(sites[id].house)}${sites[id].client ? " - " + mEsc(sites[id].client) : ""}</option>`).join("");
   if (cur && sites[cur]) siteSel.value = cur;
   const itemIds = Object.keys(matItems).sort((a, b) => (matItems[a].name || "").localeCompare(matItems[b].name || ""));
   wrap.innerHTML = bmRows.map((r, i) => `
@@ -5899,14 +5898,14 @@ function renderBulkMat(force) {
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 6px;">
         <b style="color:#92400E;font-size:12px;">${i + 1}.</b>
         <select class="input" style="margin:0;padding:9px;font-size:13px;flex:1;" onchange="bulkMatSet(${i},'itemId',this.value)">
-          <option value="">ð¦ à¤à¤à¤à¤® à¤à¥à¤¨à¥à¤</option>
+          <option value="">📦 आइटम चुनें</option>
           ${itemIds.map((id) => `<option value="${id}" ${r.itemId === id ? "selected" : ""}>${mEsc(matItems[id].name)} (${mEsc(matItems[id].unit || "")})</option>`).join("")}
         </select>
         <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:9px 11px;" onclick="removeBulkMatRow(${i})">X</button>
       </div>
       <div style="display: flex; gap: 6px; align-items: center;">
-        <input type="number" step="any" class="input" placeholder="à¤®à¤¾à¤¤à¥à¤°à¤¾" value="${r.qty || ""}" oninput="bulkMatSet(${i},'qty',this.value)" style="margin:0;padding:9px;font-size:13px;flex:1;">
-        <input type="number" step="any" class="input" placeholder="à¤°à¥à¤ â¹" id="bmRate${i}" value="${r.rate != null ? r.rate : ""}" oninput="bulkMatSet(${i},'rate',this.value)" style="margin:0;padding:9px;font-size:13px;flex:1;">
+        <input type="number" step="any" class="input" placeholder="मात्रा" value="${r.qty || ""}" oninput="bulkMatSet(${i},'qty',this.value)" style="margin:0;padding:9px;font-size:13px;flex:1;">
+        <input type="number" step="any" class="input" placeholder="रेट ₹" id="bmRate${i}" value="${r.rate != null ? r.rate : ""}" oninput="bulkMatSet(${i},'rate',this.value)" style="margin:0;padding:9px;font-size:13px;flex:1;">
         <b id="bmTot${i}" style="min-width:74px;text-align:right;color:#B45309;font-size:14px;">${mRs((parseFloat(r.qty) || 0) * (parseFloat(r.rate) || 0))}</b>
       </div>
     </div>`).join("");
@@ -5932,7 +5931,7 @@ function updateBulkMatTotals() {
     if (r.itemId && parseFloat(r.qty) > 0) { n++; g += (parseFloat(r.qty) || 0) * (parseFloat(r.rate) || 0); }
   });
   const c = document.getElementById("bmCount"), gr = document.getElementById("bmGrand");
-  if (c) c.innerText = n + " à¤²à¤¾à¤à¤¨ à¤­à¤°à¥";
+  if (c) c.innerText = n + " लाइन भरी";
   if (gr) gr.innerText = mRs(g);
 }
 function addBulkMatRow() { bmRows.push({}); renderBulkMat(true); }
@@ -5943,7 +5942,7 @@ function saveBulkMat() {
   const customer = siteId ? "" : (document.getElementById("bmCustomer").value || "").trim();
   const note = (document.getElementById("bmNote").value || "").trim();
   const rows = bmRows.filter((r) => r.itemId && matItems[r.itemId] && parseFloat(r.qty) > 0);
-  if (!rows.length) { alert("à¤à¤® à¤¸à¥ à¤à¤® à¤à¤ à¤²à¤¾à¤à¤¨ à¤®à¥à¤ à¤à¤à¤à¤® à¤à¤° à¤®à¤¾à¤¤à¥à¤°à¤¾ à¤­à¤°à¥à¤"); return; }
+  if (!rows.length) { alert("कम से कम एक लाइन में आइटम और मात्रा भरें"); return; }
   let g = 0;
   rows.forEach((r, i) => {
     const it = matItems[r.itemId];
@@ -5957,7 +5956,7 @@ function saveBulkMat() {
     });
   });
   const msg = document.getElementById("bmMsg");
-  msg.innerText = `â ${rows.length} à¤®à¤à¥à¤°à¤¿à¤¯à¤² à¤¸à¥à¤µ à¤¹à¥à¤ Â· à¤à¥à¤² ${mRs(g)}`;
+  msg.innerText = `✅ ${rows.length} मटेरियल सेव हुए · कुल ${mRs(g)}`;
   setTimeout(() => { msg.innerText = ""; }, 4000);
   bmRows = [{}, {}, {}];
   document.getElementById("bmNote").value = "";
@@ -6001,7 +6000,7 @@ function updateLockUI() {
   if (!btn) return;
   btn.innerHTML = appUnlocked ? "\u{1F513}" : "\u{1F512}";
   btn.style.background = appUnlocked ? "#16A34A" : "#0F172A";
-  btn.title = appUnlocked ? "Unlocked - à¤à¥à¤ª à¤à¤°à¥à¤ à¤²à¥à¤ à¤à¤°à¤¨à¥ à¤à¥ à¤²à¤¿à¤" : "Locked - à¤à¥à¤ª à¤à¤°à¥à¤ unlock à¤à¤°à¤¨à¥ à¤à¥ à¤²à¤¿à¤";
+  btn.title = appUnlocked ? "Unlocked - टैप करें लॉक करने के लिए" : "Locked - टैप करें unlock करने के लिए";
 }
 function openPinModal() {
   const ov = document.getElementById("pinOverlay");
@@ -6128,3 +6127,4 @@ if (document.readyState === "loading") {
 
 </script>
 </body>
+</html>
