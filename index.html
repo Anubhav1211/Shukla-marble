@@ -1,8 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Shukla Marble - Contractor & Rate Card Management</title>
   <meta name="description" content="Shukla Marble - Contractor Management, Attendance & Professional Rate Cards">
@@ -1220,17 +1220,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
   <!-- TAB 5: HISAB & RATE CARD -->
   <div id="t-r" style="display: none;">
-    <div class="card" id="monthSummaryCard">
-      <h3 style="margin-top: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
-        <span>ð</span> à¤®à¤¹à¥à¤¨à¥-à¤µà¤¾à¤° à¤à¥à¤² à¤¹à¤¿à¤¸à¤¾à¤¬ (à¤¸à¤¬ à¤à¤¾à¤°à¥à¤à¤°)
-      </h3>
-      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftSmMonth(-1)">â</button>
-        <input id="smMonth" type="month" class="input" style="margin-bottom: 0; flex: 1;" onchange="renderMonthSummary()">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftSmMonth(1)">â¶</button>
-      </div>
-      <div id="monthSummaryBox"></div>
-    </div>
     <div class="card">
       <h3 style="margin-top: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
         <span>ð§¾</span> à¤¹à¤¿à¤¸à¤¾à¤¬ - à¤®à¤à¤¦à¥à¤° à¤°à¥à¤ à¤à¤¾à¤°à¥à¤¡ à¤à¤¨à¤°à¥à¤à¤°
@@ -2821,139 +2810,7 @@ function renderAll() {
   renderCalendar();
   updateDupInfo();
   if (typeof renderBulkHazri === "function") renderBulkHazri(false);
-  if (typeof renderMonthSummary === "function") renderMonthSummary();
 }
-// ================= MONTH-WISE KARIGAR SUMMARY =================
-function smRs(n) { return "â¹" + Math.round(n || 0).toLocaleString("en-IN"); }
-function smEsc(x) { return String(x == null ? "" : x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-function smMonthLabel(m) { return new Date(m + "-01").toLocaleDateString("hi-IN", { month: "long", year: "numeric" }); }
-function smPrevMon(mon) {
-  const p = mon.split("-");
-  let y = parseInt(p[0], 10), m = parseInt(p[1], 10) - 2;
-  y += Math.floor(m / 12);
-  m = ((m % 12) + 12) % 12;
-  return y + "-" + String(m + 1).padStart(2, "0");
-}
-function shiftSmMonth(delta) {
-  const el = document.getElementById("smMonth");
-  if (!el) return;
-  const cur = el.value || fmtLocalDate(new Date()).slice(0, 7);
-  const p = cur.split("-");
-  let y = parseInt(p[0], 10), m = parseInt(p[1], 10) - 1 + delta;
-  y += Math.floor(m / 12);
-  m = ((m % 12) + 12) % 12;
-  el.value = y + "-" + String(m + 1).padStart(2, "0");
-  renderMonthSummary();
-}
-function setSmMonth(m) {
-  const el = document.getElementById("smMonth");
-  if (el) { el.value = m; renderMonthSummary(); }
-}
-// Month-wise totals for ALL karigar together (one pass per karigar, carrying balance forward).
-function smHistory() {
-  const cur = fmtLocalDate(new Date()).slice(0, 7);
-  const own = {};
-  const add = (id, m) => { if (!id || !m || !labs[id]) return; (own[id] = own[id] || new Set()).add(m); };
-  Object.values(ents).forEach((e) => { if (e.date) add(e.labourId, e.date.slice(0, 7)); });
-  Object.values(withdrawals).forEach((w) => { if (w.date) add(w.labourId, w.date.slice(0, 7)); });
-  Object.values(bijliBills).forEach((b) => add(b.labourId, b.month));
-  Object.keys(labourMonthly).forEach((id) => Object.keys(labourMonthly[id] || {}).forEach((m) => add(id, m)));
-  const all = new Set([cur]);
-  Object.values(own).forEach((st) => st.forEach((m) => all.add(m)));
-  const months = Array.from(all).sort();
-  const out = {};
-  Object.keys(labs).forEach((id) => {
-    const mine = own[id] ? Array.from(own[id]).sort() : [cur];
-    let running = parseFloat(labs[id].balance) || 0;
-    months.forEach((m) => {
-      if (m < mine[0]) return;
-      const r = calcLabourForMonth(id, m, running);
-      const o = out[m] || (out[m] = { days: 0, earn: 0, with: 0, ded: 0, net: 0 });
-      o.days += r.days;
-      o.earn += r.earn;
-      o.with += r.with;
-      o.ded += r.rent + r.bijli + r.bijliCalc;
-      o.net += r.net;
-      running = r.net;
-    });
-  });
-  return { months, out };
-}
-function renderMonthSummary() {
-  const box = document.getElementById("monthSummaryBox");
-  if (!box) return;
-  const smEl = document.getElementById("smMonth");
-  const mon = (smEl && smEl.value) || fmtLocalDate(new Date()).slice(0, 7);
-  const prevLbl = smMonthLabel(smPrevMon(mon));
-  const monLbl = smMonthLabel(mon);
-  let tDays = 0, tEarn = 0, tWith = 0, tBal = 0, tDed = 0, tNet = 0;
-  const rows = [];
-  Object.keys(labs).forEach((id) => {
-    const c = calcLabour(id, mon);
-    const ded = c.rent + c.bijli + c.bijliCalc;
-    if (!(c.days || c.earn || c.with || ded || c.bal || c.net)) return;
-    tDays += c.days; tEarn += c.earn; tWith += c.with; tBal += c.bal; tDed += ded; tNet += c.net;
-    rows.push({ name: labs[id].name || "", c, ded });
-  });
-  rows.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-  const prevLeft = tBal - tWith;
-  const col = (n) => (n >= 0 ? "#166534" : "#DC2626");
-  let html = `
-    <div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:1.5px solid #F59E0B;border-radius:16px;padding:14px;text-align:center;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:700;color:#92400E">ð ${prevLbl} à¤à¤¾ à¤à¤° à¤¦à¥à¤¨à¤¾ à¤¬à¤¾à¤à¥</div>
-      <div style="font-size:26px;font-weight:800;color:${prevLeft >= 0 ? "#B45309" : "#DC2626"};margin:4px 0">${prevLeft < 0 ? "-" : ""}${smRs(Math.abs(prevLeft))}</div>
-      <div style="font-size:11px;color:#78350F;font-weight:600">${prevLbl} à¤à¤¾ à¤«à¤¾à¤à¤¨à¤² ${smRs(tBal)} â ${monLbl} à¤®à¥à¤ à¤¦à¤¿à¤ ${smRs(tWith)}</div>
-      ${prevLeft < 0 ? '<div style="font-size:11px;color:#DC2626;font-weight:700;margin-top:4px">à¤ªà¤¿à¤à¤²à¥ à¤¬à¤¾à¤à¥ à¤¸à¥ à¤à¥à¤¯à¤¾à¤¦à¤¾ à¤¦à¥ à¤¦à¤¿à¤¯à¤¾ â à¤¯à¤¹ à¤à¤à¤¤à¤° à¤¨à¤ à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥ à¤®à¥à¤ à¤¸à¥ à¤à¤à¥à¤à¤¾</div>' : ""}
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div style="background:#DBEAFE;padding:10px 6px;border-radius:14px;text-align:center">
-        <small style="color:#1E40AF;font-weight:700;font-size:10.5px">${monLbl} à¤à¥ à¤à¥à¤² à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥</small><br>
-        <b style="color:#1D4ED8;font-size:16px">${smRs(tEarn)}</b><br>
-        <small style="color:#1E40AF;font-size:10.5px">${Math.round(tDays * 10) / 10} à¤¦à¤¿à¤¨ (à¤¸à¤¬à¤à¥ à¤®à¤¿à¤²à¤¾à¤à¤°)</small>
-      </div>
-      <div style="background:#F1F5F9;padding:10px 6px;border-radius:14px;text-align:center">
-        <small style="color:#334155;font-weight:700;font-size:10.5px">${monLbl} à¤®à¥à¤ à¤¦à¤¿à¤</small><br>
-        <b style="color:#0F172A;font-size:16px">${smRs(tWith)}</b><br>
-        <small style="color:#64748B;font-size:10.5px">${tDed ? "à¤à¤à¥à¤¤à¥ (à¤à¤¿à¤°à¤¾à¤¯à¤¾/à¤¬à¤¿à¤à¤²à¥) " + smRs(tDed) : "&nbsp;"}</small>
-      </div>
-    </div>
-    <div style="background:#DCFCE7;padding:12px;border-radius:14px;text-align:center;margin-bottom:12px">
-      <small style="color:#166534;font-weight:700;font-size:11px">à¤à¥à¤² à¤¦à¥à¤¨à¤¾ (à¤ªà¤¿à¤à¤²à¤¾ à¤¬à¤¾à¤à¥ + ${monLbl} à¤à¥ à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥ â à¤¦à¤¿à¤ â à¤à¤à¥à¤¤à¥)</small><br>
-      <b style="color:${col(tNet)};font-size:20px">${tNet < 0 ? "-" : ""}${smRs(Math.abs(tNet))}</b>
-    </div>`;
-
-  // Per karigar
-  const th = 'style="padding:6px 4px;background:#0F172A;color:white;font-size:10.5px;text-align:right"';
-  const td = 'style="padding:6px 4px;border-bottom:1px solid #E2E8F0;font-size:11.5px;text-align:right;font-weight:600"';
-  html += `<div style="font-size:12px;font-weight:800;margin:6px 0">ð· à¤à¤¾à¤°à¥à¤à¤°-à¤µà¤¾à¤°</div>
-    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:420px">
-    <tr><th ${th.replace("right", "left")}>à¤¨à¤¾à¤®</th><th ${th}>à¤ªà¤¿à¤à¤²à¤¾ à¤¬à¤¾à¤à¥</th><th ${th}>à¤¦à¤¿à¤</th><th ${th}>à¤à¤­à¥ à¤¬à¤¾à¤à¥</th><th ${th}>à¤à¤¸ à¤®à¤¾à¤¹ à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥</th><th ${th}>à¤à¥à¤² à¤¦à¥à¤¨à¤¾</th></tr>`;
-  rows.forEach((r) => {
-    const left = r.c.bal - r.c.with;
-    html += `<tr><td ${td.replace("right", "left")}>${smEsc(r.name)}</td><td ${td}>${smRs(r.c.bal)}</td><td ${td}>${smRs(r.c.with)}</td>
-      <td ${td.replace("#E2E8F0;", "#E2E8F0;color:" + col(left) + ";")}>${smRs(left)}</td><td ${td}>${smRs(r.c.earn)}</td>
-      <td ${td.replace("#E2E8F0;", "#E2E8F0;color:" + col(r.c.net) + ";")}>${smRs(r.c.net)}</td></tr>`;
-  });
-  if (!rows.length) html += '<tr><td colspan="6" style="padding:12px;text-align:center;color:#94A3B8">à¤à¥à¤ à¤¡à¥à¤à¤¾ à¤¨à¤¹à¥à¤</td></tr>';
-  html += "</table></div>";
-
-  // Month-wise history
-  const h = smHistory();
-  const hm = h.months.slice().reverse().slice(0, 12);
-  html += `<div style="font-size:12px;font-weight:800;margin:14px 0 6px">ð à¤®à¤¹à¥à¤¨à¥-à¤µà¤¾à¤° (à¤à¥à¤ª à¤à¤°à¤à¥ à¤®à¤¹à¥à¤¨à¤¾ à¤à¥à¤²à¥à¤)</div>
-    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:360px">
-    <tr><th ${th.replace("right", "left")}>à¤®à¤¹à¥à¤¨à¤¾</th><th ${th}>à¤à¥à¤² à¤¦à¤¿à¤¹à¤¾à¤¡à¤¼à¥</th><th ${th}>à¤¦à¤¿à¤</th><th ${th}>à¤®à¤¹à¥à¤¨à¥ à¤à¥ à¤à¤à¤¤ à¤®à¥à¤ à¤¦à¥à¤¨à¤¾</th></tr>`;
-  hm.forEach((m) => {
-    const o = h.out[m] || { days: 0, earn: 0, with: 0, ded: 0, net: 0 };
-    const sel = m === mon ? "background:#EEF2FF;" : "";
-    html += `<tr style="cursor:pointer;${sel}" onclick="setSmMonth('${m}')"><td ${td.replace("right", "left")}>${smMonthLabel(m)}<br><small style="color:#64748B;font-weight:500">${Math.round(o.days * 10) / 10} à¤¦à¤¿à¤¨</small></td>
-      <td ${td}>${smRs(o.earn)}</td><td ${td}>${smRs(o.with)}</td>
-      <td ${td.replace("#E2E8F0;", "#E2E8F0;color:" + col(o.net) + ";")}>${smRs(o.net)}</td></tr>`;
-  });
-  html += "</table></div>";
-  box.innerHTML = html;
-}
-// ================= END MONTH-WISE KARIGAR SUMMARY =================
 function renderSiteCostSelect() {
   const sel = document.getElementById("scSite");
   if (!sel) return;
@@ -6244,8 +6101,6 @@ function bootstrap() {
   if (bcMonth) bcMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   const meDate = document.getElementById("meDate");
   if (meDate) meDate.value = fmtLocalDate(new Date());
-  const smMonth = document.getElementById("smMonth");
-  if (smMonth) smMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   const mrDay = document.getElementById("mrDay");
   if (mrDay) mrDay.value = fmtLocalDate(new Date());
   const mrMonth = document.getElementById("mrMonth");
@@ -6273,4 +6128,3 @@ if (document.readyState === "loading") {
 
 </script>
 </body>
-</html>
