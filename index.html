@@ -1141,6 +1141,29 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
     </div>
 
+    <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
+    <div class="card" style="border: 2px solid #FCA5A5;">
+      <button class="btn" style="background: #DC2626; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('whBox'); whRenderList();">
+        <span>💸 एक दिन में दोबारा पैसा दिया (Extra पेमेंट)</span><span>▼</span>
+      </button>
+      <div id="whBox" style="display: none; margin-top: 12px;">
+        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
+        <select id="whLab" class="input"></select>
+        <input id="whDate" type="date" class="input" onchange="whRenderList()">
+        <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+          <input id="whAmt" type="number" class="input" placeholder="₹ कितना दिया" style="margin-bottom: 0;">
+          <input id="whNote" class="input" placeholder="Note (optional)" style="margin-bottom: 0;">
+        </div>
+        <button class="btn btn-save" onclick="whAdd()">💾 पेमेंट जोड़ो</button>
+        <div id="whMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
+        <div id="whListWrap" style="margin-top: 14px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 13px;">🧾 <span id="whDateLabel"></span> के Extra पेमेंट</h4>
+          <div id="whList"></div>
+          <div id="whEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस तारीख़ को कोई Extra पेमेंट नहीं</div>
+        </div>
+      </div>
+    </div>
+
     <!-- BULK HAZRI -->
     <div class="card" style="border: 2px solid #C7D2FE;">
       <button class="btn" style="background: #4338CA; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bhBox'); renderBulkHazri(true);">
@@ -1674,6 +1697,7 @@ let labourMonthly = {};
 let agreements = {};
 let expenses = {};
 let bijliBills = {};
+let withdrawals = {};
 let siteCosts = {};
 let selDay = 1;
 let editingId = null;
@@ -1761,6 +1785,11 @@ function startListen() {
     bijliBills = s.val() || {};
     bcRenderList();
   });
+  db.ref("companies/" + company + "/withdrawals").on("value", (s) => {
+    withdrawals = s.val() || {};
+    renderAll();
+    whRenderList();
+  });
   startMatSectionsListener();
 }
 function getMon() {
@@ -1808,6 +1837,53 @@ function rateForDate(l, date) {
 // ---- Bijli Bill Calculator (meter reading based, saved month-wise) ----
 let bcEditId = null;
 let bcEditRemoveIds = null;
+// ---- Extra payment: same labourer, same day, more than one payment (independent of attendance) ----
+function whAdd() {
+  const sel = document.getElementById("whLab");
+  const dateEl = document.getElementById("whDate");
+  const amtEl = document.getElementById("whAmt");
+  const noteEl = document.getElementById("whNote");
+  const msg = document.getElementById("whMsg");
+  if (msg) msg.innerText = "";
+  const labId = sel?.value || "";
+  const date = dateEl?.value || fmtLocalDate(new Date());
+  const amount = parseFloat(amtEl?.value) || 0;
+  if (!labId) { if (msg) msg.innerText = "\u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u0947\u0902"; return; }
+  if (!amount || amount <= 0) { if (msg) msg.innerText = "\u0930\u093E\u0936\u093F \u0938\u0939\u0940 \u0921\u093E\u0932\u0947\u0902"; return; }
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  db.ref("companies/" + company + "/withdrawals/" + id).set({
+    labourId: labId, date, amount, note: noteEl?.value || "", ts: Date.now()
+  }).then(() => {
+    if (amtEl) amtEl.value = "";
+    if (noteEl) noteEl.value = "";
+  });
+}
+function whDelete(id) {
+  if (!confirm("\u092F\u0939 Extra \u092A\u0947\u092E\u0947\u0902\u091F \u0939\u091F\u093E\u0926\u0947\u0902?")) return;
+  db.ref("companies/" + company + "/withdrawals/" + id).remove();
+}
+function whRenderList() {
+  const list = document.getElementById("whList");
+  const emptyEl = document.getElementById("whEmpty");
+  const labelEl = document.getElementById("whDateLabel");
+  if (!list) return;
+  const dateEl = document.getElementById("whDate");
+  if (dateEl && !dateEl.value) dateEl.value = document.getElementById("eDate")?.value || fmtLocalDate(new Date());
+  const date = dateEl?.value || fmtLocalDate(new Date());
+  if (labelEl) labelEl.innerText = new Date(date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
+  const rows = Object.entries(withdrawals)
+    .filter(([, w]) => w.date === date)
+    .sort((a, b) => (a[1].ts || 0) - (b[1].ts || 0));
+  list.innerHTML = rows.map(([wid, w]) => `
+    <div style="display: flex; flex-wrap: wrap; row-gap: 6px; justify-content: space-between; align-items: center; padding: 9px 4px; border-bottom: 1px solid #F1F5F9;">
+      <div style="flex: 1 1 120px; min-width: 0;">
+        <b style="font-size: 13px;">${labs[w.labourId]?.name || "?"}</b><br>
+        <small style="color: #64748B;">\u20B9${Number(w.amount || 0).toLocaleString("en-IN")}${w.note ? " \u2022 " + w.note : ""}</small>
+      </div>
+      <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px; flex-shrink: 0; margin-left: auto;" onclick="whDelete('${wid}')">X</button>
+    </div>`).join("");
+  if (emptyEl) emptyEl.style.display = rows.length ? "none" : "block";
+}
 function bcGetMonth() {
   const m = document.getElementById("bcMonth");
   return m && m.value ? m.value : fmtLocalDate(new Date()).slice(0, 7);
@@ -2007,6 +2083,12 @@ function calcLabourForMonth(id, mon, bal) {
       earn += dd * entryRate(e, l);
     }
   });
+  // Extra/standalone payments (same labourer, same day, more than one payment) — tracked separately from attendance
+  Object.values(withdrawals).forEach((wd) => {
+    if (wd.labourId === id && wd.date && wd.date.startsWith(mon)) {
+      w += parseFloat(wd.amount || 0);
+    }
+  });
   const monthly = (labourMonthly[id] && labourMonthly[id][mon]) || {};
   const rent = parseFloat(monthly.rent) || 0;
   const bijli = parseFloat(monthly.bijli) || 0;
@@ -2036,6 +2118,7 @@ function calcLabour(id, mon) {
   Object.values(ents).forEach((e) => { if (e.labourId === id && e.date) monthsSet.add(e.date.slice(0, 7)); });
   if (labourMonthly[id]) Object.keys(labourMonthly[id]).forEach((m) => monthsSet.add(m));
   Object.values(bijliBills).forEach((b) => { if (b.labourId === id && b.month) monthsSet.add(b.month); });
+  Object.values(withdrawals).forEach((wd) => { if (wd.labourId === id && wd.date) monthsSet.add(wd.date.slice(0, 7)); });
   monthsSet.add(mon);
   const allMonths = Array.from(monthsSet).sort();
   let runningBal = openingBal;
@@ -2389,6 +2472,13 @@ function renderAll() {
   const archivedIds = sortedLabIds.filter((id) => labs[id].archived);
   const bcSel = document.getElementById("bcLabPicker");
   if (bcSel) renderBcLabPicker();
+  const whSel = document.getElementById("whLab");
+  if (whSel) {
+    const curWh = whSel.value;
+    whSel.innerHTML = '<option value="">\u{1F477} \u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u094B</option>' + activeIds.map((id) => `<option value="${id}">${labs[id].name}</option>`).join("");
+    if (activeIds.includes(curWh)) whSel.value = curWh;
+  }
+  whRenderList();
   const filteredForDropdown = activeIds.filter((id) => {
     const n = (labs[id].name || "").toLowerCase();
     return n.includes(eLabQ);
@@ -3176,11 +3266,6 @@ function saveHazri() {
         return;
       }
     }
-    const total = sameDay.reduce((s, e) => s + parseFloat(e.days || 0), 0);
-    if (total + days > 2.1) {
-      alert("\u{1F512} 1 \u0926\u093F\u0928 \u092E\u0947\u0902 2 \u0938\u0947 \u091C\u093C\u094D\u092F\u093E\u0926\u093E \u0928\u0939\u0940\u0902 \u0921\u093E\u0932 \u0938\u0915\u0924\u0947 - \u092A\u0939\u0932\u0947 \u0938\u0947 " + total + " \u0926\u093F\u0928 \u0939\u0948");
-      return;
-    }
   }
   const eid = editingId || `${date}_${lab}_${site || "nosite"}_${Date.now()}`;
   const labName = labs[lab] ? labs[lab].name : "\u0915\u093E\u0930\u0940\u0917\u0930";
@@ -3369,13 +3454,17 @@ function makeReport() {
   const rateTxt = rateSet.length ? rateSet.map((r) => "\u20B9" + r).join(" / ") : "\u20B9" + l.wage;
   const totalEarn = earn + c.bal - c.rent - c.bijli - c.bijliCalc;
   const advList = entries.filter((e) => e.withdraw > 0);
-  const totalAdv = advList.reduce((s, e) => s + parseFloat(e.withdraw || 0), 0);
-  const advHtml = advList.map((e) => {
-    const d = new Date(e.date).toLocaleDateString("hi-IN", { day: "numeric", month: "short" });
-    const s = sites[e.siteId];
+  const extraWh = Object.values(withdrawals).filter((w) => w.labourId === labId && w.date && w.date.startsWith(mon));
+  const totalAdv = advList.reduce((s, e) => s + parseFloat(e.withdraw || 0), 0) + extraWh.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
+  const advRows = [
+    ...advList.map((e) => ({ date: e.date, amount: e.withdraw, siteName: sites[e.siteId] ? sites[e.siteId].house : "", note: "" })),
+    ...extraWh.map((w) => ({ date: w.date, amount: w.amount, siteName: "", note: w.note || "Extra" }))
+  ].sort((a, b) => a.date.localeCompare(b.date));
+  const advHtml = advRows.map((r) => {
+    const d = new Date(r.date).toLocaleDateString("hi-IN", { day: "numeric", month: "short" });
     return `<div class="rc-adv-item">
-      <span>\u2022 ${d} ${s ? '<span style="color:#64748B">(' + s.house + ")</span>" : ""}</span>
-      <b>\u20B9${Number(e.withdraw || 0).toLocaleString("en-IN")}</b>
+      <span>\u2022 ${d} ${r.siteName ? '<span style="color:#64748B">(' + r.siteName + ")</span>" : r.note ? '<span style="color:#64748B">(' + r.note + ")</span>" : ""}</span>
+      <b>\u20B9${Number(r.amount || 0).toLocaleString("en-IN")}</b>
     </div>`;
   }).join("") || '<div style="font-size:11.5px;color:#94A3B8;padding:4px 0;font-style:italic">\u0907\u0938 \u092E\u093E\u0939 \u092E\u0947\u0902 \u0915\u094B\u0908 \u0928\u093F\u0915\u093E\u0938\u0940 \u0928\u0939\u0940\u0902</div>';
   const finalDena = totalEarn - totalAdv;
@@ -5768,9 +5857,7 @@ function saveBulkHazri() {
     const days = s.days != null ? s.days : 0;
     const sameDay = Object.values(ents).filter((e) => e.date === date && e.labourId === id);
     const dupSite = sameDay.find((e) => (e.siteId || "") === site);
-    const total = sameDay.reduce((a, e) => a + parseFloat(e.days || 0), 0);
     if (dupSite) { skipped.push(labs[id].name + " (पहले से एंट्री)"); return; }
-    if (total + days > 2.1) { skipped.push(labs[id].name + " (2 दिन से ज़्यादा)"); return; }
     const eid = `${date}_${id}_${site || "nosite"}_${Date.now()}${i}`;
     db.ref("companies/" + company + "/entries/" + eid).set({
       date, labourId: id, siteId: site, days,
@@ -5892,7 +5979,7 @@ const PIN_PROTECTED_FNS = [
   "addSite", "toggleSiteStatus", "deleteSite", "addSitePayment", "addSiteCost", "deleteSiteCost",
   "saveHazri", "deleteEntry", "saveAgreement", "deleteSavedAg", "addExpense", "deleteExpense",
   "addMatSection", "editMatSection", "deleteMatSection", "saveMatItem", "deleteMatItem",
-  "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat", "bcAddEntry", "bcDeleteEntry",
+  "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat", "bcAddEntry", "bcDeleteEntry", "whAdd", "whDelete",
   "matPaymentAdd", "matPaymentDelete"
 ];
 function startAdminPinListener() {
