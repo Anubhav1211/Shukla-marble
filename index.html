@@ -2433,6 +2433,86 @@ function renderCalendar() {
   html += "</div>";
   calBox.innerHTML = html;
 }
+// Builds the same month-calendar grid as renderCalendar(), but as a standalone HTML string
+// for any given labourer+month — used to embed the attendance calendar into the PDF export.
+function buildCalendarGridHtml(labId, mon) {
+  const y = parseInt(mon.split("-")[0]);
+  const m = parseInt(mon.split("-")[1]);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const firstDay = new Date(y, m - 1, 1).getDay();
+  const map = {};
+  Object.values(ents).forEach((e) => {
+    if (e.labourId === labId && e.date && e.date.startsWith(mon)) {
+      const d = parseInt(e.date.split("-")[2]);
+      if (!map[d]) map[d] = { days: 0, withdraw: 0 };
+      map[d].days += parseFloat(e.days || 0);
+      map[d].withdraw += parseFloat(e.withdraw || 0);
+    }
+  });
+  const todayReal = /* @__PURE__ */ new Date();
+  const isCurrentMonth = todayReal.getFullYear() === y && todayReal.getMonth() + 1 === m;
+  const todayDate = todayReal.getDate();
+  let html = `
+    <div class="cal-grid">
+      <div class="cal-day head">\u0930\u0935\u093F</div>
+      <div class="cal-day head">\u0938\u094B\u092E</div>
+      <div class="cal-day head">\u092E\u0902\u0917\u0932</div>
+      <div class="cal-day head">\u092C\u0941\u0927</div>
+      <div class="cal-day head">\u0917\u0941\u0930\u0941</div>
+      <div class="cal-day head">\u0936\u0941\u0915\u094D\u0930</div>
+      <div class="cal-day head">\u0936\u0928\u093F</div>
+  `;
+  for (let i = 0; i < firstDay; i++) {
+    html += '<div class="cal-day future" style="background:#FFFFFF;border:1.5px dashed #CBD5E1;opacity:0.3;cursor:default;"></div>';
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const info = map[d];
+    let cls = "absent", txt = "A", sub = "";
+    const isFutureNoEntry = isCurrentMonth && d >= todayDate && !info;
+    if (info) {
+      const dv = info.days;
+      const wd = info.withdraw;
+      sub = wd > 0 ? "\u20B9" + wd : "\u20B90";
+      if (dv >= 2) {
+        cls = "double";
+        txt = dv === 2 ? "2P" : dv + "P";
+      } else if (dv === 1.5) {
+        cls = "onefive";
+        txt = "1.5";
+      } else if (dv > 1) {
+        cls = "onefive";
+        txt = dv + "P";
+      } else if (dv === 1) {
+        cls = "present";
+        txt = "1P";
+      } else if (dv === 0.5) {
+        cls = "half";
+        txt = "0.5";
+      } else if (dv > 0) {
+        cls = "half";
+        txt = dv + "P";
+      } else {
+        cls = "absent";
+        txt = "A";
+      }
+    } else if (isFutureNoEntry) {
+      cls = "future";
+      txt = "-";
+      sub = "";
+    } else {
+      cls = "absent";
+      txt = "A";
+      sub = "";
+    }
+    html += `<div class="cal-day ${cls}">
+      <b>${d}</b>
+      <small>${txt}</small>
+      <small class="cal-sub">${sub}</small>
+    </div>`;
+  }
+  html += "</div>";
+  return html;
+}
 function editEntryByDay(dayNum) {
   const eLabour = document.getElementById("eLabour");
   const selId = eLabour ? eLabour.value : "";
@@ -4572,6 +4652,7 @@ async function downloadRateCardPdf() {
   }
   const mon = document.getElementById("rMonth")?.value || getMon();
   const labSel = document.getElementById("rLabour");
+  const labId = labSel ? labSel.value : "";
   const rawName = labSel && labSel.selectedOptions[0] ? labSel.selectedOptions[0].text : "Hisab";
   const safeName = rawName.replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, "_");
   try {
@@ -4594,6 +4675,27 @@ async function downloadRateCardPdf() {
       pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
       heightLeft -= pageHeight;
+    }
+    // ---- Page 2 onward: that month's attendance calendar for this labourer ----
+    if (labId && labs[labId]) {
+      const monLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+      const calTemp = document.createElement("div");
+      calTemp.style.cssText = "position:fixed;top:-9999px;left:0;width:380px;background:#ffffff;padding:16px;";
+      calTemp.innerHTML = `
+        <div style="text-align:center;font-weight:800;font-size:16px;color:#0F172A;margin-bottom:2px;">${rawName}</div>
+        <div style="text-align:center;font-weight:700;font-size:12.5px;color:#64748B;margin-bottom:12px;">\u{1F5D3}\uFE0F \u0939\u093E\u095B\u0930\u0940 \u0915\u0948\u0932\u0947\u0902\u0921\u0930 \u2014 ${monLabel}</div>
+        ${buildCalendarGridHtml(labId, mon)}
+      `;
+      document.body.appendChild(calTemp);
+      try {
+        const calCanvas = await html2canvas(calTemp, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        const calImgData = calCanvas.toDataURL("image/png");
+        const calPdfHeight = calCanvas.height * pdfWidth / calCanvas.width;
+        pdf.addPage();
+        pdf.addImage(calImgData, "PNG", 0, 0, pdfWidth, calPdfHeight);
+      } finally {
+        document.body.removeChild(calTemp);
+      }
     }
     pdf.save(`Rate_Card_${safeName}_${mon}.pdf`);
   } catch (err) {
