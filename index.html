@@ -99,6 +99,12 @@ body {
 .tab .ti { font-size: 17px; line-height: 1; }
 .tab .tl { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
+.tab.tab-primary {
+  background: #EEF2FF;
+  border-color: #C7D2FE;
+  color: #4338CA;
+}
+
 .tab.active {
   color: #FFFFFF;
   background: #4F46E5;
@@ -937,8 +943,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     <button class="tab active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab" id="bt-s" onclick="showTab('s')"><span class="ti">🏠</span><span class="tl">साइट</span></button>
     <button class="tab" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
-    <button class="tab" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
-    <button class="tab" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
+    <button class="tab tab-primary" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
+    <button class="tab tab-primary" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
     <button class="tab" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
     <button class="tab" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
@@ -989,57 +995,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         </div>
       </div>
       <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर कारीगर tab के महीना-चुनने वाले बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
-    </div>
-
-    <!-- Add Labour Quick Box -->
-    <div class="card">
-      <button class="btn btn-gold" onclick="toggleBox('addLabourBoxMain')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>+ नया कारीगर जोड़ो</span><span>▼</span>
-      </button>
-      <div id="addLabourBoxMain" style="display: none; margin-top: 12px;">
-        <input id="fName" class="input" placeholder="कारीगर का नाम">
-        <input id="fPhone" class="input" placeholder="मोबाइल नंबर">
-        <div style="display: flex; gap: 8px;">
-          <input id="fWage" class="input" type="number" placeholder="दिहाड़ी ₹">
-          <input id="fRent" class="input" type="number" placeholder="कमरा किराया ₹">
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <input id="fBijli" class="input" type="number" placeholder="बिजली ₹">
-          <input id="fDena" class="input" type="number" placeholder="पिछला देना ₹">
-          <input id="fLena" class="input" type="number" placeholder="पिछला लेना ₹">
-        </div>
-        <button class="btn btn-gold" onclick="addLabour()">कारीगर जोड़ो</button>
-        <div id="addMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
-      </div>
-    </div>
-
-    <!-- Bijli Bill Calculator -->
-    <div class="card" style="border: 2px solid #FCD34D;">
-      <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>⚡ बिजली बिल कैलकुलेटर (मीटर रीडिंग से)</span><span>▼</span>
-      </button>
-      <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
-        <input id="bcMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box;" onchange="bcRenderList()">
-        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin: 2px 0 6px 2px;">कारीगर चुनो <span style="font-weight: 500;">(एक से ज़्यादा चुनोगे तो बिल बराबर बंट जाएगा)</span></div>
-        <div id="bcLabPicker" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;"></div>
-        <div style="display: flex; gap: 8px;">
-          <input id="bcOld" type="number" class="input" placeholder="पुरानी रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
-          <input id="bcNew" type="number" class="input" placeholder="नई रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
-        </div>
-        <input id="bcRate" type="number" class="input" placeholder="बिजली रेट ₹ / यूनिट" oninput="bcUpdatePreview()">
-        <div id="bcPreview" style="background: #F1F5F9; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 10px; text-align: center;">यूनिट: 0 &nbsp;×&nbsp; रेट ₹0 &nbsp;=&nbsp; बिल ₹0</div>
-        <button class="btn btn-gold" id="bcSaveBtn" onclick="bcAddEntry()">+ Add करो</button>
-        <button class="btn-sm" id="bcCancelEditBtn" style="background: #F1F5F9; color: #64748B; width: 100%; padding: 8px; margin-top: 6px; font-size: 12px; display: none;" onclick="bcCancelEdit()">Cancel</button>
-        <div id="bcMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px 0;">
-          <h4 style="margin: 0; font-size: 13.5px;">⚡ <span id="bcMonthLabel"></span> के बिल</h4>
-          <b id="bcTotal" style="color: #B45309; font-size: 14px; white-space: nowrap;">कुल ₹0</b>
-        </div>
-        <div id="bcList"></div>
-        <div id="bcEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 14px 0;">इस महीने कोई बिजली बिल नहीं बना</div>
-        <button class="btn-sm" id="bcShareBtn" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="bcShareWhatsapp()">📤 WhatsApp पर शेयर करो</button>
-      </div>
     </div>
 
     <!-- Ongoing Sites -->
@@ -1123,6 +1078,57 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
   <!-- TAB 3: LABOURS -->
   <div id="t-l" style="display: none;">
+    <!-- Add Labour Quick Box -->
+    <div class="card">
+      <button class="btn btn-gold" onclick="toggleBox('addLabourBoxMain')" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>+ नया कारीगर जोड़ो</span><span>▼</span>
+      </button>
+      <div id="addLabourBoxMain" style="display: none; margin-top: 12px;">
+        <input id="fName" class="input" placeholder="कारीगर का नाम">
+        <input id="fPhone" class="input" placeholder="मोबाइल नंबर">
+        <div style="display: flex; gap: 8px;">
+          <input id="fWage" class="input" type="number" placeholder="दिहाड़ी ₹">
+          <input id="fRent" class="input" type="number" placeholder="कमरा किराया ₹">
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input id="fBijli" class="input" type="number" placeholder="बिजली ₹">
+          <input id="fDena" class="input" type="number" placeholder="पिछला देना ₹">
+          <input id="fLena" class="input" type="number" placeholder="पिछला लेना ₹">
+        </div>
+        <button class="btn btn-gold" onclick="addLabour()">कारीगर जोड़ो</button>
+        <div id="addMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
+      </div>
+    </div>
+
+    <!-- Bijli Bill Calculator -->
+    <div class="card" style="border: 2px solid #FCD34D;">
+      <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>⚡ बिजली बिल कैलकुलेटर (मीटर रीडिंग से)</span><span>▼</span>
+      </button>
+      <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
+        <input id="bcMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box;" onchange="bcRenderList()">
+        <div style="font-size: 11px; font-weight: 700; color: #64748B; margin: 2px 0 6px 2px;">कारीगर चुनो <span style="font-weight: 500;">(एक से ज़्यादा चुनोगे तो बिल बराबर बंट जाएगा)</span></div>
+        <div id="bcLabPicker" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;"></div>
+        <div style="display: flex; gap: 8px;">
+          <input id="bcOld" type="number" class="input" placeholder="पुरानी रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
+          <input id="bcNew" type="number" class="input" placeholder="नई रीडिंग" style="flex: 1;" oninput="bcUpdatePreview()">
+        </div>
+        <input id="bcRate" type="number" class="input" placeholder="बिजली रेट ₹ / यूनिट" oninput="bcUpdatePreview()">
+        <div id="bcPreview" style="background: #F1F5F9; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 10px; text-align: center;">यूनिट: 0 &nbsp;×&nbsp; रेट ₹0 &nbsp;=&nbsp; बिल ₹0</div>
+        <button class="btn btn-gold" id="bcSaveBtn" onclick="bcAddEntry()">+ Add करो</button>
+        <button class="btn-sm" id="bcCancelEditBtn" style="background: #F1F5F9; color: #64748B; width: 100%; padding: 8px; margin-top: 6px; font-size: 12px; display: none;" onclick="bcCancelEdit()">Cancel</button>
+        <div id="bcMsg" style="color: #DC2626; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px 0;">
+          <h4 style="margin: 0; font-size: 13.5px;">⚡ <span id="bcMonthLabel"></span> के बिल</h4>
+          <b id="bcTotal" style="color: #B45309; font-size: 14px; white-space: nowrap;">कुल ₹0</b>
+        </div>
+        <div id="bcList"></div>
+        <div id="bcEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 14px 0;">इस महीने कोई बिजली बिल नहीं बना</div>
+        <button class="btn-sm" id="bcShareBtn" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="bcShareWhatsapp()">📤 WhatsApp पर शेयर करो</button>
+      </div>
+    </div>
+
     <div class="card">
       <h3 style="margin-top: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
