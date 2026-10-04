@@ -953,11 +953,14 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   <!-- TAB 1: DASHBOARD -->
   <div id="t-d">
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0; font-size: 16px; font-weight: 800;">ओवरव्यू</h3>
-        <span id="monTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
+      <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 800;">ओवरव्यू</h3>
+      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftDMonth(-1)">◀</button>
+        <input id="dMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('dMonth')">
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftDMonth(1)">▶</button>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
+      <div id="monTxt" style="text-align: center; color: #4F46E5; font-size: 11px; font-weight: 700; margin-bottom: 10px;"></div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
         <div style="background: #1E293B; color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
           <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small>
         </div>
@@ -1257,7 +1260,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <span>🧾</span> हिसाब - मजदूर रेट कार्ड जनरेटर
       </h3>
       <div style="display: flex; gap: 8px;">
-        <input id="rMonth" type="month" class="input">
+        <input id="rMonth" type="month" class="input" onchange="syncMonthFrom('rMonth')">
         <select id="rLabour" class="input">
           <option value="all">सबका हिसाब</option>
         </select>
@@ -1834,21 +1837,22 @@ function getMon() {
   const rMonth = document.getElementById("rMonth");
   return rMonth && rMonth.value ? rMonth.value : fmtLocalDate(new Date()).slice(0, 7);
 }
-// कारीगर tab's month picker (kMonth) and हिसाब tab's month picker (rMonth) share one
-// underlying "current month" — changing either one keeps the other in sync.
+// डैश (dMonth), कारीगर (kMonth) और हिसाब (rMonth) के महीना-पिकर एक ही
+// "current month" शेयर करते हैं — किसी एक को बदलने से बाकी सब अपने आप sync हो जाते हैं।
+const MONTH_SYNC_IDS = ["dMonth", "kMonth", "rMonth"];
 function syncMonthFrom(sourceId) {
   const src = document.getElementById(sourceId);
   if (!src) return;
   const val = src.value || fmtLocalDate(new Date()).slice(0, 7);
-  ["kMonth", "rMonth"].forEach((id) => {
+  MONTH_SYNC_IDS.forEach((id) => {
     if (id === sourceId) return;
     const el = document.getElementById(id);
     if (el) el.value = val;
   });
   renderAll();
 }
-function shiftKMonth(delta) {
-  const el = document.getElementById("kMonth");
+function shiftMonthInput(id, delta) {
+  const el = document.getElementById(id);
   if (!el) return;
   const cur = el.value || fmtLocalDate(new Date()).slice(0, 7);
   const parts = cur.split("-");
@@ -1857,8 +1861,10 @@ function shiftKMonth(delta) {
   y += Math.floor(m / 12);
   m = ((m % 12) + 12) % 12;
   el.value = y + "-" + String(m + 1).padStart(2, "0");
-  syncMonthFrom("kMonth");
+  syncMonthFrom(id);
 }
+function shiftKMonth(delta) { shiftMonthInput("kMonth", delta); }
+function shiftDMonth(delta) { shiftMonthInput("dMonth", delta); }
 // ---- Per-entry rate: each hazri keeps the rate it was earned at (e.rate).
 // Old entries without e.rate fall back to the labour's current wage.
 function entryRate(e, l) {
@@ -6263,6 +6269,8 @@ function bootstrap() {
   if (rMonth) rMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   const kMonth = document.getElementById("kMonth");
   if (kMonth) kMonth.value = fmtLocalDate(new Date()).slice(0, 7);
+  const dMonth = document.getElementById("dMonth");
+  if (dMonth) dMonth.value = fmtLocalDate(new Date()).slice(0, 7);
   if (monTxt) monTxt.innerText = (/* @__PURE__ */ new Date()).toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
   if (tDate) tDate.value = fmtLocalDate(new Date());
   if (cDate) cDate.value = fmtLocalDate(new Date());
