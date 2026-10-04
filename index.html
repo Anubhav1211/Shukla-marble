@@ -961,14 +961,14 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
       <div id="monTxt" style="text-align: center; color: #4F46E5; font-size: 11px; font-weight: 700; margin-bottom: 10px;"></div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-        <div style="background: #1E293B; color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
-          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small>
+        <div onclick="showBreakdownProfit()" style="cursor: pointer; background: #1E293B; color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
+          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div style="background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
-          <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small>
+        <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
+          <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div style="background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #FECACA;">
-          <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small>
+        <div onclick="showBreakdownLena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #FECACA;">
+          <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
       </div>
     </div>
@@ -980,21 +980,21 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <span id="msMonTxt" style="background: #F1F5F9; color: #475569; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;">
-        <div style="background: #EEF2FF; padding: 12px 4px; border-radius: 16px; text-align: center;">
+        <div onclick="showBreakdownEarn()" style="cursor: pointer; background: #EEF2FF; padding: 12px 4px; border-radius: 16px; text-align: center;">
           <small style="color: #4338CA; font-weight: 700; font-size: 10px;">इस महीने की कुल दिहाड़ी बनी</small><br>
-          <b id="msEarn" style="color: #4338CA; font-size: 15px; white-space: nowrap;">₹0</b>
+          <b id="msEarn" style="color: #4338CA; font-size: 15px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div style="background: #DCFCE7; padding: 12px 4px; border-radius: 16px; text-align: center;">
+        <div onclick="showBreakdownPaid()" style="cursor: pointer; background: #DCFCE7; padding: 12px 4px; border-radius: 16px; text-align: center;">
           <small style="color: #166534; font-weight: 700; font-size: 10px;">इस महीने कुल दिया गया</small><br>
-          <b id="msPaid" style="color: #166534; font-size: 15px; white-space: nowrap;">₹0</b>
+          <b id="msPaid" style="color: #166534; font-size: 15px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div style="background: #FEF3C7; padding: 12px 4px; border-radius: 16px; text-align: center; grid-column: span 2;">
+        <div onclick="showBreakdownOpeningLeft()" style="cursor: pointer; background: #FEF3C7; padding: 12px 4px; border-radius: 16px; text-align: center; grid-column: span 2;">
           <small style="color: #92400E; font-weight: 700; font-size: 10px;">पिछले महीने का बकाया (<span id="msOpening">₹0</span>) — अब कितना बचा</small><br>
-          <b id="msOpeningLeft" style="color: #B45309; font-size: 18px; white-space: nowrap;">₹0</b>
+          <b id="msOpeningLeft" style="color: #B45309; font-size: 18px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div style="background: #FEE2E2; padding: 12px 4px; border-radius: 16px; text-align: center; grid-column: span 2;">
+        <div onclick="showBreakdownDena()" style="cursor: pointer; background: #FEE2E2; padding: 12px 4px; border-radius: 16px; text-align: center; grid-column: span 2;">
           <small style="color: #991B1B; font-weight: 700; font-size: 10px;">अभी भी कुल कितना देना है (इस महीने की कमाई मिलाकर)</small><br>
-          <b id="msRemaining" style="color: #991B1B; font-size: 15px; white-space: nowrap;">₹0</b>
+          <b id="msRemaining" style="color: #991B1B; font-size: 15px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
       </div>
       <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर कारीगर tab के महीना-चुनने वाले बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
@@ -1641,6 +1641,24 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   </div>
 
   <!-- Labour Field Edit Popup (दिहाड़ी / किराया / बिजली / बकाया) -->
+  <!-- Dashboard figure breakdown popup -->
+  <div id="breakdownModal" class="popup-overlay">
+    <div style="background: white; border-radius: 20px; width: 100%; max-width: 420px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.25);">
+      <div style="padding: 18px 20px 10px 20px; border-bottom: 1px solid #F1F5F9;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 id="bdTitle" style="margin: 0; font-size: 15px; font-weight: 800;"></h3>
+          <button onclick="closeBreakdownModal()" style="background: #F1F5F9; border: none; color: #475569; width: 28px; height: 28px; border-radius: 50%; font-weight: 800; cursor: pointer;">✕</button>
+        </div>
+        <div id="bdSub" style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-top: 4px;"></div>
+      </div>
+      <div id="bdList" style="overflow-y: auto; padding: 8px 20px;"></div>
+      <div style="padding: 12px 20px 18px 20px; border-top: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12.5px; font-weight: 700; color: #475569;">कुल</span>
+        <b id="bdTotal" style="font-size: 16px; color: #0F172A;">₹0</b>
+      </div>
+    </div>
+  </div>
+
   <div id="editFieldModal" class="popup-overlay">
     <div class="popup-box">
       <div style="font-size: 32px; margin-bottom: 8px;">✏️</div>
@@ -3088,6 +3106,99 @@ function closeEditFieldModal() {
   if (rbm) rbm.style.display = "none";
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "none";
+}
+// ================= Dashboard figure breakdown popup =================
+function showBreakdown(title, sub, rows) {
+  const modal = document.getElementById("breakdownModal");
+  const titleEl = document.getElementById("bdTitle");
+  const subEl = document.getElementById("bdSub");
+  const listEl = document.getElementById("bdList");
+  const totalEl = document.getElementById("bdTotal");
+  if (!modal || !listEl) return;
+  if (titleEl) titleEl.innerText = title;
+  if (subEl) subEl.innerText = sub || "";
+  const sorted = rows.slice().sort((a, b) => b.amount - a.amount);
+  let total = 0;
+  listEl.innerHTML = sorted.map((r) => {
+    total += r.amount;
+    return `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F8FAFC;">
+        <span style="font-size: 13px; font-weight: 600; color: #1E293B;">${r.name}</span>
+        <b style="font-size: 13.5px; color: #0F172A; white-space: nowrap;">\u20B9${Math.round(r.amount).toLocaleString("en-IN")}</b>
+      </div>`;
+  }).join("") || '<div style="text-align:center;color:#94A3B8;font-size:12.5px;padding:20px 0;">\u0915\u094B\u0908 \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902</div>';
+  if (totalEl) totalEl.innerText = "\u20B9" + Math.round(total).toLocaleString("en-IN");
+  modal.style.display = "flex";
+}
+function closeBreakdownModal() {
+  const modal = document.getElementById("breakdownModal");
+  if (modal) modal.style.display = "none";
+}
+function showBreakdownProfit() {
+  const rows = [];
+  Object.keys(sites).forEach((sid) => {
+    const sc = calcSite(sid);
+    if (sc.profit !== 0) rows.push({ name: "\u{1F3E0} " + (sites[sid].house || sid), amount: sc.profit });
+  });
+  let matTotal = 0;
+  Object.values(matEntriesBySection).forEach((sectionEntries) => {
+    Object.values(sectionEntries || {}).forEach((e) => { matTotal += parseFloat(e.total) || 0; });
+  });
+  if (matTotal !== 0) rows.push({ name: "\u26A1 \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0915\u092E\u0940\u0936\u0928 (\u0938\u092D\u0940)", amount: matTotal });
+  showBreakdown("\u{1F4B0} \u0915\u0941\u0932 \u092E\u0941\u0928\u093E\u092B\u093C\u093E \u0915\u093E \u0935\u093F\u0935\u0930\u0923", "\u0938\u092D\u0940 \u0938\u093E\u0907\u091F + \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0915\u092E\u0940\u0936\u0928 (all-time)", rows);
+}
+function showBreakdownDena() {
+  const mon = getMon();
+  const rows = [];
+  Object.keys(labs).forEach((id) => {
+    if (labs[id].archived) return;
+    const c = calcLabour(id, mon);
+    if (c.net >= 0 && c.net !== 0) rows.push({ name: labs[id].name, amount: c.net });
+  });
+  showBreakdown("\u{1F7E2} \u0915\u0941\u0932 \u0926\u0947\u0928\u093E \u0915\u093E \u0935\u093F\u0935\u0930\u0923", "\u091C\u093F\u0928\u094D\u0939\u0947\u0902 \u092A\u0948\u0938\u093E \u0926\u0947\u0928\u093E \u0939\u0948", rows);
+}
+function showBreakdownLena() {
+  const mon = getMon();
+  const rows = [];
+  Object.keys(labs).forEach((id) => {
+    if (labs[id].archived) return;
+    const c = calcLabour(id, mon);
+    if (c.net < 0) rows.push({ name: labs[id].name, amount: Math.abs(c.net) });
+  });
+  showBreakdown("\u{1F534} \u0915\u0941\u0932 \u0932\u0947\u0928\u093E \u0915\u093E \u0935\u093F\u0935\u0930\u0923", "\u091C\u093F\u0928\u094D\u0939\u094B\u0902 \u0938\u0947 \u092A\u0948\u0938\u093E \u0932\u0947\u0928\u093E \u0939\u0948 (\u090F\u0921\u0935\u093E\u0902\u0938)", rows);
+}
+function showBreakdownEarn() {
+  const mon = getMon();
+  const rows = [];
+  Object.keys(labs).forEach((id) => {
+    if (labs[id].archived) return;
+    const c = calcLabour(id, mon);
+    if (c.earn !== 0) rows.push({ name: labs[id].name, amount: c.earn });
+  });
+  const monLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  showBreakdown("\u{1F4C5} \u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940", monLabel, rows);
+}
+function showBreakdownPaid() {
+  const mon = getMon();
+  const rows = [];
+  Object.keys(labs).forEach((id) => {
+    if (labs[id].archived) return;
+    const c = calcLabour(id, mon);
+    if (c.with !== 0) rows.push({ name: labs[id].name, amount: c.with });
+  });
+  const monLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  showBreakdown("\u{1F4B8} \u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0941\u0932 \u0926\u093F\u092F\u093E \u0917\u092F\u093E", monLabel, rows);
+}
+function showBreakdownOpeningLeft() {
+  const mon = getMon();
+  const rows = [];
+  Object.keys(labs).forEach((id) => {
+    if (labs[id].archived) return;
+    const c = calcLabour(id, mon);
+    const left = Math.max(0, c.bal - c.with);
+    if (left > 0) rows.push({ name: labs[id].name, amount: left });
+  });
+  showBreakdown("\u{1F4C6} \u092A\u093F\u091B\u0932\u0947 \u092E\u0939\u0940\u0928\u0947 \u0915\u093E \u092C\u0915\u093E\u092F\u093E \u2014 \u0905\u092C \u0915\u093F\u0924\u0928\u093E \u092C\u091A\u093E", "\u0939\u0930 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u093E \u0905\u092A\u0928\u093E \u092C\u0915\u093E\u092F\u093E, \u0905\u0932\u0917 \u0938\u0947", rows);
 }
 function saveEditField() {
   if (!efLabourId || !efField) return;
