@@ -2762,12 +2762,17 @@ function renderAll() {
       const g = siteGroups[key];
       g.rows.sort((x, y) => (x[2].name || "").localeCompare(y[2].name || ""));
       const totalDays = g.rows.reduce((sum, r) => sum + (parseFloat(r[1].days) || 0), 0);
-      const totalWithdraw = g.rows.reduce((sum, r) => sum + (parseFloat(r[1].withdraw) || 0), 0);
+      const totalWithdraw = g.rows.reduce((sum, r) => {
+        const extraSum = Object.values(withdrawals).reduce((s, w) => (w.labourId === r[1].labourId && w.date === today ? s + (parseFloat(w.amount) || 0) : s), 0);
+        return sum + (parseFloat(r[1].withdraw) || 0) + extraSum;
+      }, 0);
       const shareIdx = window.__hazriShareData.length;
       let shareMsg = `\u{1F3E0} *${g.name}*\n\u{1F4C5} ${todayDateForShare}\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
       g.rows.forEach(([, e, l]) => {
         const wTxt = parseFloat(e.withdraw || 0) > 0 ? ` (\u{1F4B8} \u20B9${e.withdraw})` : "";
-        shareMsg += `\u2022 ${l.name} \u2013 ${e.days} \u0926\u093F\u0928${wTxt}\n`;
+        const extraTotal = Object.values(withdrawals).reduce((s, w) => (w.labourId === e.labourId && w.date === today ? s + (parseFloat(w.amount) || 0) : s), 0);
+        const extraTxt = extraTotal > 0 ? ` (+ Extra \u20B9${extraTotal})` : "";
+        shareMsg += `\u2022 ${l.name} \u2013 ${e.days} \u0926\u093F\u0928${wTxt}${extraTxt}\n`;
       });
       shareMsg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u0915\u0941\u0932: ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930, ${totalDays} \u0926\u093F\u0928`;
       if (totalWithdraw > 0) shareMsg += `, \u0916\u0930\u094D\u091A \u20B9${totalWithdraw}`;
@@ -2779,10 +2784,15 @@ function renderAll() {
         </div>
       </td></tr>`;
       g.rows.forEach(([eid, e, l]) => {
+        const extraForRow = Object.values(withdrawals).filter((w) => w.labourId === e.labourId && w.date === today);
+        const extraTotalRow = extraForRow.reduce((s, w) => s + (parseFloat(w.amount) || 0), 0);
+        const extraRowHtml = extraTotalRow > 0
+          ? `<br><small style="color:#B45309;font-weight:700">+ Extra \u20B9${extraTotalRow.toLocaleString("en-IN")}</small>`
+          : "";
         tHtml += `<tr>
       <td style="text-align:left"><b>${l.name}</b></td>
       <td style="font-size:10px;color:#64748B">${key === "__none__" ? "-" : g.name}</td>
-      <td>${e.days} \u0926\u093F\u0928 <small style="color:#DC2626">\u20B9${e.withdraw || 0}</small></td>
+      <td>${e.days} \u0926\u093F\u0928 <small style="color:#DC2626">\u20B9${e.withdraw || 0}</small>${extraRowHtml}</td>
       <td>
         <button class="btn-sm" onclick="editEntry('${eid}')">\u270F\uFE0F</button>
         <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteEntry('${eid}')">X</button>
