@@ -955,7 +955,114 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   }
 }
 
-  </style>
+  
+/* ===== SHUKLA MARBLE — PROFESSIONAL UI REFRESH ===== */
+:root{
+  --ink:#142033;
+  --ink-2:#1D2B3F;
+  --gold:#B88932;
+  --gold-light:#D7AE5A;
+  --gold-soft:#FBF4E6;
+  --paper:#F4F6F8;
+  --line:#E3E8EE;
+  --muted:#718096;
+  --green:#16A36A;
+  --blue:#3B66D9;
+  --danger:#D9534F;
+  --shadow:0 8px 28px rgba(20,32,51,.07);
+}
+html{scroll-behavior:smooth;background:var(--paper)}
+body{
+  background:linear-gradient(180deg,#EEF2F5 0,#F7F8FA 180px,#F4F6F8 100%);
+  color:var(--ink);
+  font-size:14px;
+  padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
+}
+body:before{content:"";display:block;position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 85% 0,rgba(215,174,90,.12),transparent 28%),radial-gradient(circle at 0 30%,rgba(59,102,217,.05),transparent 24%);z-index:-1}
+header{
+  position:sticky;top:0;z-index:120;
+  min-height:68px;
+  padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;
+  background:rgba(20,32,51,.96);
+  border-bottom:1px solid rgba(215,174,90,.55);
+  box-shadow:0 6px 24px rgba(20,32,51,.18);
+  backdrop-filter:blur(16px);
+}
+header>div:first-child{letter-spacing:.2px!important}
+header>div:first-child>span{filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+header .btn-sm{border-radius:12px!important}
+#syncBadge{border-radius:12px!important;padding:7px 10px!important}
+.card{
+  margin:14px 12px;
+  padding:17px;
+  border:1px solid rgba(20,32,51,.07);
+  border-radius:22px;
+  background:rgba(255,255,255,.94);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.card h3{color:var(--ink)!important;letter-spacing:-.15px}
+.card h3:after{content:"";display:block;width:34px;height:3px;margin-top:7px;border-radius:9px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.input{
+  min-height:48px;padding:12px 14px;margin-bottom:10px;
+  border:1px solid #D9E0E7;border-radius:14px;
+  background:#FAFBFC;color:var(--ink);font-size:14px;
+  box-shadow:inset 0 1px 1px rgba(20,32,51,.02);
+}
+.input:focus{border-color:#B88932;box-shadow:0 0 0 3px rgba(184,137,50,.12);background:#fff}
+.btn{
+  min-height:46px;border-radius:14px!important;font-weight:800!important;
+  box-shadow:0 5px 14px rgba(20,32,51,.10);
+}
+.btn:active,.btn-sm:active,.tab:active{transform:scale(.98)}
+.btn-save,.btn-navy{
+  background:linear-gradient(135deg,#1D2B3F,#142033)!important;
+  box-shadow:0 7px 18px rgba(20,32,51,.18)!important;
+}
+.btn-gold{background:linear-gradient(135deg,#D8B15D,#B88932)!important;border:0!important;color:#241A08!important;box-shadow:0 7px 18px rgba(184,137,50,.18)!important}
+.btn-sm{border-radius:11px!important}
+.tab{border-radius:14px!important;border-color:#E1E7ED!important;background:#F8FAFC!important;color:#607086!important;box-shadow:none!important}
+.tab.active{background:var(--ink)!important;color:#fff!important;border-color:var(--ink)!important;box-shadow:0 5px 14px rgba(20,32,51,.20)!important}
+.tab.tab-primary{background:var(--gold-soft)!important;color:#87611C!important;border-color:#E9D6AB!important}
+.bottom-nav{
+  left:10px;right:10px;bottom:10px;
+  padding:7px 7px calc(7px + env(safe-area-inset-bottom,0px));
+  border:1px solid rgba(20,32,51,.08);
+  border-radius:24px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 35px rgba(20,32,51,.16);
+  backdrop-filter:blur(18px);
+  gap:5px;
+}
+.bnav-item{min-height:58px!important;padding:6px 3px!important;border-radius:17px!important;color:#6B7A8D!important}
+.bnav-item .ti{font-size:21px!important}
+.bnav-item .tl{font-size:10px!important;font-weight:800!important}
+.bnav-item.active,.bnav-item.bnav-more-active{background:#EEF2F6!important;color:var(--ink)!important}
+#bnav-more{background:#FBF4E6!important;color:#8B671F!important}
+.site-card,.lab-card,.summary-card{border-radius:22px!important;border:1px solid #E2E8EF!important;box-shadow:0 7px 22px rgba(20,32,51,.06)!important}
+.site-card{background:linear-gradient(145deg,#fff,#FBFCFD)!important}
+.site-card button{border-radius:13px!important}
+.site-card .btn-sm{font-weight:800!important}
+/* make monetary KPI blocks cleaner without changing their values */
+[id*="List"]>div,[id*="Box"]>div{border-radius:16px!important}
+table{border-collapse:separate!important;border-spacing:0!important;overflow:hidden;border-radius:14px}
+th{background:#F1F4F7!important;color:#334155!important;font-weight:800!important}
+td{background:#fff}
+select{appearance:auto}
+/* modal polish */
+.site-detail-modal{background:rgba(10,18,30,.58)!important;backdrop-filter:blur(5px)}
+.site-detail-box{border:0!important;border-radius:24px!important;box-shadow:0 24px 60px rgba(0,0,0,.24)!important}
+/* section spacing */
+#t-d,#t-s,#t-x,#t-m,#t-a,#t-e,#t-r,#t-l{animation:fadeIn .18s ease}
+@keyframes fadeIn{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media(min-width:700px){
+  body{max-width:980px;margin:auto;background:#F4F6F8}
+  header{border-radius:0 0 18px 18px}
+  .bottom-nav{max-width:720px;left:50%;right:auto;transform:translateX(-50%);width:calc(100% - 28px)}
+  .card{margin-left:18px;margin-right:18px}
+}
+
+</style>
 </head>
 <body>
   <!-- Header -->
@@ -964,7 +1071,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <span>🏛️</span>
       <div>
         SHUKLA <span style="color: #D4A94E;">MARBLE</span>
-        <div style="font-size: 9px; color: #A8A196; font-weight: 600; letter-spacing: 1px;">CONTRACTOR V27.6 FINAL</div>
+        <div style="font-size: 9px; color: #A8A196; font-weight: 600; letter-spacing: 1px;">CONTRACTOR • BUSINESS MANAGER</div>
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 6px;">
