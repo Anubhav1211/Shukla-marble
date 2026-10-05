@@ -993,7 +993,25 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <button class="tab" id="bt-x" onclick="showTab('x'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">💸</span><span class="tl">खर्च</span></button>
         <button class="tab" id="bt-m" onclick="showTab('m'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
         <button class="tab" id="bt-a" onclick="showTab('a'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
+        <button class="tab" onclick="openAutoBackup(); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">☁️</span><span class="tl">बैकअप / रिस्टोर</span></button>
       </div>
+    </div>
+  </div>
+
+  <!-- Automatic Backup / Restore Modal -->
+  <div id="autoBackupModal" class="site-detail-modal" style="display:none;">
+    <div class="site-detail-box" style="max-width:520px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:18px;">☁️ Automatic Backup / Restore</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B;" onclick="closeAutoBackup()">✕ बंद करें</button>
+      </div>
+      <div id="autoBackupStatus" style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:12px;font-size:13px;color:#334155;margin-bottom:12px;">Backup status loading...</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="btn" style="background:#16A34A;" onclick="backupNow()">☁️ अभी Backup</button>
+        <button class="btn" style="background:#0F172A;" onclick="restoreLatestBackup()">♻️ Restore</button>
+      </div>
+      <button class="btn" style="background:#475569;margin-top:8px;" onclick="downloadJsonBackup()">📥 Backup File डाउनलोड</button>
+      <div style="font-size:11px;color:#64748B;margin-top:10px;text-align:center;">हर 24 घंटे में automatic cloud backup होगा।</div>
     </div>
   </div>
 
@@ -4947,7 +4965,7 @@ function renderPdfPreview() {
 async function downloadMonthlyPdf() {
   const el = document.getElementById("pdfPrintableArea");
   if (!el) {
-    alert("PDF \u0938\u093E\u092E\u0917\u094D\u0930\u0940 \u0909\u092A\u0932\u092C\u094D\u0927 \u0928\u0939\u0940\u0902 \u0939\u0948");
+    alert("PDF सामग्री उपलब्ध नहीं है");
     return;
   }
   const mon = document.getElementById("pdfMonth")?.value || getMon();
@@ -4955,27 +4973,47 @@ async function downloadMonthlyPdf() {
     const canvas = await html2canvas(el, {
       scale: 2,
       useCORS: true,
-      backgroundColor: "#ffffff"
+      backgroundColor: "#ffffff",
+      logging: false
     });
-    const imgData = canvas.toDataURL("image/png");
+
     const pdf = getJsPdfInstance("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = canvas.height * pdfWidth / canvas.width;
-    let position = 0;
-    let heightLeft = pdfHeight;
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - pdfHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
+    const pdfPageHeight = pdf.internal.pageSize.getHeight();
+
+    // Split the rendered canvas into real A4-sized slices. This prevents
+    // html2canvas content from being clipped or leaving large blank areas.
+    const pagePixelHeight = Math.floor(canvas.width * pdfPageHeight / pdfWidth);
+    let offsetY = 0;
+    let pageNo = 0;
+
+    while (offsetY < canvas.height) {
+      const sliceHeight = Math.min(pagePixelHeight, canvas.height - offsetY);
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = sliceHeight;
+      const ctx = pageCanvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+      ctx.drawImage(
+        canvas,
+        0, offsetY, canvas.width, sliceHeight,
+        0, 0, pageCanvas.width, pageCanvas.height
+      );
+
+      if (pageNo > 0) pdf.addPage();
+      const imgData = pageCanvas.toDataURL("image/jpeg", 0.95);
+      const slicePdfHeight = sliceHeight * pdfWidth / canvas.width;
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, slicePdfHeight);
+
+      offsetY += sliceHeight;
+      pageNo++;
     }
+
     pdf.save(`Shukla_Marble_Monthly_Report_${mon}.pdf`);
   } catch (err) {
     console.error("PDF generation error:", err);
-    alert("PDF \u0921\u093E\u0909\u0928\u0932\u094B\u0921 \u0935\u093F\u0902\u0921\u094B \u0916\u094B\u0932\u0940 \u091C\u093E \u0930\u0939\u0940 \u0939\u0948\u0964");
+    alert("PDF डाउनलोड नहीं हो पाया।");
     window.print();
   }
 }
@@ -5170,6 +5208,101 @@ window.downloadAgreementPdf = downloadAgreementPdf;
 window.printPdfReport = printPdfReport;
 window.downloadExcelBackup = downloadExcelBackup;
 window.exportExcel = downloadExcelBackup;
+// ================= AUTOMATIC BACKUP / RESTORE =================
+const SM_AUTO_BACKUP_KEY = "shukla_marble_auto_backup_v1";
+const SM_AUTO_BACKUP_INTERVAL = 24 * 60 * 60 * 1000;
+let smLatestBackup = null;
+
+function backupRootRef() {
+  return db && db.raw ? db.raw.ref("companies/" + company) : null;
+}
+function cleanBackupData(data) {
+  const clone = data ? JSON.parse(JSON.stringify(data)) : {};
+  delete clone._autoBackup;
+  return clone;
+}
+async function createAutoBackup(force) {
+  if (!db || !db.raw) return false;
+  try {
+    const root = backupRootRef();
+    const snap = await root.once("value");
+    const data = cleanBackupData(snap.val() || {});
+    const now = Date.now();
+    const payload = { timestamp: now, data: data };
+    await root.child("_autoBackup").set(payload);
+    smLatestBackup = payload;
+    try { localStorage.setItem(SM_AUTO_BACKUP_KEY, JSON.stringify({ timestamp: now })); } catch(e) {}
+    updateAutoBackupStatus();
+    return true;
+  } catch (e) {
+    console.error("Automatic backup failed", e);
+    return false;
+  }
+}
+function scheduleAutoBackup() {
+  const run = async () => {
+    let last = 0;
+    try { last = Number(JSON.parse(localStorage.getItem(SM_AUTO_BACKUP_KEY) || "{}").timestamp || 0); } catch(e) {}
+    if (!last || Date.now() - last >= SM_AUTO_BACKUP_INTERVAL) await createAutoBackup(false);
+  };
+  setTimeout(run, 5000);
+  setInterval(run, 60 * 60 * 1000);
+}
+function updateAutoBackupStatus() {
+  const el = document.getElementById("autoBackupStatus");
+  if (!el) return;
+  let ts = smLatestBackup && smLatestBackup.timestamp;
+  if (!ts) { try { ts = Number(JSON.parse(localStorage.getItem(SM_AUTO_BACKUP_KEY) || "{}").timestamp || 0); } catch(e) {} }
+  el.innerHTML = ts
+    ? "✅ Last backup: <b>" + new Date(ts).toLocaleString("en-IN") + "</b>"
+    : "⚠️ अभी तक automatic backup नहीं हुआ है।";
+}
+function openAutoBackup() {
+  const m = document.getElementById("autoBackupModal");
+  if (m) { m.style.display = "flex"; updateAutoBackupStatus(); }
+}
+function closeAutoBackup() {
+  const m = document.getElementById("autoBackupModal");
+  if (m) m.style.display = "none";
+}
+async function backupNow() {
+  const ok = await createAutoBackup(true);
+  alert(ok ? "✅ Backup सफलतापूर्वक हो गया।" : "❌ Backup नहीं हो पाया। Internet check करें।");
+}
+async function restoreLatestBackup() {
+  if (!db || !db.raw) return alert("Database उपलब्ध नहीं है।");
+  if (!confirm("⚠️ Latest backup restore होगा और अभी का data replace हो जाएगा। आगे बढ़ें?")) return;
+  try {
+    const snap = await db.raw.ref("companies/" + company + "/_autoBackup").once("value");
+    const b = snap.val();
+    if (!b || !b.data) return alert("❌ कोई backup नहीं मिला।");
+    await db.raw.ref("companies/" + company).set(b.data);
+    alert("✅ Restore पूरा हो गया। Page reload होगा।");
+    location.reload();
+  } catch (e) {
+    console.error(e);
+    alert("❌ Restore नहीं हो पाया।");
+  }
+}
+async function downloadJsonBackup() {
+  if (!db || !db.raw) return alert("Database उपलब्ध नहीं है।");
+  try {
+    const snap = await db.raw.ref("companies/" + company).once("value");
+    const data = cleanBackupData(snap.val() || {});
+    const blob = new Blob([JSON.stringify({version:1,timestamp:Date.now(),data:data},null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Shukla-Marble-Auto-Backup-" + new Date().toISOString().slice(0,10) + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  } catch(e) { alert("❌ Backup file नहीं बन पाई।"); }
+}
+window.openAutoBackup = openAutoBackup;
+window.closeAutoBackup = closeAutoBackup;
+window.backupNow = backupNow;
+window.restoreLatestBackup = restoreLatestBackup;
+window.downloadJsonBackup = downloadJsonBackup;
+
 // ================= MATERIAL (मटेरियल) - multi-section (NOVA / ACC / +user-added) =================
 let matItems = {};
 let matEntries = {};
@@ -6619,6 +6752,7 @@ function bootstrap() {
   document.getElementById("tMob")?.addEventListener("input", renderTile);
   document.getElementById("tDate")?.addEventListener("change", renderTile);
   initFirebase();
+scheduleAutoBackup();
   guardPinProtectedFns();
 }
 if (document.readyState === "loading") {
