@@ -1298,6 +1298,12 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
       </h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('paid')">💸 आज किसको पैसे दिए</button>
+        <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('absent')">❌ आज किसकी छुट्टी</button>
+      </div>
+      <div id="dailyPaidList" style="display:none;margin-bottom:10px;"></div>
+      <div id="dailyAbsentList" style="display:none;margin-bottom:10px;"></div>
       <div id="todayTable"></div>
       <div id="missingBox" style="margin-top: 12px;"></div>
     </div>
@@ -2662,6 +2668,48 @@ function toggleArchive(id, arch) {
   }
   db.ref("companies/" + company + "/labours/" + id + "/archived").set(arch ? true : false);
 }
+function toggleDailyList(type) {
+  const paid = document.getElementById("dailyPaidList");
+  const absent = document.getElementById("dailyAbsentList");
+  if (type === "paid") {
+    if (!paid) return;
+    if (paid.style.display !== "none") { paid.style.display = "none"; return; }
+    if (absent) absent.style.display = "none";
+    renderDailyPaidList(); paid.style.display = "block";
+  } else {
+    if (!absent) return;
+    if (absent.style.display !== "none") { absent.style.display = "none"; return; }
+    if (paid) paid.style.display = "none";
+    renderDailyAbsentList(); absent.style.display = "block";
+  }
+}
+function renderDailyPaidList() {
+  const box = document.getElementById("dailyPaidList"), date = document.getElementById("eDate")?.value || "";
+  if (!box) return;
+  const byLab = {};
+  Object.entries(ents).forEach(([_, e]) => {
+    if (e.date !== date || !labs[e.labourId] || labs[e.labourId].archived) return;
+    byLab[e.labourId] = (byLab[e.labourId] || 0) + (parseFloat(e.withdraw || 0) || 0);
+  });
+  Object.values(withdrawals).forEach(w => {
+    if (w.date === date && labs[w.labourId] && !labs[w.labourId].archived)
+      byLab[w.labourId] = (byLab[w.labourId] || 0) + (parseFloat(w.amount || 0) || 0);
+  });
+  const rows = Object.entries(byLab).filter(([,a]) => a > 0).sort((a,b) => labs[a[0]].name.localeCompare(labs[b[0]].name));
+  box.innerHTML = rows.length ? `<div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:16px;padding:12px;"><div style="font-weight:800;color:#166534;font-size:12.5px;margin-bottom:8px;">💸 आज पैसे दिए — ${rows.length} कारीगर</div>${rows.map(([id,a]) => `<div style="display:flex;justify-content:space-between;padding:7px 2px;border-bottom:1px solid #DCFCE7;font-size:12.5px;"><b>${mEsc(labs[id].name)}</b><b style="color:#166534;">₹${a.toLocaleString("en-IN")}</b></div>`).join("")}</div>` : `<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:12px;text-align:center;color:#94A3B8;font-size:12px;">आज किसी को पैसे नहीं दिए</div>`;
+}
+function renderDailyAbsentList() {
+  const box = document.getElementById("dailyAbsentList"), date = document.getElementById("eDate")?.value || "";
+  if (!box) return;
+  const chuttiIds = activeIds.filter(id => {
+    const rows = Object.values(ents).filter(e => e.date === date && e.labourId === id);
+    if (!rows.length) return false;
+    const totalDays = rows.reduce((sum, e) => sum + (parseFloat(e.days || 0) || 0), 0);
+    return totalDays === 0;
+  });
+  box.innerHTML = chuttiIds.length ? `<div style="background:#FFF7ED;border:1.5px solid #FDBA74;border-radius:16px;padding:12px;"><div style="font-weight:800;color:#9A3412;font-size:12.5px;margin-bottom:8px;">❌ आज छुट्टी — ${chuttiIds.length} कारीगर</div>${chuttiIds.map(id => `<div style="padding:7px 2px;border-bottom:1px solid #FED7AA;font-size:12.5px;"><b>${mEsc(labs[id]?.name || "?")}</b></div>`).join("")}</div>` : `<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:14px;padding:12px;text-align:center;color:#166534;font-size:12px;font-weight:700;">आज किसी की छुट्टी नहीं है</div>`;
+}
+
 function renderAll() {
   const eSel = document.getElementById("eLabour");
   const rSel = document.getElementById("rLabour");
