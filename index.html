@@ -1191,6 +1191,24 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
     </div>
+
+    <!-- Rent / Bijli overview — kiska kitna kiराya/bijli laga hai, usी mahine ka -->
+    <div class="card" style="border: 2px solid #E8D5A6;">
+      <button class="btn btn-gold" onclick="toggleBox('rbListBox'); renderRentBijliLists();" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>🏠⚡ किराया / बिजली — किसकी कितनी है</span><span>▼</span>
+      </button>
+      <div id="rbListBox" style="display: none; margin-top: 14px;">
+        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">ऊपर कारीगर tab के महीना-बटन से जुड़ा है — उसी महीने की लिस्ट दिखेगी</div>
+
+        <h4 style="margin: 0 0 8px 0; font-size: 13.5px;">🏠 किराया वाले कारीगर</h4>
+        <div id="rentList"></div>
+        <div id="rentEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी का किराया नहीं जोड़ा</div>
+
+        <h4 style="margin: 18px 0 8px 0; font-size: 13.5px;">⚡ बिजली वाले कारीगर</h4>
+        <div id="bijliList"></div>
+        <div id="bijliEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी की बिजली नहीं जोड़ी</div>
+      </div>
+    </div>
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
@@ -1868,6 +1886,7 @@ function startListen() {
   db.ref("companies/" + company + "/labourMonthly").on("value", (s) => {
     labourMonthly = s.val() || {};
     renderAll();
+    renderRentBijliLists();
   });
   db.ref("companies/" + company + "/sites").on("value", (s) => {
     sites = s.val() || {};
@@ -1926,6 +1945,7 @@ function syncMonthFrom(sourceId) {
     if (el) el.value = val;
   });
   renderAll();
+  renderRentBijliLists();
 }
 function shiftMonthInput(id, delta) {
   const el = document.getElementById(id);
@@ -3103,6 +3123,42 @@ function addLabour() {
     if (fPhone) fPhone.value = "";
     if (fWage) fWage.value = "";
   });
+}
+function renderRentBijliLists() {
+  const rentListEl = document.getElementById("rentList");
+  const bijliListEl = document.getElementById("bijliList");
+  if (!rentListEl || !bijliListEl) return;
+  const mon = document.getElementById("kMonth")?.value || getMon();
+  const rentRows = [];
+  const bijliRows = [];
+  Object.keys(labourMonthly).forEach((id) => {
+    if (!labs[id]) return;
+    const m = labourMonthly[id][mon];
+    if (!m) return;
+    const rentAmt = parseFloat(m.rent) || 0;
+    const bijliAmt = parseFloat(m.bijli) || 0;
+    if (rentAmt > 0) rentRows.push({ id, name: labs[id].name, amount: rentAmt });
+    if (bijliAmt > 0) bijliRows.push({ id, name: labs[id].name, amount: bijliAmt });
+  });
+  rentRows.sort((a, b) => b.amount - a.amount);
+  bijliRows.sort((a, b) => b.amount - a.amount);
+  const rowHtml = (r, bg, fg) => `
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 4px; border-bottom: 1px solid #F8FAFC;">
+      <span style="font-size: 13px; font-weight: 600; color: #1E293B;">${r.name}</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <b style="font-size: 13.5px; color: ${fg};">\u20B9${r.amount.toLocaleString("en-IN")}</b>
+        <button class="btn-sm" style="background: ${bg}; color: ${fg}; padding: 5px 9px;" onclick="editRentOrBijliFromList('${r.id}', '${bg === "#FEF3C7" ? "rent" : "bijli"}')">\u270F\uFE0F</button>
+      </div>
+    </div>`;
+  rentListEl.innerHTML = rentRows.map((r) => rowHtml(r, "#FEF3C7", "#92400E")).join("");
+  bijliListEl.innerHTML = bijliRows.map((r) => rowHtml(r, "#FEF9C3", "#854D0E")).join("");
+  const rentEmpty = document.getElementById("rentEmpty");
+  const bijliEmpty = document.getElementById("bijliEmpty");
+  if (rentEmpty) rentEmpty.style.display = rentRows.length ? "none" : "block";
+  if (bijliEmpty) bijliEmpty.style.display = bijliRows.length ? "none" : "block";
+}
+function editRentOrBijliFromList(id, field) {
+  if (field === "rent") editRent(id); else editBijli(id);
 }
 function editRent(id) {
   openEditField(id, "rent", "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B", "\u0930\u0942\u092E \u0915\u093E \u092E\u093E\u0938\u093F\u0915 \u0915\u093F\u0930\u093E\u092F\u093E");
