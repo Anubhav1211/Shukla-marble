@@ -67,21 +67,46 @@ header {
   border-bottom: 2px solid var(--gold);
 }
 
-.tabs {
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  padding: 8px 10px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)) 6px;
   background: white;
-  border-bottom: 1px solid var(--line);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 2px 10px rgba(21, 23, 28, 0.06);
+  border-top: 1px solid var(--line);
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(21, 23, 28, 0.08);
+}
+
+.bnav-item {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 2px !important;
+  font-size: 10px !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: #8A8370 !important;
+  box-shadow: none !important;
+}
+
+.bnav-item .ti { font-size: 20px; }
+
+.bnav-item.active, .bnav-item.bnav-more-active {
+  color: var(--ink) !important;
+  background: var(--gold-soft) !important;
 }
 
 body {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
 }
 
 .tab {
@@ -950,16 +975,26 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
   </header>
 
-  <!-- Navigation Tabs -->
-  <div class="tabs">
-    <button class="tab active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
-    <button class="tab" id="bt-s" onclick="showTab('s')"><span class="ti">🏠</span><span class="tl">साइट</span></button>
-    <button class="tab" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
-    <button class="tab tab-primary" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
-    <button class="tab tab-primary" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
-    <button class="tab" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
-    <button class="tab" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
-    <button class="tab" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
+    <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
+    <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
+    <button class="bnav-item" id="bnav-more" onclick="toggleMoreMenu()"><span class="ti">⋯</span><span class="tl">और</span></button>
+  </div>
+
+  <!-- "More" bottom sheet: साइट / खर्च / मटेरियल / एग्रीमेंट -->
+  <div id="moreMenuOverlay" style="display: none; position: fixed; inset: 0; background: rgba(21,23,28,0.5); z-index: 998;" onclick="if(event.target===this)closeMoreMenu()">
+    <div style="position: fixed; left: 0; right: 0; bottom: 0; background: white; border-radius: 20px 20px 0 0; padding: 10px 10px calc(14px + env(safe-area-inset-bottom, 0px)) 10px; box-shadow: 0 -6px 24px rgba(21,23,28,0.2);">
+      <div style="width: 40px; height: 4px; background: #E9E3D6; border-radius: 4px; margin: 2px auto 14px auto;"></div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+        <button class="tab" id="bt-s" onclick="showTab('s'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🏠</span><span class="tl">साइट</span></button>
+        <button class="tab" id="bt-x" onclick="showTab('x'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">💸</span><span class="tl">खर्च</span></button>
+        <button class="tab" id="bt-m" onclick="showTab('m'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
+        <button class="tab" id="bt-a" onclick="showTab('a'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
+      </div>
+    </div>
   </div>
 
   <!-- TAB 1: DASHBOARD -->
@@ -1711,7 +1746,7 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
 
 
   <!-- PIN Lock Floating Button -->
-  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(145deg, #21242C, #15171C); border: 1.5px solid #AD832E; color: #D4A94E; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.35); z-index: 500; cursor: pointer;">🔒</button>
+  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(145deg, #21242C, #15171C); border: 1.5px solid #AD832E; color: #D4A94E; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.35); z-index: 90; cursor: pointer;">🔒</button>
 
   <!-- PIN Entry Modal -->
   <div id="pinOverlay" class="popup-overlay">
@@ -1807,6 +1842,17 @@ function showTab(id) {
     try { bt.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch (e) {}
   }
   if (id === "m" && typeof renderMaterial === "function") renderMaterial();
+  const bnavMore = document.getElementById("bnav-more");
+  if (bnavMore) bnavMore.classList.toggle("bnav-more-active", ["s", "x", "m", "a"].includes(id));
+}
+function toggleMoreMenu() {
+  const el = document.getElementById("moreMenuOverlay");
+  if (!el) return;
+  el.style.display = el.style.display === "none" || !el.style.display ? "flex" : "none";
+}
+function closeMoreMenu() {
+  const el = document.getElementById("moreMenuOverlay");
+  if (el) el.style.display = "none";
 }
 function startListen() {
   if (!db) return;
