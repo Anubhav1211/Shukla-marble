@@ -1009,8 +1009,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
       <div id="monTxt" style="text-align: center; color: #4F46E5; font-size: 11px; font-weight: 700; margin-bottom: 10px;"></div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-        <div onclick="showBreakdownProfit()" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
-          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">विवरण देखें ›</small>
+        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
+          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">🔒</b><br><small style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">पासवर्ड से देखें ›</small>
         </div>
         <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
           <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
@@ -1445,12 +1445,12 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
-    <!-- Commission Payment Received -->
+    <!-- Payment Received -->
     <div class="card" style="border: 2px solid #E8D5A6;">
-      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (कमीशन प्राप्ति)</h3>
+      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (पेमेंट प्राप्ति)</h3>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
         <div style="background: #EEF2FF; padding: 10px 4px; border-radius: 14px; text-align: center;">
-          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">कुल कमीशन (अब तक)</small><br>
+          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">कुल पेमेंट (अब तक)</small><br>
           <b id="mpEarned" style="font-size: 13px; color: #4338CA; white-space: nowrap;">₹0</b>
         </div>
         <div style="background: #DCFCE7; padding: 10px 4px; border-radius: 14px; text-align: center;">
@@ -2316,12 +2316,14 @@ function showSiteDetail(siteId) {
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
       </div>
       <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
-        <small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>
+        ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
       </div>
-      <div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
+      ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"};font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br>
         <b style="color:${sc.profit >= 0 ? "#15803D" : "#DC2626"};font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-      </div>
+      </div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer" onclick="unlockProfit('site')">
+        <small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093E\u092D</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>
+      </div>`}
     </div>
   `;
   const labourSummary = Object.values(sc.labourMap).map(
@@ -2344,7 +2346,7 @@ function showSiteDetail(siteId) {
       const d = p.date ? new Date(p.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-";
       payHtml += `<tr>
         <td>${d}<br><small style="font-size:9px;color:#64748B">${p.date || ""}</small></td>
-        <td style="color:#166534;font-weight:800">\u20B9${Number(p.amount || 0).toLocaleString("en-IN")}</td>
+        <td style="color:#166534;font-weight:800">${profitUnlocked ? `\u20B9${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</td>
         <td style="font-size:11px;text-align:left">${p.note || "-"}</td>
         <td style="white-space:nowrap"><button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;margin-right:4px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️</button><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">X</button></td>
       </tr>`;
@@ -2357,7 +2359,7 @@ function showSiteDetail(siteId) {
       <div style="background:#F0FDF4;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #BBF7D0">
         <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
           <span>\u0915\u0941\u0932 ${pays.length} \u092C\u093E\u0930 \u0932\u093F\u092F\u093E</span>
-          <span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>
+          ${profitUnlocked ? `<span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>` : `<span style="color:#475569">🔒 पासवर्ड से देखें</span>`}
         </div>
         ${payHtml}
       </div>
@@ -2747,12 +2749,12 @@ function renderAll() {
   if (kTot) {
     let totalSiteProfit = 0;
     Object.keys(sites).forEach((sid) => { totalSiteProfit += calcSite(sid).profit; });
-    let totalMaterialCommission = 0;
+    let totalMaterialPayment = 0;
     Object.values(matEntriesBySection).forEach((sectionEntries) => {
-      Object.values(sectionEntries || {}).forEach((e) => { totalMaterialCommission += parseFloat(e.total) || 0; });
+      Object.values(sectionEntries || {}).forEach((e) => { totalMaterialPayment += parseFloat(e.total) || 0; });
     });
-    const totalProfit = totalSiteProfit + totalMaterialCommission;
-    kTot.innerText = "\u20B9" + Math.round(totalProfit).toLocaleString("en-IN");
+    const totalProfit = totalSiteProfit + totalMaterialPayment;
+    kTot.innerText = profitUnlocked ? "\u20B9" + Math.round(totalProfit).toLocaleString("en-IN") : "🔒";
   }
   if (kDena) kDena.innerText = "\u20B9" + td.toLocaleString("en-IN");
   if (kLena) kLena.innerText = "\u20B9" + tl.toLocaleString("en-IN");
@@ -2969,9 +2971,7 @@ function renderAll() {
           <b>\u{1F3E0} ${s.house}</b>
           <div style="display:flex;gap:6px;align-items:center">
             <span style="background:${isClosedS ? "#64748B" : "#16a34a"};color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700">${isClosedS ? "Archived" : "On Going"}</span>
-            <span style="background:${profitColor};color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800">
-              Profit \u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)
-            </span>
+            ${profitUnlocked ? `<span style="background:${profitColor};color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800">Profit \u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)</span>` : `<button class="btn-sm" style="background:#334155;color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800" onclick="unlockProfit('site')">🔒 Profit</button>`}
           </div>
         </div>
         <small style="color:#64748B">${s.address || ""}</small>
@@ -2979,12 +2979,10 @@ function renderAll() {
           <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;overflow:hidden">
             <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
           </div>
-          <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;overflow:hidden">
-            <small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>
+          <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;overflow:hidden;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">
+            ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
           </div>
-          <div style="background:#DCFCE7;padding:8px 4px;border-radius:12px;overflow:hidden">
-            <small style="color:#166534;font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br><b style="color:#15803D;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-          </div>
+          ${profitUnlocked ? `<div style="background:#DCFCE7;padding:8px 4px;border-radius:12px;overflow:hidden"><small style="color:#166534;font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br><b style="color:#15803D;font-size:13px">\u20B9${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;overflow:hidden;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569;font-weight:700;font-size:10px">🔒 लाभ</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b></div>`}
         </div>
         <div style="font-size:11px;background:#F8FAFF;padding:10px;border-radius:12px">
           <b>\u092E\u091C\u0926\u0942\u0930:</b> ${labourNames}
@@ -3026,12 +3024,9 @@ function renderAll() {
             <small style="color:#92400E">\u0932\u093E\u0917\u0924</small><br><b>\u20B9${sc.cost.toLocaleString("en-IN")}</b>
           </div>
           <div style="background:#DBEAFE;padding:8px;border-radius:10px">
-            <small style="color:#1E40AF">\u0932\u093F\u092F\u093E</small><br><b>\u20B9${sc.received.toLocaleString("en-IN")}</b>
+            ${profitUnlocked ? `<small style="color:#1E40AF">\u0932\u093F\u092F\u093E</small><br><b>\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569">पासवर्ड से देखें</b>`}
           </div>
-          <div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px;border-radius:10px">
-            <small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"}">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br>
-            <b style="color:${profitColor}">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-          </div>
+          ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px;border-radius:10px"><small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"}">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br><b style="color:${profitColor}">\u20B9${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div style="background:#F1F5F9;padding:8px;border-radius:10px;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><br><b style="color:#475569">पासवर्ड से देखें</b></div>`}
         </div>
         <div style="font-size:10px;background:#F8FAFF;padding:8px;border-radius:10px">
           <b>\u092E\u091C\u0926\u0942\u0930:</b> ${labourNames}
@@ -3261,7 +3256,21 @@ function closeBreakdownModal() {
   const modal = document.getElementById("breakdownModal");
   if (modal) modal.style.display = "none";
 }
+let profitUnlocked = false;
+function unlockProfit(view) {
+  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
+  const password = prompt("Profit देखने के लिए password डालें:");
+  if (password !== "1234") {
+    if (password !== null) alert("गलत password");
+    return false;
+  }
+  profitUnlocked = true;
+  renderAll();
+  if (view === "total") showBreakdownProfit();
+  return true;
+}
 function showBreakdownProfit() {
+  if (!profitUnlocked) { unlockProfit("total"); return; }
   const rows = [];
   Object.keys(sites).forEach((sid) => {
     const sc = calcSite(sid);
@@ -3271,8 +3280,8 @@ function showBreakdownProfit() {
   Object.values(matEntriesBySection).forEach((sectionEntries) => {
     Object.values(sectionEntries || {}).forEach((e) => { matTotal += parseFloat(e.total) || 0; });
   });
-  if (matTotal !== 0) rows.push({ name: "\u26A1 \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0915\u092E\u0940\u0936\u0928 (\u0938\u092D\u0940)", amount: matTotal });
-  showBreakdown("\u{1F4B0} \u0915\u0941\u0932 \u092E\u0941\u0928\u093E\u092B\u093C\u093E \u0915\u093E \u0935\u093F\u0935\u0930\u0923", "\u0938\u092D\u0940 \u0938\u093E\u0907\u091F + \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0915\u092E\u0940\u0936\u0928 (all-time)", rows);
+  if (matTotal !== 0) rows.push({ name: "\u26A1 \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u092A\u0947\u092E\u0947\u0902\u091F (\u0938\u092D\u0940)", amount: matTotal });
+  showBreakdown("\u{1F4B0} \u0915\u0941\u0932 \u092E\u0941\u0928\u093E\u092B\u093C\u093E \u0915\u093E \u0935\u093F\u0935\u0930\u0923", "\u0938\u092D\u0940 \u0938\u093E\u0907\u091F + \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u092A\u0947\u092E\u0947\u0902\u091F (all-time)", rows);
 }
 function showBreakdownDena() {
   const mon = getMon();
@@ -4715,7 +4724,7 @@ function renderPdfPreview() {
       <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${s.house}</b> - ${s.client || ""}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${(s.status || "").includes("\u092A\u0942\u0930\u093E") ? "Archived" : (s.status || "\u091A\u0932 \u0930\u0939\u093E")}</td>
       <td style="padding: 6px; color: #B45309; border: 1px solid #CBD5E1;">\u20B9${sc.cost.toLocaleString("en-IN")}</td>
-      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">\u20B9${sc.received.toLocaleString("en-IN")}</td>
+      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${profitUnlocked ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `🔒`}</td>
       <td style="padding: 6px; font-weight: 800; color: ${sc.profit >= 0 ? "#166534" : "#DC2626"}; border: 1px solid #CBD5E1;">\u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)</td>
     </tr>`;
   });
@@ -5428,7 +5437,7 @@ function deleteMatEntry(id) {
     db.ref(matEntriesPath() + "/" + id).remove();
   }
 }
-// ---- Commission Payment Received (per material section: NOVA / ACC / custom) ----
+// ---- Payment Received (per material section: NOVA / ACC / custom) ----
 function matPaymentAdd() {
   const dateEl = document.getElementById("mpDate");
   const amtEl = document.getElementById("mpAmount");
@@ -5633,7 +5642,7 @@ function renderMaterial() {
   document.getElementById("mTodayAmt").innerText = mRs(tAmt);
   document.getElementById("mMonthAmt").innerText = mRs(mAmt);
   document.getElementById("mYearAmt").innerText = mRs(yAmt);
-  // ---- commission payment received summary
+  // ---- payment received summary
   const mpNSLabelEl = document.getElementById("mpNSLabel");
   if (mpNSLabelEl) mpNSLabelEl.innerText = matNSName();
   let mpEarnedTotal = 0;
