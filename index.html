@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -1150,6 +1151,25 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <!-- Rent / Bijli overview — kiska kitna kiराya/bijli laga hai, usी mahine ka -->
+    <div class="card" style="border: 2px solid #E8D5A6;">
+      <button class="btn btn-gold" onclick="toggleBox('rbListBox'); renderRentBijliLists();" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>🏠⚡ किराया / बिजली — किसकी कितनी है</span><span>▼</span>
+      </button>
+      <div id="rbListBox" style="display: none; margin-top: 14px;">
+        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">ऊपर कारीगर tab के महीना-बटन से जुड़ा है — उसी महीने की लिस्ट दिखेगी</div>
+
+        <h4 style="margin: 0 0 8px 0; font-size: 13.5px;">🏠 किराया वाले कारीगर</h4>
+        <div id="rentList"></div>
+        <div id="rentEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी का किराया नहीं जोड़ा</div>
+
+        <h4 style="margin: 18px 0 8px 0; font-size: 13.5px;">⚡ बिजली वाले कारीगर</h4>
+        <div id="bijliList"></div>
+        <div id="bijliEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी की बिजली नहीं जोड़ी</div>
+      </div>
+    </div>
+
+
     <!-- Bijli Bill Calculator -->
     <div class="card" style="border: 2px solid #FCD34D;">
       <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
@@ -1192,23 +1212,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="archivedList" style="margin-top: 16px;"></div>
     </div>
 
-    <!-- Rent / Bijli overview — kiska kitna kiराya/bijli laga hai, usी mahine ka -->
-    <div class="card" style="border: 2px solid #E8D5A6;">
-      <button class="btn btn-gold" onclick="toggleBox('rbListBox'); renderRentBijliLists();" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>🏠⚡ किराया / बिजली — किसकी कितनी है</span><span>▼</span>
-      </button>
-      <div id="rbListBox" style="display: none; margin-top: 14px;">
-        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">ऊपर कारीगर tab के महीना-बटन से जुड़ा है — उसी महीने की लिस्ट दिखेगी</div>
-
-        <h4 style="margin: 0 0 8px 0; font-size: 13.5px;">🏠 किराया वाले कारीगर</h4>
-        <div id="rentList"></div>
-        <div id="rentEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी का किराया नहीं जोड़ा</div>
-
-        <h4 style="margin: 18px 0 8px 0; font-size: 13.5px;">⚡ बिजली वाले कारीगर</h4>
-        <div id="bijliList"></div>
-        <div id="bijliEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी की बिजली नहीं जोड़ी</div>
-      </div>
-    </div>
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
