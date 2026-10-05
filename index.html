@@ -2905,12 +2905,9 @@ function renderAll() {
       const shareIdx = window.__hazriShareData.length;
       let shareMsg = `\u{1F3E0} *${g.name}*\n\u{1F4C5} ${todayDateForShare}\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
       g.rows.forEach(([, e, l]) => {
-        const wTxt = parseFloat(e.withdraw || 0) > 0 ? ` (\u{1F4B8} \u20B9${e.withdraw})` : "";
-        const extraTotal = Object.values(withdrawals).reduce((s, w) => (w.labourId === e.labourId && w.date === today ? s + (parseFloat(w.amount) || 0) : s), 0);
-        const extraTxt = extraTotal > 0 ? ` (+ Extra \u20B9${extraTotal})` : "";
         const daysNum = parseFloat(e.days || 0);
         const daysTxt = daysNum === 1 ? "P" : daysNum === 1.5 ? "P1/2" : daysNum === 2 ? "2P" : daysNum === 0.5 ? "P/2" : daysNum === 0 ? "A" : String(e.days);
-        shareMsg += `\u2022 ${l.name} \u2013 ${daysTxt}${wTxt}${extraTxt}\n`;
+        shareMsg += `\u2022 ${l.name} \u2013 ${daysTxt}\n`;
       });
       window.__hazriShareData.push(shareMsg);
       tHtml += `<tr><td colspan="4" style="text-align:left;background:#EEF2FF;color:#3730A3;font-weight:800;font-size:12.5px;padding:8px 10px">
