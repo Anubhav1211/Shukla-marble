@@ -1309,6 +1309,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <div id="missingBox" style="margin-top: 12px;"></div>
+
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
@@ -1321,7 +1323,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="dailyPaidList" style="display:none;margin-bottom:10px;"></div>
       <div id="dailyAbsentList" style="display:none;margin-bottom:10px;"></div>
       <div id="todayTable"></div>
-      <div id="missingBox" style="margin-top: 12px;"></div>
     </div>
 
     <div class="card">
@@ -1404,14 +1405,17 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="addExpBox" style="display: none; margin-top: 12px;">
         <div style="display: flex; gap: 8px;">
           <input id="xDate" type="date" class="input" style="flex: 1;">
-          <select id="xCat" class="input" style="flex: 1;">
-            <option value="petrol">⛽ पेट्रोल / डीजल</option>
-            <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
-            <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
-            <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
-            <option value="food">☕ चाय / नाश्ता / खाना</option>
-            <option value="others">📦 अन्य विविध खर्च</option>
-          </select>
+          <div style="display:flex; gap:6px; flex:1;">
+            <select id="xCat" class="input" style="flex:1;">
+              <option value="petrol">⛽ पेट्रोल / डीजल</option>
+              <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
+              <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
+              <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
+              <option value="food">☕ चाय / नाश्ता / खाना</option>
+              <option value="others">📦 अन्य विविध खर्च</option>
+            </select>
+            <button type="button" class="btn-sm" onclick="addExpenseCategory()" style="white-space:nowrap; background:#FEF3C7; color:#92400E; padding:8px 10px; font-weight:800;">＋ Category</button>
+          </div>
         </div>
         <div style="display: flex; gap: 8px;">
           <input id="xAmt" type="number" class="input" placeholder="रकम ₹" style="flex: 1;">
@@ -1845,6 +1849,7 @@ let sitePays = {};
 let labourMonthly = {};
 let agreements = {};
 let expenses = {};
+let expenseCategories = {};
 let bijliBills = {};
 let withdrawals = {};
 let siteCosts = {};
@@ -1940,6 +1945,11 @@ function startListen() {
   });
   db.ref("companies/" + company + "/expenses").on("value", (s) => {
     expenses = s.val() || {};
+    renderExpenses();
+  });
+  db.ref("companies/" + company + "/expenseCategories").on("value", (s) => {
+    expenseCategories = s.val() || {};
+    renderExpenseCategoryOptions();
     renderExpenses();
   });
   db.ref("companies/" + company + "/bijliBills").on("value", (s) => {
@@ -4621,6 +4631,27 @@ window.setEDateToday = setEDateToday;
 window.editSitePayment = editSitePayment;
 window.cancelSitePayEdit = cancelSitePayEdit;
 window.renderSiteCostSelect = renderSiteCostSelect;
+const DEFAULT_EXPENSE_CATEGORIES = {
+  petrol: "⛽ पेट्रोल / डीजल", recharge: "📱 मोबाइल / नेट रिचार्ज", repair: "🛠️ मशीन / कटर रिपेयर",
+  tools: "🪚 औजार / ब्लेड / पत्ती खरीद", food: "☕ चाय / नाश्ता / खाना", others: "📦 अन्य विविध खर्च"
+};
+function renderExpenseCategoryOptions() {
+  const sel = document.getElementById("xCat"); if (!sel) return;
+  const current = sel.value; const all = Object.assign({}, DEFAULT_EXPENSE_CATEGORIES, expenseCategories || {});
+  sel.innerHTML = Object.entries(all).map(([id,label]) => `<option value="${mEsc(id)}">${mEsc(label)}</option>`).join("");
+  if (current && all[current]) sel.value = current;
+}
+function addExpenseCategory() {
+  const name = prompt("नई खर्च Category का नाम लिखें:"); if (!name || !name.trim()) return;
+  const clean = name.trim();
+  const id = clean.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40) || ("cat_"+Date.now());
+  const all = Object.assign({}, DEFAULT_EXPENSE_CATEGORIES, expenseCategories || {});
+  if (all[id]) { alert("यह Category पहले से मौजूद है"); return; }
+  db.ref("companies/" + company + "/expenseCategories/" + id).set("📦 " + clean).then(() => {
+    const sel=document.getElementById("xCat"); if(sel) sel.value=id; alert("✅ नई Category जोड़ दी गई");
+  });
+}
+window.addExpenseCategory = addExpenseCategory;
 function addExpense() {
   const date = document.getElementById("xDate")?.value || fmtLocalDate(new Date());
   const cat = document.getElementById("xCat")?.value || "others";
@@ -4725,6 +4756,7 @@ function renderExpenses() {
     food: { label: "\u2615 \u0916\u093E\u0928\u093E/\u091A\u093E\u092F", cls: "exp-food" },
     others: { label: "\u{1F4E6} \u0905\u0928\u094D\u092F", cls: "exp-others" }
   };
+  Object.entries(expenseCategories || {}).forEach(([id, label]) => { catNames[id] = { label, cls: "exp-others" }; });
   const filtered = monthExps.filter(([_, exp]) => {
     const str = `${exp.note || ""} ${exp.cat || ""} ${exp.payMode || ""}`.toLowerCase();
     return !q || str.includes(q);
