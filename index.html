@@ -1930,74 +1930,66 @@ function showTab(id) {
   const bnavMore = document.getElementById("bnav-more");
   if (bnavMore) bnavMore.classList.toggle("bnav-more-active", ["s", "x", "m", "a"].includes(id));
 }
-/* Long-press + horizontal slide on bottom tabs — robust iOS/Android touch handling */
+/* Long-press + slide: switch only after the thumb reaches another tab */
 (function initBottomNavSlide(){
   const nav = document.querySelector('.bottom-nav');
   if (!nav || nav.dataset.swipeReady === '1') return;
   nav.dataset.swipeReady = '1';
   const order = ['d','e','r','l'];
   const HOLD_MS = 80;
-  const SWIPE_PX = 22;
-  let timer = null, startX = 0, startY = 0, active = null, held = false, switched = false;
+  let timer = null, active = null, held = false, moved = false, pointerId = null;
 
   function reset(){
     if (timer) { clearTimeout(timer); timer = null; }
     if (active) active.classList.remove('bnav-holding');
-    active = null; held = false; switched = false; startX = startY = 0;
+    active = null; held = false; moved = false; pointerId = null;
   }
 
   nav.querySelectorAll('.bnav-item').forEach(btn => {
-    const id = btn.id.replace('bt-','');
-    if (!order.includes(id)) return;
-
-    btn.addEventListener('touchstart', e => {
-      if (!e.touches || !e.touches[0]) return;
-      const t = e.touches[0];
-      startX = t.clientX; startY = t.clientY;
-      active = btn; held = false; switched = false;
+    btn.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      active = btn; pointerId = e.pointerId; held = false; moved = false;
+      const startBtn = btn;
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
-        held = true;
-        if (active) active.classList.add('bnav-holding');
-        if (navigator.vibrate) navigator.vibrate(10);
-      }, HOLD_MS);
-    }, {passive:true});
-
-    btn.addEventListener('touchmove', e => {
-      if (!active || !e.touches || !e.touches[0]) return;
-      const t = e.touches[0];
-      const dx = t.clientX - startX;
-      const dy = t.clientY - startY;
-      if (!held) {
-        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
-          if (timer) { clearTimeout(timer); timer = null; }
+        if (active === startBtn) {
+          held = true;
+          active.classList.add('bnav-holding');
+          if (navigator.vibrate) navigator.vibrate(8);
         }
-        return;
-      }
-      if (Math.abs(dx) < SWIPE_PX || Math.abs(dx) <= Math.abs(dy) * 1.1) return;
-      e.preventDefault();
-      const cur = order.indexOf(idOfActive());
-      if (cur < 0) return;
-      const next = cur + (dx > 0 ? 1 : -1);
-      if (next >= 0 && next < order.length) {
-        const nextId = order[next];
-        showTab(nextId);
-        switched = true;
-        startX = t.clientX;
-        startY = t.clientY;
-        if (navigator.vibrate) navigator.vibrate(7);
-      }
-    }, {passive:false});
-
-    btn.addEventListener('touchend', reset, {passive:true});
-    btn.addEventListener('touchcancel', reset, {passive:true});
-    btn.addEventListener('contextmenu', e => { if (held || switched) e.preventDefault(); });
+      }, HOLD_MS);
+      try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+    });
   });
 
-  function idOfActive(){
-    const a = document.querySelector('.bnav-item.active');
-    return a ? a.id.replace('bt-','') : 'd';
-  }
+  document.addEventListener('pointermove', e => {
+    if (!active || e.pointerId !== pointerId || !held) return;
+    const hit = document.elementFromPoint(e.clientX, e.clientY);
+    const target = hit && hit.closest ? hit.closest('.bottom-nav .bnav-item') : null;
+    if (!target || !nav.contains(target) || target === active) return;
+    const targetId = target.id.replace('bt-','');
+    const currentId = active.id.replace('bt-','');
+    const ci = order.indexOf(currentId), ti = order.indexOf(targetId);
+    if (ci < 0 || ti < 0 || Math.abs(ti - ci) !== 1) return;
+
+    e.preventDefault();
+    moved = true;
+    showTab(targetId);
+    if (navigator.vibrate) navigator.vibrate(7);
+    active.classList.remove('bnav-holding');
+    active = target;
+    active.classList.add('bnav-holding');
+  }, {passive:false});
+
+  document.addEventListener('pointerup', e => {
+    if (!active || e.pointerId !== pointerId) return;
+    if (held && moved) e.preventDefault();
+    reset();
+  }, {passive:false});
+
+  document.addEventListener('pointercancel', e => {
+    if (active && e.pointerId === pointerId) reset();
+  }, {passive:true});
 })();
 
 function toggleMoreMenu() {
