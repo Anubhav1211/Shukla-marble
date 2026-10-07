@@ -138,6 +138,11 @@ header {
 
 .bnav-item:active { transform: scale(.96); }
 
+/* Hold + slide navigation */
+.bottom-nav { touch-action: pan-y; }
+.bnav-item { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.bnav-item.bnav-holding { transform: scale(.96); opacity: .82; }
+
 body {
   padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
 }
@@ -1925,6 +1930,65 @@ function showTab(id) {
   const bnavMore = document.getElementById("bnav-more");
   if (bnavMore) bnavMore.classList.toggle("bnav-more-active", ["s", "x", "m", "a"].includes(id));
 }
+/* Long-press + horizontal slide on bottom tabs */
+(function initBottomNavSlide(){
+  const nav = document.querySelector('.bottom-nav');
+  if (!nav) return;
+  const order = ['d','e','r','l'];
+  let startX = 0, startY = 0, holdTimer = null, holding = false, moved = false, suppressClick = false, currentId = '';
+  const clearHold = (el) => {
+    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+    if (el) el.classList.remove('bnav-holding');
+  };
+  nav.querySelectorAll('.bnav-item').forEach(btn => {
+    btn.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      const id = btn.id.replace('bt-','');
+      if (!order.includes(id)) return;
+      startX = e.clientX; startY = e.clientY; holding = false; moved = false; suppressClick = false; currentId = id;
+      try { btn.setPointerCapture(e.pointerId); } catch (err) {}
+      clearHold(btn);
+      holdTimer = setTimeout(() => {
+        holding = true;
+        btn.classList.add('bnav-holding');
+        if (navigator.vibrate) navigator.vibrate(12);
+      }, 120);
+    });
+    btn.addEventListener('pointermove', e => {
+      if (!startX && !startY) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) moved = true;
+      if (holding && Math.abs(dx) >= 38 && Math.abs(dx) > Math.abs(dy) * 1.15) {
+        const current = order.indexOf(currentId);
+        if (current >= 0) {
+          const nextIndex = current + (dx < 0 ? 1 : -1);
+          if (nextIndex >= 0 && nextIndex < order.length) {
+            currentId = order[nextIndex];
+            showTab(currentId);
+            suppressClick = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            if (navigator.vibrate) navigator.vibrate(8);
+          }
+        }
+      }
+    });
+    btn.addEventListener('pointerup', e => {
+      clearHold(btn);
+      try { btn.releasePointerCapture(e.pointerId); } catch (err) {}
+      if (suppressClick) {
+        setTimeout(() => { suppressClick = false; }, 80);
+      }
+      startX = startY = 0;
+    });
+    btn.addEventListener('pointercancel', e => { clearHold(btn); try { btn.releasePointerCapture(e.pointerId); } catch (err) {} startX = startY = 0; suppressClick = false; });
+    btn.addEventListener('click', e => {
+      if (suppressClick) { e.preventDefault(); e.stopImmediatePropagation(); suppressClick = false; }
+    }, true);
+    btn.addEventListener('contextmenu', e => { if (holding || moved) e.preventDefault(); });
+  });
+})();
+
 function toggleMoreMenu() {
   const el = document.getElementById("moreMenuOverlay");
   if (!el) return;
