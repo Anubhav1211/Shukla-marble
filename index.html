@@ -1010,11 +1010,11 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 .sm-toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,18px);z-index:2000;background:rgba(21,23,28,.94);color:#fff;border:1px solid rgba(212,169,78,.45);border-radius:16px;padding:11px 15px;font-size:12px;font-weight:800;box-shadow:0 12px 35px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;max-width:90vw;text-align:center}.sm-toast.show{opacity:1;transform:translate(-50%,0)}
 .sm-sheet-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.36);backdrop-filter:blur(4px);z-index:1500;opacity:0;pointer-events:none;transition:opacity .25s ease}.sm-sheet-backdrop.open{opacity:1;pointer-events:auto}.sm-sheet{position:absolute;left:10px;right:10px;bottom:10px;border-radius:24px;background:var(--paper);padding:16px;transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 60px rgba(15,23,42,.28)}.sm-sheet-backdrop.open .sm-sheet{transform:none}
 
-.sm-theme-dark{--paper:#111318;--ink:#F5F7FA;--line:#2B3039;--gold-soft:#302818;background:#111318;color:#F5F7FA}.sm-theme-dark .card,.sm-theme-dark .tab,.sm-theme-dark input,.sm-theme-dark select,.sm-theme-dark textarea,.sm-theme-dark .sm-sheet{background:#191C22!important;color:#F5F7FA!important;border-color:#303641!important}.sm-theme-dark .bottom-nav{background:rgba(25,28,34,.95);border-color:#303641}.sm-theme-dark .bnav-item{color:#9CA3AF!important}.sm-theme-dark .bnav-item.active{background:#252A32!important;color:#fff!important}
 .sm-skeleton{position:relative;overflow:hidden;background:#E9E3D6!important;color:transparent!important;border-radius:10px}.sm-skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);animation:smShimmer 1.15s infinite}@keyframes smShimmer{to{transform:translateX(100%)}}
 .sm-bar-animate{transform-origin:left;animation:smBar .7s cubic-bezier(.2,.8,.2,1) both}@keyframes smBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .sm-modal-enter{animation:smModal .3s cubic-bezier(.2,.8,.2,1)}@keyframes smModal{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -6949,14 +6949,9 @@ if (document.readyState === "loading") {
   window.smSkeleton=(root)=>{$$(root||'.card').forEach(e=>{e.classList.add('sm-skeleton');setTimeout(()=>e.classList.remove('sm-skeleton'),700)})};
   // 14 modern toast API
   window.smSuccess=(msg)=>toast(msg,true);
-  // 16 dark/light theme toggle persisted
-  const dark=localStorage.getItem('smMotionDark')==='1';if(dark)document.body.classList.add('sm-theme-dark');
-  window.smToggleTheme=()=>{document.body.classList.toggle('sm-theme-dark');localStorage.setItem('smMotionDark',document.body.classList.contains('sm-theme-dark')?'1':'0');toast(document.body.classList.contains('sm-theme-dark')?'Dark mode':'Light mode')};
   // 17 FAB quick actions removed — lock button remains clear
   // 18 animated chart/bar elements + generic progress meters
   const bars=()=>$$('.progress-bar,.bar,[role="progressbar"]').forEach(e=>{e.classList.remove('sm-bar-animate');void e.offsetWidth;e.classList.add('sm-bar-animate')});setTimeout(bars,600);new MutationObserver(()=>setTimeout(bars,60)).observe(document.body,{subtree:true,childList:true});
-  // Add theme control to header without disturbing existing controls
-  const head=$('header>div:last-child');if(head&&!$('#smThemeBtn')){const tb=document.createElement('button');tb.id='smThemeBtn';tb.className='btn-sm';tb.title='Theme';tb.textContent='◐';tb.style.cssText='background:rgba(255,255,255,.08);border:1px solid rgba(212,169,78,.35);color:#F0E6CC;padding:6px 9px;border-radius:20px;font-weight:800;cursor:pointer';tb.onclick=window.smToggleTheme;head.insertBefore(tb,head.firstChild)}
 })();
 </script>
 </body>
