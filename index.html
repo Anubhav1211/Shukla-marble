@@ -70,17 +70,20 @@ header {
 
 .bottom-nav {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 10px;
+  right: 10px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 2px;
-  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)) 6px;
-  background: white;
-  border-top: 1px solid var(--line);
+  gap: 4px;
+  padding: 7px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(226,232,240,0.95);
+  border-radius: 28px;
   z-index: 100;
-  box-shadow: 0 -4px 16px rgba(21, 23, 28, 0.08);
+  box-shadow: 0 10px 30px rgba(15,23,42,0.16), 0 2px 8px rgba(15,23,42,0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .bnav-item {
@@ -90,24 +93,53 @@ header {
   justify-content: center;
   gap: 2px;
   min-width: 0;
-  padding: 6px 2px !important;
+  min-height: 56px;
+  padding: 5px 2px !important;
   font-size: 10px !important;
-  background: none !important;
+  line-height: 1.05 !important;
+  font-weight: 800 !important;
+  background: transparent !important;
   border: none !important;
-  border-radius: 12px !important;
-  color: #8A8370 !important;
+  border-radius: 22px !important;
+  color: #7C8492 !important;
   box-shadow: none !important;
+  transition: all .18s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.bnav-item .ti { font-size: 20px; }
+.bnav-item .ti {
+  width: 34px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  line-height: 1;
+  border-radius: 17px;
+  transition: all .18s ease;
+}
+
+.bnav-item .tl {
+  white-space: nowrap;
+  letter-spacing: .1px;
+}
 
 .bnav-item.active, .bnav-item.bnav-more-active {
-  color: var(--ink) !important;
-  background: var(--gold-soft) !important;
+  color: #111827 !important;
+  background: #F3F4F6 !important;
+  box-shadow: inset 0 0 0 1px rgba(17,24,39,0.04);
 }
 
+.bnav-item.active .ti, .bnav-item.bnav-more-active .ti {
+  background: #111827;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.bnav-item:active { transform: scale(.96); }
+
 body {
-  padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
 }
 
 .tab {
