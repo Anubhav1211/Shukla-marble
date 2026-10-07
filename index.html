@@ -1930,63 +1930,74 @@ function showTab(id) {
   const bnavMore = document.getElementById("bnav-more");
   if (bnavMore) bnavMore.classList.toggle("bnav-more-active", ["s", "x", "m", "a"].includes(id));
 }
-/* Long-press + horizontal slide on bottom tabs */
+/* Long-press + horizontal slide on bottom tabs — robust iOS/Android touch handling */
 (function initBottomNavSlide(){
   const nav = document.querySelector('.bottom-nav');
-  if (!nav) return;
+  if (!nav || nav.dataset.swipeReady === '1') return;
+  nav.dataset.swipeReady = '1';
   const order = ['d','e','r','l'];
-  let startX = 0, startY = 0, holdTimer = null, holding = false, moved = false, suppressClick = false, currentId = '';
-  const clearHold = (el) => {
-    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-    if (el) el.classList.remove('bnav-holding');
-  };
+  const HOLD_MS = 80;
+  const SWIPE_PX = 22;
+  let timer = null, startX = 0, startY = 0, active = null, held = false, switched = false;
+
+  function reset(){
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (active) active.classList.remove('bnav-holding');
+    active = null; held = false; switched = false; startX = startY = 0;
+  }
+
   nav.querySelectorAll('.bnav-item').forEach(btn => {
-    btn.addEventListener('pointerdown', e => {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      const id = btn.id.replace('bt-','');
-      if (!order.includes(id)) return;
-      startX = e.clientX; startY = e.clientY; holding = false; moved = false; suppressClick = false; currentId = id;
-      try { btn.setPointerCapture(e.pointerId); } catch (err) {}
-      clearHold(btn);
-      holdTimer = setTimeout(() => {
-        holding = true;
-        btn.classList.add('bnav-holding');
-        if (navigator.vibrate) navigator.vibrate(12);
-      }, 120);
-    });
-    btn.addEventListener('pointermove', e => {
-      if (!startX && !startY) return;
-      const dx = e.clientX - startX, dy = e.clientY - startY;
-      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) moved = true;
-      if (holding && Math.abs(dx) >= 38 && Math.abs(dx) > Math.abs(dy) * 1.15) {
-        const current = order.indexOf(currentId);
-        if (current >= 0) {
-          const nextIndex = current + (dx < 0 ? 1 : -1);
-          if (nextIndex >= 0 && nextIndex < order.length) {
-            currentId = order[nextIndex];
-            showTab(currentId);
-            suppressClick = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            if (navigator.vibrate) navigator.vibrate(8);
-          }
+    const id = btn.id.replace('bt-','');
+    if (!order.includes(id)) return;
+
+    btn.addEventListener('touchstart', e => {
+      if (!e.touches || !e.touches[0]) return;
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY;
+      active = btn; held = false; switched = false;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        held = true;
+        if (active) active.classList.add('bnav-holding');
+        if (navigator.vibrate) navigator.vibrate(10);
+      }, HOLD_MS);
+    }, {passive:true});
+
+    btn.addEventListener('touchmove', e => {
+      if (!active || !e.touches || !e.touches[0]) return;
+      const t = e.touches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (!held) {
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+          if (timer) { clearTimeout(timer); timer = null; }
         }
+        return;
       }
-    });
-    btn.addEventListener('pointerup', e => {
-      clearHold(btn);
-      try { btn.releasePointerCapture(e.pointerId); } catch (err) {}
-      if (suppressClick) {
-        setTimeout(() => { suppressClick = false; }, 80);
+      if (Math.abs(dx) < SWIPE_PX || Math.abs(dx) <= Math.abs(dy) * 1.1) return;
+      e.preventDefault();
+      const cur = order.indexOf(idOfActive());
+      if (cur < 0) return;
+      const next = cur + (dx > 0 ? 1 : -1);
+      if (next >= 0 && next < order.length) {
+        const nextId = order[next];
+        showTab(nextId);
+        switched = true;
+        startX = t.clientX;
+        startY = t.clientY;
+        if (navigator.vibrate) navigator.vibrate(7);
       }
-      startX = startY = 0;
-    });
-    btn.addEventListener('pointercancel', e => { clearHold(btn); try { btn.releasePointerCapture(e.pointerId); } catch (err) {} startX = startY = 0; suppressClick = false; });
-    btn.addEventListener('click', e => {
-      if (suppressClick) { e.preventDefault(); e.stopImmediatePropagation(); suppressClick = false; }
-    }, true);
-    btn.addEventListener('contextmenu', e => { if (holding || moved) e.preventDefault(); });
+    }, {passive:false});
+
+    btn.addEventListener('touchend', reset, {passive:true});
+    btn.addEventListener('touchcancel', reset, {passive:true});
+    btn.addEventListener('contextmenu', e => { if (held || switched) e.preventDefault(); });
   });
+
+  function idOfActive(){
+    const a = document.querySelector('.bnav-item.active');
+    return a ? a.id.replace('bt-','') : 'd';
+  }
 })();
 
 function toggleMoreMenu() {
