@@ -533,6 +533,7 @@ body {
 @keyframes profitShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 @media(max-width:420px){.profit-lock-box{padding:22px 16px 17px;border-radius:25px}.profit-lock-icon{width:58px;height:58px;font-size:27px}.profit-lock-title{font-size:18px}}
 
+/* Activity History */
 /* Modals */
 .site-detail-modal {
   display: none;
@@ -1132,6 +1133,7 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
         <button class="tab" id="bt-x" onclick="showTab('x'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">💸</span><span class="tl">खर्च</span></button>
         <button class="tab" id="bt-m" onclick="showTab('m'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
         <button class="tab" id="bt-a" onclick="showTab('a'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
+        <button class="tab" onclick="openActivityHistory(); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🕘</span><span class="tl">एक्टिविटी हिस्ट्री</span></button>
       </div>
     </div>
   </div>
@@ -1451,9 +1453,12 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
     <div id="missingBox" style="margin-top: 12px;"></div>
 
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap:8px;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
-        <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
+          <button type="button" id="todayListToggleBtn" class="btn-sm" style="background:#F1F5F9;color:#334155;padding:6px 9px;font-weight:800;" onclick="toggleTodayHazriList()">▲ पूरी लिस्ट</button>
+        </div>
       </h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
         <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('paid')">💸 आज किसको पैसे दिए</button>
@@ -2738,6 +2743,7 @@ function closeSiteDetail() {
   _currentSiteId = null;
 }
 
+
 async function shareSiteProfessionalReport() {
   const siteId = _currentSiteId;
   const s = siteId ? sites[siteId] : null;
@@ -3096,6 +3102,14 @@ function toggleArchive(id, arch) {
     if (!confirm("Archive \u0915\u0930\u0928\u093E \u0939\u0948? \u0939\u093E\u091C\u093C\u0930\u0940 \u0932\u093F\u0938\u094D\u091F \u0938\u0947 \u0939\u091F \u091C\u093E\u092F\u0947\u0917\u093E \u092A\u0930 \u0939\u093F\u0938\u093E\u092C \u0930\u0939\u0947\u0917\u093E")) return;
   }
   db.ref("companies/" + company + "/labours/" + id + "/archived").set(arch ? true : false);
+}
+function toggleTodayHazriList() {
+  const box = document.getElementById("todayTable");
+  const btn = document.getElementById("todayListToggleBtn");
+  if (!box || !btn) return;
+  const hidden = box.style.display === "none";
+  box.style.display = hidden ? "block" : "none";
+  btn.innerHTML = hidden ? "▲ पूरी लिस्ट" : "▼ पूरी लिस्ट";
 }
 function toggleDailyList(type) {
   const paid = document.getElementById("dailyPaidList");
@@ -3908,7 +3922,7 @@ function saveEditField() {
   });
 }
 function deleteLab(id) {
-  if (confirm("Delete?")) db.ref("companies/" + company + "/labours/" + id).remove();
+  if (confirm("Delete?")) { db.ref("companies/" + company + "/labours/" + id).remove(); }
 }
 function addSite() {
   const sHouse = document.getElementById("sHouse");
