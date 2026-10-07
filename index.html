@@ -378,6 +378,23 @@ body {
   color: #94A3B8;
 }
 
+
+ .calendar-current-labour{border:0;background:transparent;color:#4F46E5;font-size:14px;font-weight:800;padding:2px 4px;cursor:pointer;border-radius:8px}.calendar-current-labour:active{transform:scale(.98);background:#EEF2FF}.calendar-labour-picker{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);z-index:1100;align-items:flex-end;justify-content:center;padding:0}.calendar-labour-picker.show{display:flex}.calendar-labour-picker-box{width:100%;max-width:520px;max-height:75vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -15px 45px rgba(0,0,0,.22)}.calendar-labour-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.calendar-labour-picker-title{font-size:16px;font-weight:900;color:#0F172A}.calendar-labour-picker-close{width:34px;height:34px;border:0;border-radius:50%;background:#F1F5F9;color:#475569;font-size:18px}.calendar-labour-picker-list{display:grid;gap:7px}.calendar-labour-picker-item{width:100%;border:1px solid #E2E8F0;background:#F8FAFC;border-radius:13px;padding:12px;text-align:left;font-size:13px;font-weight:800;color:#334155;cursor:pointer}.calendar-labour-picker-item.active{background:#0F172A;color:#fff;border-color:#0F172A}.calendar-labour-picker-item:active{transform:scale(.99)}
+
+/* Professional Payment Timeline */
+.payment-timeline{position:relative;padding:8px 2px 4px}
+.payment-timeline-item{position:relative;display:flex;gap:12px;padding-bottom:14px}
+.payment-timeline-dot{position:relative;z-index:2;flex:0 0 34px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#166534,#22C55E);color:#fff;font-weight:800;font-size:12px;box-shadow:0 5px 14px rgba(22,101,52,.22);border:3px solid #F0FDF4}
+.payment-timeline-line{position:absolute;left:16px;top:34px;bottom:0;width:2px;background:linear-gradient(#BBF7D0,#E2E8F0)}
+.payment-timeline-item:last-child .payment-timeline-line{display:none}
+.payment-timeline-card{flex:1;background:#fff;border:1px solid #E2E8F0;border-radius:15px;padding:11px 12px;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+.payment-timeline-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.payment-timeline-date{font-size:9px;color:#94A3B8;margin-top:2px}
+.payment-timeline-amount{font-size:16px;font-weight:800;color:#166534;white-space:nowrap}
+.payment-timeline-meta{font-size:11px;color:#475569;margin-top:8px;padding:7px 8px;background:#F8FAFC;border-radius:9px}
+.payment-timeline-bottom{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:9.5px;color:#94A3B8}
+.payment-timeline-actions{display:flex;gap:6px;margin-top:9px}
+.payment-timeline-actions .btn-sm{border:0;border-radius:8px;font-size:10px;font-weight:700}
 .site-card {
   background: white;
   border: 1px solid #E2E8F0;
@@ -385,6 +402,43 @@ body {
   padding: 14px;
   margin-bottom: 12px;
 }
+
+/* Professional Karigar Profile */
+.kp-overlay{position:fixed;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:10050;display:none;align-items:flex-end;justify-content:center;padding:0}
+.kp-box{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.25);animation:kpIn .28s cubic-bezier(.2,.8,.2,1);padding:0 0 calc(18px + env(safe-area-inset-bottom))}
+@keyframes kpIn{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.kp-hero{padding:22px 20px 18px;background:linear-gradient(135deg,#0F172A,#243B53);color:#fff;position:relative}
+.kp-close{position:absolute;right:16px;top:14px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.13);color:#fff;font-size:18px}
+.kp-avatar{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#D4A94E,#AD832E);display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.22);margin-bottom:12px}
+.kp-name{font-size:21px;font-weight:900;letter-spacing:-.3px}.kp-sub{font-size:12px;color:#CBD5E1;margin-top:4px}
+.kp-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.kp-badge{font-size:10.5px;font-weight:800;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#E2E8F0}
+.kp-body{padding:16px 18px}.kp-month{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.kp-month label{font-size:11px;color:#64748B;font-weight:800}.kp-month input{border:1px solid #E2E8F0;border-radius:11px;padding:8px 10px;font-weight:800;color:#0F172A;background:#F8FAFC}
+.kp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.kp-stat{padding:13px;border:1px solid #E8EDF4;border-radius:15px;background:#F8FAFC}.kp-stat small{display:block;font-size:10.5px;color:#64748B;font-weight:700;margin-bottom:5px}.kp-stat b{font-size:17px;color:#0F172A}.kp-stat.gold{background:#FFF9EA;border-color:#F1DEAC}.kp-stat.green{background:#F0FDF4;border-color:#BBF7D0}.kp-stat.blue{background:#EFF6FF;border-color:#BFDBFE}.kp-stat.red{background:#FEF2F2;border-color:#FECACA}
+.kp-section{margin-top:16px}.kp-section-title{font-size:12px;font-weight:900;color:#0F172A;margin-bottom:8px;display:flex;align-items:center;gap:6px}.kp-list{border:1px solid #E8EDF4;border-radius:15px;overflow:hidden}.kp-row{display:flex;justify-content:space-between;gap:10px;padding:11px 12px;border-bottom:1px solid #F1F5F9;font-size:11.5px}.kp-row:last-child{border-bottom:0}.kp-row span{color:#64748B}.kp-row b{color:#0F172A;text-align:right}.kp-site{padding:11px 12px;border-bottom:1px solid #F1F5F9}.kp-site:last-child{border-bottom:0}.kp-site-top{display:flex;justify-content:space-between;gap:8px;font-weight:800;font-size:11.5px}.kp-site-meta{font-size:10px;color:#94A3B8;margin-top:3px}.kp-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.kp-actions button{border:0;border-radius:13px;padding:11px;font-weight:800;cursor:pointer}.kp-primary{background:#0F172A;color:#fff}.kp-secondary{background:#EEF2FF;color:#3730A3}
+@media(min-width:700px){.kp-overlay{align-items:center;padding:20px}.kp-box{border-radius:28px;max-height:88vh}}
+
+
+/* Professional site cards */
+.site-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);border:1px solid #dbe3ee!important;border-left:0!important;border-radius:20px!important;padding:0!important;margin-bottom:16px!important;box-shadow:0 8px 24px rgba(15,23,42,.07);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.site-card:active{transform:scale(.992)}
+.sm-site-head{padding:15px 16px 13px;background:linear-gradient(135deg,#f8fbff,#eef4ff);border-bottom:1px solid #e5eaf2}
+.sm-site-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sm-site-name{font-size:20px;font-weight:850;color:#0f172a;letter-spacing:-.3px}
+.sm-site-client{margin-top:4px;color:#64748b;font-size:13px;line-height:1.35}
+.sm-site-status{white-space:nowrap;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.sm-site-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 14px 8px}
+.sm-site-metric{min-width:0;border-radius:14px;padding:10px 7px;text-align:center;border:1px solid rgba(148,163,184,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+.sm-site-metric small{display:block;font-size:10px;font-weight:800;margin-bottom:4px}
+.sm-site-metric b{display:block;font-size:14px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm-site-progress{padding:2px 15px 10px}
+.sm-site-progress-row{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;color:#64748b;margin-bottom:5px}
+.sm-site-progress-track{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.sm-site-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2563eb);transition:width .6s ease}
+.sm-site-labour{margin:2px 14px 10px;padding:10px 11px;background:#f8fafc;border:1px solid #e8edf4;border-radius:13px;color:#475569;font-size:11px;line-height:1.55}
+.sm-site-labour b{color:#0f172a}
+.sm-site-actions{display:flex;gap:7px;flex-wrap:wrap;padding:0 14px 14px}
+.sm-site-actions .btn-sm{border-radius:11px!important;font-weight:800;box-shadow:0 2px 5px rgba(15,23,42,.06)}
+@media(max-width:430px){.sm-site-name{font-size:18px}.sm-site-metric b{font-size:13px}.sm-site-metrics{gap:6px;padding-left:12px;padding-right:12px}.sm-site-actions{padding-left:12px;padding-right:12px}}
 
 .archived-card {
   background: #F8FAFC;
@@ -453,6 +507,31 @@ body {
   margin-right: 4px;
   border: 1.5px solid;
 }
+
+
+/* Professional profit password modal */
+.profit-lock-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:1200;align-items:center;justify-content:center;padding:20px;animation:profitFade .18s ease}
+.profit-lock-box{width:min(390px,100%);box-sizing:border-box;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);border:1px solid rgba(255,255,255,.8);border-radius:28px;padding:24px 22px 20px;box-shadow:0 24px 70px rgba(0,0,0,.28);text-align:center;animation:profitPop .28s cubic-bezier(.2,.9,.25,1)}
+.profit-lock-icon{width:64px;height:64px;margin:0 auto 14px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(145deg,#FFF7D6,#F4D58B);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 20px rgba(182,138,76,.18)}
+.profit-lock-title{margin:0;color:#0F172A;font-size:20px;font-weight:900;letter-spacing:-.2px}
+.profit-lock-sub{margin:6px 0 18px;color:#64748B;font-size:12.5px;line-height:1.5}
+.profit-pin-wrap{position:relative;margin:0 auto 8px;max-width:310px}
+.profit-pin-input{width:100%;height:58px;box-sizing:border-box;border:1.5px solid #E2E8F0;border-radius:16px;background:#F8FAFC;padding:0 48px 0 18px;text-align:center;font-size:25px;font-weight:900;letter-spacing:9px;color:#0F172A;outline:none;transition:.2s;box-shadow:inset 0 1px 2px rgba(15,23,42,.03)}
+.profit-pin-input:focus{border-color:#C5963F;background:#fff;box-shadow:0 0 0 4px rgba(197,150,63,.13)}
+.profit-pin-input::placeholder{letter-spacing:5px;color:#CBD5E1;font-size:18px}
+.profit-eye{position:absolute;right:8px;top:8px;width:42px;height:42px;border:0;border-radius:12px;background:#EEF2F7;color:#475569;font-size:18px;cursor:pointer}
+.profit-error{min-height:18px;margin:5px 0 10px;color:#DC2626;font-size:11.5px;font-weight:800;opacity:0;transition:.18s}
+.profit-error.show{opacity:1}
+.profit-actions{display:grid;grid-template-columns:1fr 1.25fr;gap:9px;max-width:310px;margin:0 auto}
+.profit-cancel,.profit-unlock{height:48px;border:0;border-radius:15px;font-size:14px;font-weight:850;cursor:pointer;transition:transform .12s,box-shadow .18s}
+.profit-cancel{background:#F1F5F9;color:#64748B}
+.profit-unlock{color:#fff;background:linear-gradient(135deg,#B68A4C,#8C5E2F);box-shadow:0 7px 18px rgba(140,94,47,.25)}
+.profit-cancel:active,.profit-unlock:active,.profit-eye:active{transform:scale(.97)}
+.profit-lock-box.shake{animation:profitShake .35s ease}
+@keyframes profitFade{from{opacity:0}to{opacity:1}}
+@keyframes profitPop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes profitShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@media(max-width:420px){.profit-lock-box{padding:22px 16px 17px;border-radius:25px}.profit-lock-icon{width:58px;height:58px;font-size:27px}.profit-lock-title{font-size:18px}}
 
 /* Modals */
 .site-detail-modal {
@@ -1386,7 +1465,17 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
     </div>
 
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px;">🗓️ कैलेंडर - <span id="selLabName2" style="color: #4F46E5;"></span></h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
+        <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <button type="button" id="selLabName2" class="calendar-current-labour" onclick="openCalendarLabourPicker()" aria-label="कारीगर बदलें">कारीगर चुनें ▾</button></h3>
+        <div style="display:flex;gap:5px;align-items:center;">
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 11px;" onclick="shiftCalendarMonth(-1)">◀</button>
+          <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:8px 10px;" onclick="setCalendarMonthToday()">आज</button>
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 11px;" onclick="shiftCalendarMonth(1)">▶</button>
+        </div>
+      </div>
+      <div id="calendarMonthLabel" style="text-align:center;font-size:12px;font-weight:800;color:#334155;background:#F8FAFC;border-radius:10px;padding:7px;margin-bottom:9px;"></div>
+            <div id="calendarLabourPicker" class="calendar-labour-picker" onclick="if(event.target===this) closeCalendarLabourPicker()"><div class="calendar-labour-picker-box"><div class="calendar-labour-picker-head"><div class="calendar-labour-picker-title">कारीगर चुनें</div><button type="button" class="calendar-labour-picker-close" onclick="closeCalendarLabourPicker()">×</button></div><div id="calendarLabourPickerList" class="calendar-labour-picker-list"></div></div></div>
+      <div id="calendarSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;"></div>
       <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center;">
         <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DCFCE7; border-color: #16A34A;"></span>हाज़िर 1P</span>
         <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEF3C7; border-color: #F59E0B;"></span>आधा 0.5</span>
@@ -1743,6 +1832,32 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       <h3 style="text-align: center; margin-top: 0; font-size: 15px;">📁 Saved Agreements</h3>
       <input id="agSearch" class="input" placeholder="🔍 Search House No / Client" oninput="renderSavedList()">
       <div id="savedAgList">Loading...</div>
+    </div>
+  </div>
+
+
+  <!-- Professional Profit Password Modal -->
+  <div id="profitLockOverlay" class="profit-lock-overlay" onclick="if(event.target===this)closeProfitPassword()">
+    <div id="profitLockBox" class="profit-lock-box" role="dialog" aria-modal="true" aria-labelledby="profitLockTitle">
+      <div class="profit-lock-icon">🔐</div>
+      <h3 id="profitLockTitle" class="profit-lock-title">Profit Protected</h3>
+      <div class="profit-lock-sub">मुनाफ़ा देखने के लिए अपना 4-digit password डालें</div>
+      <div class="profit-pin-wrap">
+        <input id="profitPasswordInput" class="profit-pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" oninput="profitPasswordTyping()" onkeydown="if(event.key==='Enter')submitProfitPassword()">
+        <button class="profit-eye" type="button" aria-label="Show password" onclick="toggleProfitPassword()">👁️</button>
+      </div>
+      <div id="profitPasswordError" class="profit-error">❌ गलत password — दोबारा कोशिश करें</div>
+      <div class="profit-actions">
+        <button class="profit-cancel" type="button" onclick="closeProfitPassword()">Cancel</button>
+        <button class="profit-unlock" type="button" onclick="submitProfitPassword()">🔓 Unlock Profit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professional Karigar Profile -->
+  <div id="karigarProfileOverlay" class="kp-overlay" onclick="if(event.target===this)closeKarigarProfile()">
+    <div class="kp-box" role="dialog" aria-modal="true" aria-labelledby="kpName">
+      <div id="karigarProfileContent"></div>
     </div>
   </div>
 
@@ -2497,17 +2612,32 @@ function showSiteDetail(siteId) {
   if (pays.length === 0) {
     payHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">\u0915\u094B\u0908 \u092A\u0948\u0938\u093E \u0928\u0939\u0940\u0902 \u0932\u093F\u092F\u093E \u0905\u092D\u0940</div>';
   } else {
-    payHtml = '<table style="margin-top:8px"><tr><th>\u0924\u093E\u0930\u0940\u0916</th><th>\u0930\u0915\u092E</th><th>Note</th><th>X</th></tr>';
-    pays.slice().reverse().forEach(([pid, p]) => {
-      const d = p.date ? new Date(p.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-";
-      payHtml += `<tr>
-        <td>${d}<br><small style="font-size:9px;color:#64748B">${p.date || ""}</small></td>
-        <td style="color:#166534;font-weight:800">${profitUnlocked ? `\u20B9${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</td>
-        <td style="font-size:11px;text-align:left">${p.note || "-"}</td>
-        <td style="white-space:nowrap"><button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;margin-right:4px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️</button><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">X</button></td>
-      </tr>`;
+    payHtml = '<div class="payment-timeline">';
+    let runningTotal = 0;
+    pays.slice().reverse().forEach(([pid, p], idx) => {
+      const d = p.date ? new Date(p.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-";
+      runningTotal += Number(p.amount || 0);
+      payHtml += `<div class="payment-timeline-item">
+        <div class="payment-timeline-dot">₹</div>
+        <div class="payment-timeline-line"></div>
+        <div class="payment-timeline-card">
+          <div class="payment-timeline-top">
+            <div><b>${d}</b><div class="payment-timeline-date">${p.date || ""}</div></div>
+            <div class="payment-timeline-amount">${profitUnlocked ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</div>
+          </div>
+          <div class="payment-timeline-meta">${p.note ? `📝 ${p.note}` : "💳 Site payment received"}</div>
+          <div class="payment-timeline-bottom">
+            <span>Payment #${pays.length - idx}</span>
+            <span>${profitUnlocked ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "Amount locked"}</span>
+          </div>
+          <div class="payment-timeline-actions">
+            <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️ Edit</button>
+            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">Delete</button>
+          </div>
+        </div>
+      </div>`;
     });
-    payHtml += "</table>";
+    payHtml += "</div>";
   }
   sumHtml += `
     <div style="margin-top:14px">
@@ -2608,6 +2738,44 @@ function deletePay(pid) {
   if (!confirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) return;
   db.ref("companies/" + company + "/sitePayments/" + pid).remove();
 }
+function shiftCalendarMonth(delta) {
+  const eDate = document.getElementById("eDate");
+  if (!eDate) return;
+  const base = eDate.value ? new Date(eDate.value + "T00:00:00") : new Date();
+  base.setMonth(base.getMonth() + delta);
+  const y = base.getFullYear(), m = String(base.getMonth() + 1).padStart(2, "0");
+  const d = String(Math.min(base.getDate(), new Date(y, base.getMonth() + 1, 0).getDate())).padStart(2, "0");
+  eDate.value = `${y}-${m}-${d}`;
+  renderAll();
+}
+function setCalendarMonthToday() {
+  const eDate = document.getElementById("eDate");
+  if (!eDate) return;
+  eDate.value = fmtLocalDate(new Date());
+  renderAll();
+}
+
+function openCalendarLabourPicker() {
+  const box = document.getElementById("calendarLabourPicker");
+  const list = document.getElementById("calendarLabourPickerList");
+  if (!box || !list) return;
+  const current = document.getElementById("eLabour")?.value || "";
+  const activeLabs = Object.entries(labs).filter(([id,l]) => l && !l.archived).sort((a,b) => String(a[1].name||"").localeCompare(String(b[1].name||""), "hi", {sensitivity:"base"}));
+  list.innerHTML = activeLabs.length ? activeLabs.map(([id,l]) => `
+    <button type="button" class="calendar-labour-picker-item ${id===current?"active":""}" onclick="selectCalendarLabour('${id}')">👷 ${mEsc(l.name || "कारीगर")}${id===current?" ✓":""}</button>
+  `).join("") : '<div style="padding:12px;color:#94A3B8;font-size:12px;">कोई कारीगर नहीं</div>';
+  box.classList.add("show");
+}
+function closeCalendarLabourPicker() {
+  document.getElementById("calendarLabourPicker")?.classList.remove("show");
+}
+function selectCalendarLabour(id) {
+  const eLabour = document.getElementById("eLabour");
+  if (eLabour) eLabour.value = id;
+  closeCalendarLabourPicker();
+  renderAll();
+  setTimeout(() => window.scrollTo({top:0,behavior:"smooth"}), 30);
+}
 function renderCalendar() {
   const eLabour = document.getElementById("eLabour");
   const selId = eLabour ? eLabour.value : "";
@@ -2635,6 +2803,29 @@ function renderCalendar() {
   const todayReal = /* @__PURE__ */ new Date();
   const isCurrentMonth = todayReal.getFullYear() === y && todayReal.getMonth() + 1 === m;
   const todayDate = todayReal.getDate();
+  let present=0, half=0, oneFive=0, doubleDays=0, totalDays=0, paid=0, absent=0;
+  Object.values(map).forEach(info => {
+    const dv = parseFloat(info.days) || 0;
+    totalDays += dv;
+    paid += parseFloat(info.withdraw) || 0;
+    if (dv === 2) doubleDays += 1;
+    else if (dv === 1.5) oneFive += 1;
+    else if (dv === 1) present += 1;
+    else if (dv === 0.5) half += 1;
+    else absent += 1;
+  });
+  for (let d=1; d<=daysInMonth; d++) if (!map[d] && !(isCurrentMonth && d>=todayDate)) absent++;
+  const monthLabel = new Date(y,m-1,1).toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+  const ml = document.getElementById("calendarMonthLabel");
+  if (ml) ml.innerText = monthLabel;
+  const cs = document.getElementById("calendarSummary");
+  if (cs) cs.innerHTML = `
+    <div style="background:#DCFCE7;border:1px solid #BBF7D0;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#166534;">${present}</b><small style="color:#166534;">P / दिन</small></div>
+    <div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#92400E;">${half}</b><small style="color:#92400E;">½ दिन</small></div>
+    <div style="background:#F3E8FF;border:1px solid #D8B4FE;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#7E22CE;">${oneFive}</b><small style="color:#7E22CE;">1.5 दिन</small></div>
+    <div style="background:#DBEAFE;border:1px solid #BFDBFE;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#1D4ED8;">${doubleDays}</b><small style="color:#1D4ED8;">2 दिन</small></div>
+    <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#991B1B;">${absent}</b><small style="color:#991B1B;">A</small></div>
+    <div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#3730A3;">₹${Math.round(paid)}</b><small style="color:#3730A3;">निकासी</small></div>`;
   let html = `
     <div class="cal-grid">
       <div class="cal-day head">\u0930\u0935\u093F</div>
@@ -2968,26 +3159,26 @@ function renderAll() {
     const l = labs[id];
     if (labSearchQ && !(l.name || "").toLowerCase().includes(labSearchQ)) return;
     const c = calcLabour(id, mon);
+    const initials = (l.name || "K").trim().split(/\s+/).slice(0,2).map(x => x[0]).join("").toUpperCase();
+    const duePositive = c.net >= 0;
     labHtml += `
-      <div style="padding:14px;border:1px solid #EEF2FF;border-radius:16px;margin-bottom:10px;background:#FBFDFF">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-          <div>
-            <b style="font-size:14.5px">${l.name}</b> <small style="color:#94A3B8;font-weight:600">\u20B9${l.wage || 0}/\u0926\u093F\u0928</small>
+      <div class="kp-mini-card" style="padding:15px;border:1px solid #E5EAF1;border-radius:20px;margin-bottom:11px;background:linear-gradient(145deg,#FFFFFF,#F8FAFC);box-shadow:0 5px 18px rgba(15,23,42,.06);">
+        <div style="display:flex;align-items:center;gap:11px;">
+          <div style="width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#0F172A,#334155);color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><b style="font-size:15px;color:#0F172A;">${l.name}</b><span style="font-size:9.5px;background:#ECFDF5;color:#047857;padding:4px 7px;border-radius:999px;font-weight:800;">ACTIVE</span></div>
+            <div style="font-size:10.5px;color:#64748B;margin-top:3px;">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन${l.phone ? " • " + l.phone : ""}</div>
           </div>
-          <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:7px 12px;border-radius:12px;font-size:16px;font-weight:800;white-space:nowrap;flex-shrink:0">
-            ${c.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c.net).toLocaleString("en-IN")}
-          </div>
+          <div style="text-align:right;flex-shrink:0;"><div style="font-size:9.5px;color:#94A3B8;font-weight:700;">इस माह</div><b style="font-size:14px;color:${duePositive ? "#166534" : "#B91C1C"};">${duePositive ? "देना ₹"+c.net.toLocaleString("en-IN") : "लेना ₹"+Math.abs(c.net).toLocaleString("en-IN")}</b></div>
         </div>
-        <small style="color:#94A3B8">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
-        <div style="margin-top:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
-          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:7px 4px" onclick="editWage('${id}')">\u0926\u093F\u0939\u093E\u0921\u093C\u0940</button>
-          <button class="btn-sm" style="background:#FEF3C7;color:#92400E;padding:7px 4px" onclick="editBalance('${id}')">\u092C\u0915\u093E\u092F\u093E</button>
-          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:7px 4px" onclick="editRent('${id}')">\u0915\u093F\u0930\u093E\u092F\u093E</button>
-          <button class="btn-sm" style="background:#FEF9C3;color:#854D0E;padding:7px 4px" onclick="editBijli('${id}')">\u092C\u093F\u091C\u0932\u0940</button>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;">
+          <div style="background:#F0FDF4;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">हाज़िरी</small><br><b style="font-size:13px;color:#166534;">${c.days}</b></div>
+          <div style="background:#EFF6FF;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">कमाई</small><br><b style="font-size:13px;color:#1D4ED8;">₹${Math.round(c.earn).toLocaleString("en-IN")}</b></div>
+          <div style="background:#FFF9EA;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">भुगतान</small><br><b style="font-size:13px;color:#92400E;">₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
         </div>
-        <div style="margin-top:6px;display:flex;gap:5px">
-          <button class="btn-sm" style="background:#FCE7F3;color:#9D174D;flex:1;padding:7px 6px" onclick="toggleArchive('${id}',true)">\u{1F4E6} Archive</button>
-          <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;width:40px;flex-shrink:0;padding:7px 0" onclick="deleteLab('${id}')">\u{1F5D1}\uFE0F</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;">
+          <button class="btn-sm" style="background:#0F172A;color:white;padding:9px;border-radius:11px;font-weight:800;" onclick="openKarigarProfile('${id}')">👤 प्रोफाइल देखें</button>
+          <button class="btn-sm" style="background:#EEF2FF;color:#3730A3;padding:9px;border-radius:11px;font-weight:800;" onclick="makeLabourReport('${id}')">📄 हिसाब देखें</button>
         </div>
       </div>
     `;
@@ -3167,33 +3358,16 @@ function renderAll() {
     const labourNames = Object.values(sc.labourMap).map((v) => `${v.name} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const isClosedS = (s.status || "").includes("\u092A\u0942\u0930\u093E");
     siteHtml += `
-      <div class="site-card" style="border-left:5px solid ${isClosedS ? "#94A3B8" : "#16a34a"}">
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
-          <b>\u{1F3E0} ${s.house}</b>
-          <div style="display:flex;gap:6px;align-items:center">
-            <span style="background:${isClosedS ? "#64748B" : "#16a34a"};color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700">${isClosedS ? "Archived" : "On Going"}</span>
-            ${profitUnlocked ? `<span style="background:${profitColor};color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800">Profit \u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)</span>` : `<button class="btn-sm" style="background:#334155;color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800" onclick="unlockProfit('site')">🔒 Profit</button>`}
-          </div>
+      <div class="site-card">
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client ? s.client + " • " : ""}${s.address || ""}</div></div><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-metrics">
+          <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
+          <div class="sm-site-metric" style="background:#eff6ff;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
-        <small style="color:#64748B">${s.address || ""}</small>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0;text-align:center">
-          <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;overflow:hidden">
-            <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
-          </div>
-          <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;overflow:hidden;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">
-            ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
-          </div>
-          ${profitUnlocked ? `<div style="background:#DCFCE7;padding:8px 4px;border-radius:12px;overflow:hidden"><small style="color:#166534;font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br><b style="color:#15803D;font-size:13px">\u20B9${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;overflow:hidden;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569;font-weight:700;font-size:10px">🔒 लाभ</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b></div>`}
-        </div>
-        <div style="font-size:11px;background:#F8FAFF;padding:10px;border-radius:12px">
-          <b>\u092E\u091C\u0926\u0942\u0930:</b> ${labourNames}
-        </div>
-        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-sm" style="background:#6366F1;color:white;padding:8px 12px" onclick="showSiteDetail('${id}')">\u{1F4CB} Detail Dekho</button>
-          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:8px 12px" onclick="editSite('${id}')">\u270F\uFE0F Edit</button>
-          ${isClosedS ? `<button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:8px 12px" onclick="toggleSiteStatus('${id}',false)">\u{1F7E2} \u0926\u0941\u092C\u093E\u0930\u093E \u091A\u093E\u0932\u0942 \u0915\u0930\u094B</button>` : `<button class="btn-sm" style="background:#F1F5F9;color:#475569;padding:8px 12px" onclick="toggleSiteStatus('${id}',true)">\u{1F4E6} \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 \u0915\u0930\u094B</button>`}
-          <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteSite('${id}')">\u0921\u093F\u0932\u0940\u091F</button>
-        </div>
+        <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
+        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
       </div>
     `;
   });
@@ -3212,31 +3386,16 @@ function renderAll() {
     const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
     const labourNames = Object.values(sc.labourMap).map((v) => `${v.name} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const cardHtml = `
-      <div class="site-card" style="border-left:5px solid ${isClosed ? "#94A3B8" : "#16a34a"}">
-        <div style="display:flex;justify-content:space-between">
-          <b>\u{1F3E0} ${s.house}</b>
-          <span style="background:${isClosed ? "#64748B" : "#16a34a"};color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700">
-            ${isClosed ? "Archived" : "On Going"}
-          </span>
+      <div class="site-card">
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client || ""}${s.address ? " • " + s.address : ""}</div></div><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-metrics">
+          <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
+          <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
-        <small style="color:#64748B">${s.client || ""} - ${s.address || ""}</small>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;text-align:center;font-size:11px">
-          <div style="background:#FEF3C7;padding:8px;border-radius:10px">
-            <small style="color:#92400E">\u0932\u093E\u0917\u0924</small><br><b>\u20B9${sc.cost.toLocaleString("en-IN")}</b>
-          </div>
-          <div style="background:#DBEAFE;padding:8px;border-radius:10px">
-            ${profitUnlocked ? `<small style="color:#1E40AF">\u0932\u093F\u092F\u093E</small><br><b>\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569">पासवर्ड से देखें</b>`}
-          </div>
-          ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px;border-radius:10px"><small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"}">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br><b style="color:${profitColor}">\u20B9${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div style="background:#F1F5F9;padding:8px;border-radius:10px;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><br><b style="color:#475569">पासवर्ड से देखें</b></div>`}
-        </div>
-        <div style="font-size:10px;background:#F8FAFF;padding:8px;border-radius:10px">
-          <b>\u092E\u091C\u0926\u0942\u0930:</b> ${labourNames}
-        </div>
-        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-sm" style="background:#6366F1;color:white;padding:6px 10px" onclick="showSiteDetail('${id}')">\u{1F4CB} Detail</button>
-          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:6px 10px" onclick="editSite('${id}')">\u270F\uFE0F Edit</button>
-          ${isClosed ? `<button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:6px 10px" onclick="toggleSiteStatus('${id}',false)">\u{1F7E2} \u0926\u0941\u092C\u093E\u0930\u093E \u091A\u093E\u0932\u0942 \u0915\u0930\u094B</button>` : `<button class="btn-sm" style="background:#F1F5F9;color:#475569;padding:6px 10px" onclick="toggleSiteStatus('${id}',true)">\u{1F4E6} \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 \u0915\u0930\u094B</button>`}
-        </div>
+        <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
+        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
       </div>
     `;
     if (isClosed) {
@@ -3473,17 +3632,60 @@ function calcMonthlyTotalProfit(mon) {
   return totalSiteProfit + totalMaterialPayment;
 }
 function setProfitView(mode) { profitViewMode = mode === "month" ? "month" : "total"; renderAll(); }
-function unlockProfit(view) {
+let profitUnlockView = "total";
+function openProfitPassword(view = "total") {
   if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
-  const password = prompt("Profit देखने के लिए password डालें:");
+  profitUnlockView = view || "total";
+  const overlay = document.getElementById("profitLockOverlay");
+  const input = document.getElementById("profitPasswordInput");
+  const err = document.getElementById("profitPasswordError");
+  const box = document.getElementById("profitLockBox");
+  if (err) err.classList.remove("show");
+  if (box) box.classList.remove("shake");
+  if (input) { input.value = ""; input.type = "password"; }
+  const eye = document.querySelector(".profit-eye");
+  if (eye) eye.innerText = "👁️";
+  if (overlay) overlay.style.display = "flex";
+  setTimeout(() => input?.focus(), 120);
+  return false;
+}
+function closeProfitPassword() {
+  const overlay = document.getElementById("profitLockOverlay");
+  if (overlay) overlay.style.display = "none";
+}
+function toggleProfitPassword() {
+  const input = document.getElementById("profitPasswordInput");
+  const eye = document.querySelector(".profit-eye");
+  if (!input) return;
+  input.type = input.type === "password" ? "text" : "password";
+  if (eye) eye.innerText = input.type === "password" ? "👁️" : "🙈";
+  input.focus();
+}
+function profitPasswordTyping() {
+  const err = document.getElementById("profitPasswordError");
+  if (err) err.classList.remove("show");
+}
+function submitProfitPassword() {
+  const input = document.getElementById("profitPasswordInput");
+  const err = document.getElementById("profitPasswordError");
+  const box = document.getElementById("profitLockBox");
+  const password = input ? input.value : "";
   if (password !== "1234") {
-    if (password !== null) alert("गलत password");
-    return false;
+    if (err) err.classList.add("show");
+    if (box) { box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
+    input?.focus();
+    input?.select();
+    return;
   }
   profitUnlocked = true;
+  closeProfitPassword();
   renderAll();
-  if (view === "total") showBreakdownProfit();
-  return true;
+  if (profitUnlockView === "total") showBreakdownProfit();
+}
+function unlockProfit(view) {
+  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
+  openProfitPassword(view);
+  return false;
 }
 function showBreakdownProfit() {
   if (!profitUnlocked) { unlockProfit("total"); return; }
@@ -4015,6 +4217,66 @@ async function shareAsImage() {
     if (btn) btn.innerHTML = "\u{1F4F8} WhatsApp \u092A\u0930 \u0907\u092E\u0947\u091C \u0936\u0947\u092F\u0930 \u0915\u0930\u0947\u0902";
   }
 }
+let activeKarigarProfileId = null;
+function makeLabourReport(id){
+  const sel=document.getElementById("rLabour");
+  if(sel){ sel.value=id; }
+  showTab("r");
+  setTimeout(()=>{ try{ makeReport(); }catch(e){} },80);
+}
+function openKarigarProfile(id){
+  if(!labs[id]) return;
+  activeKarigarProfileId=id;
+  renderKarigarProfile();
+  const ov=document.getElementById("karigarProfileOverlay");
+  if(ov) ov.style.display="flex";
+}
+function closeKarigarProfile(){
+  const ov=document.getElementById("karigarProfileOverlay");
+  if(ov) ov.style.display="none";
+  activeKarigarProfileId=null;
+}
+function renderKarigarProfile(){
+  const id=activeKarigarProfileId, l=labs[id], box=document.getElementById("karigarProfileContent");
+  if(!id||!l||!box) return;
+  const mon=(document.getElementById("rMonth")?.value)||fmtLocalDate(new Date()).slice(0,7);
+  const c=calcLabour(id,mon);
+  const initials=(l.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+  const entries=Object.values(ents).filter(e=>e.labourId===id&&e.date&&e.date.startsWith(mon)).sort((a,b)=>a.date.localeCompare(b.date));
+  const siteMap={};
+  entries.forEach(e=>{const key=e.siteId||"nosite"; if(!siteMap[key])siteMap[key]={days:0,earn:0,name:e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}; siteMap[key].days+=parseFloat(e.days||0); siteMap[key].earn+=(parseFloat(e.days||0)*entryRate(e,l));});
+  const recent=entries.slice(-6).reverse();
+  const monthLabel=new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+  const status=l.archived?"ARCHIVED":"ACTIVE";
+  const dueColor=c.net>=0?"#166534":"#B91C1C";
+  box.innerHTML=`
+    <div class="kp-hero">
+      <button class="kp-close" onclick="closeKarigarProfile()">✕</button>
+      <div class="kp-avatar">${initials}</div>
+      <div id="kpName" class="kp-name">${l.name}</div>
+      <div class="kp-sub">कारीगर प्रोफाइल ${l.phone?"• "+l.phone:""}</div>
+      <div class="kp-badges"><span class="kp-badge">${status}</span><span class="kp-badge">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन</span>${l.balance?`<span class="kp-badge">Opening ₹${Number(l.balance||0).toLocaleString("en-IN")}</span>`:""}</div>
+    </div>
+    <div class="kp-body">
+      <div class="kp-month"><label>📅 हिसाब का महीना</label><input type="month" id="kpMonth" value="${mon}" onchange="document.getElementById('rMonth').value=this.value;renderKarigarProfile()"></div>
+      <div class="kp-grid">
+        <div class="kp-stat green"><small>हाज़िरी</small><b>${c.days} दिन</b></div>
+        <div class="kp-stat blue"><small>कुल कमाई</small><b>₹${Math.round(c.earn).toLocaleString("en-IN")}</b></div>
+        <div class="kp-stat gold"><small>कुल भुगतान</small><b>₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
+        <div class="kp-stat ${c.net>=0?'green':'red'}"><small>फाइनल बैलेंस</small><b style="color:${dueColor}">${c.net>=0?'देना':'लेना'} ₹${Math.abs(Math.round(c.net)).toLocaleString("en-IN")}</b></div>
+      </div>
+      <div class="kp-section"><div class="kp-section-title">💰 हिसाब का सारांश</div><div class="kp-list">
+        <div class="kp-row"><span>पिछला बकाया</span><b>₹${Math.round(c.bal).toLocaleString("en-IN")}</b></div>
+        <div class="kp-row"><span>कमरा किराया</span><b>₹${Math.round(c.rent).toLocaleString("en-IN")}</b></div>
+        <div class="kp-row"><span>बिजली</span><b>₹${Math.round(c.bijli+c.bijliCalc).toLocaleString("en-IN")}</b></div>
+        <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
+      </div></div>
+      <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${v.name}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
+      <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
+      <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
+    </div>`;
+}
+
 function makeReport() {
   const rMonth = document.getElementById("rMonth");
   const rLabour = document.getElementById("rLabour");
@@ -4699,6 +4961,9 @@ window.deletePay = deletePay;
 window.renderCalendar = renderCalendar;
 window.editEntryByDay = editEntryByDay;
 window.quickSelectLabour = quickSelectLabour;
+window.openCalendarLabourPicker = openCalendarLabourPicker;
+window.closeCalendarLabourPicker = closeCalendarLabourPicker;
+window.selectCalendarLabour = selectCalendarLabour;
 window.filterRLab = filterRLab;
 window.toggleArchive = toggleArchive;
 window.renderAll = renderAll;
