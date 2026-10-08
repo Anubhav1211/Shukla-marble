@@ -379,7 +379,7 @@ body {
 }
 
 
-.calendar-labour-names{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 8px;margin-bottom:3px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.calendar-labour-names::-webkit-scrollbar{display:none}.calendar-labour-chip{flex:0 0 auto;border:1px solid #E2E8F0;background:#F8FAFC;color:#475569;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;transition:.15s}.calendar-labour-chip.active{background:#0F172A;color:#fff;border-color:#0F172A;box-shadow:0 4px 10px rgba(15,23,42,.16)}.calendar-labour-chip:active{transform:scale(.96)}
+ .calendar-current-labour{border:0;background:transparent;color:#4F46E5;font-size:14px;font-weight:800;padding:2px 4px;cursor:pointer;border-radius:8px}.calendar-current-labour:active{transform:scale(.98);background:#EEF2FF}.calendar-labour-picker{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);z-index:1100;align-items:flex-end;justify-content:center;padding:0}.calendar-labour-picker.show{display:flex}.calendar-labour-picker-box{width:100%;max-width:520px;max-height:75vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -15px 45px rgba(0,0,0,.22)}.calendar-labour-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.calendar-labour-picker-title{font-size:16px;font-weight:900;color:#0F172A}.calendar-labour-picker-close{width:34px;height:34px;border:0;border-radius:50%;background:#F1F5F9;color:#475569;font-size:18px}.calendar-labour-picker-list{display:grid;gap:7px}.calendar-labour-picker-item{width:100%;border:1px solid #E2E8F0;background:#F8FAFC;border-radius:13px;padding:12px;text-align:left;font-size:13px;font-weight:800;color:#334155;cursor:pointer}.calendar-labour-picker-item.active{background:#0F172A;color:#fff;border-color:#0F172A}.calendar-labour-picker-item:active{transform:scale(.99)}
 
 /* Professional Payment Timeline */
 .payment-timeline{position:relative;padding:8px 2px 4px}
@@ -533,6 +533,7 @@ body {
 @keyframes profitShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 @media(max-width:420px){.profit-lock-box{padding:22px 16px 17px;border-radius:25px}.profit-lock-icon{width:58px;height:58px;font-size:27px}.profit-lock-title{font-size:18px}}
 
+/* Activity History */
 /* Modals */
 .site-detail-modal {
   display: none;
@@ -1094,6 +1095,35 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 .sm-modal-enter{animation:smModal .3s cubic-bezier(.2,.8,.2,1)}@keyframes smModal{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
+
+/* Professional Attendance UI */
+ .today-list-toggle{width:100%;border:1.5px solid #E2E8F0;border-radius:14px;background:#F8FAFC;color:#334155;padding:12px 14px;margin:0 0 10px;font-size:13px;font-weight:800;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:.18s ease;box-shadow:0 3px 10px rgba(15,23,42,.04)}
+.today-list-toggle.is-open{background:#EEF2FF;border-color:#818CF8;color:#3730A3}
+.today-list-toggle:active{transform:scale(.99)}
+.attendance-pro-card{padding:16px!important;border:1px solid #E8E1D2!important;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+.att-pro-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.att-pro-kicker{font-size:9px;letter-spacing:1.3px;font-weight:900;color:#B88618}
+.att-pro-head h3{margin:2px 0 2px;font-size:20px;color:#0F172A}
+.att-pro-sub{font-size:10.5px;color:#64748B;font-weight:600}
+.att-date-badge{padding:8px 10px;border-radius:12px;background:#F8F3E8;color:#8A6412;font-size:11px;font-weight:900;white-space:nowrap}
+.att-date-row{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 58px;gap:7px;align-items:center;margin-bottom:14px}
+.att-nav-btn,.att-today-btn{height:46px;border:0;border-radius:13px;font-weight:900;font-size:22px;background:#EEF2FF;color:#3730A3;cursor:pointer}
+.att-today-btn{font-size:12px;background:#DCFCE7;color:#166534}
+.att-date-input{margin:0!important;height:46px;text-align:center;font-weight:800;border:1.5px solid #E7DEC9!important}
+.att-edit-tag{display:none;background:#FEF3C7;color:#92400E;padding:8px 12px;border-radius:12px;font-size:11px;font-weight:800;margin-bottom:12px;text-align:center}
+.att-section-title{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:900;color:#334155;margin:14px 0 7px}
+.att-section-title span{font-size:9px;color:#94A3B8;font-weight:700}
+.att-search{margin-bottom:7px!important;height:43px!important}
+.att-select{height:47px!important;margin-bottom:0!important;font-weight:750!important;border:1.5px solid #E7DEC9!important;background:#fff}
+.att-selected-summary{margin-top:6px;padding:8px 10px;border-radius:10px;background:#F8FAFC;color:#64748B;font-size:10px;font-weight:700}
+.att-day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 8px}
+.att-day-btn{min-height:64px!important;margin:0!important;padding:9px 5px!important;border-radius:15px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1.5px solid #E7DEC9!important;background:#fff!important;color:#475569!important;box-shadow:none!important;transition:.16s ease}
+.att-day-btn b{font-size:17px;line-height:1}.att-day-btn span{font-size:10px;font-weight:800}.att-day-btn.sel{background:#111318!important;color:#fff!important;border-color:#111318!important;box-shadow:0 8px 18px rgba(15,23,42,.16)!important;transform:translateY(-1px)}
+.att-payment-card{margin-top:14px;padding:12px;border:1.5px solid #DDE7F3;border-radius:16px;background:linear-gradient(180deg,#F8FBFF,#F3F7FB)}
+.att-payment-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.att-payment-head b{display:block;font-size:12px;color:#0F172A}.att-payment-head small{display:block;font-size:9.5px;color:#64748B;margin-top:2px}.att-payment-head>span{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#DCFCE7;color:#166534;font-weight:900}
+.att-payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.att-payment-grid .input{height:44px!important}.att-payment-hint{font-size:9.5px;color:#64748B;font-weight:700;margin-top:7px}
+.att-save-btn{margin-top:14px!important;height:50px!important;font-size:15px!important;border-radius:15px!important}.att-success-msg{color:#16A34A;font-size:11px;margin-top:7px;font-weight:800;text-align:center}
+@media(max-width:430px){.att-date-row{grid-template-columns:40px minmax(0,1fr) 40px 54px}.att-day-grid{gap:7px}.att-payment-grid{grid-template-columns:1fr}.att-pro-head h3{font-size:18px}}
 </style>
 </head>
 <body>
@@ -1132,6 +1162,7 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
         <button class="tab" id="bt-x" onclick="showTab('x'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">💸</span><span class="tl">खर्च</span></button>
         <button class="tab" id="bt-m" onclick="showTab('m'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
         <button class="tab" id="bt-a" onclick="showTab('a'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
+        <button class="tab" onclick="openActivityHistory(); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🕘</span><span class="tl">एक्टिविटी हिस्ट्री</span></button>
       </div>
     </div>
   </div>
@@ -1226,11 +1257,6 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 
   <!-- TAB 2: SITES -->
   <div id="t-s" style="display: none;">
-    <div class="site-view-toggle" style="background:#F1F5F9;padding:4px;border-radius:14px;display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px;">
-      <button id="siteViewBtnSites" class="btn-sm" onclick="setSiteView('sites')" style="padding:10px 8px;border-radius:11px;background:#0F172A;color:#fff;font-weight:800;">🏠 Sites</button>
-      <button id="siteViewBtnPayments" class="btn-sm" onclick="setSiteView('payments')" style="padding:10px 8px;border-radius:11px;background:transparent;color:#475569;font-weight:800;">💰 Payment Received</button>
-    </div>
-    <div id="siteNormalView">
     <div class="card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" id="addSiteToggleBtn" onclick="toggleBox('addSiteBox2')">
         <span id="addSiteToggleTxt">🏠 नई साइट जोड़ो</span><span>▼</span>
@@ -1284,23 +1310,6 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       <h3 style="margin-top: 0; font-size: 15px;">📊 साइट वाइज रिकॉर्ड</h3>
       <input id="siteSearch" class="input" placeholder="🔍 साइट खोजो - House No / Client" oninput="renderAll()">
       <div id="siteList"></div>
-    </div>
-
-    </div>
-
-    <div id="sitePaymentOnlyView" class="card" style="margin-top:12px;display:none;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
-        <h3 style="margin:0;font-size:15px;">💰 सभी Sites — Payment Received</h3>
-        <span id="sitePaymentsCount" style="font-size:11px;color:#64748B;font-weight:700;"></span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
-        <input id="sitePaymentSearch" class="input" placeholder="🔍 Site खोजो" oninput="renderSitePaymentsLedger()">
-        <input id="sitePaymentMonth" type="month" class="input" onchange="renderSitePaymentsLedger()">
-      </div>
-      <div id="sitePaymentsTotal" style="margin-top:10px;padding:11px 12px;border-radius:14px;background:#ECFDF5;border:1px solid #BBF7D0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="if(!(profitUnlocked || window.allLocksUnlocked)) unlockProfit('site')">
-        <span style="font-size:12px;font-weight:800;color:#166534;">कुल Received</span><b id="sitePaymentsTotalAmt" style="font-size:17px;color:#15803D;cursor:pointer;" onclick="if(!(profitUnlocked || window.allLocksUnlocked)) unlockProfit('site')">₹0</b>
-      </div>
-      <div id="sitePaymentsLedger" style="margin-top:10px;"></div>
     </div>
   </div>
 
@@ -1393,38 +1402,58 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
   <div id="t-e" style="display: none;">
-    <div class="card">
-      <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
-      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(-1)">◀</button>
-        <input id="eDate" type="date" class="input" style="margin-bottom: 0; flex: 1;" onchange="renderAll()">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(1)">▶</button>
-        <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setEDateToday()">आज</button>
+    <div class="card attendance-pro-card">
+      <div class="att-pro-head">
+        <div>
+          <div class="att-pro-kicker">📅 ATTENDANCE</div>
+          <h3>आज की हाज़री</h3>
+          <div class="att-pro-sub">किसी भी तारीख की हाज़री देखें या एडिट करें</div>
+        </div>
+        <div class="att-date-badge"><span id="attDateLabel">आज</span></div>
       </div>
-      <input id="eLabSearch" type="hidden" oninput="renderAll()">
-      <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ हाज़री एडिट हो रही है (<span id="eDateTxt"></span>)</div>
-      
-      <select id="eLabour" class="input" onchange="renderAll()"></select>
-      <select id="eSite" class="input">
-        <option value="">🏠 साइट (Optional)</option>
+
+      <div class="att-date-row">
+        <button class="att-nav-btn" onclick="shiftEDate(-1)" aria-label="पिछला दिन">‹</button>
+        <input id="eDate" type="date" class="input att-date-input" onchange="renderAll()">
+        <button class="att-nav-btn" onclick="shiftEDate(1)" aria-label="अगला दिन">›</button>
+        <button class="att-today-btn" onclick="setEDateToday()">आज</button>
+      </div>
+
+      <div id="editTag" class="att-edit-tag">✏️ हाज़री एडिट हो रही है • <span id="eDateTxt"></span></div>
+
+      <div class="att-section-title">👷 कारीगर</div>
+      <input id="eLabSearch" class="input att-search" placeholder="🔍 कारीगर का नाम खोजें..." oninput="renderAll()">
+      <select id="eLabour" class="input att-select" onchange="renderAll()"></select>
+
+      <div class="att-section-title">🏠 काम की साइट <span>Optional</span></div>
+      <select id="eSite" class="input att-select">
+        <option value="">🏠 साइट चुनें (Optional)</option>
       </select>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0;">
-        <div class="pt" data-v="0" onclick="pickDay(this)">A - छुट्टी</div>
-        <div class="pt sel" data-v="1" onclick="pickDay(this)">P - हाज़िर</div>
-        <div class="pt" data-v="0.5" onclick="pickDay(this)">H - आधा</div>
-        <div class="pt" data-v="1.5" onclick="pickDay(this)">1.5 - डेढ़</div>
-        <div class="pt" data-v="2" onclick="pickDay(this)">2 - डबल</div>
-        <div class="pt" data-v="custom" onclick="pickDay(this)">⚙️ कस्टम</div>
+
+      <div class="att-section-title">✓ आज की हाज़री</div>
+      <div class="att-day-grid">
+        <div class="pt att-day-btn" data-v="1" onclick="pickDay(this)"><b>P</b><span>हाज़िर</span></div>
+        <div class="pt att-day-btn" data-v="1.5" onclick="pickDay(this)"><b>1.5</b><span>डेढ़</span></div>
+        <div class="pt att-day-btn" data-v="2" onclick="pickDay(this)"><b>2</b><span>डबल</span></div>
+        <div class="pt att-day-btn" data-v="0.5" onclick="pickDay(this)"><b>H</b><span>आधा</span></div>
+        <div class="pt att-day-btn" data-v="0" onclick="pickDay(this)"><b>A</b><span>छुट्टी</span></div>
+        <div class="pt att-day-btn" data-v="custom" onclick="pickDay(this)"><b>⚙️</b><span>कस्टम</span></div>
       </div>
-      <input id="eCustom" type="number" step="0.1" class="input" placeholder="कस्टम दिन दर्ज करें" style="display: none;">
-      <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-        <input id="eWith" type="number" class="input" placeholder="निकासी ₹ (Advance)" style="margin-bottom: 0;">
-        <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0;">
+      <input id="eCustom" type="number" step="0.1" class="input" placeholder="कस्टम दिन दर्ज करें" style="display:none;">
+
+      <div class="att-payment-card">
+        <div class="att-payment-head"><div><b>💰 आज का भुगतान</b><small>चुने हुए कारीगर के खाते में अलग सेव होगा</small></div><span>₹</span></div>
+        <div class="att-payment-grid">
+          <input id="eWith" type="number" class="input" placeholder="आज दिए ₹ (Advance)" style="margin-bottom:0;">
+          <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom:0;">
+        </div>
+        <div id="ePaymentHint" class="att-payment-hint">💡 Payment इसी कारीगर + तारीख के हिसाब से रिकॉर्ड होगी</div>
       </div>
-      <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">💾 हाज़री सेव</button>
-      <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
-      <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
-      <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
+
+      <button class="btn btn-save att-save-btn" onclick="saveHazri()" id="saveBtn">✓ हाज़री सेव करें</button>
+      <button class="btn" style="background:#F1F5F9;color:#64748B;margin-top:8px;display:none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
+      <div id="eMsg" class="att-success-msg"></div>
+      <div id="dupMsg" style="padding:10px;border-radius:12px;font-size:12px;font-weight:700;margin-top:8px;display:none;"></div>
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
@@ -1473,22 +1502,25 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
     <div id="missingBox" style="margin-top: 12px;"></div>
 
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap:8px;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
-        <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
+        <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 5px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;"></span>
       </h3>
+      <button type="button" id="todayListToggleBtn" class="today-list-toggle" onclick="toggleTodayHazriList()">
+        <span>📋 पूरी हाज़िरी लिस्ट</span><span id="todayListToggleIcon">▼</span>
+      </button>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
         <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('paid')">💸 आज किसको पैसे दिए</button>
         <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('absent')">❌ आज किसकी छुट्टी</button>
       </div>
       <div id="dailyPaidList" style="display:none;margin-bottom:10px;"></div>
       <div id="dailyAbsentList" style="display:none;margin-bottom:10px;"></div>
-      <div id="todayTable"></div>
+      <div id="todayTable" style="display:none;"></div>
     </div>
 
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
-        <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
+        <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <button type="button" id="selLabName2" class="calendar-current-labour" onclick="openCalendarLabourPicker()" aria-label="कारीगर बदलें">कारीगर चुनें ▾</button></h3>
         <div style="display:flex;gap:5px;align-items:center;">
           <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 11px;" onclick="shiftCalendarMonth(-1)">◀</button>
           <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:8px 10px;" onclick="setCalendarMonthToday()">आज</button>
@@ -1496,7 +1528,7 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
         </div>
       </div>
       <div id="calendarMonthLabel" style="text-align:center;font-size:12px;font-weight:800;color:#334155;background:#F8FAFC;border-radius:10px;padding:7px;margin-bottom:9px;"></div>
-      <div id="calendarLabourNames" class="calendar-labour-names"></div>
+            <div id="calendarLabourPicker" class="calendar-labour-picker" onclick="if(event.target===this) closeCalendarLabourPicker()"><div class="calendar-labour-picker-box"><div class="calendar-labour-picker-head"><div class="calendar-labour-picker-title">कारीगर चुनें</div><button type="button" class="calendar-labour-picker-close" onclick="closeCalendarLabourPicker()">×</button></div><div id="calendarLabourPickerList" class="calendar-labour-picker-list"></div></div></div>
       <div id="calendarSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;"></div>
       <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center;">
         <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DCFCE7; border-color: #16A34A;"></span>हाज़िर 1P</span>
@@ -1509,10 +1541,6 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       <div id="calendarBox"></div>
     </div>
 
-    <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px;">🗓️ <span id="selLabName">कारीगर</span> का महीना रिकॉर्ड</h3>
-      <div id="fullHistory"></div>
-    </div>
   </div>
 
   <!-- TAB 5: HISAB & RATE CARD -->
@@ -1888,7 +1916,10 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
     <div class="site-detail-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <h3 id="sdTitle" style="margin: 0; font-size: 16px; font-weight: 800;">साइट विवरण</h3>
-        <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closeSiteDetail()">✕ बंद करें</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button id="siteReportShareBtn" class="btn-sm" style="background:#25D366;color:white;font-weight:800;padding:8px 11px" onclick="shareSiteProfessionalReport()">📤 WhatsApp Report</button>
+          <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closeSiteDetail()">✕ बंद करें</button>
+        </div>
       </div>
       <div id="sdSummary"></div>
       <div id="sdTable"></div>
@@ -2609,9 +2640,9 @@ function showSiteDetail(siteId) {
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
       </div>
       <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
-        ${(profitUnlocked || window.allLocksUnlocked) ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
+        ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
       </div>
-      ${(profitUnlocked || window.allLocksUnlocked) ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
+      ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"};font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br>
         <b style="color:${sc.profit >= 0 ? "#15803D" : "#DC2626"};font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
       </div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer" onclick="unlockProfit('site')">
@@ -2645,12 +2676,12 @@ function showSiteDetail(siteId) {
         <div class="payment-timeline-card">
           <div class="payment-timeline-top">
             <div><b>${d}</b><div class="payment-timeline-date">${p.date || ""}</div></div>
-            <div class="payment-timeline-amount">${(profitUnlocked || window.allLocksUnlocked) ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</div>
+            <div class="payment-timeline-amount">${profitUnlocked ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</div>
           </div>
           <div class="payment-timeline-meta">${p.note ? `📝 ${p.note}` : "💳 Site payment received"}</div>
           <div class="payment-timeline-bottom">
             <span>Payment #${pays.length - idx}</span>
-            <span>${(profitUnlocked || window.allLocksUnlocked) ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "Amount locked"}</span>
+            <span>${profitUnlocked ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "Amount locked"}</span>
           </div>
           <div class="payment-timeline-actions">
             <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️ Edit</button>
@@ -2667,7 +2698,7 @@ function showSiteDetail(siteId) {
       <div style="background:#F0FDF4;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #BBF7D0">
         <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
           <span>\u0915\u0941\u0932 ${pays.length} \u092C\u093E\u0930 \u0932\u093F\u092F\u093E</span>
-          ${(profitUnlocked || window.allLocksUnlocked) ? `<span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>` : `<span style="color:#475569">🔒 पासवर्ड से देखें</span>`}
+          ${profitUnlocked ? `<span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>` : `<span style="color:#475569">🔒 पासवर्ड से देखें</span>`}
         </div>
         ${payHtml}
       </div>
@@ -2756,6 +2787,92 @@ function closeSiteDetail() {
   if (overlay) overlay.style.display = "none";
   _currentSiteId = null;
 }
+
+
+async function shareSiteProfessionalReport() {
+  const siteId = _currentSiteId;
+  const s = siteId ? sites[siteId] : null;
+  if (!s) { alert("पहले साइट खोलें"); return; }
+  const btn = document.getElementById("siteReportShareBtn");
+  const oldText = btn ? btn.innerHTML : "📤 WhatsApp Report";
+  if (btn) { btn.disabled = true; btn.innerHTML = "⏳ PDF बन रही है..."; }
+
+  try {
+    const sc = calcSite(siteId);
+    const entries = Object.values(ents).filter(e => e.siteId === siteId).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    const pays = Object.values(sitePays).filter(p => p.siteId === siteId).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    const mats = Object.values(matEntriesAll()).filter(e => e.siteId === siteId).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    const status = (s.status || "").includes("पूरा") ? "COMPLETED" : "ONGOING";
+    const labourRows = Object.values(sc.labourMap).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"hi",{sensitivity:"base"}));
+    const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short",year:"numeric"}) : "-";
+    const money = n => "₹" + Number(n||0).toLocaleString("en-IN");
+    const esc = v => String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    const report = document.createElement("div");
+    report.style.cssText = "position:fixed;left:-100000px;top:0;width:760px;background:#fff;font-family:Arial,sans-serif;color:#0f172a;padding:0;z-index:-1;";
+    report.innerHTML = `
+      <div style="background:linear-gradient(135deg,#0f172a,#334155);color:#fff;padding:28px 30px 24px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:1.2px;opacity:.8">SHUKLA MARBLE</div>
+        <div style="font-size:27px;font-weight:900;margin-top:5px">${esc(s.house||"Site Report")}</div>
+        <div style="font-size:14px;margin-top:6px;opacity:.9">${esc(s.client||"")} ${s.address ? "• "+esc(s.address) : ""}</div>
+        <div style="display:inline-block;margin-top:13px;background:${status==="COMPLETED"?"#dcfce7":"#dbeafe"};color:${status==="COMPLETED"?"#166534":"#1d4ed8"};padding:6px 11px;border-radius:20px;font-size:11px;font-weight:900">${status}</div>
+      </div>
+      <div style="padding:22px 30px">
+        <div style="font-size:18px;font-weight:900;margin-bottom:12px">Site Summary</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:14px"><div style="font-size:11px;color:#92400e;font-weight:800">TOTAL COST</div><div style="font-size:21px;font-weight:900;color:#b45309;margin-top:4px">${money(sc.cost)}</div></div>
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px"><div style="font-size:11px;color:#1e40af;font-weight:800">RECEIVED</div><div style="font-size:21px;font-weight:900;color:#1d4ed8;margin-top:4px">${profitUnlocked?money(sc.received):"🔒 Locked"}</div></div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px"><div style="font-size:11px;color:#166534;font-weight:800">PROFIT</div><div style="font-size:21px;font-weight:900;color:#15803d;margin-top:4px">${profitUnlocked?money(sc.profit):"🔒 Locked"}</div></div>
+        </div>
+        <div style="margin-top:22px;font-size:17px;font-weight:900">👷 Labour Summary</div>
+        <div style="margin-top:9px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">${labourRows.length?labourRows.map(v=>`<div style="display:flex;justify-content:space-between;padding:10px 13px;border-bottom:1px solid #f1f5f9;font-size:13px"><b>${esc(v.name)}</b><span>${v.days} दिन</span></div>`).join(""):"<div style='padding:12px;color:#64748b'>कोई labour entry नहीं</div>"}</div>
+        <div style="margin-top:22px;font-size:17px;font-weight:900">💰 Payment Timeline</div>
+        <div style="margin-top:9px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">${pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;gap:15px;padding:10px 13px;border-bottom:1px solid #f1f5f9;font-size:12px"><span><b>${fmtDate(p.date)}</b>${p.note?`<span style='color:#64748b'> • ${esc(p.note)}</span>`:""}</span><b style="color:#166534">${profitUnlocked?money(p.amount):"🔒"}</b></div>`).join(""):"<div style='padding:12px;color:#64748b'>कोई payment नहीं</div>"}</div>
+        <div style="margin-top:22px;font-size:17px;font-weight:900">🧱 Material Summary</div>
+        <div style="margin-top:9px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">${mats.length?mats.slice(0,12).map(e=>`<div style="display:flex;justify-content:space-between;padding:9px 13px;border-bottom:1px solid #f1f5f9;font-size:12px"><span>${esc(e.itemName||"Item")} • ${esc(e.qty||"")} ${esc(e.unit||"")}</span><b>${money(e.total)}</b></div>`).join(""):"<div style='padding:12px;color:#64748b'>कोई material entry नहीं</div>"}</div>
+        <div style="margin-top:20px;padding-top:12px;border-top:1px solid #e2e8f0;color:#64748b;font-size:11px">Generated by Shukla Marble • ${new Date().toLocaleDateString("hi-IN",{day:"2-digit",month:"short",year:"numeric"})}</div>
+      </div>`;
+    document.body.appendChild(report);
+
+    const canvas = await html2canvas(report,{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false});
+    document.body.removeChild(report);
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});
+    const pageW = 210;
+    const pageH = 297;
+    const margin = 8;
+    const imgW = pageW - margin * 2;
+    const imgH = canvas.height * imgW / canvas.width;
+    const usableH = pageH - margin * 2;
+    const totalPages = Math.max(1, Math.ceil(imgH / usableH));
+    const imgData = canvas.toDataURL("image/jpeg",0.92);
+
+    for (let page = 0; page < totalPages; page++) {
+      if (page > 0) pdf.addPage();
+      pdf.addImage(imgData,"JPEG",margin,margin - (page * usableH),imgW,imgH,undefined,"FAST");
+    }
+
+    const safeSite = String(s.house || "Site").trim().replace(/[\\/:*?"<>|]+/g,"-").replace(/\s+/g," ").slice(0,80) || "Site";
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2,"0");
+    const mm = String(now.getMonth()+1).padStart(2,"0");
+    const yyyy = now.getFullYear();
+    const fileName = `${safeSite} - ${dd}-${mm}-${yyyy}.pdf`;
+    const blob = pdf.output("blob");
+    const file = new File([blob],fileName,{type:"application/pdf"});
+
+    if (navigator.canShare && navigator.canShare({files:[file]})) {
+      await navigator.share({files:[file],title:fileName,text:`${s.house} • Shukla Marble Site Report`});
+    } else {
+      pdf.save(fileName);
+      alert("PDF download हो गई। अब WhatsApp पर attach करके भेज सकते हैं।");
+    }
+  } catch(err) {
+    alert("PDF report में error: " + err.message);
+  } finally {
+    if (btn) { btn.disabled=false; btn.innerHTML=oldText; }
+  }
+}
 function deletePay(pid) {
   if (!confirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) return;
   db.ref("companies/" + company + "/sitePayments/" + pid).remove();
@@ -2775,6 +2892,28 @@ function setCalendarMonthToday() {
   if (!eDate) return;
   eDate.value = fmtLocalDate(new Date());
   renderAll();
+}
+
+function openCalendarLabourPicker() {
+  const box = document.getElementById("calendarLabourPicker");
+  const list = document.getElementById("calendarLabourPickerList");
+  if (!box || !list) return;
+  const current = document.getElementById("eLabour")?.value || "";
+  const activeLabs = Object.entries(labs).filter(([id,l]) => l && !l.archived).sort((a,b) => String(a[1].name||"").localeCompare(String(b[1].name||""), "hi", {sensitivity:"base"}));
+  list.innerHTML = activeLabs.length ? activeLabs.map(([id,l]) => `
+    <button type="button" class="calendar-labour-picker-item ${id===current?"active":""}" onclick="selectCalendarLabour('${id}')">👷 ${mEsc(l.name || "कारीगर")}${id===current?" ✓":""}</button>
+  `).join("") : '<div style="padding:12px;color:#94A3B8;font-size:12px;">कोई कारीगर नहीं</div>';
+  box.classList.add("show");
+}
+function closeCalendarLabourPicker() {
+  document.getElementById("calendarLabourPicker")?.classList.remove("show");
+}
+function selectCalendarLabour(id) {
+  const eLabour = document.getElementById("eLabour");
+  if (eLabour) eLabour.value = id;
+  closeCalendarLabourPicker();
+  renderAll();
+  setTimeout(() => window.scrollTo({top:0,behavior:"smooth"}), 30);
 }
 function renderCalendar() {
   const eLabour = document.getElementById("eLabour");
@@ -2818,14 +2957,6 @@ function renderCalendar() {
   const monthLabel = new Date(y,m-1,1).toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
   const ml = document.getElementById("calendarMonthLabel");
   if (ml) ml.innerText = monthLabel;
-  const nameBox = document.getElementById("calendarLabourNames");
-  if (nameBox) {
-    const q = (document.getElementById("eLabSearch")?.value || "").trim().toLowerCase();
-    const activeLabs = Object.entries(labs).filter(([id,l]) => l && !l.archived && (!q || String(l.name||"").toLowerCase().includes(q)));
-    nameBox.innerHTML = activeLabs.length ? activeLabs.map(([id,l]) => `
-      <button type="button" class="calendar-labour-chip ${id === selId ? "active" : ""}" onclick="quickSelectLabour('${id}')">👷 ${mEsc(l.name || "कारीगर")}</button>
-    `).join("") : '<span style="font-size:11px;color:#94A3B8;padding:4px 2px;">कोई कारीगर नहीं</span>';
-  }
   const cs = document.getElementById("calendarSummary");
   if (cs) cs.innerHTML = `
     <div style="background:#DCFCE7;border:1px solid #BBF7D0;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#166534;">${present}</b><small style="color:#166534;">P / दिन</small></div>
@@ -3017,6 +3148,16 @@ function toggleArchive(id, arch) {
   }
   db.ref("companies/" + company + "/labours/" + id + "/archived").set(arch ? true : false);
 }
+function toggleTodayHazriList() {
+  const box = document.getElementById("todayTable");
+  const btn = document.getElementById("todayListToggleBtn");
+  const icon = document.getElementById("todayListToggleIcon");
+  if (!box || !btn) return;
+  const hidden = box.style.display === "none" || !box.style.display;
+  box.style.display = hidden ? "block" : "none";
+  btn.classList.toggle("is-open", hidden);
+  if (icon) icon.textContent = hidden ? "▲" : "▼";
+}
 function toggleDailyList(type) {
   const paid = document.getElementById("dailyPaidList");
   const absent = document.getElementById("dailyAbsentList");
@@ -3058,51 +3199,6 @@ function renderDailyAbsentList() {
     return totalDays === 0;
   });
   box.innerHTML = chuttiIds.length ? `<div style="background:#FFF7ED;border:1.5px solid #FDBA74;border-radius:16px;padding:12px;"><div style="font-weight:800;color:#9A3412;font-size:12.5px;margin-bottom:8px;">❌ आज छुट्टी — ${chuttiIds.length} कारीगर</div>${chuttiIds.map(id => `<div style="padding:7px 2px;border-bottom:1px solid #FED7AA;font-size:12.5px;"><b>${mEsc(labs[id]?.name || "?")}</b></div>`).join("")}</div>` : `<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:14px;padding:12px;text-align:center;color:#166534;font-size:12px;font-weight:700;">आज किसी की छुट्टी नहीं है</div>`;
-}
-
-function setSiteView(mode) {
-  const normal = document.getElementById("siteNormalView");
-  const payments = document.getElementById("sitePaymentOnlyView");
-  const b1 = document.getElementById("siteViewBtnSites");
-  const b2 = document.getElementById("siteViewBtnPayments");
-  const isPay = mode === "payments";
-  if (normal) normal.style.display = isPay ? "none" : "block";
-  if (payments) payments.style.display = isPay ? "block" : "none";
-  if (b1) { b1.style.background = isPay ? "transparent" : "#0F172A"; b1.style.color = isPay ? "#475569" : "#fff"; }
-  if (b2) { b2.style.background = isPay ? "#065F46" : "transparent"; b2.style.color = isPay ? "#fff" : "#475569"; }
-  if (isPay) renderSitePaymentsLedger();
-}
-
-function renderSitePaymentsLedger() {
-  const box = document.getElementById("sitePaymentsLedger");
-  const totalEl = document.getElementById("sitePaymentsTotalAmt");
-  const countEl = document.getElementById("sitePaymentsCount");
-  if (!box) return;
-  const q = (document.getElementById("sitePaymentSearch")?.value || "").trim().toLowerCase();
-  const mon = document.getElementById("sitePaymentMonth")?.value || "";
-  const rows = Object.entries(sitePays)
-    .filter(([pid,p]) => {
-      const site = sites[p.siteId];
-      if (!site) return false;
-      const name = String(site.house || "").toLowerCase();
-      const client = String(site.client || "").toLowerCase();
-      if (q && !name.includes(q) && !client.includes(q)) return false;
-      if (mon && !(p.date || "").startsWith(mon)) return false;
-      return true;
-    })
-    .sort((a,b) => (b[1].date || "").localeCompare(a[1].date || ""));
-  const total = rows.reduce((sum,[,p]) => sum + (parseFloat(p.amount) || 0), 0);
-  if (totalEl) totalEl.innerText = (profitUnlocked || window.allLocksUnlocked) ? "₹" + total.toLocaleString("en-IN") : "🔒 पासवर्ड से देखें";
-  if (countEl) countEl.innerText = rows.length + " payments";
-  if (!rows.length) {
-    box.innerHTML = '<div style="padding:18px;text-align:center;color:#94A3B8;font-size:12px;">अभी कोई payment नहीं मिली</div>';
-    return;
-  }
-  box.innerHTML = rows.map(([pid,p]) => {
-    const site = sites[p.siteId] || {};
-    const d = p.date ? new Date(p.date + "T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short",year:"numeric"}) : "-";
-    return `<div style="display:flex;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid #EEF2F7;">\n      <div style="width:36px;height:36px;border-radius:11px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 36px;">🏠</div>\n      <div style="flex:1;min-width:0;">\n        <div style="font-size:12.5px;font-weight:850;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${mEsc(site.house || "Site")}</div>\n        <div style="font-size:10.5px;color:#64748B;margin-top:3px;">${d}${site.client ? " • " + mEsc(site.client) : ""}${p.note ? " • " + mEsc(p.note) : ""}</div>\n      </div>\n      <div style="text-align:right;">\n        <b style="font-size:13px;color:#15803D;">${(profitUnlocked || window.allLocksUnlocked) ? "₹" + Number(p.amount || 0).toLocaleString("en-IN") : "🔒"}</b><br>\n        <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:4px 8px;margin-top:4px;" onclick="showSiteDetail('${pid && p.siteId ? p.siteId : ""}')">Detail</button>\n      </div>\n    </div>`;
-  }).join("");
 }
 
 function renderAll() {
@@ -3198,7 +3294,7 @@ function renderAll() {
     });
     const totalProfit = totalSiteProfit + totalMaterialPayment;
     const shownProfit = profitViewMode === "month" ? calcMonthlyTotalProfit(mon) : totalProfit;
-    kTot.innerText = (profitUnlocked || window.allLocksUnlocked) ? "\u20B9" + Math.round(shownProfit).toLocaleString("en-IN") : "🔒";
+    kTot.innerText = profitUnlocked ? "\u20B9" + Math.round(shownProfit).toLocaleString("en-IN") : "🔒";
     const kTotLabel = document.getElementById("kTotLabel");
     if (kTotLabel) kTotLabel.innerText = profitViewMode === "month" ? "मासिक मुनाफ़ा" : "कुल मुनाफ़ा";
     const pt = document.getElementById("profitTotalBtn"), pm = document.getElementById("profitMonthBtn");
@@ -3361,6 +3457,8 @@ function renderAll() {
   const selLabName2 = document.getElementById("selLabName2");
   if (selLabName) selLabName.innerText = selId && labs[selId] ? labs[selId].name : "\u0915\u093E\u0930\u0940\u0917\u0930";
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
+  const attDateLabel = document.getElementById("attDateLabel");
+  if (attDateLabel) attDateLabel.innerText = today ? new Date(today).toLocaleDateString("hi-IN", {day:"2-digit", month:"short"}) : "आज";
   const histDiv = document.getElementById("fullHistory");
   if (histDiv && selId) {
     const list = Object.entries(ents).filter(([_, e]) => e.labourId === selId).sort((a, b) => b[1].date.localeCompare(a[1].date));
@@ -3415,8 +3513,8 @@ function renderAll() {
         <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client ? s.client + " • " : ""}${s.address || ""}</div></div><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
-          <div class="sm-site-metric" style="background:#eff6ff;cursor:${(profitUnlocked || window.allLocksUnlocked) ? "default" : "pointer"}" onclick="${(profitUnlocked || window.allLocksUnlocked) ? "" : "unlockProfit('site')"}">${(profitUnlocked || window.allLocksUnlocked) ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
-          ${(profitUnlocked || window.allLocksUnlocked) ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
+          <div class="sm-site-metric" style="background:#eff6ff;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
         <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
@@ -3426,7 +3524,6 @@ function renderAll() {
   });
   const siteList = document.getElementById("siteList");
   if (siteList) siteList.innerHTML = siteHtml || '<div style="color:#94A3B8;padding:10px">\u0915\u094B\u0908 \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902</div>';
-  renderSitePaymentsLedger();
   const dashSearchOngoing = document.getElementById("dashSearchOngoing");
   const dashSearchClosed = document.getElementById("dashSearchClosed");
   const ongoingQ = (dashSearchOngoing?.value || "").toLowerCase();
@@ -3444,8 +3541,8 @@ function renderAll() {
         <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client || ""}${s.address ? " • " + s.address : ""}</div></div><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
-          <div class="sm-site-metric" style="background:#eff6ff">${(profitUnlocked || window.allLocksUnlocked) ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
-          ${(profitUnlocked || window.allLocksUnlocked) ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
+          <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
         <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
@@ -3688,7 +3785,7 @@ function calcMonthlyTotalProfit(mon) {
 function setProfitView(mode) { profitViewMode = mode === "month" ? "month" : "total"; renderAll(); }
 let profitUnlockView = "total";
 function openProfitPassword(view = "total") {
-  if (profitUnlocked || window.allLocksUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
+  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
   profitUnlockView = view || "total";
   const overlay = document.getElementById("profitLockOverlay");
   const input = document.getElementById("profitPasswordInput");
@@ -3732,36 +3829,17 @@ function submitProfitPassword() {
     return;
   }
   profitUnlocked = true;
-  window.allLocksUnlocked = true;
   closeProfitPassword();
   renderAll();
   if (profitUnlockView === "total") showBreakdownProfit();
 }
-// Global lock click: any visible locked value/"पासवर्ड से देखें"/"Amount locked" can open the same password popup.
-document.addEventListener("click", function(e) {
-  if (e.target.closest("#profitLockOverlay")) return;
-  let el = e.target.closest("[data-lock-click]");
-  if (!el) {
-    let cur = e.target;
-    for (let i = 0; i < 5 && cur && cur !== document.body; i++, cur = cur.parentElement) {
-      const t = (cur.innerText || cur.textContent || "").trim();
-      if (t.includes("पासवर्ड से देखें") || t.includes("Amount locked") || (t === "🔒") || (t.includes("🔒") && t.length < 80)) { el = cur; break; }
-    }
-  }
-  if (el) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!(profitUnlocked || window.allLocksUnlocked)) unlockProfit("site");
-  }
-}, true);
-
 function unlockProfit(view) {
-  if (profitUnlocked || window.allLocksUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
+  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
   openProfitPassword(view);
   return false;
 }
 function showBreakdownProfit() {
-  if (!profitUnlocked && !window.allLocksUnlocked) { unlockProfit("total"); return; }
+  if (!profitUnlocked) { unlockProfit("total"); return; }
   const rows = [];
   const mon = getMon();
   Object.keys(sites).forEach((sid) => {
@@ -3893,7 +3971,7 @@ function saveEditField() {
   });
 }
 function deleteLab(id) {
-  if (confirm("Delete?")) db.ref("companies/" + company + "/labours/" + id).remove();
+  if (confirm("Delete?")) { db.ref("companies/" + company + "/labours/" + id).remove(); }
 }
 function addSite() {
   const sHouse = document.getElementById("sHouse");
@@ -4176,6 +4254,8 @@ function saveHazri() {
     days,
     rate: (editingId && ents[editingId] && ents[editingId].rate != null) ? ents[editingId].rate : rateForDate(labs[lab], date),
     withdraw: parseFloat(String(withd)),
+    paymentLabourId: lab,
+    paymentDate: date,
     note: eNote?.value || "",
     ts: Date.now()
   }).then(() => {
@@ -4318,7 +4398,6 @@ function renderKarigarProfile(){
   const entries=Object.values(ents).filter(e=>e.labourId===id&&e.date&&e.date.startsWith(mon)).sort((a,b)=>a.date.localeCompare(b.date));
   const siteMap={};
   entries.forEach(e=>{const key=e.siteId||"nosite"; if(!siteMap[key])siteMap[key]={days:0,earn:0,name:e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}; siteMap[key].days+=parseFloat(e.days||0); siteMap[key].earn+=(parseFloat(e.days||0)*entryRate(e,l));});
-  const recent=entries.slice(-6).reverse();
   const monthLabel=new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
   const status=l.archived?"ARCHIVED":"ACTIVE";
   const dueColor=c.net>=0?"#166534":"#B91C1C";
@@ -4345,7 +4424,6 @@ function renderKarigarProfile(){
         <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
       </div></div>
       <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${v.name}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
-      <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
     </div>`;
 }
@@ -5034,6 +5112,9 @@ window.deletePay = deletePay;
 window.renderCalendar = renderCalendar;
 window.editEntryByDay = editEntryByDay;
 window.quickSelectLabour = quickSelectLabour;
+window.openCalendarLabourPicker = openCalendarLabourPicker;
+window.closeCalendarLabourPicker = closeCalendarLabourPicker;
+window.selectCalendarLabour = selectCalendarLabour;
 window.filterRLab = filterRLab;
 window.toggleArchive = toggleArchive;
 window.renderAll = renderAll;
@@ -5305,7 +5386,7 @@ function renderPdfPreview() {
       <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${s.house}</b> - ${s.client || ""}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${(s.status || "").includes("\u092A\u0942\u0930\u093E") ? "Archived" : (s.status || "\u091A\u0932 \u0930\u0939\u093E")}</td>
       <td style="padding: 6px; color: #B45309; border: 1px solid #CBD5E1;">\u20B9${sc.cost.toLocaleString("en-IN")}</td>
-      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${(profitUnlocked || window.allLocksUnlocked) ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `🔒`}</td>
+      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${profitUnlocked ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `🔒`}</td>
       <td style="padding: 6px; font-weight: 800; color: ${sc.profit >= 0 ? "#166534" : "#DC2626"}; border: 1px solid #CBD5E1;">\u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)</td>
     </tr>`;
   });
@@ -6991,6 +7072,8 @@ function saveBulkHazri() {
       date, labourId: id, siteId: site, days,
       rate: rateForDate(labs[id], date),
       withdraw: parseFloat(s.withdraw || 0) || 0,
+      paymentLabourId: id,
+      paymentDate: date,
       note: "", ts: Date.now()
     });
     saved.push(labs[id].name);
