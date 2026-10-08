@@ -3737,6 +3737,24 @@ function submitProfitPassword() {
   renderAll();
   if (profitUnlockView === "total") showBreakdownProfit();
 }
+// Global lock click: any visible locked value/"पासवर्ड से देखें"/"Amount locked" can open the same password popup.
+document.addEventListener("click", function(e) {
+  if (e.target.closest("#profitLockOverlay")) return;
+  let el = e.target.closest("[data-lock-click]");
+  if (!el) {
+    let cur = e.target;
+    for (let i = 0; i < 5 && cur && cur !== document.body; i++, cur = cur.parentElement) {
+      const t = (cur.innerText || cur.textContent || "").trim();
+      if (t.includes("पासवर्ड से देखें") || t.includes("Amount locked") || (t === "🔒") || (t.includes("🔒") && t.length < 80)) { el = cur; break; }
+    }
+  }
+  if (el) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!(profitUnlocked || window.allLocksUnlocked)) unlockProfit("site");
+  }
+}, true);
+
 function unlockProfit(view) {
   if (profitUnlocked || window.allLocksUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
   openProfitPassword(view);
