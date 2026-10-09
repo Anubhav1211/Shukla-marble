@@ -1106,10 +1106,10 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 .att-pro-head h3{margin:2px 0 2px;font-size:20px;color:#0F172A}
 .att-pro-sub{font-size:10.5px;color:#64748B;font-weight:600}
 .att-date-badge{padding:8px 10px;border-radius:12px;background:#F8F3E8;color:#8A6412;font-size:11px;font-weight:900;white-space:nowrap}
-.att-date-row{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 58px;gap:7px;align-items:center;margin-bottom:14px}
+.att-date-row{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 58px;gap:7px;align-items:center;margin-bottom:14px;width:100%;min-width:0;box-sizing:border-box}.att-date-row>*{min-width:0;max-width:100%;box-sizing:border-box}
 .att-nav-btn,.att-today-btn{height:46px;border:0;border-radius:13px;font-weight:900;font-size:22px;background:#EEF2FF;color:#3730A3;cursor:pointer}
 .att-today-btn{font-size:12px;background:#DCFCE7;color:#166534}
-.att-date-input{margin:0!important;height:46px;text-align:center;font-weight:800;border:1.5px solid #E7DEC9!important}
+.att-date-input{display:block;width:100%;min-width:0!important;max-width:100%;margin:0!important;height:46px;padding:0 4px!important;text-align:center;font-size:clamp(13px,4vw,18px)!important;font-weight:800;border:1.5px solid #E7DEC9!important;box-sizing:border-box!important;appearance:auto}
 .att-edit-tag{display:none;background:#FEF3C7;color:#92400E;padding:8px 12px;border-radius:12px;font-size:11px;font-weight:800;margin-bottom:12px;text-align:center}
 .att-section-title{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:900;color:#334155;margin:14px 0 7px}
 .att-section-title span{font-size:9px;color:#94A3B8;font-weight:700}
@@ -1123,7 +1123,7 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 .att-payment-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.att-payment-head b{display:block;font-size:12px;color:#0F172A}.att-payment-head small{display:block;font-size:9.5px;color:#64748B;margin-top:2px}.att-payment-head>span{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#DCFCE7;color:#166534;font-weight:900}
 .att-payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.att-payment-grid .input{height:44px!important}.att-payment-hint{font-size:9.5px;color:#64748B;font-weight:700;margin-top:7px}
 .att-save-btn{margin-top:14px!important;height:50px!important;font-size:15px!important;border-radius:15px!important}.att-success-msg{color:#16A34A;font-size:11px;margin-top:7px;font-weight:800;text-align:center}
-@media(max-width:430px){.att-date-row{grid-template-columns:40px minmax(0,1fr) 40px 54px}.att-day-grid{gap:7px}.att-payment-grid{grid-template-columns:1fr}.att-pro-head h3{font-size:18px}}
+@media(max-width:430px){.att-date-row{grid-template-columns:36px minmax(0,1fr) 36px 48px;gap:5px}.att-nav-btn{font-size:20px;padding:0}.att-today-btn{font-size:11px;padding:0 3px}.att-date-input{font-size:14px!important;letter-spacing:-.2px}.att-day-grid{gap:7px}.att-payment-grid{grid-template-columns:1fr}.att-pro-head h3{font-size:18px}}
 </style>
 </head>
 <body>
