@@ -1244,10 +1244,7 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       </div>
     </div>
 
-    <div class="card">
-      <button class="btn" style="background: #065F46; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('addPayBox2')">
-        <span>💰 पैसा लिया (Payment Received)</span><span>▼</span>
-      </button>
+    <div class="card" id="payHolderCard" style="display: none;">
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
@@ -3309,7 +3306,7 @@ function renderAll() {
         </div>
         <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
       </div>
     `;
   });
@@ -3337,7 +3334,7 @@ function renderAll() {
         </div>
         <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
       </div>
     `;
     if (isClosed) {
@@ -7329,6 +7326,23 @@ if (document.readyState === "loading") {
   if (typeof prevTab === 'function') {
     window.showTab = function () { if (suppress > 0) return; return prevTab.apply(this, arguments); };
   }
+
+  /* Har site card se "पैसा लिया" popup */
+  window.openSitePay = function (siteId) {
+    if (cur) userClose();
+    try { editingPayId = null; } catch (e) {}
+    const set = (id, v) => { const e = $(id); if (e) e.value = v; };
+    let name = '';
+    try { name = (sites[siteId] && sites[siteId].house) ? sites[siteId].house : ''; } catch (e) {}
+    set('spSite', siteId);
+    set('spAmt', '');
+    set('spNote', '');
+    set('spDate', fmtLocalDate(new Date()));
+    const sv = $('spSaveBtn'); if (sv) sv.innerText = '💾 सेव करो';
+    const cb = $('spCancelBtn'); if (cb) cb.style.display = 'block';
+    openMove({ title: '💰 पैसा लिया' + (name ? ' — ' + name : ''), cancelBtn: 'spCancelBtn', cancelFn: 'cancelSitePayEdit', box: true, region: () => [$('addPayBox2')] }, []);
+    setTimeout(() => { const a = $('spAmt'); if (a && cur) a.focus(); }, 150);
+  };
 
   /* Material section edit: prompt() ki jagah popup (naam + rang) */
   window.editMatSection = function (id, evt) {
