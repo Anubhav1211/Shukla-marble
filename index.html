@@ -2186,6 +2186,7 @@ function startListen() {
   db.ref("companies/" + company + "/expenses").on("value", (s) => {
     expenses = s.val() || {};
     renderExpenses();
+    renderAll();
   });
   db.ref("companies/" + company + "/expenseCategories").on("value", (s) => {
     expenseCategories = s.val() || {};
@@ -3130,7 +3131,9 @@ function renderAll() {
     Object.values(matEntriesBySection).forEach((sectionEntries) => {
       Object.values(sectionEntries || {}).forEach((e) => { totalMaterialPayment += parseFloat(e.total) || 0; });
     });
-    const totalProfit = totalSiteProfit + totalMaterialPayment;
+    let totalBizExpense = 0;
+    Object.values(expenses || {}).forEach((e) => { totalBizExpense += parseFloat(e.amt) || 0; });
+    const totalProfit = totalSiteProfit + totalMaterialPayment - totalBizExpense;
     const shownProfit = profitViewMode === "month" ? calcMonthlyTotalProfit(mon) : totalProfit;
     kTot.innerText = profitUnlocked ? "\u20B9" + Math.round(shownProfit).toLocaleString("en-IN") : "🔒";
     const kTotLabel = document.getElementById("kTotLabel");
@@ -3616,7 +3619,9 @@ function calcMonthlyTotalProfit(mon) {
   });
   let totalMaterialPayment = 0;
   Object.values(matEntriesBySection).forEach((sectionEntries) => Object.values(sectionEntries || {}).forEach((e) => { if (e.date && e.date.startsWith(mon)) totalMaterialPayment += parseFloat(e.total) || 0; }));
-  return totalSiteProfit + totalMaterialPayment;
+  let totalBizExpense = 0;
+  Object.values(expenses || {}).forEach((e) => { if (e.date && e.date.startsWith(mon)) totalBizExpense += parseFloat(e.amt) || 0; });
+  return totalSiteProfit + totalMaterialPayment - totalBizExpense;
 }
 function setProfitView(mode) { profitViewMode = mode === "month" ? "month" : "total"; renderAll(); }
 let profitUnlockView = "total";
@@ -3694,7 +3699,10 @@ function showBreakdownProfit() {
   let matTotal = 0;
   Object.values(matEntriesBySection).forEach((sectionEntries) => Object.values(sectionEntries || {}).forEach((e) => { if (profitViewMode === "total" || (e.date && e.date.startsWith(mon))) matTotal += parseFloat(e.total) || 0; }));
   if (matTotal !== 0) rows.push({ name: "⚡ मटेरियल पेमेंट", amount: matTotal });
-  showBreakdown(profitViewMode === "month" ? "💰 मासिक मुनाफ़ा का विवरण" : "💰 कुल मुनाफ़ा का विवरण", profitViewMode === "month" ? "चुने हुए महीने का विवरण" : "सभी साइट + मटेरियल पेमेंट (all-time)", rows);
+  let bizExpTotal = 0;
+  Object.values(expenses || {}).forEach((e) => { if (profitViewMode === "total" || (e.date && e.date.startsWith(mon))) bizExpTotal += parseFloat(e.amt) || 0; });
+  if (bizExpTotal !== 0) rows.push({ name: "💸 व्यापार खर्च (minus)", amount: -bizExpTotal });
+  showBreakdown(profitViewMode === "month" ? "💰 मासिक मुनाफ़ा का विवरण" : "💰 कुल मुनाफ़ा का विवरण", profitViewMode === "month" ? "चुने हुए महीने का विवरण (खर्च minus)" : "सभी साइट + मटेरियल पेमेंट − व्यापार खर्च (all-time)", rows);
 }
 function showBreakdownDena() {
   const mon = getMon();
