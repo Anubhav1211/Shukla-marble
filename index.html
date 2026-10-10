@@ -1487,11 +1487,6 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       </div>
       <div id="calendarBox"></div>
     </div>
-
-    <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px;">🗓️ <span id="selLabName">कारीगर</span> का महीना रिकॉर्ड</h3>
-      <div id="fullHistory"></div>
-    </div>
   </div>
 
   <!-- TAB 5: HISAB & RATE CARD -->
@@ -3294,51 +3289,8 @@ function renderAll() {
   if (eDateTxt) eDateTxt.innerText = today ? new Date(today).toLocaleDateString("hi-IN", { day: "numeric", month: "short" }) : "";
   if (todayDateTxt) todayDateTxt.innerText = today ? new Date(today).toLocaleDateString("hi-IN", { day: "numeric", month: "short" }) : "";
   const selId = eSel ? eSel.value : "";
-  const selLabName = document.getElementById("selLabName");
   const selLabName2 = document.getElementById("selLabName2");
-  if (selLabName) selLabName.innerText = selId && labs[selId] ? labs[selId].name : "\u0915\u093E\u0930\u0940\u0917\u0930";
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
-  const histDiv = document.getElementById("fullHistory");
-  if (histDiv && selId) {
-    const list = Object.entries(ents).filter(([_, e]) => e.labourId === selId).sort((a, b) => b[1].date.localeCompare(a[1].date));
-    let hHtml = "";
-    list.forEach(([eid, e]) => {
-      const d = new Date(e.date).toLocaleDateString("hi-IN", { day: "numeric", month: "short" });
-      const s = sites[e.siteId];
-      const dv = parseFloat(e.days || 0);
-      let dayBg = "#DCFCE7", dayColor = "#14532D";
-      if (dv >= 2) {
-        dayBg = "#DBEAFE";
-        dayColor = "#1E40AF";
-      } else if (dv === 1.5 || dv > 1) {
-        dayBg = "#F3E8FF";
-        dayColor = "#6B21A8";
-      } else if (dv === 1) {
-        dayBg = "#DCFCE7";
-        dayColor = "#14532D";
-      } else if (dv === 0.5 || dv > 0) {
-        dayBg = "#FEF3C7";
-        dayColor = "#92400E";
-      } else {
-        dayBg = "#FEE2E2";
-        dayColor = "#991B1B";
-      }
-      hHtml += `<div class="hist-card">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <b style="font-size:16px;color:#0F172A;min-width:62px">${d}</b>
-          <span style="background:${dayBg};padding:4px 10px;border-radius:8px;font-size:11.5px;color:${dayColor};font-weight:700">${e.days} \u0926\u093F\u0928</span>
-          ${s ? `<span style="background:#DBEAFE;color:#1D4ED8;padding:4px 10px;border-radius:8px;font-size:11.5px;font-weight:700">${s.house}</span>` : ""}
-          <span style="background:#FEE2E2;color:#DC2626;padding:4px 10px;border-radius:8px;font-size:11.5px;font-weight:700">\u20B9${e.withdraw || 0}</span>
-          ${e.note ? `<small style="color:#64748B;font-size:11px">(${e.note})</small>` : ""}
-        </div>
-        <div style="display:flex;gap:6px">
-          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 14px;border-radius:8px;font-weight:700;font-size:12px" onclick="editEntry('${eid}')">Edit</button>
-          <button class="btn-sm" style="background:#FEE2E2;color:#DC2626;padding:6px 14px;border-radius:8px;font-weight:700;font-size:12px" onclick="deleteEntry('${eid}')">Del</button>
-        </div>
-      </div>`;
-    });
-    histDiv.innerHTML = hHtml || '<div style="color:#94A3B8;padding:10px">\u0915\u094B\u0908 \u090F\u0902\u091F\u094D\u0930\u0940 \u0928\u0939\u0940\u0902</div>';
-  }
   let siteHtml = "";
   Object.keys(sites).forEach((id) => {
     const s = sites[id];
@@ -7217,6 +7169,199 @@ if (document.readyState === "loading") {
   // 17 FAB quick actions removed — lock button remains clear
   // 18 animated chart/bar elements + generic progress meters
   const bars=()=>$$('.progress-bar,.bar,[role="progressbar"]').forEach(e=>{e.classList.remove('sm-bar-animate');void e.offsetWidth;e.classList.add('sm-bar-animate')});setTimeout(bars,600);new MutationObserver(()=>setTimeout(bars,60)).observe(document.body,{subtree:true,childList:true});
+})();
+</script>
+
+<script>
+/* ===== EDIT POPUP PACK: kahin bhi Edit dabao -> wahin popup khule ===== */
+(function () {
+  const $ = (id) => document.getElementById(id);
+  let suppress = 0;
+  let cur = null;
+
+  const st = document.createElement('style');
+  st.textContent = [
+    '.sm-edit-ov{display:none;position:fixed;inset:0;z-index:990;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);align-items:flex-start;justify-content:center;padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch}',
+    '.sm-edit-ov.show{display:flex}',
+    '.sm-edit-box{width:100%;max-width:560px;margin:auto 0;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden;animation:smEditPop .22s cubic-bezier(.2,.9,.25,1)}',
+    '.sm-edit-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(145deg,#21242C,#15171C);color:#fff;border-bottom:2px solid #AD832E}',
+    '.sm-edit-head b{font-size:15px;font-weight:800}',
+    '.sm-edit-head button{flex:0 0 auto;width:34px;height:34px;padding:0;border:0;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer}',
+    '.sm-edit-body{padding:14px 16px 18px}',
+    '.sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}',
+    '.sm-edit-body > .sm-in-edit{margin-top:0 !important}',
+    '@keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  const ov = document.createElement('div');
+  ov.className = 'sm-edit-ov';
+  ov.id = 'smEditOv';
+  ov.innerHTML = '<div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div>';
+  document.body.appendChild(ov);
+  const bodyEl = $('smEditBody');
+  const titleEl = $('smEditTitle');
+  $('smEditX').addEventListener('click', () => userClose());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && cur) userClose(); });
+
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const card = (id) => { const e = $(id); return e ? e.closest('.card') : null; };
+  function range(a, b) {
+    const A = $(a), B = $(b);
+    if (!A || !B || A.parentNode !== B.parentNode) return null;
+    const out = [];
+    let n = A;
+    while (n) { out.push(n); if (n === B) break; n = n.nextElementSibling; }
+    return out;
+  }
+
+  function show() {
+    ov.classList.add('show');
+    document.documentElement.style.overflow = 'hidden';
+    ov.scrollTop = 0;
+  }
+  function moveBack(rec) {
+    rec.nodes.forEach((n) => {
+      rec.ph.parentNode.insertBefore(n, rec.ph);
+      if (rec.force) { n.style.display = 'none'; n.classList.remove('sm-in-edit'); }
+    });
+    rec.ph.remove();
+  }
+  function finish() {
+    if (!cur) return;
+    const c = cur;
+    cur = null;
+    if (c.obs) c.obs.disconnect();
+    if (c.timer) clearInterval(c.timer);
+    (c.recs || []).forEach(moveBack);
+    bodyEl.innerHTML = '';
+    ov.classList.remove('show');
+    document.documentElement.style.overflow = '';
+  }
+  function userClose() {
+    if (!cur) return;
+    const c = cur;
+    try {
+      if (c.cfg.cancelFn && typeof window[c.cfg.cancelFn] === 'function') window[c.cfg.cancelFn]();
+      if (c.cfg.onClose) c.cfg.onClose();
+    } catch (e) { console.error(e); }
+    finish();
+  }
+
+  function openMove(cfg, args) {
+    const nodes = cfg.region.apply(null, args);
+    if (!nodes || !nodes.length || !nodes[0] || !nodes[0].parentNode) return;
+    titleEl.textContent = cfg.title;
+    bodyEl.innerHTML = '';
+    const ph = document.createComment('sm-edit');
+    nodes[0].parentNode.insertBefore(ph, nodes[0]);
+    const rec = { ph, nodes, force: !!cfg.box };
+    nodes.forEach((n) => {
+      bodyEl.appendChild(n);
+      if (cfg.box) { n.style.display = 'block'; n.classList.add('sm-in-edit'); }
+    });
+    cur = { cfg, recs: [rec], obs: null, timer: null };
+    const btn = cfg.cancelBtn ? $(cfg.cancelBtn) : null;
+    if (btn) {
+      cur.obs = new MutationObserver(() => { if (btn.style.display === 'none') finish(); });
+      cur.obs.observe(btn, { attributes: true, attributeFilter: ['style'] });
+    }
+    if (cfg.poll) {
+      cur.timer = setInterval(() => {
+        let v;
+        try { v = editingAgId; } catch (e) { return; }
+        if (v === null) finish();
+      }, 300);
+    }
+    show();
+  }
+
+  function wrap(name, cfg) {
+    const orig = window[name];
+    if (typeof orig !== 'function') return;
+    window[name] = function () {
+      const args = arguments;
+      if (cur) userClose();
+      const y = window.scrollY;
+      const keep = (cfg.keep || []).map((id) => [id, $(id) ? $(id).style.display : null]);
+      const sis = Element.prototype.scrollIntoView;
+      Element.prototype.scrollIntoView = function () {};
+      suppress++;
+      let r;
+      try { r = orig.apply(this, args); }
+      finally { suppress--; Element.prototype.scrollIntoView = sis; }
+      try {
+        let ok;
+        if (cfg.started) ok = cfg.started.apply(null, args);
+        else { const b = $(cfg.cancelBtn); ok = !!b && b.style.display !== 'none'; }
+        if (ok) openMove(cfg, args);
+      } catch (e) { console.error(e); }
+      keep.forEach(([id, d]) => { const el = $(id); if (el && d !== null) el.style.display = d; });
+      window.scrollTo(0, y);
+      return r;
+    };
+  }
+
+  const CF = {
+    editEntry:       { title: '✏️ हाज़री एडिट', cancelBtn: 'cancelEdit', cancelFn: 'cancelEdit', region: () => [card('saveBtn')] },
+    editSite:        { title: '✏️ साइट एडिट', cancelBtn: 'siteCancelBtn', cancelFn: 'cancelSiteEdit', box: true, region: () => [$('addSiteBox2')] },
+    editSitePayment: { title: '✏️ पेमेंट एडिट', cancelBtn: 'spCancelBtn', cancelFn: 'cancelSitePayEdit', box: true, region: () => [$('addPayBox2')] },
+    bcEditEntry:     { title: '✏️ बिजली बिल एडिट', cancelBtn: 'bcCancelEditBtn', cancelFn: 'bcCancelEdit', region: () => range('bcMonth', 'bcMsg') },
+    editExpense:     { title: '✏️ खर्च एडिट', cancelBtn: 'xCancelBtn', cancelFn: 'cancelExpenseEdit', box: true, region: () => [$('addExpBox')] },
+    editMatItem:     { title: '✏️ आइटम एडिट', cancelBtn: 'miCancelBtn', cancelFn: 'cancelMatItemEdit', keep: ['mItemBox'], region: () => range('miName', 'miMsg') },
+    editMatEntry:    { title: '✏️ मटेरियल एंट्री एडिट', cancelBtn: 'meCancelBtn', cancelFn: 'cancelMatEntryEdit', region: () => [card('meSaveBtn')] },
+    matPaymentEdit:  { title: '✏️ पेमेंट एडिट', cancelBtn: 'mpCancelBtn', cancelFn: 'matPaymentCancelEdit', box: true, region: () => [$('mpBox')] },
+    editSavedAg: {
+      title: '✏️ एग्रीमेंट एडिट', poll: true,
+      onClose: () => { try { editingAgId = null; } catch (e) {} },
+      started: (aid) => { try { return editingAgId === aid; } catch (e) { return false; } },
+      region: (aid) => {
+        const ag = (typeof agreements !== 'undefined') ? agreements[aid] : null;
+        const el = $(ag && ag.type === 'italian' ? 'ag-i' : 'ag-t');
+        return el ? [el] : null;
+      }
+    }
+  };
+  Object.keys(CF).forEach((k) => wrap(k, CF[k]));
+
+  /* Edit ke time tab switch na ho — popup usi jagah khule */
+  const prevTab = window.showTab;
+  if (typeof prevTab === 'function') {
+    window.showTab = function () { if (suppress > 0) return; return prevTab.apply(this, arguments); };
+  }
+
+  /* Material section edit: prompt() ki jagah popup (naam + rang) */
+  window.editMatSection = function (id, evt) {
+    if (evt && evt.stopPropagation) evt.stopPropagation();
+    if (cur) userClose();
+    const secs = (typeof matSections !== 'undefined') ? matSections : {};
+    const sec = secs[id] || { name: id, color: '#4F46E5' };
+    const palette = (typeof MAT_NS_COLORS !== 'undefined') ? MAT_NS_COLORS : ['#4F46E5'];
+    let color = sec.color || palette[0];
+    titleEl.textContent = '✏️ सेक्शन एडिट';
+    bodyEl.innerHTML =
+      '<input id="smSecName" class="input" placeholder="सेक्शन का नाम" value="' + esc(sec.name) + '">' +
+      '<div style="font-size:11px;font-weight:700;color:#64748B;margin:2px 0 8px 2px">रंग चुनें</div>' +
+      '<div id="smSecColors" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px"></div>' +
+      '<button type="button" class="btn btn-gold" id="smSecSave">💾 सेव करो</button>' +
+      '<button type="button" class="btn" id="smSecCancel" style="background:#F1F5F9;color:#64748B;margin-top:8px">Cancel</button>';
+    const wrapC = $('smSecColors');
+    const paint = () => {
+      wrapC.innerHTML = palette.map((c) => '<button type="button" data-c="' + c + '" style="width:36px;height:36px;min-height:0;padding:0;border-radius:50%;cursor:pointer;background:' + c + ';border:3px solid ' + (c === color ? '#0F172A' : 'transparent') + '"></button>').join('');
+    };
+    paint();
+    wrapC.addEventListener('click', (e) => { const b = e.target.closest('button[data-c]'); if (b) { color = b.dataset.c; paint(); } });
+    $('smSecCancel').addEventListener('click', () => userClose());
+    $('smSecSave').addEventListener('click', () => {
+      const name = ($('smSecName').value || '').trim();
+      if (!name) { alert('नाम खाली नहीं हो सकता'); return; }
+      try { db.ref('companies/' + company + '/materialSections/' + id).update({ name, color }); }
+      catch (e) { alert('Error: ' + e.message); return; }
+      finish();
+    });
+    cur = { cfg: {}, recs: [], obs: null, timer: null };
+    show();
+  };
 })();
 </script>
 </body>
