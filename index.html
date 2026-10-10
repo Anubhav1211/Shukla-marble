@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -69,17 +70,20 @@ header {
 
 .bottom-nav {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 10px;
+  right: 10px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 2px;
-  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)) 6px;
-  background: white;
-  border-top: 1px solid var(--line);
+  gap: 4px;
+  padding: 7px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(226,232,240,0.95);
+  border-radius: 28px;
   z-index: 100;
-  box-shadow: 0 -4px 16px rgba(21, 23, 28, 0.08);
+  box-shadow: 0 10px 30px rgba(15,23,42,0.16), 0 2px 8px rgba(15,23,42,0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .bnav-item {
@@ -89,24 +93,58 @@ header {
   justify-content: center;
   gap: 2px;
   min-width: 0;
-  padding: 6px 2px !important;
+  min-height: 56px;
+  padding: 5px 2px !important;
   font-size: 10px !important;
-  background: none !important;
+  line-height: 1.05 !important;
+  font-weight: 800 !important;
+  background: transparent !important;
   border: none !important;
-  border-radius: 12px !important;
-  color: #8A8370 !important;
+  border-radius: 22px !important;
+  color: #7C8492 !important;
   box-shadow: none !important;
+  transition: all .18s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.bnav-item .ti { font-size: 20px; }
+.bnav-item .ti {
+  width: 34px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  line-height: 1;
+  border-radius: 17px;
+  transition: all .18s ease;
+}
+
+.bnav-item .tl {
+  white-space: nowrap;
+  letter-spacing: .1px;
+}
 
 .bnav-item.active, .bnav-item.bnav-more-active {
-  color: var(--ink) !important;
-  background: var(--gold-soft) !important;
+  color: #111827 !important;
+  background: #F3F4F6 !important;
+  box-shadow: inset 0 0 0 1px rgba(17,24,39,0.04);
 }
 
+.bnav-item.active .ti, .bnav-item.bnav-more-active .ti {
+  background: #111827;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.bnav-item:active { transform: scale(.96); }
+
+/* Hold + slide navigation */
+.bottom-nav { touch-action: pan-y; }
+.bnav-item { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.bnav-item.bnav-holding { transform: scale(.96); opacity: .82; }
+
 body {
-  padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
 }
 
 .tab {
@@ -340,6 +378,23 @@ body {
   color: #94A3B8;
 }
 
+
+ .calendar-current-labour{border:0;background:transparent;color:#4F46E5;font-size:14px;font-weight:800;padding:2px 4px;cursor:pointer;border-radius:8px}.calendar-current-labour:active{transform:scale(.98);background:#EEF2FF}.calendar-labour-picker{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);z-index:1100;align-items:flex-end;justify-content:center;padding:0}.calendar-labour-picker.show{display:flex}.calendar-labour-picker-box{width:100%;max-width:520px;max-height:75vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -15px 45px rgba(0,0,0,.22)}.calendar-labour-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.calendar-labour-picker-title{font-size:16px;font-weight:900;color:#0F172A}.calendar-labour-picker-close{width:34px;height:34px;border:0;border-radius:50%;background:#F1F5F9;color:#475569;font-size:18px}.calendar-labour-picker-list{display:grid;gap:7px}.calendar-labour-picker-item{width:100%;border:1px solid #E2E8F0;background:#F8FAFC;border-radius:13px;padding:12px;text-align:left;font-size:13px;font-weight:800;color:#334155;cursor:pointer}.calendar-labour-picker-item.active{background:#0F172A;color:#fff;border-color:#0F172A}.calendar-labour-picker-item:active{transform:scale(.99)}
+
+/* Professional Payment Timeline */
+.payment-timeline{position:relative;padding:8px 2px 4px}
+.payment-timeline-item{position:relative;display:flex;gap:12px;padding-bottom:14px}
+.payment-timeline-dot{position:relative;z-index:2;flex:0 0 34px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#166534,#22C55E);color:#fff;font-weight:800;font-size:12px;box-shadow:0 5px 14px rgba(22,101,52,.22);border:3px solid #F0FDF4}
+.payment-timeline-line{position:absolute;left:16px;top:34px;bottom:0;width:2px;background:linear-gradient(#BBF7D0,#E2E8F0)}
+.payment-timeline-item:last-child .payment-timeline-line{display:none}
+.payment-timeline-card{flex:1;background:#fff;border:1px solid #E2E8F0;border-radius:15px;padding:11px 12px;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+.payment-timeline-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.payment-timeline-date{font-size:9px;color:#94A3B8;margin-top:2px}
+.payment-timeline-amount{font-size:16px;font-weight:800;color:#166534;white-space:nowrap}
+.payment-timeline-meta{font-size:11px;color:#475569;margin-top:8px;padding:7px 8px;background:#F8FAFC;border-radius:9px}
+.payment-timeline-bottom{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:9.5px;color:#94A3B8}
+.payment-timeline-actions{display:flex;gap:6px;margin-top:9px}
+.payment-timeline-actions .btn-sm{border:0;border-radius:8px;font-size:10px;font-weight:700}
 .site-card {
   background: white;
   border: 1px solid #E2E8F0;
@@ -347,6 +402,43 @@ body {
   padding: 14px;
   margin-bottom: 12px;
 }
+
+/* Professional Karigar Profile */
+.kp-overlay{position:fixed;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:10050;display:none;align-items:flex-end;justify-content:center;padding:0}
+.kp-box{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.25);animation:kpIn .28s cubic-bezier(.2,.8,.2,1);padding:0 0 calc(18px + env(safe-area-inset-bottom))}
+@keyframes kpIn{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.kp-hero{padding:22px 20px 18px;background:linear-gradient(135deg,#0F172A,#243B53);color:#fff;position:relative}
+.kp-close{position:absolute;right:16px;top:14px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.13);color:#fff;font-size:18px}
+.kp-avatar{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#D4A94E,#AD832E);display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.22);margin-bottom:12px}
+.kp-name{font-size:21px;font-weight:900;letter-spacing:-.3px}.kp-sub{font-size:12px;color:#CBD5E1;margin-top:4px}
+.kp-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.kp-badge{font-size:10.5px;font-weight:800;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#E2E8F0}
+.kp-body{padding:16px 18px}.kp-month{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.kp-month label{font-size:11px;color:#64748B;font-weight:800}.kp-month input{border:1px solid #E2E8F0;border-radius:11px;padding:8px 10px;font-weight:800;color:#0F172A;background:#F8FAFC}
+.kp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.kp-stat{padding:13px;border:1px solid #E8EDF4;border-radius:15px;background:#F8FAFC}.kp-stat small{display:block;font-size:10.5px;color:#64748B;font-weight:700;margin-bottom:5px}.kp-stat b{font-size:17px;color:#0F172A}.kp-stat.gold{background:#FFF9EA;border-color:#F1DEAC}.kp-stat.green{background:#F0FDF4;border-color:#BBF7D0}.kp-stat.blue{background:#EFF6FF;border-color:#BFDBFE}.kp-stat.red{background:#FEF2F2;border-color:#FECACA}
+.kp-section{margin-top:16px}.kp-section-title{font-size:12px;font-weight:900;color:#0F172A;margin-bottom:8px;display:flex;align-items:center;gap:6px}.kp-list{border:1px solid #E8EDF4;border-radius:15px;overflow:hidden}.kp-row{display:flex;justify-content:space-between;gap:10px;padding:11px 12px;border-bottom:1px solid #F1F5F9;font-size:11.5px}.kp-row:last-child{border-bottom:0}.kp-row span{color:#64748B}.kp-row b{color:#0F172A;text-align:right}.kp-site{padding:11px 12px;border-bottom:1px solid #F1F5F9}.kp-site:last-child{border-bottom:0}.kp-site-top{display:flex;justify-content:space-between;gap:8px;font-weight:800;font-size:11.5px}.kp-site-meta{font-size:10px;color:#94A3B8;margin-top:3px}.kp-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.kp-actions button{border:0;border-radius:13px;padding:11px;font-weight:800;cursor:pointer}.kp-primary{background:#0F172A;color:#fff}.kp-secondary{background:#EEF2FF;color:#3730A3}
+@media(min-width:700px){.kp-overlay{align-items:center;padding:20px}.kp-box{border-radius:28px;max-height:88vh}}
+
+
+/* Professional site cards */
+.site-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);border:1px solid #dbe3ee!important;border-left:0!important;border-radius:20px!important;padding:0!important;margin-bottom:16px!important;box-shadow:0 8px 24px rgba(15,23,42,.07);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.site-card:active{transform:scale(.992)}
+.sm-site-head{padding:15px 16px 13px;background:linear-gradient(135deg,#f8fbff,#eef4ff);border-bottom:1px solid #e5eaf2}
+.sm-site-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sm-site-name{font-size:20px;font-weight:850;color:#0f172a;letter-spacing:-.3px}
+.sm-site-client{margin-top:4px;color:#64748b;font-size:13px;line-height:1.35}
+.sm-site-status{white-space:nowrap;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.sm-site-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 14px 8px}
+.sm-site-metric{min-width:0;border-radius:14px;padding:10px 7px;text-align:center;border:1px solid rgba(148,163,184,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+.sm-site-metric small{display:block;font-size:10px;font-weight:800;margin-bottom:4px}
+.sm-site-metric b{display:block;font-size:14px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm-site-progress{padding:2px 15px 10px}
+.sm-site-progress-row{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;color:#64748b;margin-bottom:5px}
+.sm-site-progress-track{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.sm-site-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2563eb);transition:width .6s ease}
+.sm-site-labour{margin:2px 14px 10px;padding:10px 11px;background:#f8fafc;border:1px solid #e8edf4;border-radius:13px;color:#475569;font-size:11px;line-height:1.55}
+.sm-site-labour b{color:#0f172a}
+.sm-site-actions{display:flex;gap:7px;flex-wrap:wrap;padding:0 14px 14px}
+.sm-site-actions .btn-sm{border-radius:11px!important;font-weight:800;box-shadow:0 2px 5px rgba(15,23,42,.06)}
+@media(max-width:430px){.sm-site-name{font-size:18px}.sm-site-metric b{font-size:13px}.sm-site-metrics{gap:6px;padding-left:12px;padding-right:12px}.sm-site-actions{padding-left:12px;padding-right:12px}}
 
 .archived-card {
   background: #F8FAFC;
@@ -416,6 +508,32 @@ body {
   border: 1.5px solid;
 }
 
+
+/* Professional profit password modal */
+.profit-lock-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:1200;align-items:center;justify-content:center;padding:20px;animation:profitFade .18s ease}
+.profit-lock-box{width:min(390px,100%);box-sizing:border-box;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);border:1px solid rgba(255,255,255,.8);border-radius:28px;padding:24px 22px 20px;box-shadow:0 24px 70px rgba(0,0,0,.28);text-align:center;animation:profitPop .28s cubic-bezier(.2,.9,.25,1)}
+.profit-lock-icon{width:64px;height:64px;margin:0 auto 14px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(145deg,#FFF7D6,#F4D58B);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 20px rgba(182,138,76,.18)}
+.profit-lock-title{margin:0;color:#0F172A;font-size:20px;font-weight:900;letter-spacing:-.2px}
+.profit-lock-sub{margin:6px 0 18px;color:#64748B;font-size:12.5px;line-height:1.5}
+.profit-pin-wrap{position:relative;margin:0 auto 8px;max-width:310px}
+.profit-pin-input{width:100%;height:58px;box-sizing:border-box;border:1.5px solid #E2E8F0;border-radius:16px;background:#F8FAFC;padding:0 48px 0 18px;text-align:center;font-size:25px;font-weight:900;letter-spacing:9px;color:#0F172A;outline:none;transition:.2s;box-shadow:inset 0 1px 2px rgba(15,23,42,.03)}
+.profit-pin-input:focus{border-color:#C5963F;background:#fff;box-shadow:0 0 0 4px rgba(197,150,63,.13)}
+.profit-pin-input::placeholder{letter-spacing:5px;color:#CBD5E1;font-size:18px}
+.profit-eye{position:absolute;right:8px;top:8px;width:42px;height:42px;border:0;border-radius:12px;background:#EEF2F7;color:#475569;font-size:18px;cursor:pointer}
+.profit-error{min-height:18px;margin:5px 0 10px;color:#DC2626;font-size:11.5px;font-weight:800;opacity:0;transition:.18s}
+.profit-error.show{opacity:1}
+.profit-actions{display:grid;grid-template-columns:1fr 1.25fr;gap:9px;max-width:310px;margin:0 auto}
+.profit-cancel,.profit-unlock{height:48px;border:0;border-radius:15px;font-size:14px;font-weight:850;cursor:pointer;transition:transform .12s,box-shadow .18s}
+.profit-cancel{background:#F1F5F9;color:#64748B}
+.profit-unlock{color:#fff;background:linear-gradient(135deg,#B68A4C,#8C5E2F);box-shadow:0 7px 18px rgba(140,94,47,.25)}
+.profit-cancel:active,.profit-unlock:active,.profit-eye:active{transform:scale(.97)}
+.profit-lock-box.shake{animation:profitShake .35s ease}
+@keyframes profitFade{from{opacity:0}to{opacity:1}}
+@keyframes profitPop{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes profitShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@media(max-width:420px){.profit-lock-box{padding:22px 16px 17px;border-radius:25px}.profit-lock-icon{width:58px;height:58px;font-size:27px}.profit-lock-title{font-size:18px}}
+
+/* Activity History */
 /* Modals */
 .site-detail-modal {
   display: none;
@@ -954,7 +1072,59 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
   }
 }
 
-  </style>
+  
+/* ===== PREMIUM MOTION PACK v1 ===== */
+:root{--motion-fast:.18s;--motion-med:.32s;--motion-slow:.55s}
+body{transition:background-color .35s ease,color .35s ease;overscroll-behavior-y:contain}
+body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPageIn .34s cubic-bezier(.2,.8,.2,1) both}
+@keyframes smPageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@keyframes smPageOut{to{opacity:.82;transform:translateY(-4px)}}
+[id^=t-]{animation:smPageIn .34s cubic-bezier(.2,.8,.2,1)}
+.card,.saved-ag-card,.site-card,.lab-card,.expense-card,.material-card,.agreement-card{transition:transform .25s ease,box-shadow .25s ease,opacity .25s ease;will-change:transform}
+.sm-stagger{animation:smStagger .42s cubic-bezier(.2,.8,.2,1) both}@keyframes smStagger{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.bnav-item{position:relative;overflow:hidden;transition:transform .18s ease,background .22s ease,color .22s ease,box-shadow .22s ease!important}.bnav-item .ti{transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s ease!important}.bnav-item.active .ti{animation:smNavPop .3s ease}@keyframes smNavPop{50%{transform:translateY(-3px) scale(1.12)}100%{transform:translateY(-1px) scale(1)}}
+.bnav-item::after{content:"";position:absolute;left:18%;right:18%;bottom:3px;height:3px;border-radius:9px;background:var(--gold);transform:scaleX(0);transition:transform .25s ease}.bnav-item.active::after{transform:scaleX(1)}
+.sm-ripple{position:absolute;border-radius:50%;pointer-events:none;background:rgba(212,169,78,.32);transform:scale(0);animation:smRipple .55s ease-out}@keyframes smRipple{to{transform:scale(4);opacity:0}}
+.sm-count{font-variant-numeric:tabular-nums}.sm-reveal{animation:smReveal .5s ease both}@keyframes smReveal{from{filter:blur(8px);opacity:.1;transform:scale(.97)}to{filter:none;opacity:1;transform:none}}
+.sm-success{animation:smSuccess .55s cubic-bezier(.2,.8,.2,1)}@keyframes smSuccess{35%{transform:scale(1.045)}70%{transform:scale(.98)}100%{transform:none}}
+.sm-check{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#16a34a;color:white;font-weight:900;animation:smCheck .45s ease}@keyframes smCheck{from{transform:scale(0) rotate(-25deg)}70%{transform:scale(1.15) rotate(5deg)}to{transform:scale(1) rotate(0)}}
+.sm-toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,18px);z-index:2000;background:rgba(21,23,28,.94);color:#fff;border:1px solid rgba(212,169,78,.45);border-radius:16px;padding:11px 15px;font-size:12px;font-weight:800;box-shadow:0 12px 35px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;max-width:90vw;text-align:center}.sm-toast.show{opacity:1;transform:translate(-50%,0)}
+.sm-sheet-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.36);backdrop-filter:blur(4px);z-index:1500;opacity:0;pointer-events:none;transition:opacity .25s ease}.sm-sheet-backdrop.open{opacity:1;pointer-events:auto}.sm-sheet{position:absolute;left:10px;right:10px;bottom:10px;border-radius:24px;background:var(--paper);padding:16px;transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 60px rgba(15,23,42,.28)}.sm-sheet-backdrop.open .sm-sheet{transform:none}
+
+.sm-skeleton{position:relative;overflow:hidden;background:#E9E3D6!important;color:transparent!important;border-radius:10px}.sm-skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);animation:smShimmer 1.15s infinite}@keyframes smShimmer{to{transform:translateX(100%)}}
+.sm-bar-animate{transform-origin:left;animation:smBar .7s cubic-bezier(.2,.8,.2,1) both}@keyframes smBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.sm-modal-enter{animation:smModal .3s cubic-bezier(.2,.8,.2,1)}@keyframes smModal{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* Professional Attendance UI */
+ .today-list-toggle{width:100%;border:1.5px solid #E2E8F0;border-radius:14px;background:#F8FAFC;color:#334155;padding:12px 14px;margin:0 0 10px;font-size:13px;font-weight:800;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:.18s ease;box-shadow:0 3px 10px rgba(15,23,42,.04)}
+.today-list-toggle.is-open{background:#EEF2FF;border-color:#818CF8;color:#3730A3}
+.today-list-toggle:active{transform:scale(.99)}
+.attendance-pro-card{padding:16px!important;border:1px solid #E8E1D2!important;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+.att-pro-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.att-pro-kicker{font-size:9px;letter-spacing:1.3px;font-weight:900;color:#B88618}
+.att-pro-head h3{margin:2px 0 2px;font-size:20px;color:#0F172A}
+.att-pro-sub{font-size:10.5px;color:#64748B;font-weight:600}
+.att-date-badge{padding:8px 10px;border-radius:12px;background:#F8F3E8;color:#8A6412;font-size:11px;font-weight:900;white-space:nowrap}
+.att-date-row{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 58px;gap:7px;align-items:center;margin-bottom:14px;width:100%;min-width:0;box-sizing:border-box}.att-date-row>*{min-width:0;max-width:100%;box-sizing:border-box}
+.att-nav-btn,.att-today-btn{height:46px;border:0;border-radius:13px;font-weight:900;font-size:22px;background:#EEF2FF;color:#3730A3;cursor:pointer}
+.att-today-btn{font-size:12px;background:#DCFCE7;color:#166534}
+.att-date-input{display:block;width:100%;min-width:0!important;max-width:100%;margin:0!important;height:46px;padding:0 4px!important;text-align:center;font-size:clamp(13px,4vw,18px)!important;font-weight:800;border:1.5px solid #E7DEC9!important;box-sizing:border-box!important;appearance:auto}
+.att-edit-tag{display:none;background:#FEF3C7;color:#92400E;padding:8px 12px;border-radius:12px;font-size:11px;font-weight:800;margin-bottom:12px;text-align:center}
+.att-section-title{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:900;color:#334155;margin:14px 0 7px}
+.att-section-title span{font-size:9px;color:#94A3B8;font-weight:700}
+.att-search{margin-bottom:7px!important;height:43px!important}
+.att-select{height:47px!important;margin-bottom:0!important;font-weight:750!important;border:1.5px solid #E7DEC9!important;background:#fff}
+.att-selected-summary{margin-top:6px;padding:8px 10px;border-radius:10px;background:#F8FAFC;color:#64748B;font-size:10px;font-weight:700}
+.att-day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 8px}
+.att-day-btn{min-height:64px!important;margin:0!important;padding:9px 5px!important;border-radius:15px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1.5px solid #E7DEC9!important;background:#fff!important;color:#475569!important;box-shadow:none!important;transition:.16s ease}
+.att-day-btn b{font-size:17px;line-height:1}.att-day-btn span{font-size:10px;font-weight:800}.att-day-btn.sel{background:#111318!important;color:#fff!important;border-color:#111318!important;box-shadow:0 8px 18px rgba(15,23,42,.16)!important;transform:translateY(-1px)}
+.att-payment-card{margin-top:14px;padding:12px;border:1.5px solid #DDE7F3;border-radius:16px;background:linear-gradient(180deg,#F8FBFF,#F3F7FB)}
+.att-payment-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.att-payment-head b{display:block;font-size:12px;color:#0F172A}.att-payment-head small{display:block;font-size:9.5px;color:#64748B;margin-top:2px}.att-payment-head>span{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#DCFCE7;color:#166534;font-weight:900}
+.att-payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.att-payment-grid .input{height:44px!important}.att-payment-hint{font-size:9.5px;color:#64748B;font-weight:700;margin-top:7px}
+.att-save-btn{margin-top:14px!important;height:50px!important;font-size:15px!important;border-radius:15px!important}.att-success-msg{color:#16A34A;font-size:11px;margin-top:7px;font-weight:800;text-align:center}
+@media(max-width:430px){.att-date-row{grid-template-columns:36px minmax(0,1fr) 36px 48px;gap:5px}.att-nav-btn{font-size:20px;padding:0}.att-today-btn{font-size:11px;padding:0 3px}.att-date-input{font-size:14px!important;letter-spacing:-.2px}.att-day-grid{gap:7px}.att-payment-grid{grid-template-columns:1fr}.att-pro-head h3{font-size:18px}}
+</style>
 </head>
 <body>
   <!-- Header -->
@@ -963,7 +1133,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <span>🏛️</span>
       <div>
         SHUKLA <span style="color: #D4A94E;">MARBLE</span>
-        <div style="font-size: 9px; color: #A8A196; font-weight: 600; letter-spacing: 1px;">CONTRACTOR V27.6 FINAL</div>
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 6px;">
@@ -993,7 +1162,25 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
         <button class="tab" id="bt-x" onclick="showTab('x'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">💸</span><span class="tl">खर्च</span></button>
         <button class="tab" id="bt-m" onclick="showTab('m'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
         <button class="tab" id="bt-a" onclick="showTab('a'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
+        <button class="tab" onclick="openActivityHistory(); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🕘</span><span class="tl">एक्टिविटी हिस्ट्री</span></button>
       </div>
+    </div>
+  </div>
+
+  <!-- Automatic Backup / Restore Modal -->
+  <div id="autoBackupModal" class="site-detail-modal" style="display:none;">
+    <div class="site-detail-box" style="max-width:520px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:18px;">☁️ Automatic Backup / Restore</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B;" onclick="closeAutoBackup()">✕ बंद करें</button>
+      </div>
+      <div id="autoBackupStatus" style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:12px;font-size:13px;color:#334155;margin-bottom:12px;">Backup status loading...</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="btn" style="background:#16A34A;" onclick="backupNow()">☁️ अभी Backup</button>
+        <button class="btn" style="background:#0F172A;" onclick="restoreLatestBackup()">♻️ Restore</button>
+      </div>
+      <button class="btn" style="background:#475569;margin-top:8px;" onclick="downloadJsonBackup()">📥 Backup File डाउनलोड</button>
+      <div style="font-size:11px;color:#64748B;margin-top:10px;text-align:center;">हर 24 घंटे में automatic cloud backup होगा।</div>
     </div>
   </div>
 
@@ -1008,8 +1195,8 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
       <div id="monTxt" style="text-align: center; color: #4F46E5; font-size: 11px; font-weight: 700; margin-bottom: 10px;"></div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-        <div onclick="showBreakdownProfit()" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
-          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">विवरण देखें ›</small>
+        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
+          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">🔒</b><br><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">पासवर्ड से देखें ›</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
         </div>
         <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
           <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
@@ -1150,6 +1337,25 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <!-- Rent / Bijli overview — kiska kitna kiराya/bijli laga hai, usी mahine ka -->
+    <div class="card" style="border: 2px solid #E8D5A6;">
+      <button class="btn btn-gold" onclick="toggleBox('rbListBox'); renderRentBijliLists();" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>🏠⚡ किराया / बिजली — किसकी कितनी है</span><span>▼</span>
+      </button>
+      <div id="rbListBox" style="display: none; margin-top: 14px;">
+        <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">ऊपर कारीगर tab के महीना-बटन से जुड़ा है — उसी महीने की लिस्ट दिखेगी</div>
+
+        <h4 style="margin: 0 0 8px 0; font-size: 13.5px;">🏠 किराया वाले कारीगर</h4>
+        <div id="rentList"></div>
+        <div id="rentEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी का किराया नहीं जोड़ा</div>
+
+        <h4 style="margin: 18px 0 8px 0; font-size: 13.5px;">⚡ बिजली वाले कारीगर</h4>
+        <div id="bijliList"></div>
+        <div id="bijliEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी की बिजली नहीं जोड़ी</div>
+      </div>
+    </div>
+
+
     <!-- Bijli Bill Calculator -->
     <div class="card" style="border: 2px solid #FCD34D;">
       <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
@@ -1191,42 +1397,63 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
     </div>
+
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
   <div id="t-e" style="display: none;">
-    <div class="card">
-      <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
-      <div style="display: flex; gap: 8px; align-items: stretch; margin-bottom: 12px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 0; width: 42px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px;" onclick="shiftEDate(-1)">◀</button>
-        <input id="eDate" type="date" class="input" style="margin-bottom: 0; flex: 1; min-width: 0; box-sizing: border-box; text-align: center;" onchange="renderAll()">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 0; width: 42px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px;" onclick="shiftEDate(1)">▶</button>
-        <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 0; width: 52px; flex-shrink: 0;" onclick="setEDateToday()">आज</button>
+    <div class="card attendance-pro-card">
+      <div class="att-pro-head">
+        <div>
+          <div class="att-pro-kicker">📅 ATTENDANCE</div>
+          <h3>आज की हाज़री</h3>
+          <div class="att-pro-sub">किसी भी तारीख की हाज़री देखें या एडिट करें</div>
+        </div>
+        <div class="att-date-badge"><span id="attDateLabel">आज</span></div>
       </div>
-      <input id="eLabSearch" type="hidden" oninput="renderAll()">
-      <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ हाज़री एडिट हो रही है (<span id="eDateTxt"></span>)</div>
-      
-      <select id="eLabour" class="input" onchange="renderAll()"></select>
-      <select id="eSite" class="input">
-        <option value="">🏠 साइट (Optional)</option>
+
+      <div class="att-date-row">
+        <button class="att-nav-btn" onclick="shiftEDate(-1)" aria-label="पिछला दिन">‹</button>
+        <input id="eDate" type="date" class="input att-date-input" onchange="renderAll()">
+        <button class="att-nav-btn" onclick="shiftEDate(1)" aria-label="अगला दिन">›</button>
+        <button class="att-today-btn" onclick="setEDateToday()">आज</button>
+      </div>
+
+      <div id="editTag" class="att-edit-tag">✏️ हाज़री एडिट हो रही है • <span id="eDateTxt"></span></div>
+
+      <div class="att-section-title">👷 कारीगर</div>
+      <input id="eLabSearch" class="input att-search" placeholder="🔍 कारीगर का नाम खोजें..." oninput="renderAll()">
+      <select id="eLabour" class="input att-select" onchange="renderAll()"></select>
+
+      <div class="att-section-title">🏠 काम की साइट <span>Optional</span></div>
+      <select id="eSite" class="input att-select">
+        <option value="">🏠 साइट चुनें (Optional)</option>
       </select>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0;">
-        <div class="pt" data-v="0" onclick="pickDay(this)">A - छुट्टी</div>
-        <div class="pt sel" data-v="1" onclick="pickDay(this)">P - हाज़िर</div>
-        <div class="pt" data-v="0.5" onclick="pickDay(this)">H - आधा</div>
-        <div class="pt" data-v="1.5" onclick="pickDay(this)">1.5 - डेढ़</div>
-        <div class="pt" data-v="2" onclick="pickDay(this)">2 - डबल</div>
-        <div class="pt" data-v="custom" onclick="pickDay(this)">⚙️ कस्टम</div>
+
+      <div class="att-section-title">✓ आज की हाज़री</div>
+      <div class="att-day-grid">
+        <div class="pt att-day-btn" data-v="1" onclick="pickDay(this)"><b>P</b><span>हाज़िर</span></div>
+        <div class="pt att-day-btn" data-v="1.5" onclick="pickDay(this)"><b>1.5</b><span>डेढ़</span></div>
+        <div class="pt att-day-btn" data-v="2" onclick="pickDay(this)"><b>2</b><span>डबल</span></div>
+        <div class="pt att-day-btn" data-v="0.5" onclick="pickDay(this)"><b>H</b><span>आधा</span></div>
+        <div class="pt att-day-btn" data-v="0" onclick="pickDay(this)"><b>A</b><span>छुट्टी</span></div>
+        <div class="pt att-day-btn" data-v="custom" onclick="pickDay(this)"><b>⚙️</b><span>कस्टम</span></div>
       </div>
-      <input id="eCustom" type="number" step="0.1" class="input" placeholder="कस्टम दिन दर्ज करें" style="display: none;">
-      <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-        <input id="eWith" type="number" class="input" placeholder="निकासी ₹ (Advance)" style="margin-bottom: 0;">
-        <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0;">
+      <input id="eCustom" type="number" step="0.1" class="input" placeholder="कस्टम दिन दर्ज करें" style="display:none;">
+
+      <div class="att-payment-card">
+        <div class="att-payment-head"><div><b>💰 आज का भुगतान</b><small>चुने हुए कारीगर के खाते में अलग सेव होगा</small></div><span>₹</span></div>
+        <div class="att-payment-grid">
+          <input id="eWith" type="number" class="input" placeholder="आज दिए ₹ (Advance)" style="margin-bottom:0;">
+          <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom:0;">
+        </div>
+        <div id="ePaymentHint" class="att-payment-hint">💡 Payment इसी कारीगर + तारीख के हिसाब से रिकॉर्ड होगी</div>
       </div>
-      <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">💾 हाज़री सेव</button>
-      <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
-      <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
-      <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
+
+      <button class="btn btn-save att-save-btn" onclick="saveHazri()" id="saveBtn">✓ हाज़री सेव करें</button>
+      <button class="btn" style="background:#F1F5F9;color:#64748B;margin-top:8px;display:none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
+      <div id="eMsg" class="att-success-msg"></div>
+      <div id="dupMsg" style="padding:10px;border-radius:12px;font-size:12px;font-weight:700;margin-top:8px;display:none;"></div>
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
@@ -1272,17 +1499,37 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
+    <div id="missingBox" style="margin-top: 12px;"></div>
+
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap:8px;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
-        <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
+        <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 5px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;"></span>
       </h3>
-      <div id="todayTable"></div>
-      <div id="missingBox" style="margin-top: 12px;"></div>
+      <button type="button" id="todayListToggleBtn" class="today-list-toggle" onclick="toggleTodayHazriList()">
+        <span>📋 पूरी हाज़िरी लिस्ट</span><span id="todayListToggleIcon">▼</span>
+      </button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('paid')">💸 आज किसको पैसे दिए</button>
+        <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:11px 8px;font-weight:800;" onclick="toggleDailyList('absent')">❌ आज किसकी छुट्टी</button>
+      </div>
+      <div id="dailyPaidList" style="display:none;margin-bottom:10px;"></div>
+      <div id="dailyAbsentList" style="display:none;margin-bottom:10px;"></div>
+      <div id="todayTable" style="display:none;"></div>
     </div>
 
     <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px;">🗓️ कैलेंडर - <span id="selLabName2" style="color: #4F46E5;"></span></h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
+        <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <button type="button" id="selLabName2" class="calendar-current-labour" onclick="openCalendarLabourPicker()" aria-label="कारीगर बदलें">कारीगर चुनें ▾</button></h3>
+        <div style="display:flex;gap:5px;align-items:center;">
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 11px;" onclick="shiftCalendarMonth(-1)">◀</button>
+          <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:8px 10px;" onclick="setCalendarMonthToday()">आज</button>
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 11px;" onclick="shiftCalendarMonth(1)">▶</button>
+        </div>
+      </div>
+      <div id="calendarMonthLabel" style="text-align:center;font-size:12px;font-weight:800;color:#334155;background:#F8FAFC;border-radius:10px;padding:7px;margin-bottom:9px;"></div>
+            <div id="calendarLabourPicker" class="calendar-labour-picker" onclick="if(event.target===this) closeCalendarLabourPicker()"><div class="calendar-labour-picker-box"><div class="calendar-labour-picker-head"><div class="calendar-labour-picker-title">कारीगर चुनें</div><button type="button" class="calendar-labour-picker-close" onclick="closeCalendarLabourPicker()">×</button></div><div id="calendarLabourPickerList" class="calendar-labour-picker-list"></div></div></div>
+      <div id="calendarSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;"></div>
       <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center;">
         <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DCFCE7; border-color: #16A34A;"></span>हाज़िर 1P</span>
         <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEF3C7; border-color: #F59E0B;"></span>आधा 0.5</span>
@@ -1294,10 +1541,6 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="calendarBox"></div>
     </div>
 
-    <div class="card">
-      <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px;">🗓️ <span id="selLabName">कारीगर</span> का महीना रिकॉर्ड</h3>
-      <div id="fullHistory"></div>
-    </div>
   </div>
 
   <!-- TAB 5: HISAB & RATE CARD -->
@@ -1361,14 +1604,17 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       <div id="addExpBox" style="display: none; margin-top: 12px;">
         <div style="display: flex; gap: 8px;">
           <input id="xDate" type="date" class="input" style="flex: 1;">
-          <select id="xCat" class="input" style="flex: 1;">
-            <option value="petrol">⛽ पेट्रोल / डीजल</option>
-            <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
-            <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
-            <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
-            <option value="food">☕ चाय / नाश्ता / खाना</option>
-            <option value="others">📦 अन्य विविध खर्च</option>
-          </select>
+          <div style="display:flex; gap:6px; flex:1;">
+            <select id="xCat" class="input" style="flex:1;">
+              <option value="petrol">⛽ पेट्रोल / डीजल</option>
+              <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
+              <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
+              <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
+              <option value="food">☕ चाय / नाश्ता / खाना</option>
+              <option value="others">📦 अन्य विविध खर्च</option>
+            </select>
+            <button type="button" class="btn-sm" onclick="addExpenseCategory()" style="white-space:nowrap; background:#FEF3C7; color:#92400E; padding:8px 10px; font-weight:800;">＋ Category</button>
+          </div>
         </div>
         <div style="display: flex; gap: 8px;">
           <input id="xAmt" type="number" class="input" placeholder="रकम ₹" style="flex: 1;">
@@ -1424,12 +1670,12 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
       </div>
     </div>
 
-    <!-- Commission Payment Received -->
+    <!-- Payment Received -->
     <div class="card" style="border: 2px solid #E8D5A6;">
-      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (कमीशन प्राप्ति)</h3>
+      <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (पेमेंट प्राप्ति)</h3>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
         <div style="background: #EEF2FF; padding: 10px 4px; border-radius: 14px; text-align: center;">
-          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">कुल कमीशन (अब तक)</small><br>
+          <small style="color: #4338CA; font-weight: 700; font-size: 9.5px;">कुल पेमेंट (अब तक)</small><br>
           <b id="mpEarned" style="font-size: 13px; color: #4338CA; white-space: nowrap;">₹0</b>
         </div>
         <div style="background: #DCFCE7; padding: 10px 4px; border-radius: 14px; text-align: center;">
@@ -1639,12 +1885,41 @@ td { padding: 6px; border-bottom: 1px solid #E2E8F0; }
     </div>
   </div>
 
+
+  <!-- Professional Profit Password Modal -->
+  <div id="profitLockOverlay" class="profit-lock-overlay" onclick="if(event.target===this)closeProfitPassword()">
+    <div id="profitLockBox" class="profit-lock-box" role="dialog" aria-modal="true" aria-labelledby="profitLockTitle">
+      <div class="profit-lock-icon">🔐</div>
+      <h3 id="profitLockTitle" class="profit-lock-title">Profit Protected</h3>
+      <div class="profit-lock-sub">मुनाफ़ा देखने के लिए अपना 4-digit password डालें</div>
+      <div class="profit-pin-wrap">
+        <input id="profitPasswordInput" class="profit-pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" oninput="profitPasswordTyping()" onkeydown="if(event.key==='Enter')submitProfitPassword()">
+        <button class="profit-eye" type="button" aria-label="Show password" onclick="toggleProfitPassword()">👁️</button>
+      </div>
+      <div id="profitPasswordError" class="profit-error">❌ गलत password — दोबारा कोशिश करें</div>
+      <div class="profit-actions">
+        <button class="profit-cancel" type="button" onclick="closeProfitPassword()">Cancel</button>
+        <button class="profit-unlock" type="button" onclick="submitProfitPassword()">🔓 Unlock Profit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professional Karigar Profile -->
+  <div id="karigarProfileOverlay" class="kp-overlay" onclick="if(event.target===this)closeKarigarProfile()">
+    <div class="kp-box" role="dialog" aria-modal="true" aria-labelledby="kpName">
+      <div id="karigarProfileContent"></div>
+    </div>
+  </div>
+
   <!-- Site Detail Modal (FIXED: IDs now match the JS) -->
   <div id="siteDetailOverlay" class="site-detail-modal" onclick="if(event.target===this)closeSiteDetail()">
     <div class="site-detail-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <h3 id="sdTitle" style="margin: 0; font-size: 16px; font-weight: 800;">साइट विवरण</h3>
-        <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closeSiteDetail()">✕ बंद करें</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button id="siteReportShareBtn" class="btn-sm" style="background:#25D366;color:white;font-weight:800;padding:8px 11px" onclick="shareSiteProfessionalReport()">📤 WhatsApp Report</button>
+          <button class="btn-sm" style="background: #F1F5F9; color: #64748B;" onclick="closeSiteDetail()">✕ बंद करें</button>
+        </div>
       </div>
       <div id="sdSummary"></div>
       <div id="sdTable"></div>
@@ -1802,6 +2077,7 @@ let sitePays = {};
 let labourMonthly = {};
 let agreements = {};
 let expenses = {};
+let expenseCategories = {};
 let bijliBills = {};
 let withdrawals = {};
 let siteCosts = {};
@@ -1845,6 +2121,70 @@ function showTab(id) {
   const bnavMore = document.getElementById("bnav-more");
   if (bnavMore) bnavMore.classList.toggle("bnav-more-active", ["s", "x", "m", "a"].includes(id));
 }
+/* Long-press + continuous slide: keep switching as the thumb crosses tab centers */
+(function initBottomNavSlide(){
+  const nav = document.querySelector('.bottom-nav');
+  if (!nav || nav.dataset.swipeReady === '1') return;
+  nav.dataset.swipeReady = '1';
+  const items = Array.from(nav.querySelectorAll('.bnav-item')).filter(b => b.id !== 'bnav-more');
+  const HOLD_MS = 80;
+  let timer = null, active = null, held = false, moved = false, pointerId = null;
+
+  function reset(){
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (active) active.classList.remove('bnav-holding');
+    active = null; held = false; moved = false; pointerId = null;
+  }
+
+  items.forEach(btn => {
+    btn.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      active = btn; pointerId = e.pointerId; held = false; moved = false;
+      const startBtn = btn;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (active === startBtn) {
+          held = true;
+          active.classList.add('bnav-holding');
+          if (navigator.vibrate) navigator.vibrate(8);
+        }
+      }, HOLD_MS);
+      try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+  });
+
+  document.addEventListener('pointermove', e => {
+    if (!active || e.pointerId !== pointerId || !held) return;
+    const ci = items.indexOf(active);
+    if (ci < 0) return;
+
+    const rects = items.map(b => b.getBoundingClientRect());
+    let next = ci;
+    if (e.clientX > rects[ci].right && ci < items.length - 1) next = ci + 1;
+    else if (e.clientX < rects[ci].left && ci > 0) next = ci - 1;
+    else return;
+
+    e.preventDefault();
+    moved = true;
+    const target = items[next];
+    showTab(target.id.replace('bt-', ''));
+    if (navigator.vibrate) navigator.vibrate(7);
+    active.classList.remove('bnav-holding');
+    active = target;
+    active.classList.add('bnav-holding');
+  }, {passive:false});
+
+  document.addEventListener('pointerup', e => {
+    if (!active || e.pointerId !== pointerId) return;
+    if (held && moved) e.preventDefault();
+    reset();
+  }, {passive:false});
+
+  document.addEventListener('pointercancel', e => {
+    if (active && e.pointerId === pointerId) reset();
+  }, {passive:true});
+})();
+
 function toggleMoreMenu() {
   const el = document.getElementById("moreMenuOverlay");
   if (!el) return;
@@ -1897,6 +2237,11 @@ function startListen() {
   });
   db.ref("companies/" + company + "/expenses").on("value", (s) => {
     expenses = s.val() || {};
+    renderExpenses();
+  });
+  db.ref("companies/" + company + "/expenseCategories").on("value", (s) => {
+    expenseCategories = s.val() || {};
+    renderExpenseCategoryOptions();
     renderExpenses();
   });
   db.ref("companies/" + company + "/bijliBills").on("value", (s) => {
@@ -2295,12 +2640,14 @@ function showSiteDetail(siteId) {
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
       </div>
       <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
-        <small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>
+        ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
       </div>
-      <div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
+      ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"};font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br>
         <b style="color:${sc.profit >= 0 ? "#15803D" : "#DC2626"};font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-      </div>
+      </div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer" onclick="unlockProfit('site')">
+        <small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093E\u092D</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>
+      </div>`}
     </div>
   `;
   const labourSummary = Object.values(sc.labourMap).map(
@@ -2318,17 +2665,32 @@ function showSiteDetail(siteId) {
   if (pays.length === 0) {
     payHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">\u0915\u094B\u0908 \u092A\u0948\u0938\u093E \u0928\u0939\u0940\u0902 \u0932\u093F\u092F\u093E \u0905\u092D\u0940</div>';
   } else {
-    payHtml = '<table style="margin-top:8px"><tr><th>\u0924\u093E\u0930\u0940\u0916</th><th>\u0930\u0915\u092E</th><th>Note</th><th>X</th></tr>';
-    pays.slice().reverse().forEach(([pid, p]) => {
-      const d = p.date ? new Date(p.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-";
-      payHtml += `<tr>
-        <td>${d}<br><small style="font-size:9px;color:#64748B">${p.date || ""}</small></td>
-        <td style="color:#166534;font-weight:800">\u20B9${Number(p.amount || 0).toLocaleString("en-IN")}</td>
-        <td style="font-size:11px;text-align:left">${p.note || "-"}</td>
-        <td style="white-space:nowrap"><button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px;margin-right:4px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️</button><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">X</button></td>
-      </tr>`;
+    payHtml = '<div class="payment-timeline">';
+    let runningTotal = 0;
+    pays.slice().reverse().forEach(([pid, p], idx) => {
+      const d = p.date ? new Date(p.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-";
+      runningTotal += Number(p.amount || 0);
+      payHtml += `<div class="payment-timeline-item">
+        <div class="payment-timeline-dot">₹</div>
+        <div class="payment-timeline-line"></div>
+        <div class="payment-timeline-card">
+          <div class="payment-timeline-top">
+            <div><b>${d}</b><div class="payment-timeline-date">${p.date || ""}</div></div>
+            <div class="payment-timeline-amount">${profitUnlocked ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</div>
+          </div>
+          <div class="payment-timeline-meta">${p.note ? `📝 ${p.note}` : "💳 Site payment received"}</div>
+          <div class="payment-timeline-bottom">
+            <span>Payment #${pays.length - idx}</span>
+            <span>${profitUnlocked ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "Amount locked"}</span>
+          </div>
+          <div class="payment-timeline-actions">
+            <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️ Edit</button>
+            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deletePay('${pid}')">Delete</button>
+          </div>
+        </div>
+      </div>`;
     });
-    payHtml += "</table>";
+    payHtml += "</div>";
   }
   sumHtml += `
     <div style="margin-top:14px">
@@ -2336,7 +2698,7 @@ function showSiteDetail(siteId) {
       <div style="background:#F0FDF4;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #BBF7D0">
         <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
           <span>\u0915\u0941\u0932 ${pays.length} \u092C\u093E\u0930 \u0932\u093F\u092F\u093E</span>
-          <span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>
+          ${profitUnlocked ? `<span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>` : `<span style="color:#475569">🔒 पासवर्ड से देखें</span>`}
         </div>
         ${payHtml}
       </div>
@@ -2425,9 +2787,133 @@ function closeSiteDetail() {
   if (overlay) overlay.style.display = "none";
   _currentSiteId = null;
 }
+
+
+async function shareSiteProfessionalReport() {
+  const siteId = _currentSiteId;
+  const s = siteId ? sites[siteId] : null;
+  if (!s) { alert("पहले साइट खोलें"); return; }
+  const btn = document.getElementById("siteReportShareBtn");
+  const oldText = btn ? btn.innerHTML : "📤 WhatsApp Report";
+  if (btn) { btn.disabled = true; btn.innerHTML = "⏳ PDF बन रही है..."; }
+
+  try {
+    const sc = calcSite(siteId);
+    const entries = Object.values(ents).filter(e => e.siteId === siteId).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    const pays = Object.values(sitePays).filter(p => p.siteId === siteId).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    const mats = Object.values(matEntriesAll()).filter(e => e.siteId === siteId).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    const status = (s.status || "").includes("पूरा") ? "COMPLETED" : "ONGOING";
+    const labourRows = Object.values(sc.labourMap).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"hi",{sensitivity:"base"}));
+    const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short",year:"numeric"}) : "-";
+    const money = n => "₹" + Number(n||0).toLocaleString("en-IN");
+    const esc = v => String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    const report = document.createElement("div");
+    report.style.cssText = "position:fixed;left:-100000px;top:0;width:760px;background:#fff;font-family:Arial,sans-serif;color:#0f172a;padding:0;z-index:-1;";
+    report.innerHTML = `
+      <div style="background:linear-gradient(135deg,#0f172a,#334155);color:#fff;padding:28px 30px 24px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:1.2px;opacity:.8">SHUKLA MARBLE</div>
+        <div style="font-size:27px;font-weight:900;margin-top:5px">${esc(s.house||"Site Report")}</div>
+        <div style="font-size:14px;margin-top:6px;opacity:.9">${esc(s.client||"")} ${s.address ? "• "+esc(s.address) : ""}</div>
+        <div style="display:inline-block;margin-top:13px;background:${status==="COMPLETED"?"#dcfce7":"#dbeafe"};color:${status==="COMPLETED"?"#166534":"#1d4ed8"};padding:6px 11px;border-radius:20px;font-size:11px;font-weight:900">${status}</div>
+      </div>
+      <div style="padding:22px 30px">
+        <div style="font-size:18px;font-weight:900;margin-bottom:12px">Site Summary</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:14px"><div style="font-size:11px;color:#92400e;font-weight:800">TOTAL COST</div><div style="font-size:21px;font-weight:900;color:#b45309;margin-top:4px">${money(sc.cost)}</div></div>
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px"><div style="font-size:11px;color:#1e40af;font-weight:800">RECEIVED</div><div style="font-size:21px;font-weight:900;color:#1d4ed8;margin-top:4px">${profitUnlocked?money(sc.received):"🔒 Locked"}</div></div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:14px"><div style="font-size:11px;color:#166534;font-weight:800">PROFIT</div><div style="font-size:21px;font-weight:900;color:#15803d;margin-top:4px">${profitUnlocked?money(sc.profit):"🔒 Locked"}</div></div>
+        </div>
+        <div style="margin-top:22px;font-size:17px;font-weight:900">👷 Labour Summary</div>
+        <div style="margin-top:9px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">${labourRows.length?labourRows.map(v=>`<div style="display:flex;justify-content:space-between;padding:10px 13px;border-bottom:1px solid #f1f5f9;font-size:13px"><b>${esc(v.name)}</b><span>${v.days} दिन</span></div>`).join(""):"<div style='padding:12px;color:#64748b'>कोई labour entry नहीं</div>"}</div>
+        <div style="margin-top:22px;font-size:17px;font-weight:900">💰 Payment Timeline</div>
+        <div style="margin-top:9px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">${pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;gap:15px;padding:10px 13px;border-bottom:1px solid #f1f5f9;font-size:12px"><span><b>${fmtDate(p.date)}</b>${p.note?`<span style='color:#64748b'> • ${esc(p.note)}</span>`:""}</span><b style="color:#166534">${profitUnlocked?money(p.amount):"🔒"}</b></div>`).join(""):"<div style='padding:12px;color:#64748b'>कोई payment नहीं</div>"}</div>
+        <div style="margin-top:22px;font-size:17px;font-weight:900">🧱 Material Summary</div>
+        <div style="margin-top:9px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">${mats.length?mats.slice(0,12).map(e=>`<div style="display:flex;justify-content:space-between;padding:9px 13px;border-bottom:1px solid #f1f5f9;font-size:12px"><span>${esc(e.itemName||"Item")} • ${esc(e.qty||"")} ${esc(e.unit||"")}</span><b>${money(e.total)}</b></div>`).join(""):"<div style='padding:12px;color:#64748b'>कोई material entry नहीं</div>"}</div>
+        <div style="margin-top:20px;padding-top:12px;border-top:1px solid #e2e8f0;color:#64748b;font-size:11px">Generated by Shukla Marble • ${new Date().toLocaleDateString("hi-IN",{day:"2-digit",month:"short",year:"numeric"})}</div>
+      </div>`;
+    document.body.appendChild(report);
+
+    const canvas = await html2canvas(report,{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false});
+    document.body.removeChild(report);
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true});
+    const pageW = 210;
+    const pageH = 297;
+    const margin = 8;
+    const imgW = pageW - margin * 2;
+    const imgH = canvas.height * imgW / canvas.width;
+    const usableH = pageH - margin * 2;
+    const totalPages = Math.max(1, Math.ceil(imgH / usableH));
+    const imgData = canvas.toDataURL("image/jpeg",0.92);
+
+    for (let page = 0; page < totalPages; page++) {
+      if (page > 0) pdf.addPage();
+      pdf.addImage(imgData,"JPEG",margin,margin - (page * usableH),imgW,imgH,undefined,"FAST");
+    }
+
+    const safeSite = String(s.house || "Site").trim().replace(/[\\/:*?"<>|]+/g,"-").replace(/\s+/g," ").slice(0,80) || "Site";
+    const now = new Date();
+    const dd = String(now.getDate()).padStart(2,"0");
+    const mm = String(now.getMonth()+1).padStart(2,"0");
+    const yyyy = now.getFullYear();
+    const fileName = `${safeSite} - ${dd}-${mm}-${yyyy}.pdf`;
+    const blob = pdf.output("blob");
+    const file = new File([blob],fileName,{type:"application/pdf"});
+
+    if (navigator.canShare && navigator.canShare({files:[file]})) {
+      await navigator.share({files:[file],title:fileName,text:`${s.house} • Shukla Marble Site Report`});
+    } else {
+      pdf.save(fileName);
+      alert("PDF download हो गई। अब WhatsApp पर attach करके भेज सकते हैं।");
+    }
+  } catch(err) {
+    alert("PDF report में error: " + err.message);
+  } finally {
+    if (btn) { btn.disabled=false; btn.innerHTML=oldText; }
+  }
+}
 function deletePay(pid) {
   if (!confirm("\u092F\u0947 \u092A\u0947\u092E\u0947\u0902\u091F \u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0928\u093E \u0939\u0948?")) return;
   db.ref("companies/" + company + "/sitePayments/" + pid).remove();
+}
+function shiftCalendarMonth(delta) {
+  const eDate = document.getElementById("eDate");
+  if (!eDate) return;
+  const base = eDate.value ? new Date(eDate.value + "T00:00:00") : new Date();
+  base.setMonth(base.getMonth() + delta);
+  const y = base.getFullYear(), m = String(base.getMonth() + 1).padStart(2, "0");
+  const d = String(Math.min(base.getDate(), new Date(y, base.getMonth() + 1, 0).getDate())).padStart(2, "0");
+  eDate.value = `${y}-${m}-${d}`;
+  renderAll();
+}
+function setCalendarMonthToday() {
+  const eDate = document.getElementById("eDate");
+  if (!eDate) return;
+  eDate.value = fmtLocalDate(new Date());
+  renderAll();
+}
+
+function openCalendarLabourPicker() {
+  const box = document.getElementById("calendarLabourPicker");
+  const list = document.getElementById("calendarLabourPickerList");
+  if (!box || !list) return;
+  const current = document.getElementById("eLabour")?.value || "";
+  const activeLabs = Object.entries(labs).filter(([id,l]) => l && !l.archived).sort((a,b) => String(a[1].name||"").localeCompare(String(b[1].name||""), "hi", {sensitivity:"base"}));
+  list.innerHTML = activeLabs.length ? activeLabs.map(([id,l]) => `
+    <button type="button" class="calendar-labour-picker-item ${id===current?"active":""}" onclick="selectCalendarLabour('${id}')">👷 ${mEsc(l.name || "कारीगर")}${id===current?" ✓":""}</button>
+  `).join("") : '<div style="padding:12px;color:#94A3B8;font-size:12px;">कोई कारीगर नहीं</div>';
+  box.classList.add("show");
+}
+function closeCalendarLabourPicker() {
+  document.getElementById("calendarLabourPicker")?.classList.remove("show");
+}
+function selectCalendarLabour(id) {
+  const eLabour = document.getElementById("eLabour");
+  if (eLabour) eLabour.value = id;
+  closeCalendarLabourPicker();
+  renderAll();
+  setTimeout(() => window.scrollTo({top:0,behavior:"smooth"}), 30);
 }
 function renderCalendar() {
   const eLabour = document.getElementById("eLabour");
@@ -2456,6 +2942,29 @@ function renderCalendar() {
   const todayReal = /* @__PURE__ */ new Date();
   const isCurrentMonth = todayReal.getFullYear() === y && todayReal.getMonth() + 1 === m;
   const todayDate = todayReal.getDate();
+  let present=0, half=0, oneFive=0, doubleDays=0, totalDays=0, paid=0, absent=0;
+  Object.values(map).forEach(info => {
+    const dv = parseFloat(info.days) || 0;
+    totalDays += dv;
+    paid += parseFloat(info.withdraw) || 0;
+    if (dv === 2) doubleDays += 1;
+    else if (dv === 1.5) oneFive += 1;
+    else if (dv === 1) present += 1;
+    else if (dv === 0.5) half += 1;
+    else absent += 1;
+  });
+  for (let d=1; d<=daysInMonth; d++) if (!map[d] && !(isCurrentMonth && d>=todayDate)) absent++;
+  const monthLabel = new Date(y,m-1,1).toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+  const ml = document.getElementById("calendarMonthLabel");
+  if (ml) ml.innerText = monthLabel;
+  const cs = document.getElementById("calendarSummary");
+  if (cs) cs.innerHTML = `
+    <div style="background:#DCFCE7;border:1px solid #BBF7D0;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#166534;">${present}</b><small style="color:#166534;">P / दिन</small></div>
+    <div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#92400E;">${half}</b><small style="color:#92400E;">½ दिन</small></div>
+    <div style="background:#F3E8FF;border:1px solid #D8B4FE;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#7E22CE;">${oneFive}</b><small style="color:#7E22CE;">1.5 दिन</small></div>
+    <div style="background:#DBEAFE;border:1px solid #BFDBFE;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#1D4ED8;">${doubleDays}</b><small style="color:#1D4ED8;">2 दिन</small></div>
+    <div style="background:#FEE2E2;border:1px solid #FECACA;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#991B1B;">${absent}</b><small style="color:#991B1B;">A</small></div>
+    <div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:10px;padding:7px 4px;text-align:center;"><b style="display:block;font-size:15px;color:#3730A3;">₹${Math.round(paid)}</b><small style="color:#3730A3;">निकासी</small></div>`;
   let html = `
     <div class="cal-grid">
       <div class="cal-day head">\u0930\u0935\u093F</div>
@@ -2639,6 +3148,59 @@ function toggleArchive(id, arch) {
   }
   db.ref("companies/" + company + "/labours/" + id + "/archived").set(arch ? true : false);
 }
+function toggleTodayHazriList() {
+  const box = document.getElementById("todayTable");
+  const btn = document.getElementById("todayListToggleBtn");
+  const icon = document.getElementById("todayListToggleIcon");
+  if (!box || !btn) return;
+  const hidden = box.style.display === "none" || !box.style.display;
+  box.style.display = hidden ? "block" : "none";
+  btn.classList.toggle("is-open", hidden);
+  if (icon) icon.textContent = hidden ? "▲" : "▼";
+}
+function toggleDailyList(type) {
+  const paid = document.getElementById("dailyPaidList");
+  const absent = document.getElementById("dailyAbsentList");
+  if (type === "paid") {
+    if (!paid) return;
+    if (paid.style.display !== "none") { paid.style.display = "none"; return; }
+    if (absent) absent.style.display = "none";
+    renderDailyPaidList(); paid.style.display = "block";
+  } else {
+    if (!absent) return;
+    if (absent.style.display !== "none") { absent.style.display = "none"; return; }
+    if (paid) paid.style.display = "none";
+    renderDailyAbsentList(); absent.style.display = "block";
+  }
+}
+function renderDailyPaidList() {
+  const box = document.getElementById("dailyPaidList"), date = document.getElementById("eDate")?.value || "";
+  if (!box) return;
+  const byLab = {};
+  Object.entries(ents).forEach(([_, e]) => {
+    if (e.date !== date || !labs[e.labourId] || labs[e.labourId].archived) return;
+    byLab[e.labourId] = (byLab[e.labourId] || 0) + (parseFloat(e.withdraw || 0) || 0);
+  });
+  Object.values(withdrawals).forEach(w => {
+    if (w.date === date && labs[w.labourId] && !labs[w.labourId].archived)
+      byLab[w.labourId] = (byLab[w.labourId] || 0) + (parseFloat(w.amount || 0) || 0);
+  });
+  const rows = Object.entries(byLab).filter(([,a]) => a > 0).sort((a,b) => labs[a[0]].name.localeCompare(labs[b[0]].name));
+  box.innerHTML = rows.length ? `<div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:16px;padding:12px;"><div style="font-weight:800;color:#166534;font-size:12.5px;margin-bottom:8px;">💸 आज पैसे दिए — ${rows.length} कारीगर</div>${rows.map(([id,a]) => `<div style="display:flex;justify-content:space-between;padding:7px 2px;border-bottom:1px solid #DCFCE7;font-size:12.5px;"><b>${mEsc(labs[id].name)}</b><b style="color:#166534;">₹${a.toLocaleString("en-IN")}</b></div>`).join("")}</div>` : `<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:12px;text-align:center;color:#94A3B8;font-size:12px;">आज किसी को पैसे नहीं दिए</div>`;
+}
+function renderDailyAbsentList() {
+  const box = document.getElementById("dailyAbsentList"), date = document.getElementById("eDate")?.value || "";
+  if (!box) return;
+  const activeIds = Object.keys(labs).filter(id => labs[id] && !labs[id].archived);
+  const chuttiIds = activeIds.filter(id => {
+    const rows = Object.values(ents).filter(e => e.date === date && e.labourId === id);
+    if (!rows.length) return false;
+    const totalDays = rows.reduce((sum, e) => sum + (parseFloat(e.days || 0) || 0), 0);
+    return totalDays === 0;
+  });
+  box.innerHTML = chuttiIds.length ? `<div style="background:#FFF7ED;border:1.5px solid #FDBA74;border-radius:16px;padding:12px;"><div style="font-weight:800;color:#9A3412;font-size:12.5px;margin-bottom:8px;">❌ आज छुट्टी — ${chuttiIds.length} कारीगर</div>${chuttiIds.map(id => `<div style="padding:7px 2px;border-bottom:1px solid #FED7AA;font-size:12.5px;"><b>${mEsc(labs[id]?.name || "?")}</b></div>`).join("")}</div>` : `<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:14px;padding:12px;text-align:center;color:#166534;font-size:12px;font-weight:700;">आज किसी की छुट्टी नहीं है</div>`;
+}
+
 function renderAll() {
   const eSel = document.getElementById("eLabour");
   const rSel = document.getElementById("rLabour");
@@ -2726,12 +3288,17 @@ function renderAll() {
   if (kTot) {
     let totalSiteProfit = 0;
     Object.keys(sites).forEach((sid) => { totalSiteProfit += calcSite(sid).profit; });
-    let totalMaterialCommission = 0;
+    let totalMaterialPayment = 0;
     Object.values(matEntriesBySection).forEach((sectionEntries) => {
-      Object.values(sectionEntries || {}).forEach((e) => { totalMaterialCommission += parseFloat(e.total) || 0; });
+      Object.values(sectionEntries || {}).forEach((e) => { totalMaterialPayment += parseFloat(e.total) || 0; });
     });
-    const totalProfit = totalSiteProfit + totalMaterialCommission;
-    kTot.innerText = "\u20B9" + Math.round(totalProfit).toLocaleString("en-IN");
+    const totalProfit = totalSiteProfit + totalMaterialPayment;
+    const shownProfit = profitViewMode === "month" ? calcMonthlyTotalProfit(mon) : totalProfit;
+    kTot.innerText = profitUnlocked ? "\u20B9" + Math.round(shownProfit).toLocaleString("en-IN") : "🔒";
+    const kTotLabel = document.getElementById("kTotLabel");
+    if (kTotLabel) kTotLabel.innerText = profitViewMode === "month" ? "मासिक मुनाफ़ा" : "कुल मुनाफ़ा";
+    const pt = document.getElementById("profitTotalBtn"), pm = document.getElementById("profitMonthBtn");
+    if (pt && pm) { pt.style.background = profitViewMode === "total" ? "#FFFFFF" : "#334155"; pt.style.color = profitViewMode === "total" ? "#0F172A" : "#CBD5E1"; pm.style.background = profitViewMode === "month" ? "#FFFFFF" : "#475569"; pm.style.color = profitViewMode === "month" ? "#0F172A" : "#CBD5E1"; }
   }
   if (kDena) kDena.innerText = "\u20B9" + td.toLocaleString("en-IN");
   if (kLena) kLena.innerText = "\u20B9" + tl.toLocaleString("en-IN");
@@ -2741,26 +3308,26 @@ function renderAll() {
     const l = labs[id];
     if (labSearchQ && !(l.name || "").toLowerCase().includes(labSearchQ)) return;
     const c = calcLabour(id, mon);
+    const initials = (l.name || "K").trim().split(/\s+/).slice(0,2).map(x => x[0]).join("").toUpperCase();
+    const duePositive = c.net >= 0;
     labHtml += `
-      <div style="padding:14px;border:1px solid #EEF2FF;border-radius:16px;margin-bottom:10px;background:#FBFDFF">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-          <div>
-            <b style="font-size:14.5px">${l.name}</b> <small style="color:#94A3B8;font-weight:600">\u20B9${l.wage || 0}/\u0926\u093F\u0928</small>
+      <div class="kp-mini-card" style="padding:15px;border:1px solid #E5EAF1;border-radius:20px;margin-bottom:11px;background:linear-gradient(145deg,#FFFFFF,#F8FAFC);box-shadow:0 5px 18px rgba(15,23,42,.06);">
+        <div style="display:flex;align-items:center;gap:11px;">
+          <div style="width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#0F172A,#334155);color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><b style="font-size:15px;color:#0F172A;">${l.name}</b><span style="font-size:9.5px;background:#ECFDF5;color:#047857;padding:4px 7px;border-radius:999px;font-weight:800;">ACTIVE</span></div>
+            <div style="font-size:10.5px;color:#64748B;margin-top:3px;">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन${l.phone ? " • " + l.phone : ""}</div>
           </div>
-          <div style="background:${c.net >= 0 ? "#DCFCE7" : "#FEE2E2"};color:${c.net >= 0 ? "#166534" : "#991B1B"};padding:7px 12px;border-radius:12px;font-size:16px;font-weight:800;white-space:nowrap;flex-shrink:0">
-            ${c.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c.net).toLocaleString("en-IN")}
-          </div>
+          <div style="text-align:right;flex-shrink:0;"><div style="font-size:9.5px;color:#94A3B8;font-weight:700;">इस माह</div><b style="font-size:14px;color:${duePositive ? "#166534" : "#B91C1C"};">${duePositive ? "देना ₹"+c.net.toLocaleString("en-IN") : "लेना ₹"+Math.abs(c.net).toLocaleString("en-IN")}</b></div>
         </div>
-        <small style="color:#94A3B8">\u0916\u0941\u0932\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")} \u2022 \u0915\u093F\u0930\u093E\u092F\u093E (${mon.slice(5, 7)}/${mon.slice(0, 4)}) \u20B9${c.rent} \u2022 \u092C\u093F\u091C\u0932\u0940 \u20B9${c.bijli}</small>
-        <div style="margin-top:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
-          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:7px 4px" onclick="editWage('${id}')">\u0926\u093F\u0939\u093E\u0921\u093C\u0940</button>
-          <button class="btn-sm" style="background:#FEF3C7;color:#92400E;padding:7px 4px" onclick="editBalance('${id}')">\u092C\u0915\u093E\u092F\u093E</button>
-          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:7px 4px" onclick="editRent('${id}')">\u0915\u093F\u0930\u093E\u092F\u093E</button>
-          <button class="btn-sm" style="background:#FEF9C3;color:#854D0E;padding:7px 4px" onclick="editBijli('${id}')">\u092C\u093F\u091C\u0932\u0940</button>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;">
+          <div style="background:#F0FDF4;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">हाज़िरी</small><br><b style="font-size:13px;color:#166534;">${c.days}</b></div>
+          <div style="background:#EFF6FF;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">कमाई</small><br><b style="font-size:13px;color:#1D4ED8;">₹${Math.round(c.earn).toLocaleString("en-IN")}</b></div>
+          <div style="background:#FFF9EA;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">भुगतान</small><br><b style="font-size:13px;color:#92400E;">₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
         </div>
-        <div style="margin-top:6px;display:flex;gap:5px">
-          <button class="btn-sm" style="background:#FCE7F3;color:#9D174D;flex:1;padding:7px 6px" onclick="toggleArchive('${id}',true)">\u{1F4E6} Archive</button>
-          <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;width:40px;flex-shrink:0;padding:7px 0" onclick="deleteLab('${id}')">\u{1F5D1}\uFE0F</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;">
+          <button class="btn-sm" style="background:#0F172A;color:white;padding:9px;border-radius:11px;font-weight:800;" onclick="openKarigarProfile('${id}')">👤 प्रोफाइल देखें</button>
+          <button class="btn-sm" style="background:#EEF2FF;color:#3730A3;padding:9px;border-radius:11px;font-weight:800;" onclick="makeLabourReport('${id}')">📄 हिसाब देखें</button>
         </div>
       </div>
     `;
@@ -2829,13 +3396,10 @@ function renderAll() {
       const shareIdx = window.__hazriShareData.length;
       let shareMsg = `\u{1F3E0} *${g.name}*\n\u{1F4C5} ${todayDateForShare}\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
       g.rows.forEach(([, e, l]) => {
-        const wTxt = parseFloat(e.withdraw || 0) > 0 ? ` (\u{1F4B8} \u20B9${e.withdraw})` : "";
-        const extraTotal = Object.values(withdrawals).reduce((s, w) => (w.labourId === e.labourId && w.date === today ? s + (parseFloat(w.amount) || 0) : s), 0);
-        const extraTxt = extraTotal > 0 ? ` (+ Extra \u20B9${extraTotal})` : "";
-        shareMsg += `\u2022 ${l.name} \u2013 ${e.days} \u0926\u093F\u0928${wTxt}${extraTxt}\n`;
+        const daysNum = parseFloat(e.days || 0);
+        const daysTxt = daysNum === 1 ? "P" : daysNum === 1.5 ? "P1/2" : daysNum === 2 ? "2P" : daysNum === 0.5 ? "P/2" : daysNum === 0 ? "A" : String(e.days);
+        shareMsg += `\u2022 ${l.name} \u2013 ${daysTxt}\n`;
       });
-      shareMsg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u0915\u0941\u0932: ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930, ${totalDays} \u0926\u093F\u0928`;
-      if (totalWithdraw > 0) shareMsg += `, \u0916\u0930\u094D\u091A \u20B9${totalWithdraw}`;
       window.__hazriShareData.push(shareMsg);
       tHtml += `<tr><td colspan="4" style="text-align:left;background:#EEF2FF;color:#3730A3;font-weight:800;font-size:12.5px;padding:8px 10px">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
@@ -2893,6 +3457,8 @@ function renderAll() {
   const selLabName2 = document.getElementById("selLabName2");
   if (selLabName) selLabName.innerText = selId && labs[selId] ? labs[selId].name : "\u0915\u093E\u0930\u0940\u0917\u0930";
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
+  const attDateLabel = document.getElementById("attDateLabel");
+  if (attDateLabel) attDateLabel.innerText = today ? new Date(today).toLocaleDateString("hi-IN", {day:"2-digit", month:"short"}) : "आज";
   const histDiv = document.getElementById("fullHistory");
   if (histDiv && selId) {
     const list = Object.entries(ents).filter(([_, e]) => e.labourId === selId).sort((a, b) => b[1].date.localeCompare(a[1].date));
@@ -2943,37 +3509,16 @@ function renderAll() {
     const labourNames = Object.values(sc.labourMap).map((v) => `${v.name} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const isClosedS = (s.status || "").includes("\u092A\u0942\u0930\u093E");
     siteHtml += `
-      <div class="site-card" style="border-left:5px solid ${isClosedS ? "#94A3B8" : "#16a34a"}">
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">
-          <b>\u{1F3E0} ${s.house}</b>
-          <div style="display:flex;gap:6px;align-items:center">
-            <span style="background:${isClosedS ? "#64748B" : "#16a34a"};color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700">${isClosedS ? "Archived" : "On Going"}</span>
-            <span style="background:${profitColor};color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800">
-              Profit \u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)
-            </span>
-          </div>
+      <div class="site-card">
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client ? s.client + " • " : ""}${s.address || ""}</div></div><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-metrics">
+          <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
+          <div class="sm-site-metric" style="background:#eff6ff;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
-        <small style="color:#64748B">${s.address || ""}</small>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0;text-align:center">
-          <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;overflow:hidden">
-            <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
-          </div>
-          <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;overflow:hidden">
-            <small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>
-          </div>
-          <div style="background:#DCFCE7;padding:8px 4px;border-radius:12px;overflow:hidden">
-            <small style="color:#166534;font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br><b style="color:#15803D;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-          </div>
-        </div>
-        <div style="font-size:11px;background:#F8FAFF;padding:10px;border-radius:12px">
-          <b>\u092E\u091C\u0926\u0942\u0930:</b> ${labourNames}
-        </div>
-        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-sm" style="background:#6366F1;color:white;padding:8px 12px" onclick="showSiteDetail('${id}')">\u{1F4CB} Detail Dekho</button>
-          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:8px 12px" onclick="editSite('${id}')">\u270F\uFE0F Edit</button>
-          ${isClosedS ? `<button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:8px 12px" onclick="toggleSiteStatus('${id}',false)">\u{1F7E2} \u0926\u0941\u092C\u093E\u0930\u093E \u091A\u093E\u0932\u0942 \u0915\u0930\u094B</button>` : `<button class="btn-sm" style="background:#F1F5F9;color:#475569;padding:8px 12px" onclick="toggleSiteStatus('${id}',true)">\u{1F4E6} \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 \u0915\u0930\u094B</button>`}
-          <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteSite('${id}')">\u0921\u093F\u0932\u0940\u091F</button>
-        </div>
+        <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
+        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
       </div>
     `;
   });
@@ -2992,34 +3537,16 @@ function renderAll() {
     const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
     const labourNames = Object.values(sc.labourMap).map((v) => `${v.name} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const cardHtml = `
-      <div class="site-card" style="border-left:5px solid ${isClosed ? "#94A3B8" : "#16a34a"}">
-        <div style="display:flex;justify-content:space-between">
-          <b>\u{1F3E0} ${s.house}</b>
-          <span style="background:${isClosed ? "#64748B" : "#16a34a"};color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700">
-            ${isClosed ? "Archived" : "On Going"}
-          </span>
+      <div class="site-card">
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client || ""}${s.address ? " • " + s.address : ""}</div></div><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-metrics">
+          <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
+          <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
-        <small style="color:#64748B">${s.client || ""} - ${s.address || ""}</small>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;text-align:center;font-size:11px">
-          <div style="background:#FEF3C7;padding:8px;border-radius:10px">
-            <small style="color:#92400E">\u0932\u093E\u0917\u0924</small><br><b>\u20B9${sc.cost.toLocaleString("en-IN")}</b>
-          </div>
-          <div style="background:#DBEAFE;padding:8px;border-radius:10px">
-            <small style="color:#1E40AF">\u0932\u093F\u092F\u093E</small><br><b>\u20B9${sc.received.toLocaleString("en-IN")}</b>
-          </div>
-          <div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px;border-radius:10px">
-            <small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"}">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br>
-            <b style="color:${profitColor}">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-          </div>
-        </div>
-        <div style="font-size:10px;background:#F8FAFF;padding:8px;border-radius:10px">
-          <b>\u092E\u091C\u0926\u0942\u0930:</b> ${labourNames}
-        </div>
-        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-sm" style="background:#6366F1;color:white;padding:6px 10px" onclick="showSiteDetail('${id}')">\u{1F4CB} Detail</button>
-          <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:6px 10px" onclick="editSite('${id}')">\u270F\uFE0F Edit</button>
-          ${isClosed ? `<button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:6px 10px" onclick="toggleSiteStatus('${id}',false)">\u{1F7E2} \u0926\u0941\u092C\u093E\u0930\u093E \u091A\u093E\u0932\u0942 \u0915\u0930\u094B</button>` : `<button class="btn-sm" style="background:#F1F5F9;color:#475569;padding:6px 10px" onclick="toggleSiteStatus('${id}',true)">\u{1F4E6} \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 \u0915\u0930\u094B</button>`}
-        </div>
+        <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
+        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
       </div>
     `;
     if (isClosed) {
@@ -3240,18 +3767,98 @@ function closeBreakdownModal() {
   const modal = document.getElementById("breakdownModal");
   if (modal) modal.style.display = "none";
 }
-function showBreakdownProfit() {
-  const rows = [];
+let profitUnlocked = false;
+let profitViewMode = "total";
+function calcMonthlyTotalProfit(mon) {
+  let totalSiteProfit = 0;
   Object.keys(sites).forEach((sid) => {
-    const sc = calcSite(sid);
-    if (sc.profit !== 0) rows.push({ name: "\u{1F3E0} " + (sites[sid].house || sid), amount: sc.profit });
+    let received = 0, cost = 0;
+    Object.values(ents).forEach((e) => { if (e.siteId === sid && e.date && e.date.startsWith(mon)) { const l = labs[e.labourId]; if (l) cost += (parseFloat(e.days || 0) * entryRate(e, l)) || 0; } });
+    Object.values(siteCosts).forEach((c) => { if (c.siteId === sid && c.date && c.date.startsWith(mon)) cost += parseFloat(c.amount) || 0; });
+    Object.values(sitePays).forEach((p) => { if (p.siteId === sid && p.date && p.date.startsWith(mon)) received += parseFloat(p.amount || 0); });
+    totalSiteProfit += received - cost;
+  });
+  let totalMaterialPayment = 0;
+  Object.values(matEntriesBySection).forEach((sectionEntries) => Object.values(sectionEntries || {}).forEach((e) => { if (e.date && e.date.startsWith(mon)) totalMaterialPayment += parseFloat(e.total) || 0; }));
+  return totalSiteProfit + totalMaterialPayment;
+}
+function setProfitView(mode) { profitViewMode = mode === "month" ? "month" : "total"; renderAll(); }
+let profitUnlockView = "total";
+function openProfitPassword(view = "total") {
+  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
+  profitUnlockView = view || "total";
+  const overlay = document.getElementById("profitLockOverlay");
+  const input = document.getElementById("profitPasswordInput");
+  const err = document.getElementById("profitPasswordError");
+  const box = document.getElementById("profitLockBox");
+  if (err) err.classList.remove("show");
+  if (box) box.classList.remove("shake");
+  if (input) { input.value = ""; input.type = "password"; }
+  const eye = document.querySelector(".profit-eye");
+  if (eye) eye.innerText = "👁️";
+  if (overlay) overlay.style.display = "flex";
+  setTimeout(() => input?.focus(), 120);
+  return false;
+}
+function closeProfitPassword() {
+  const overlay = document.getElementById("profitLockOverlay");
+  if (overlay) overlay.style.display = "none";
+}
+function toggleProfitPassword() {
+  const input = document.getElementById("profitPasswordInput");
+  const eye = document.querySelector(".profit-eye");
+  if (!input) return;
+  input.type = input.type === "password" ? "text" : "password";
+  if (eye) eye.innerText = input.type === "password" ? "👁️" : "🙈";
+  input.focus();
+}
+function profitPasswordTyping() {
+  const err = document.getElementById("profitPasswordError");
+  if (err) err.classList.remove("show");
+}
+function submitProfitPassword() {
+  const input = document.getElementById("profitPasswordInput");
+  const err = document.getElementById("profitPasswordError");
+  const box = document.getElementById("profitLockBox");
+  const password = input ? input.value : "";
+  if (password !== "1234") {
+    if (err) err.classList.add("show");
+    if (box) { box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
+    input?.focus();
+    input?.select();
+    return;
+  }
+  profitUnlocked = true;
+  closeProfitPassword();
+  renderAll();
+  if (profitUnlockView === "total") showBreakdownProfit();
+}
+function unlockProfit(view) {
+  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
+  openProfitPassword(view);
+  return false;
+}
+function showBreakdownProfit() {
+  if (!profitUnlocked) { unlockProfit("total"); return; }
+  const rows = [];
+  const mon = getMon();
+  Object.keys(sites).forEach((sid) => {
+    let amount = 0;
+    if (profitViewMode === "month") {
+      let received = 0, cost = 0;
+      Object.values(ents).forEach((e) => { if (e.siteId === sid && e.date && e.date.startsWith(mon)) { const l = labs[e.labourId]; if (l) cost += (parseFloat(e.days || 0) * entryRate(e, l)) || 0; } });
+      Object.values(siteCosts).forEach((c) => { if (c.siteId === sid && c.date && c.date.startsWith(mon)) cost += parseFloat(c.amount) || 0; });
+      Object.values(sitePays).forEach((p) => { if (p.siteId === sid && p.date && p.date.startsWith(mon)) received += parseFloat(p.amount || 0); });
+      amount = received - cost;
+    } else {
+      amount = calcSite(sid).profit;
+    }
+    if (amount !== 0) rows.push({ name: "🏠 " + (sites[sid].house || sid), amount });
   });
   let matTotal = 0;
-  Object.values(matEntriesBySection).forEach((sectionEntries) => {
-    Object.values(sectionEntries || {}).forEach((e) => { matTotal += parseFloat(e.total) || 0; });
-  });
-  if (matTotal !== 0) rows.push({ name: "\u26A1 \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0915\u092E\u0940\u0936\u0928 (\u0938\u092D\u0940)", amount: matTotal });
-  showBreakdown("\u{1F4B0} \u0915\u0941\u0932 \u092E\u0941\u0928\u093E\u092B\u093C\u093E \u0915\u093E \u0935\u093F\u0935\u0930\u0923", "\u0938\u092D\u0940 \u0938\u093E\u0907\u091F + \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0915\u092E\u0940\u0936\u0928 (all-time)", rows);
+  Object.values(matEntriesBySection).forEach((sectionEntries) => Object.values(sectionEntries || {}).forEach((e) => { if (profitViewMode === "total" || (e.date && e.date.startsWith(mon))) matTotal += parseFloat(e.total) || 0; }));
+  if (matTotal !== 0) rows.push({ name: "⚡ मटेरियल पेमेंट", amount: matTotal });
+  showBreakdown(profitViewMode === "month" ? "💰 मासिक मुनाफ़ा का विवरण" : "💰 कुल मुनाफ़ा का विवरण", profitViewMode === "month" ? "चुने हुए महीने का विवरण" : "सभी साइट + मटेरियल पेमेंट (all-time)", rows);
 }
 function showBreakdownDena() {
   const mon = getMon();
@@ -3364,7 +3971,7 @@ function saveEditField() {
   });
 }
 function deleteLab(id) {
-  if (confirm("Delete?")) db.ref("companies/" + company + "/labours/" + id).remove();
+  if (confirm("Delete?")) { db.ref("companies/" + company + "/labours/" + id).remove(); }
 }
 function addSite() {
   const sHouse = document.getElementById("sHouse");
@@ -3647,6 +4254,8 @@ function saveHazri() {
     days,
     rate: (editingId && ents[editingId] && ents[editingId].rate != null) ? ents[editingId].rate : rateForDate(labs[lab], date),
     withdraw: parseFloat(String(withd)),
+    paymentLabourId: lab,
+    paymentDate: date,
     note: eNote?.value || "",
     ts: Date.now()
   }).then(() => {
@@ -3761,6 +4370,64 @@ async function shareAsImage() {
     if (btn) btn.innerHTML = "\u{1F4F8} WhatsApp \u092A\u0930 \u0907\u092E\u0947\u091C \u0936\u0947\u092F\u0930 \u0915\u0930\u0947\u0902";
   }
 }
+let activeKarigarProfileId = null;
+function makeLabourReport(id){
+  const sel=document.getElementById("rLabour");
+  if(sel){ sel.value=id; }
+  showTab("r");
+  setTimeout(()=>{ try{ makeReport(); }catch(e){} },80);
+}
+function openKarigarProfile(id){
+  if(!labs[id]) return;
+  activeKarigarProfileId=id;
+  renderKarigarProfile();
+  const ov=document.getElementById("karigarProfileOverlay");
+  if(ov) ov.style.display="flex";
+}
+function closeKarigarProfile(){
+  const ov=document.getElementById("karigarProfileOverlay");
+  if(ov) ov.style.display="none";
+  activeKarigarProfileId=null;
+}
+function renderKarigarProfile(){
+  const id=activeKarigarProfileId, l=labs[id], box=document.getElementById("karigarProfileContent");
+  if(!id||!l||!box) return;
+  const mon=(document.getElementById("rMonth")?.value)||fmtLocalDate(new Date()).slice(0,7);
+  const c=calcLabour(id,mon);
+  const initials=(l.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+  const entries=Object.values(ents).filter(e=>e.labourId===id&&e.date&&e.date.startsWith(mon)).sort((a,b)=>a.date.localeCompare(b.date));
+  const siteMap={};
+  entries.forEach(e=>{const key=e.siteId||"nosite"; if(!siteMap[key])siteMap[key]={days:0,earn:0,name:e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}; siteMap[key].days+=parseFloat(e.days||0); siteMap[key].earn+=(parseFloat(e.days||0)*entryRate(e,l));});
+  const monthLabel=new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+  const status=l.archived?"ARCHIVED":"ACTIVE";
+  const dueColor=c.net>=0?"#166534":"#B91C1C";
+  box.innerHTML=`
+    <div class="kp-hero">
+      <button class="kp-close" onclick="closeKarigarProfile()">✕</button>
+      <div class="kp-avatar">${initials}</div>
+      <div id="kpName" class="kp-name">${l.name}</div>
+      <div class="kp-sub">कारीगर प्रोफाइल ${l.phone?"• "+l.phone:""}</div>
+      <div class="kp-badges"><span class="kp-badge">${status}</span><span class="kp-badge">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन</span>${l.balance?`<span class="kp-badge">Opening ₹${Number(l.balance||0).toLocaleString("en-IN")}</span>`:""}</div>
+    </div>
+    <div class="kp-body">
+      <div class="kp-month"><label>📅 हिसाब का महीना</label><input type="month" id="kpMonth" value="${mon}" onchange="document.getElementById('rMonth').value=this.value;renderKarigarProfile()"></div>
+      <div class="kp-grid">
+        <div class="kp-stat green"><small>हाज़िरी</small><b>${c.days} दिन</b></div>
+        <div class="kp-stat blue"><small>कुल कमाई</small><b>₹${Math.round(c.earn).toLocaleString("en-IN")}</b></div>
+        <div class="kp-stat gold"><small>कुल भुगतान</small><b>₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
+        <div class="kp-stat ${c.net>=0?'green':'red'}"><small>फाइनल बैलेंस</small><b style="color:${dueColor}">${c.net>=0?'देना':'लेना'} ₹${Math.abs(Math.round(c.net)).toLocaleString("en-IN")}</b></div>
+      </div>
+      <div class="kp-section"><div class="kp-section-title">💰 हिसाब का सारांश</div><div class="kp-list">
+        <div class="kp-row"><span>पिछला बकाया</span><b>₹${Math.round(c.bal).toLocaleString("en-IN")}</b></div>
+        <div class="kp-row"><span>कमरा किराया</span><b>₹${Math.round(c.rent).toLocaleString("en-IN")}</b></div>
+        <div class="kp-row"><span>बिजली</span><b>₹${Math.round(c.bijli+c.bijliCalc).toLocaleString("en-IN")}</b></div>
+        <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
+      </div></div>
+      <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${v.name}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
+      <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
+    </div>`;
+}
+
 function makeReport() {
   const rMonth = document.getElementById("rMonth");
   const rLabour = document.getElementById("rLabour");
@@ -4445,6 +5112,9 @@ window.deletePay = deletePay;
 window.renderCalendar = renderCalendar;
 window.editEntryByDay = editEntryByDay;
 window.quickSelectLabour = quickSelectLabour;
+window.openCalendarLabourPicker = openCalendarLabourPicker;
+window.closeCalendarLabourPicker = closeCalendarLabourPicker;
+window.selectCalendarLabour = selectCalendarLabour;
 window.filterRLab = filterRLab;
 window.toggleArchive = toggleArchive;
 window.renderAll = renderAll;
@@ -4501,6 +5171,27 @@ window.setEDateToday = setEDateToday;
 window.editSitePayment = editSitePayment;
 window.cancelSitePayEdit = cancelSitePayEdit;
 window.renderSiteCostSelect = renderSiteCostSelect;
+const DEFAULT_EXPENSE_CATEGORIES = {
+  petrol: "⛽ पेट्रोल / डीजल", recharge: "📱 मोबाइल / नेट रिचार्ज", repair: "🛠️ मशीन / कटर रिपेयर",
+  tools: "🪚 औजार / ब्लेड / पत्ती खरीद", food: "☕ चाय / नाश्ता / खाना", others: "📦 अन्य विविध खर्च"
+};
+function renderExpenseCategoryOptions() {
+  const sel = document.getElementById("xCat"); if (!sel) return;
+  const current = sel.value; const all = Object.assign({}, DEFAULT_EXPENSE_CATEGORIES, expenseCategories || {});
+  sel.innerHTML = Object.entries(all).map(([id,label]) => `<option value="${mEsc(id)}">${mEsc(label)}</option>`).join("");
+  if (current && all[current]) sel.value = current;
+}
+function addExpenseCategory() {
+  const name = prompt("नई खर्च Category का नाम लिखें:"); if (!name || !name.trim()) return;
+  const clean = name.trim();
+  const id = clean.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40) || ("cat_"+Date.now());
+  const all = Object.assign({}, DEFAULT_EXPENSE_CATEGORIES, expenseCategories || {});
+  if (all[id]) { alert("यह Category पहले से मौजूद है"); return; }
+  db.ref("companies/" + company + "/expenseCategories/" + id).set("📦 " + clean).then(() => {
+    const sel=document.getElementById("xCat"); if(sel) sel.value=id; alert("✅ नई Category जोड़ दी गई");
+  });
+}
+window.addExpenseCategory = addExpenseCategory;
 function addExpense() {
   const date = document.getElementById("xDate")?.value || fmtLocalDate(new Date());
   const cat = document.getElementById("xCat")?.value || "others";
@@ -4605,6 +5296,7 @@ function renderExpenses() {
     food: { label: "\u2615 \u0916\u093E\u0928\u093E/\u091A\u093E\u092F", cls: "exp-food" },
     others: { label: "\u{1F4E6} \u0905\u0928\u094D\u092F", cls: "exp-others" }
   };
+  Object.entries(expenseCategories || {}).forEach(([id, label]) => { catNames[id] = { label, cls: "exp-others" }; });
   const filtered = monthExps.filter(([_, exp]) => {
     const str = `${exp.note || ""} ${exp.cat || ""} ${exp.payMode || ""}`.toLowerCase();
     return !q || str.includes(q);
@@ -4694,7 +5386,7 @@ function renderPdfPreview() {
       <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${s.house}</b> - ${s.client || ""}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${(s.status || "").includes("\u092A\u0942\u0930\u093E") ? "Archived" : (s.status || "\u091A\u0932 \u0930\u0939\u093E")}</td>
       <td style="padding: 6px; color: #B45309; border: 1px solid #CBD5E1;">\u20B9${sc.cost.toLocaleString("en-IN")}</td>
-      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">\u20B9${sc.received.toLocaleString("en-IN")}</td>
+      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${profitUnlocked ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `🔒`}</td>
       <td style="padding: 6px; font-weight: 800; color: ${sc.profit >= 0 ? "#166534" : "#DC2626"}; border: 1px solid #CBD5E1;">\u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)</td>
     </tr>`;
   });
@@ -4844,7 +5536,7 @@ function renderPdfPreview() {
 async function downloadMonthlyPdf() {
   const el = document.getElementById("pdfPrintableArea");
   if (!el) {
-    alert("PDF \u0938\u093E\u092E\u0917\u094D\u0930\u0940 \u0909\u092A\u0932\u092C\u094D\u0927 \u0928\u0939\u0940\u0902 \u0939\u0948");
+    alert("PDF सामग्री उपलब्ध नहीं है");
     return;
   }
   const mon = document.getElementById("pdfMonth")?.value || getMon();
@@ -4852,27 +5544,47 @@ async function downloadMonthlyPdf() {
     const canvas = await html2canvas(el, {
       scale: 2,
       useCORS: true,
-      backgroundColor: "#ffffff"
+      backgroundColor: "#ffffff",
+      logging: false
     });
-    const imgData = canvas.toDataURL("image/png");
+
     const pdf = getJsPdfInstance("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = canvas.height * pdfWidth / canvas.width;
-    let position = 0;
-    let heightLeft = pdfHeight;
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - pdfHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
+    const pdfPageHeight = pdf.internal.pageSize.getHeight();
+
+    // Split the rendered canvas into real A4-sized slices. This prevents
+    // html2canvas content from being clipped or leaving large blank areas.
+    const pagePixelHeight = Math.floor(canvas.width * pdfPageHeight / pdfWidth);
+    let offsetY = 0;
+    let pageNo = 0;
+
+    while (offsetY < canvas.height) {
+      const sliceHeight = Math.min(pagePixelHeight, canvas.height - offsetY);
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = sliceHeight;
+      const ctx = pageCanvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+      ctx.drawImage(
+        canvas,
+        0, offsetY, canvas.width, sliceHeight,
+        0, 0, pageCanvas.width, pageCanvas.height
+      );
+
+      if (pageNo > 0) pdf.addPage();
+      const imgData = pageCanvas.toDataURL("image/jpeg", 0.95);
+      const slicePdfHeight = sliceHeight * pdfWidth / canvas.width;
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, slicePdfHeight);
+
+      offsetY += sliceHeight;
+      pageNo++;
     }
+
     pdf.save(`Shukla_Marble_Monthly_Report_${mon}.pdf`);
   } catch (err) {
     console.error("PDF generation error:", err);
-    alert("PDF \u0921\u093E\u0909\u0928\u0932\u094B\u0921 \u0935\u093F\u0902\u0921\u094B \u0916\u094B\u0932\u0940 \u091C\u093E \u0930\u0939\u0940 \u0939\u0948\u0964");
+    alert("PDF डाउनलोड नहीं हो पाया।");
     window.print();
   }
 }
@@ -5067,6 +5779,101 @@ window.downloadAgreementPdf = downloadAgreementPdf;
 window.printPdfReport = printPdfReport;
 window.downloadExcelBackup = downloadExcelBackup;
 window.exportExcel = downloadExcelBackup;
+// ================= AUTOMATIC BACKUP / RESTORE =================
+const SM_AUTO_BACKUP_KEY = "shukla_marble_auto_backup_v1";
+const SM_AUTO_BACKUP_INTERVAL = 24 * 60 * 60 * 1000;
+let smLatestBackup = null;
+
+function backupRootRef() {
+  return db && db.raw ? db.raw.ref("companies/" + company) : null;
+}
+function cleanBackupData(data) {
+  const clone = data ? JSON.parse(JSON.stringify(data)) : {};
+  delete clone._autoBackup;
+  return clone;
+}
+async function createAutoBackup(force) {
+  if (!db || !db.raw) return false;
+  try {
+    const root = backupRootRef();
+    const snap = await root.once("value");
+    const data = cleanBackupData(snap.val() || {});
+    const now = Date.now();
+    const payload = { timestamp: now, data: data };
+    await root.child("_autoBackup").set(payload);
+    smLatestBackup = payload;
+    try { localStorage.setItem(SM_AUTO_BACKUP_KEY, JSON.stringify({ timestamp: now })); } catch(e) {}
+    updateAutoBackupStatus();
+    return true;
+  } catch (e) {
+    console.error("Automatic backup failed", e);
+    return false;
+  }
+}
+function scheduleAutoBackup() {
+  const run = async () => {
+    let last = 0;
+    try { last = Number(JSON.parse(localStorage.getItem(SM_AUTO_BACKUP_KEY) || "{}").timestamp || 0); } catch(e) {}
+    if (!last || Date.now() - last >= SM_AUTO_BACKUP_INTERVAL) await createAutoBackup(false);
+  };
+  setTimeout(run, 5000);
+  setInterval(run, 60 * 60 * 1000);
+}
+function updateAutoBackupStatus() {
+  const el = document.getElementById("autoBackupStatus");
+  if (!el) return;
+  let ts = smLatestBackup && smLatestBackup.timestamp;
+  if (!ts) { try { ts = Number(JSON.parse(localStorage.getItem(SM_AUTO_BACKUP_KEY) || "{}").timestamp || 0); } catch(e) {} }
+  el.innerHTML = ts
+    ? "✅ Last backup: <b>" + new Date(ts).toLocaleString("en-IN") + "</b>"
+    : "⚠️ अभी तक automatic backup नहीं हुआ है।";
+}
+function openAutoBackup() {
+  const m = document.getElementById("autoBackupModal");
+  if (m) { m.style.display = "flex"; updateAutoBackupStatus(); }
+}
+function closeAutoBackup() {
+  const m = document.getElementById("autoBackupModal");
+  if (m) m.style.display = "none";
+}
+async function backupNow() {
+  const ok = await createAutoBackup(true);
+  alert(ok ? "✅ Backup सफलतापूर्वक हो गया।" : "❌ Backup नहीं हो पाया। Internet check करें।");
+}
+async function restoreLatestBackup() {
+  if (!db || !db.raw) return alert("Database उपलब्ध नहीं है।");
+  if (!confirm("⚠️ Latest backup restore होगा और अभी का data replace हो जाएगा। आगे बढ़ें?")) return;
+  try {
+    const snap = await db.raw.ref("companies/" + company + "/_autoBackup").once("value");
+    const b = snap.val();
+    if (!b || !b.data) return alert("❌ कोई backup नहीं मिला।");
+    await db.raw.ref("companies/" + company).set(b.data);
+    alert("✅ Restore पूरा हो गया। Page reload होगा।");
+    location.reload();
+  } catch (e) {
+    console.error(e);
+    alert("❌ Restore नहीं हो पाया।");
+  }
+}
+async function downloadJsonBackup() {
+  if (!db || !db.raw) return alert("Database उपलब्ध नहीं है।");
+  try {
+    const snap = await db.raw.ref("companies/" + company).once("value");
+    const data = cleanBackupData(snap.val() || {});
+    const blob = new Blob([JSON.stringify({version:1,timestamp:Date.now(),data:data},null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Shukla-Marble-Auto-Backup-" + new Date().toISOString().slice(0,10) + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  } catch(e) { alert("❌ Backup file नहीं बन पाई।"); }
+}
+window.openAutoBackup = openAutoBackup;
+window.closeAutoBackup = closeAutoBackup;
+window.backupNow = backupNow;
+window.restoreLatestBackup = restoreLatestBackup;
+window.downloadJsonBackup = downloadJsonBackup;
+
 // ================= MATERIAL (मटेरियल) - multi-section (NOVA / ACC / +user-added) =================
 let matItems = {};
 let matEntries = {};
@@ -5407,7 +6214,7 @@ function deleteMatEntry(id) {
     db.ref(matEntriesPath() + "/" + id).remove();
   }
 }
-// ---- Commission Payment Received (per material section: NOVA / ACC / custom) ----
+// ---- Payment Received (per material section: NOVA / ACC / custom) ----
 function matPaymentAdd() {
   const dateEl = document.getElementById("mpDate");
   const amtEl = document.getElementById("mpAmount");
@@ -5612,7 +6419,7 @@ function renderMaterial() {
   document.getElementById("mTodayAmt").innerText = mRs(tAmt);
   document.getElementById("mMonthAmt").innerText = mRs(mAmt);
   document.getElementById("mYearAmt").innerText = mRs(yAmt);
-  // ---- commission payment received summary
+  // ---- payment received summary
   const mpNSLabelEl = document.getElementById("mpNSLabel");
   if (mpNSLabelEl) mpNSLabelEl.innerText = matNSName();
   let mpEarnedTotal = 0;
@@ -6265,6 +7072,8 @@ function saveBulkHazri() {
       date, labourId: id, siteId: site, days,
       rate: rateForDate(labs[id], date),
       withdraw: parseFloat(s.withdraw || 0) || 0,
+      paymentLabourId: id,
+      paymentDate: date,
       note: "", ts: Date.now()
     });
     saved.push(labs[id].name);
@@ -6516,6 +7325,7 @@ function bootstrap() {
   document.getElementById("tMob")?.addEventListener("input", renderTile);
   document.getElementById("tDate")?.addEventListener("change", renderTile);
   initFirebase();
+scheduleAutoBackup();
   guardPinProtectedFns();
 }
 if (document.readyState === "loading") {
@@ -6524,6 +7334,43 @@ if (document.readyState === "loading") {
   bootstrap();
 }
 
+</script>
+
+<script>
+/* ===== PREMIUM MOTION PACK: 18 interactions ===== */
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const toast=(msg,ok=false)=>{let t=$('#smToast');if(!t){t=document.createElement('div');t.id='smToast';t.className='sm-toast';document.body.appendChild(t)}t.textContent=(ok?'✓ ':'')+msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1900)};
+  window.smToast=toast;
+  // 1 Page transitions + 3 staggered cards
+  window.addEventListener('load',()=>{setTimeout(()=>{$$('#t-d .card').forEach((e,i)=>{e.style.animationDelay=(i*45)+'ms';e.classList.add('sm-stagger')})},80)});
+  const oldShow=window.showTab;
+  if(typeof oldShow==='function') window.showTab=function(id){document.body.classList.add('sm-page-out');window.scrollTo(0,0);setTimeout(()=>{oldShow(id);window.scrollTo(0,0);document.body.classList.remove('sm-page-out');const t=$('#t-'+id);if(t){t.classList.remove('sm-page-in');void t.offsetWidth;t.classList.add('sm-page-in');$$('.card,.saved-ag-card,.site-card,.lab-card,.expense-card,.material-card,.agreement-card',t).slice(0,16).forEach((e,i)=>{e.style.animationDelay=(i*30)+'ms';e.classList.add('sm-stagger')})}},100)};
+  // 2 bottom nav moving highlight / 8 live swipe cue
+  const nav=$('.bottom-nav'); if(nav){nav.addEventListener('pointermove',e=>{if(e.buttons){const b=e.target.closest('.bnav-item');if(b)b.classList.add('bnav-holding')}})}
+  // 4 count-up numbers when visible
+  function count(el){if(el.dataset.counted==='1'||!el.offsetParent)return;const txt=el.textContent.trim();const m=txt.match(/^([^\d₹-]*)(-?\d[\d,]*(?:\.\d+)?)(.*)$/);if(!m)return;const n=parseFloat(m[2].replace(/,/g,''));if(!isFinite(n)||Math.abs(n)>1e9)return;el.dataset.counted='1';const start=performance.now(),dur=650;const tick=now=>{const p=Math.min(1,(now-start)/dur),e=1-Math.pow(1-p,3),v=n*e;el.textContent=m[1]+(Number.isInteger(n)?Math.round(v).toLocaleString('en-IN'):v.toFixed(1))+m[3];if(p<1)requestAnimationFrame(tick)};requestAnimationFrame(tick)}
+  const countAll=()=>$$('.card').forEach(c=>$$('h2,h3,.amount,.stat-value,.profit-value',c).forEach(count)); setTimeout(countAll,500);
+  // 5 profit/blur reveal enhancement: animate unlocked/revealed monetary blocks
+  const obs=new MutationObserver(ms=>{ms.forEach(x=>x.addedNodes&&x.addedNodes.forEach(n=>{if(n.nodeType===1){if(n.matches&&n.matches('.card,.modal,.site-detail-box'))n.classList.add('sm-reveal');$$('[style*="blur"],.profit-value',n).forEach(e=>e.classList.add('sm-reveal'));$$('.card h2,.card h3,.amount,.stat-value',n).forEach(count)}}))});obs.observe(document.body,{subtree:true,childList:true});
+  // 6 success animation + 7 tactile button/ripple
+  document.addEventListener('click',e=>{const b=e.target.closest('button,.btn,.btn-sm');if(!b)return;const r=b.getBoundingClientRect(),rip=document.createElement('i');rip.className='sm-ripple';const z=Math.max(r.width,r.height)*.55;rip.style.width=rip.style.height=z+'px';rip.style.left=(e.clientX-r.left-z/2)+'px';rip.style.top=(e.clientY-r.top-z/2)+'px';b.appendChild(rip);setTimeout(()=>rip.remove(),600);const txt=(b.innerText||'').toLowerCase();if(/save|सेव|update|जोड़|payment|पेमेंट/.test(txt)){b.classList.remove('sm-success');void b.offsetWidth;b.classList.add('sm-success');setTimeout(()=>toast('सेव हो रहा है…'),80)}});
+  // 9 modern modal entrance
+  const mo=new MutationObserver(ms=>ms.forEach(x=>{if(x.target.nodeType===1&&x.target.style&&x.target.style.display==='flex'&&x.target.classList.contains('site-detail-modal'))x.target.querySelector('.site-detail-box')?.classList.add('sm-modal-enter')}));mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['style']});
+  // 10 search expand: inputs with placeholder search
+  $$('input').forEach(i=>{if(/search|खोज|ढूंढ/i.test((i.placeholder||''))){i.addEventListener('focus',()=>i.style.transform='scale(1.015)');i.addEventListener('blur',()=>i.style.transform='')}});
+  // 11 attendance feedback
+  document.addEventListener('change',e=>{if(e.target.matches('input[type=radio],input[type=checkbox],select')){const p=e.target.closest('label,.card,.row,div');if(p){p.classList.remove('sm-success');void p.offsetWidth;p.classList.add('sm-success')}}});
+  // 12 payment highlight
+  document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&/payment|पेमेंट|पैसे/.test((b.innerText||'').toLowerCase())){setTimeout(()=>$$('.amount,.payment,.total').slice(0,6).forEach(x=>x.classList.add('sm-reveal')),100)}});
+  // 13 skeleton on Firebase/data refresh hooks
+  window.smSkeleton=(root)=>{$$(root||'.card').forEach(e=>{e.classList.add('sm-skeleton');setTimeout(()=>e.classList.remove('sm-skeleton'),700)})};
+  // 14 modern toast API
+  window.smSuccess=(msg)=>toast(msg,true);
+  // 17 FAB quick actions removed — lock button remains clear
+  // 18 animated chart/bar elements + generic progress meters
+  const bars=()=>$$('.progress-bar,.bar,[role="progressbar"]').forEach(e=>{e.classList.remove('sm-bar-animate');void e.offsetWidth;e.classList.add('sm-bar-animate')});setTimeout(bars,600);new MutationObserver(()=>setTimeout(bars,60)).observe(document.body,{subtree:true,childList:true});
+})();
 </script>
 </body>
 </html>
