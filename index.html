@@ -74,8 +74,13 @@ header {
   left: 10px;
   right: 10px;
   bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
   gap: 4px;
   padding: 7px;
   background: rgba(255,255,255,0.96);
@@ -87,7 +92,9 @@ header {
   -webkit-backdrop-filter: blur(18px);
 }
 
+.bottom-nav::-webkit-scrollbar { display: none; }
 .bnav-item {
+  flex: 0 0 calc(18% - 3px);
   display: flex !important;
   flex-direction: column;
   align-items: center;
@@ -140,7 +147,7 @@ header {
 .bnav-item:active { transform: scale(.96); }
 
 /* Hold + slide navigation */
-.bottom-nav { touch-action: pan-y; }
+.bottom-nav, .bottom-nav * { touch-action: pan-x pan-y; }
 .bnav-item { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .bnav-item.bnav-holding { transform: scale(.96); opacity: .82; }
 
@@ -1121,20 +1128,10 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
-    <button class="bnav-item" id="bnav-more" onclick="toggleMoreMenu()"><span class="ti">⋯</span><span class="tl">और</span></button>
-  </div>
-
-  <!-- "More" bottom sheet: साइट / खर्च / मटेरियल / एग्रीमेंट -->
-  <div id="moreMenuOverlay" style="display: none; position: fixed; inset: 0; background: rgba(21,23,28,0.5); z-index: 998;" onclick="if(event.target===this)closeMoreMenu()">
-    <div style="position: fixed; left: 0; right: 0; bottom: 0; background: white; border-radius: 20px 20px 0 0; padding: 10px 10px calc(14px + env(safe-area-inset-bottom, 0px)) 10px; box-shadow: 0 -6px 24px rgba(21,23,28,0.2);">
-      <div style="width: 40px; height: 4px; background: #E9E3D6; border-radius: 4px; margin: 2px auto 14px auto;"></div>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-        <button class="tab" id="bt-s" onclick="showTab('s'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🏠</span><span class="tl">साइट</span></button>
-        <button class="tab" id="bt-x" onclick="showTab('x'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">💸</span><span class="tl">खर्च</span></button>
-        <button class="tab" id="bt-m" onclick="showTab('m'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
-        <button class="tab" id="bt-a" onclick="showTab('a'); closeMoreMenu();" style="padding: 16px 4px;"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
-      </div>
-    </div>
+    <button class="tab bnav-item" id="bt-s" onclick="showTab('s')"><span class="ti">🏠</span><span class="tl">साइट</span></button>
+    <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
+    <button class="tab bnav-item" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
+    <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
   </div>
 
   <!-- Automatic Backup / Restore Modal -->
@@ -2055,7 +2052,7 @@ function showTab(id) {
   const bt = document.getElementById("bt-" + id);
   if (bt) {
     bt.classList.add("active");
-    try { bt.scrollIntoView({ block: "nearest", inline: "nearest" }); } catch (e) {}
+    try { bt.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {}
   }
   if (id === "m" && typeof renderMaterial === "function") renderMaterial();
   const bnavMore = document.getElementById("bnav-more");
@@ -2066,6 +2063,7 @@ function showTab(id) {
   const nav = document.querySelector('.bottom-nav');
   if (!nav || nav.dataset.swipeReady === '1') return;
   nav.dataset.swipeReady = '1';
+  return; /* swipe-scroll bar: hold+slide disabled */
   const items = Array.from(nav.querySelectorAll('.bnav-item')).filter(b => b.id !== 'bnav-more');
   const HOLD_MS = 80;
   let timer = null, active = null, held = false, moved = false, pointerId = null;
@@ -7155,7 +7153,7 @@ if (document.readyState === "loading") {
   const oldShow=window.showTab;
   if(typeof oldShow==='function') window.showTab=function(id){document.body.classList.add('sm-page-out');window.scrollTo(0,0);setTimeout(()=>{oldShow(id);window.scrollTo(0,0);document.body.classList.remove('sm-page-out');const t=$('#t-'+id);if(t){t.classList.remove('sm-page-in');void t.offsetWidth;t.classList.add('sm-page-in');$$('.card,.saved-ag-card,.site-card,.lab-card,.expense-card,.material-card,.agreement-card',t).slice(0,16).forEach((e,i)=>{e.style.animationDelay=(i*30)+'ms';e.classList.add('sm-stagger')})}},100)};
   // 2 bottom nav moving highlight / 8 live swipe cue
-  const nav=$('.bottom-nav'); if(nav){nav.addEventListener('pointermove',e=>{if(e.buttons){const b=e.target.closest('.bnav-item');if(b)b.classList.add('bnav-holding')}})}
+  
   // 4 count-up numbers when visible
   function count(el){if(el.dataset.counted==='1'||!el.offsetParent)return;const txt=el.textContent.trim();const m=txt.match(/^([^\d₹-]*)(-?\d[\d,]*(?:\.\d+)?)(.*)$/);if(!m)return;const n=parseFloat(m[2].replace(/,/g,''));if(!isFinite(n)||Math.abs(n)>1e9)return;el.dataset.counted='1';const start=performance.now(),dur=650;const tick=now=>{const p=Math.min(1,(now-start)/dur),e=1-Math.pow(1-p,3),v=n*e;el.textContent=m[1]+(Number.isInteger(n)?Math.round(v).toLocaleString('en-IN'):v.toFixed(1))+m[3];if(p<1)requestAnimationFrame(tick)};requestAnimationFrame(tick)}
   const countAll=()=>$$('.card').forEach(c=>$$('h2,h3,.amount,.stat-value,.profit-value',c).forEach(count)); setTimeout(countAll,500);
