@@ -2795,7 +2795,7 @@ function renderCalendar() {
     const q = (document.getElementById("eLabSearch")?.value || "").trim().toLowerCase();
     const activeLabs = Object.entries(labs).filter(([id,l]) => l && !l.archived && (!q || String(l.name||"").toLowerCase().includes(q)));
     nameBox.innerHTML = activeLabs.length ? activeLabs.map(([id,l]) => `
-      <button type="button" class="calendar-labour-chip ${id === selId ? "active" : ""}" onclick="quickSelectLabour('${id}')">👷 ${mEsc(l.name || "कारीगर")}</button>
+      <button type="button" class="calendar-labour-chip ${id === selId ? "active" : ""}" onclick="calPickLabour('${id}')">👷 ${mEsc(l.name || "कारीगर")}</button>
     `).join("") : '<span style="font-size:11px;color:#94A3B8;padding:4px 2px;">कोई कारीगर नहीं</span>';
   }
   const cs = document.getElementById("calendarSummary");
@@ -2969,6 +2969,18 @@ function quickSelectLabour(id) {
   renderAll();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+function calPickLabour(id) {
+  const eLabour = document.getElementById("eLabour");
+  if (eLabour) eLabour.value = id;
+  const box = document.getElementById("calendarLabourNames");
+  const sl = box ? box.scrollLeft : 0;
+  const y = window.scrollY;
+  renderAll();
+  const box2 = document.getElementById("calendarLabourNames");
+  if (box2) box2.scrollLeft = sl;
+  window.scrollTo(0, y);
+}
+window.calPickLabour = calPickLabour;
 function filterRLab() {
   const searchInput = document.getElementById("rLabSearch");
   const q = (searchInput?.value || "").toLowerCase();
