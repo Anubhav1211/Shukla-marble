@@ -1394,8 +1394,11 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       </div>
       <input id="eCustom" type="number" step="0.1" class="input" placeholder="कस्टम दिन दर्ज करें" style="display: none;">
       <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-        <input id="eWith" type="number" class="input" placeholder="निकासी ₹ (Advance)" style="margin-bottom: 0;">
-        <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0;">
+        <div style="position: relative; flex: 1 1 0; min-width: 0;">
+          <input id="eWith" type="number" class="input" placeholder="निकासी ₹" style="margin-bottom: 0; padding-right: 50px;">
+          <button type="button" onclick="openExtraPay()" title="दूसरी पेमेंट जोड़ो" aria-label="दूसरी पेमेंट जोड़ो" style="position: absolute; right: 7px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; min-height: 0; padding: 0; border: 0; border-radius: 50%; background: #065F46; color: #fff; font-size: 24px; font-weight: 800; line-height: 1; cursor: pointer;">+</button>
+        </div>
+        <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0; flex: 1 1 0; width: auto;">
       </div>
       <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">💾 हाज़री सेव</button>
       <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
@@ -1404,10 +1407,7 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card" style="border: 2px solid #FCA5A5;">
-      <button class="btn" style="background: #DC2626; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('whBox'); whRenderList();">
-        <span>💸 एक दिन में दोबारा पैसा दिया (Extra पेमेंट)</span><span>▼</span>
-      </button>
+    <div class="card" id="whHolderCard" style="display: none;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -7326,6 +7326,21 @@ if (document.readyState === "loading") {
   if (typeof prevTab === 'function') {
     window.showTab = function () { if (suppress > 0) return; return prevTab.apply(this, arguments); };
   }
+
+  /* Hazri ke "+" se: usi din dusri/teesri payment ka popup (list ke saath) */
+  window.openExtraPay = function () {
+    if (cur) userClose();
+    const lab = $('eLabour') ? $('eLabour').value : '';
+    const date = ($('eDate') && $('eDate').value) ? $('eDate').value : fmtLocalDate(new Date());
+    if ($('whLab') && lab) $('whLab').value = lab;
+    if ($('whDate')) $('whDate').value = date;
+    if ($('whMsg')) $('whMsg').innerText = '';
+    try { whRenderList(); } catch (e) {}
+    let name = '';
+    try { name = (labs[lab] && labs[lab].name) ? labs[lab].name : ''; } catch (e) {}
+    openMove({ title: '💸 दूसरी पेमेंट' + (name ? ' — ' + name : ''), box: true, region: () => [$('whBox')] }, []);
+    setTimeout(() => { const a = $('whAmt'); if (a && cur) a.focus(); }, 150);
+  };
 
   /* Har site card se "पैसा लिया" popup */
   window.openSitePay = function (siteId) {
