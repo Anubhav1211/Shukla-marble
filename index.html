@@ -3973,6 +3973,60 @@ function showHazriPopup(labName, days, siteName, dateStr, withdraw, isDup = fals
     closeHazriPopup();
   }, 1600);
 }
+function closeHazriHisab() {
+  const ov = document.getElementById("hzHisabOv");
+  if (ov) ov.style.display = "none";
+}
+window.closeHazriHisab = closeHazriHisab;
+function showHazriHisab(items, date) {
+  const mon = (date || "").slice(0, 7);
+  const money = (n) => (n < 0 ? "\u2212" : "") + "\u20B9" + Math.abs(Math.round(n)).toLocaleString("en-IN");
+  const dateStr = new Date(date + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "short", year: "numeric" });
+  const monStr = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  const line = (k, v, col) => `<div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:12.5px;border-bottom:1px dashed #E5EAF1;"><span style="color:#64748B;">${k}</span><b style="color:${col || "#0F172A"};">${v}</b></div>`;
+  const cards = items.map((it) => {
+    const l = labs[it.id];
+    if (!l) return "";
+    const c = calcLabour(it.id, mon);
+    const due = c.net >= 0;
+    const other = (c.rent || 0) + (c.bijli || 0) + (c.bijliCalc || 0);
+    const tag = `${it.days} \u0926\u093F\u0928` + (it.withdraw > 0 ? ` \u2022 \u0928\u093F\u0915\u093E\u0938\u0940 ${money(it.withdraw)}` : "");
+    return `<div style="border:1px solid #E5EAF1;border-radius:16px;padding:12px;margin-bottom:10px;background:#fff;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><b style="font-size:14.5px;color:#0F172A;">\u{1F477} ${mEsc(l.name || "")}</b><span style="font-size:11px;background:#ECFDF5;color:#047857;padding:3px 8px;border-radius:99px;font-weight:800;white-space:nowrap;">${tag}</span></div>
+      ${it.siteName ? `<div style="font-size:11px;color:#64748B;margin-top:3px;">\u{1F3E0} ${mEsc(it.siteName)}</div>` : ""}
+      <div style="margin-top:8px;">
+        ${line("\u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E" + (c.bal < 0 ? " (\u0932\u0947\u0928\u093E)" : ""), money(c.bal))}
+        ${line("\u0907\u0938 \u092E\u093E\u0939 \u0915\u0940 \u0915\u092E\u093E\u0908 (" + c.days + " \u0926\u093F\u0928)", money(c.earn))}
+        ${line("\u0905\u092C \u0924\u0915 \u0915\u093E \u092D\u0941\u0917\u0924\u093E\u0928 / \u0928\u093F\u0915\u093E\u0938\u0940", "\u2212 " + money(c.with))}
+        ${other > 0 ? line("\u0915\u093F\u0930\u093E\u092F\u093E + \u092C\u093F\u091C\u0932\u0940", "\u2212 " + money(other)) : ""}
+      </div>
+      <div style="margin-top:9px;border-radius:12px;padding:10px 12px;background:${due ? "#F0FDF4" : "#FEF2F2"};display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;font-weight:800;color:${due ? "#166534" : "#B91C1C"};">${due ? "\u0905\u092D\u0940 \u0926\u0947\u0928\u093E" : "\u0905\u092D\u0940 \u0932\u0947\u0928\u093E"}</span>
+        <b style="font-size:20px;color:${due ? "#166534" : "#B91C1C"};">${money(Math.abs(c.net))}</b>
+      </div>
+    </div>`;
+  }).join("");
+  let ov = document.getElementById("hzHisabOv");
+  if (!ov) {
+    ov = document.createElement("div");
+    ov.id = "hzHisabOv";
+    ov.className = "popup-overlay";
+    ov.style.cssText = "z-index:1000;align-items:flex-start;overflow-y:auto;";
+    ov.addEventListener("click", (e) => { if (e.target === ov) closeHazriHisab(); });
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = `<div style="background:#fff;border-radius:22px;width:100%;max-width:440px;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(145deg,#166534,#14532D);color:#fff;">
+      <div><b style="font-size:15px;">\u2705 \u0939\u093E\u091C\u093C\u0930\u0940 \u0938\u0947\u0935 \u0939\u094B \u0917\u0908</b><div style="font-size:11px;opacity:.85;margin-top:2px;">${dateStr} \u2022 \u0939\u093F\u0938\u093E\u092C: ${monStr} \u0924\u0915</div></div>
+      <button type="button" onclick="closeHazriHisab()" style="width:34px;height:34px;min-height:0;padding:0;border:0;border-radius:10px;background:rgba(255,255,255,.18);color:#fff;font-size:16px;cursor:pointer;">\u2715</button>
+    </div>
+    <div style="padding:14px 14px 6px;max-height:68vh;overflow-y:auto;">${cards}</div>
+    <div style="padding:6px 14px 14px;"><button type="button" class="btn" onclick="closeHazriHisab()" style="margin:0;">\u0920\u0940\u0915 \u0939\u0948</button></div>
+  </div>`;
+  ov.style.display = "flex";
+  ov.scrollTop = 0;
+}
+window.showHazriHisab = showHazriHisab;
 function closeHazriPopup() {
   const overlay = document.getElementById("customPopup");
   if (overlay) overlay.style.display = "none";
@@ -4056,7 +4110,7 @@ function saveHazri() {
     if (eMsg) eMsg.innerText = "\u2705 \u0938\u0947\u0935";
     if (eWith) eWith.value = "";
     if (eNote) eNote.value = "";
-    showHazriPopup(labName, days, siteName, dateStr, parseFloat(String(withd)), false);
+    showHazriHisab([{ id: lab, days, withdraw: parseFloat(String(withd)) || 0, siteName }], date);
     cancelEdit();
   });
 }
@@ -6869,7 +6923,7 @@ function saveBulkHazri() {
   const site = document.getElementById("bhSite").value || "";
   const chosen = Object.entries(bhState).filter(([id, s]) => labs[id] && (s.days != null || parseFloat(s.withdraw || 0) > 0));
   if (!chosen.length) { alert("कम से कम एक कारीगर की हाज़री चुनें"); return; }
-  const saved = [], skipped = [];
+  const saved = [], skipped = [], savedItems = [];
   chosen.forEach(([id, s], i) => {
     const days = s.days != null ? s.days : 0;
     const sameDay = Object.values(ents).filter((e) => e.date === date && e.labourId === id);
@@ -6883,7 +6937,9 @@ function saveBulkHazri() {
       note: "", ts: Date.now()
     });
     saved.push(labs[id].name);
+    savedItems.push({ id, days, withdraw: parseFloat(s.withdraw || 0) || 0, siteName: site && sites[site] ? sites[site].house : "" });
   });
+  if (savedItems.length) showHazriHisab(savedItems, date);
   const msg = document.getElementById("bhMsg");
   msg.style.color = skipped.length ? "#B45309" : "#16A34A";
   msg.innerHTML = `✅ ${saved.length} कारीगर की हाज़री सेव हुई` + (skipped.length ? `<br>⚠️ छोड़े गए: ${skipped.map(mEsc).join(", ")}` : "");
