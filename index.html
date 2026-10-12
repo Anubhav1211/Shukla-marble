@@ -1515,24 +1515,11 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
         <input id="xMonth" type="month" class="input" style="width: auto; margin: 0; padding: 6px 10px;" onchange="renderExpenses()">
       </div>
 
-      <!-- Bento Overview of Expenses -->
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;">
-        <div style="background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 8px; border-radius: 16px; text-align: center;">
-          <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च</small><br>
-          <b id="xTotAmt" style="font-size: 20px; color: #F87171;">₹0</b>
-        </div>
-        <div style="background: #FEF3C7; padding: 14px 8px; border-radius: 16px; text-align: center; border: 1.5px solid #FCD34D;">
-          <small style="color: #92400E; font-weight: 700;">⛽ पेट्रोल / डीजल</small><br>
-          <b id="xPetrolAmt" style="color: #B45309; font-size: 18px;">₹0</b>
-        </div>
-        <div style="background: #DCFCE7; padding: 12px 8px; border-radius: 16px; text-align: center; border: 1.5px solid #BBF7D0;">
-          <small style="color: #166534; font-weight: 700;">🛠️ मशीन & टूल्स</small><br>
-          <b id="xToolsAmt" style="color: #15803D; font-size: 16px;">₹0</b>
-        </div>
-        <div style="background: #EEF2FF; padding: 12px 8px; border-radius: 16px; text-align: center; border: 1.5px solid #C7D2FE;">
-          <small style="color: #3730A3; font-weight: 700;">📱 रिचार्ज & अन्य</small><br>
-          <b id="xOtherAmt" style="color: #4338CA; font-size: 16px;">₹0</b>
-        </div>
+      <!-- Total expense (tap -> category wise popup) -->
+      <div onclick="showExpenseBreakdown()" style="margin-top: 14px; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 18px 12px; border-radius: 18px; text-align: center; cursor: pointer;">
+        <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च</small><br>
+        <b id="xTotAmt" style="font-size: 26px; color: #F87171;">₹0</b><br>
+        <small style="color: #94A3B8; font-size: 11px;">विवरण देखें ›</small>
       </div>
     </div>
 
@@ -1544,25 +1531,23 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
       <div id="addExpBox" style="display: none; margin-top: 12px;">
         <div style="display: flex; gap: 8px;">
           <input id="xDate" type="date" class="input" style="flex: 1;">
-          <div style="display:flex; gap:6px; flex:1;">
-            <select id="xCat" class="input" style="flex:1;">
-              <option value="petrol">⛽ पेट्रोल / डीजल</option>
-              <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
-              <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
-              <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
-              <option value="food">☕ चाय / नाश्ता / खाना</option>
-              <option value="others">📦 अन्य विविध खर्च</option>
-            </select>
-            <button type="button" class="btn-sm" onclick="addExpenseCategory()" style="white-space:nowrap; background:#FEF3C7; color:#92400E; padding:8px 10px; font-weight:800;">＋ Category</button>
-          </div>
+          <input id="xAmt" type="number" class="input" placeholder="रकम ₹" style="flex: 1;">
         </div>
         <div style="display: flex; gap: 8px;">
-          <input id="xAmt" type="number" class="input" placeholder="रकम ₹" style="flex: 1;">
-          <select id="xPayMode" class="input" style="flex: 1;">
-            <option value="cash">💵 नकद (Cash)</option>
-            <option value="upi">📲 UPI / Online</option>
+          <select id="xCat" class="input" style="flex: 1;">
+            <option value="petrol">⛽ पेट्रोल / डीजल</option>
+            <option value="recharge">📱 मोबाइल / नेट रिचार्ज</option>
+            <option value="repair">🛠️ मशीन / कटर रिपेयर</option>
+            <option value="tools">🪚 औजार / ब्लेड / पत्ती खरीद</option>
+            <option value="food">☕ चाय / नाश्ता / खाना</option>
+            <option value="others">📦 अन्य विविध खर्च</option>
           </select>
+          <button type="button" onclick="addExpenseCategory()" title="नई Category जोड़ो" aria-label="नई Category जोड़ो" style="flex: 0 0 46px; align-self: stretch; margin-bottom: 10px; padding: 0; border: 0; border-radius: 14px; background: #FEF3C7; color: #92400E; font-size: 24px; font-weight: 800; line-height: 1; cursor: pointer;">+</button>
         </div>
+        <select id="xPayMode" class="input">
+          <option value="cash">💵 नकद (Cash)</option>
+          <option value="upi">📲 UPI / Online</option>
+        </select>
         <input id="xNote" class="input" placeholder="विवरण / नोट (उदा. मारुति वैन में पेट्रोल, 4 इंच ब्लेड)">
         <div id="xEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ खर्च एडिट हो रहा है</div>
         <button class="btn btn-gold" id="xSaveBtn" onclick="addExpense()">💾 खर्च दर्ज करें</button>
@@ -5070,6 +5055,20 @@ function deleteExpense(id) {
     db.ref("companies/" + company + "/expenses/" + id).remove();
   }
 }
+function showExpenseBreakdown() {
+  const mon = document.getElementById("xMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
+  const labels = Object.assign({}, DEFAULT_EXPENSE_CATEGORIES, expenseCategories || {});
+  const sums = {};
+  Object.values(expenses || {}).forEach((e) => {
+    if (!e || !e.date || !e.date.startsWith(mon)) return;
+    const name = labels[e.cat] || "\u{1F4E6} \u0905\u0928\u094D\u092F";
+    sums[name] = (sums[name] || 0) + (parseFloat(e.amt) || 0);
+  });
+  const rows = Object.entries(sums).map(([name, amount]) => ({ name, amount }));
+  const monthLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  showBreakdown("\u{1F4B8} \u0916\u0930\u094D\u091A \u0915\u093E \u0935\u093F\u0935\u0930\u0923 (Category wise)", monthLabel, rows);
+}
+window.showExpenseBreakdown = showExpenseBreakdown;
 function renderExpenses() {
   const monthInput = document.getElementById("xMonth");
   const curMonth = monthInput?.value || fmtLocalDate(new Date()).slice(0, 7);
