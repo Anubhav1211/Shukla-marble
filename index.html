@@ -3979,6 +3979,14 @@ function closeHazriHisab() {
 }
 window.closeHazriHisab = closeHazriHisab;
 function showHazriHisab(items, date) {
+  try {
+    return showHazriHisabInner(items, date);
+  } catch (e) {
+    console.error(e);
+    alert("\u0939\u093F\u0938\u093E\u092C popup error: " + (e && e.message ? e.message : e));
+  }
+}
+function showHazriHisabInner(items, date) {
   const mon = (date || "").slice(0, 7);
   const money = (n) => (n < 0 ? "\u2212" : "") + "\u20B9" + Math.abs(Math.round(n)).toLocaleString("en-IN");
   const dateStr = new Date(date + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "short", year: "numeric" });
