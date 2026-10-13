@@ -2551,6 +2551,27 @@ function calcSite(siteId) {
   const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
   return { cost, received, profit, profitPct, labourMap, prevCost, extraCost, materialCost };
 }
+function siteIdsByActivity() {
+  const last = {};
+  Object.values(ents).forEach((e) => {
+    if (!e || !e.siteId || !e.date || !(parseFloat(e.days || 0) > 0)) return;
+    const l = labs[e.labourId];
+    const cost = l ? parseFloat(e.days || 0) * entryRate(e, l) : 0;
+    const cur = last[e.siteId];
+    if (!cur || e.date > cur.date) last[e.siteId] = { date: e.date, cost };
+    else if (e.date === cur.date) cur.cost += cost;
+  });
+  return Object.keys(sites).sort((a, b) => {
+    const A = last[a], B = last[b];
+    if (A && !B) return -1;
+    if (!A && B) return 1;
+    if (A && B) {
+      if (A.date !== B.date) return B.date.localeCompare(A.date);
+      if (A.cost !== B.cost) return B.cost - A.cost;
+    }
+    return (sites[a].house || "").localeCompare(sites[b].house || "");
+  });
+}
 function showSiteDetail(siteId) {
   _currentSiteId = siteId;
   const s = sites[siteId];
@@ -3319,7 +3340,7 @@ function renderAll() {
   const selLabName2 = document.getElementById("selLabName2");
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
   let siteHtml = "";
-  Object.keys(sites).forEach((id) => {
+  siteIdsByActivity().forEach((id) => {
     const s = sites[id];
     if (siteSearchQ && !((s.house || "").toLowerCase().includes(siteSearchQ) || (s.client || "").toLowerCase().includes(siteSearchQ) || (s.address || "").toLowerCase().includes(siteSearchQ))) return;
     const sc = calcSite(id);
