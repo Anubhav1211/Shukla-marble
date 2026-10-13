@@ -2539,15 +2539,17 @@ function calcSite(siteId) {
   Object.values(sitePays).forEach((p) => {
     if (p.siteId === siteId) received += parseFloat(p.amount || 0);
   });
-  let prevCost = 0;
+  let prevCost = 0, extraCost = 0;
   Object.values(siteCosts).forEach((c) => {
-    if (c.siteId === siteId) prevCost += parseFloat(c.amount || 0);
+    if (c.siteId !== siteId) return;
+    if (c.extra) extraCost += parseFloat(c.amount || 0);
+    else prevCost += parseFloat(c.amount || 0);
   });
-  cost += prevCost;
+  cost += prevCost + extraCost;
   const materialCost = calcSiteMaterial(siteId);
   const profit = received - cost;
   const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
-  return { cost, received, profit, profitPct, labourMap, prevCost, materialCost };
+  return { cost, received, profit, profitPct, labourMap, prevCost, extraCost, materialCost };
 }
 function showSiteDetail(siteId) {
   _currentSiteId = siteId;
@@ -2628,7 +2630,7 @@ function showSiteDetail(siteId) {
       </div>
     </div>
   `;
-  const costs = Object.entries(siteCosts).filter(([_, c]) => c.siteId === siteId).sort((a, b) => (b[1].month || "").localeCompare(a[1].month || ""));
+  const costs = Object.entries(siteCosts).filter(([_, c]) => c.siteId === siteId && !c.extra).sort((a, b) => (b[1].month || "").localeCompare(a[1].month || ""));
   let costHtml = "";
   if (costs.length === 0) {
     costHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">कोई पिछली लागत नहीं जोड़ी</div>';
@@ -2654,6 +2656,38 @@ function showSiteDetail(siteId) {
           <span style="color:#B45309">₹${sc.prevCost.toLocaleString("en-IN")}</span>
         </div>
         ${costHtml}
+      </div>
+    </div>
+  `;
+  const extras = Object.entries(siteCosts).filter(([_, c]) => c.siteId === siteId && c.extra).sort((a, b) => (b[1].date || "").localeCompare(a[1].date || ""));
+  let extraHtml = "";
+  if (extras.length === 0) {
+    extraHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">कोई Extra खर्च नहीं जोड़ा</div>';
+  } else {
+    extraHtml = '<table style="margin-top:8px"><tr><th>तारीख</th><th>रकम</th><th>Note</th><th>X</th></tr>';
+    extras.forEach(([cid, c]) => {
+      const dTxt = c.date ? new Date(c.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-";
+      extraHtml += `<tr>
+        <td>${dTxt}</td>
+        <td style="color:#B91C1C;font-weight:800">₹${Number(c.amount || 0).toLocaleString("en-IN")}</td>
+        <td style="font-size:11px;text-align:left">${mEsc(c.note || "-")}</td>
+        <td><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deleteSiteCost('${cid}')">X</button></td>
+      </tr>`;
+    });
+    extraHtml += "</table>";
+  }
+  sumHtml += `
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <b>➕ Extra खर्च</b>
+        <button class="btn-sm" style="background:#B45309;color:white;padding:6px 12px" onclick="event.stopPropagation();openSiteExtra('${siteId}')">+ जोड़ो</button>
+      </div>
+      <div style="background:#FEF2F2;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #FECACA">
+        <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
+          <span>कुल ${extras.length} एंट्री</span>
+          <span style="color:#B91C1C">₹${sc.extraCost.toLocaleString("en-IN")}</span>
+        </div>
+        ${extraHtml}
       </div>
     </div>
   `;
@@ -3302,7 +3336,7 @@ function renderAll() {
         </div>
         <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
       </div>
     `;
   });
@@ -3330,7 +3364,7 @@ function renderAll() {
         </div>
         <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
       </div>
     `;
     if (isClosed) {
@@ -3937,7 +3971,7 @@ function addSiteCost() {
   });
 }
 function deleteSiteCost(cid) {
-  if (!confirm("ये पिछली लागत डिलीट करनी है?")) return;
+  if (!confirm("ये लागत / खर्च डिलीट करना है?")) return;
   db.ref("companies/" + company + "/siteCosts/" + cid).remove();
 }
 function showHazriPopup(labName, days, siteName, dateStr, withdraw, isDup = false) {
@@ -7061,7 +7095,7 @@ const PIN_PROTECTED_FNS = [
   "saveHazri", "deleteEntry", "saveAgreement", "deleteSavedAg", "addExpense", "deleteExpense",
   "addMatSection", "editMatSection", "deleteMatSection", "saveMatItem", "deleteMatItem",
   "saveMatEntry", "deleteMatEntry", "saveBulkHazri", "saveBulkMat", "bcAddEntry", "bcDeleteEntry", "whAdd", "whDelete",
-  "matPaymentAdd", "matPaymentDelete"
+  "matPaymentAdd", "matPaymentDelete", "addSiteExtra"
 ];
 function startAdminPinListener() {
   if (!db) return;
@@ -7414,6 +7448,42 @@ if (document.readyState === "loading") {
     try { name = (labs[lab] && labs[lab].name) ? labs[lab].name : ''; } catch (e) {}
     openMove({ title: '💸 दूसरी पेमेंट' + (name ? ' — ' + name : ''), box: true, region: () => [$('whBox')] }, []);
     setTimeout(() => { const a = $('whAmt'); if (a && cur) a.focus(); }, 150);
+  };
+
+  /* Har site ke liye Extra kharch popup */
+  window.openSiteExtra = function (siteId) {
+    if (cur) userClose();
+    let name = '';
+    try { name = (sites[siteId] && sites[siteId].house) ? sites[siteId].house : ''; } catch (e) {}
+    titleEl.textContent = '➕ Extra खर्च' + (name ? ' — ' + name : '');
+    bodyEl.innerHTML =
+      '<input id="seAmt" type="number" inputmode="decimal" class="input" placeholder="रकम ₹ (Extra खर्च)">' +
+      '<input id="seDate" type="date" class="input">' +
+      '<input id="seNote" class="input" placeholder="किस काम का खर्च? (उदा. ट्रांसपोर्ट, केमिकल, मज़दूरी)">' +
+      '<button type="button" class="btn btn-gold" id="seSave">💾 सेव करो</button>' +
+      '<button type="button" class="btn" id="seCancel" style="background:#F1F5F9;color:#64748B;margin-top:8px">Cancel</button>' +
+      '<div id="seMsg" style="margin-top:8px;text-align:center;font-size:12px;font-weight:700;color:#B91C1C"></div>';
+    $('seDate').value = fmtLocalDate(new Date());
+    $('seSave').addEventListener('click', () => window.addSiteExtra(siteId));
+    $('seCancel').addEventListener('click', () => userClose());
+    cur = { cfg: {}, recs: [], obs: null, timer: null };
+    show();
+    setTimeout(() => { const a = $('seAmt'); if (a && cur) a.focus(); }, 150);
+  };
+  window.addSiteExtra = function (siteId) {
+    const amt = parseFloat(($('seAmt') && $('seAmt').value) || '0');
+    const date = ($('seDate') && $('seDate').value) || '';
+    const note = (($('seNote') && $('seNote').value) || '').trim();
+    const msg = $('seMsg');
+    if (!siteId || !date || !amt || amt <= 0) { if (msg) msg.innerText = 'सही रकम और तारीख भरें'; return; }
+    const id = Date.now().toString();
+    db.ref('companies/' + company + '/siteCosts/' + id).set({ siteId, month: date.slice(0, 7), date, amount: amt, note, extra: true, ts: Date.now() }).then(() => {
+      finish();
+      try {
+        const sd = $('siteDetailOverlay');
+        if (sd && getComputedStyle(sd).display !== 'none' && typeof _currentSiteId !== 'undefined' && _currentSiteId) showSiteDetail(_currentSiteId);
+      } catch (e) {}
+    });
   };
 
   /* Har site card se "पैसा लिया" popup */
