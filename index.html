@@ -3368,7 +3368,7 @@ function renderAll() {
   const ongoingQ = (dashSearchOngoing?.value || "").toLowerCase();
   const closedQ = (dashSearchClosed?.value || "").toLowerCase();
   let ongoingHtml = "", closedHtml = "", ongoingCnt = 0, closedCnt = 0;
-  Object.keys(sites).forEach((id) => {
+  siteIdsByActivity().forEach((id) => {
     const s = sites[id];
     const sc = calcSite(id);
     const isClosed = (s.status || "").includes("\u092A\u0942\u0930\u093E");
