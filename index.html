@@ -1102,6 +1102,26 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 .sm-modal-enter{animation:smModal .3s cubic-bezier(.2,.8,.2,1)}@keyframes smModal{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
+
+/* Responsive amount visibility fix: show complete currency values on narrow phones */
+#kTot, #kDena, #kLena, #msEarn, #msPaid, #msOpeningLeft, #msRemaining,
+.sm-site-metric b, b[style*="text-overflow: ellipsis"] {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  max-width: 100% !important;
+  font-size: clamp(10px, 3.2vw, 15px) !important;
+  line-height: 1.35;
+}
+/* Keep metric cards narrow-screen friendly without clipping their contents */
+.sm-site-metric { min-width: 0; overflow: visible !important; }
+@media (max-width: 380px) {
+  #kTot, #kDena, #kLena, #msEarn, #msPaid, #msOpeningLeft, #msRemaining,
+  .sm-site-metric b { font-size: 10px !important; }
+}
+
 </style>
 </head>
 <body>
