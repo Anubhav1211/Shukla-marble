@@ -5458,6 +5458,51 @@ function renderPdfPreview() {
     </table>
   `;
 }
+function addCanvasToPdfSmart(pdf, canvas) {
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfPageH = pdf.internal.pageSize.getHeight();
+  const W = canvas.width, H = canvas.height;
+  const pagePx = Math.floor(W * pdfPageH / pdfWidth);
+  const ctx = canvas.getContext("2d");
+  // Is the 5-row band around y free of ink? strict = pure white gap, loose = no dark text pixels
+  const bandClean = (y, strict) => {
+    const top = Math.max(0, y - 2);
+    const rows = Math.min(5, H - top);
+    if (rows <= 0) return true;
+    const d = ctx.getImageData(0, top, W, rows).data;
+    const limit = strict ? 248 : 175;
+    for (let i = 0; i < d.length; i += 8) {
+      if ((d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) < limit) return false;
+    }
+    return true;
+  };
+  let y0 = 0, page = 0;
+  while (y0 < H) {
+    let y1 = Math.min(y0 + pagePx, H);
+    if (y1 < H) {
+      let cut = null;
+      try {
+        for (let y = y1; y >= y0 + Math.floor(pagePx * 0.75); y -= 2) { if (bandClean(y, true)) { cut = y; break; } }
+        if (!cut) for (let y = y1; y >= y0 + Math.floor(pagePx * 0.55); y -= 2) { if (bandClean(y, false)) { cut = y; break; } }
+      } catch (e) { cut = null; }
+      if (cut) y1 = cut;
+      if (H - y1 < 24) y1 = H;
+    }
+    const h = y1 - y0;
+    const pc = document.createElement("canvas");
+    pc.width = W;
+    pc.height = h;
+    const c2 = pc.getContext("2d");
+    c2.fillStyle = "#ffffff";
+    c2.fillRect(0, 0, W, h);
+    c2.drawImage(canvas, 0, y0, W, h, 0, 0, W, h);
+    if (page > 0) pdf.addPage();
+    pdf.addImage(pc.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, pdfWidth, h * pdfWidth / W);
+    y0 = y1;
+    page++;
+  }
+}
+window.addCanvasToPdfSmart = addCanvasToPdfSmart;
 async function downloadMonthlyPdf() {
   const el = document.getElementById("pdfPrintableArea");
   if (!el) {
@@ -5477,34 +5522,7 @@ async function downloadMonthlyPdf() {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfPageHeight = pdf.internal.pageSize.getHeight();
 
-    // Split the rendered canvas into real A4-sized slices. This prevents
-    // html2canvas content from being clipped or leaving large blank areas.
-    const pagePixelHeight = Math.floor(canvas.width * pdfPageHeight / pdfWidth);
-    let offsetY = 0;
-    let pageNo = 0;
-
-    while (offsetY < canvas.height) {
-      const sliceHeight = Math.min(pagePixelHeight, canvas.height - offsetY);
-      const pageCanvas = document.createElement("canvas");
-      pageCanvas.width = canvas.width;
-      pageCanvas.height = sliceHeight;
-      const ctx = pageCanvas.getContext("2d");
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-      ctx.drawImage(
-        canvas,
-        0, offsetY, canvas.width, sliceHeight,
-        0, 0, pageCanvas.width, pageCanvas.height
-      );
-
-      if (pageNo > 0) pdf.addPage();
-      const imgData = pageCanvas.toDataURL("image/jpeg", 0.95);
-      const slicePdfHeight = sliceHeight * pdfWidth / canvas.width;
-      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, slicePdfHeight);
-
-      offsetY += sliceHeight;
-      pageNo++;
-    }
+    addCanvasToPdfSmart(pdf, canvas);
 
     pdf.save(`Shukla_Marble_Monthly_Report_${mon}.pdf`);
   } catch (err) {
@@ -5530,21 +5548,9 @@ async function downloadRateCardPdf() {
       useCORS: true,
       backgroundColor: "#ffffff"
     });
-    const imgData = canvas.toDataURL("image/png");
     const pdf = getJsPdfInstance("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = canvas.height * pdfWidth / canvas.width;
-    let position = 0;
-    let heightLeft = pdfHeight;
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - pdfHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
-    }
+    addCanvasToPdfSmart(pdf, canvas);
     // ---- Page 2 onward: that month's attendance calendar for this labourer ----
     if (labId && labs[labId]) {
       const monLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
@@ -5592,21 +5598,8 @@ async function downloadAgreementPdf(id) {
       useCORS: true,
       backgroundColor: "#ffffff"
     });
-    const imgData = canvas.toDataURL("image/png");
     const pdf = getJsPdfInstance("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = canvas.height * pdfWidth / canvas.width;
-    let position = 0;
-    let heightLeft = pdfHeight;
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - pdfHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
-    }
+    addCanvasToPdfSmart(pdf, canvas);
     pdf.save(`Shukla_Marble_Agreement_${id}_${fmtLocalDate(new Date())}.pdf`);
   } catch (err) {
     console.error("Agreement PDF error:", err);
