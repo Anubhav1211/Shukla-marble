@@ -1103,25 +1103,8 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 
-/* Responsive amount visibility fix: show complete currency values on narrow phones */
-#kTot, #kDena, #kLena, #msEarn, #msPaid, #msOpeningLeft, #msRemaining,
-.sm-site-metric b, b[style*="text-overflow: ellipsis"] {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  overflow-wrap: anywhere !important;
-  word-break: normal !important;
-  max-width: 100% !important;
-  font-size: clamp(10px, 3.2vw, 15px) !important;
-  line-height: 1.35;
-}
-/* Keep metric cards narrow-screen friendly without clipping their contents */
-.sm-site-metric { min-width: 0; overflow: visible !important; }
-@media (max-width: 380px) {
-  #kTot, #kDena, #kLena, #msEarn, #msPaid, #msOpeningLeft, #msRemaining,
-  .sm-site-metric b { font-size: 10px !important; }
-}
-
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, canvas, svg, video { max-width: 100%; }
 </style>
 </head>
 <body>
@@ -7569,6 +7552,84 @@ if (document.readyState === "loading") {
     cur = { cfg: {}, recs: [], obs: null, timer: null };
     show();
   };
+})();
+</script>
+
+<script>
+/* ===== AUTO-FIT PACK: har phone ki screen ke hisab se numbers apne aap fit ho jayein ===== */
+(function () {
+  const MIN = 9;
+  const RX_NUM = /^[\s\u20B9\-\u2212+]*\d[\d,.]*\s*(%|\u0926\u093F\u0928)?$/;
+  let timer = null;
+  let obs = null;
+
+  function blockParent(el) {
+    let a = el.parentElement;
+    while (a && a !== document.body && getComputedStyle(a).display === 'inline') a = a.parentElement;
+    return a;
+  }
+  function contentBox(a) {
+    const r = a.getBoundingClientRect();
+    const cs = getComputedStyle(a);
+    return {
+      left: r.left + (parseFloat(cs.borderLeftWidth) || 0) + (parseFloat(cs.paddingLeft) || 0),
+      right: r.right - (parseFloat(cs.borderRightWidth) || 0) - (parseFloat(cs.paddingRight) || 0)
+    };
+  }
+  function overflows(el, pa) {
+    if (el.scrollWidth > el.clientWidth + 0.5 && el.clientWidth > 0) return true;
+    const r = el.getBoundingClientRect();
+    const pc = contentBox(pa);
+    return r.right > pc.right + 0.5 || r.left < pc.left - 0.5;
+  }
+  function isNumberish(txt) {
+    if (!txt || txt.length > 24 || !/\d/.test(txt)) return false;
+    if (RX_NUM.test(txt)) return true;
+    const words = txt.split(/\s+/).filter(Boolean).length;
+    return txt.indexOf('\u20B9') > -1 && words <= 3 && txt.length <= 22;
+  }
+  function run() {
+    if (obs) obs.disconnect();
+    try {
+      const list = document.body.querySelectorAll('b,strong,span,div,td,th,small,h1,h2,h3,h4,p,label,em,i');
+      for (let i = 0; i < list.length; i++) {
+        const el = list[i];
+        if (el.children.length) continue;
+        const txt = (el.textContent || '').trim();
+        if (!isNumberish(txt)) continue;
+        if (!el.getClientRects().length) continue;
+        const pa = blockParent(el);
+        if (!pa) continue;
+        const key = txt + '|' + Math.round(pa.clientWidth);
+        if (el.dataset.smk === key) continue;
+        if (!el.dataset.smBase) el.dataset.smBase = parseFloat(getComputedStyle(el).fontSize) || 14;
+        const base = parseFloat(el.dataset.smBase);
+        el.style.whiteSpace = 'nowrap';
+        el.style.flexShrink = '0';
+        el.style.fontSize = base + 'px';
+        let size = base, guard = 0;
+        while (size > MIN && overflows(el, pa) && guard++ < 30) {
+          size -= Math.max(0.5, size * 0.04);
+          el.style.fontSize = size.toFixed(1) + 'px';
+        }
+        el.dataset.smk = key;
+      }
+    } catch (e) { console.warn('autofit', e); }
+    if (obs) {
+      obs.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['style', 'class'] });
+    }
+  }
+  function schedule() {
+    clearTimeout(timer);
+    timer = setTimeout(run, 90);
+  }
+  obs = new MutationObserver(schedule);
+  window.smFitAll = run;
+  window.addEventListener('resize', schedule);
+  window.addEventListener('orientationchange', () => setTimeout(schedule, 250));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+  window.addEventListener('load', schedule);
+  schedule();
 })();
 </script>
 </body>
