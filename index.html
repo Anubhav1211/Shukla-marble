@@ -2014,6 +2014,24 @@ let editingSiteId = null;
 let efLabourId = null;
 let efField = null;
 let editingPayId = null;
+function smFixNums(obj, spec) {
+  const out = obj || {};
+  Object.values(out).forEach((r) => {
+    if (!r || typeof r !== "object") return;
+    for (const k in spec) {
+      const def = spec[k];
+      if (r[k] === undefined || r[k] === null || r[k] === "") {
+        if (def !== undefined) r[k] = def;
+        continue;
+      }
+      const n = typeof r[k] === "number" ? r[k] : parseFloat(r[k]);
+      if (isFinite(n)) r[k] = n;
+      else if (def !== undefined) r[k] = def;
+      else delete r[k];
+    }
+  });
+  return out;
+}
 function initFirebase() {
   if (window.firebase && !window.firebase.apps.length) {
     window.firebase.initializeApp(firebaseConfig);
@@ -2124,11 +2142,11 @@ function startListen() {
   if (!db) return;
   startAdminPinListener();
   db.ref("companies/" + company + "/labours").on("value", (s) => {
-    labs = s.val() || {};
+    labs = smFixNums(s.val(), { wage: undefined, rent: undefined, bijli: undefined, balance: undefined });
     renderAll();
   });
   db.ref("companies/" + company + "/entries").on("value", (s) => {
-    ents = s.val() || {};
+    ents = smFixNums(s.val(), { days: 0, withdraw: undefined, rate: undefined });
     renderAll();
   });
   db.ref("companies/" + company + "/labourMonthly").on("value", (s) => {
@@ -2142,7 +2160,7 @@ function startListen() {
     renderMaterial();
   });
   db.ref("companies/" + company + "/sitePayments").on("value", (s) => {
-    sitePays = s.val() || {};
+    sitePays = smFixNums(s.val(), { amount: 0 });
     renderAll();
     const ov = document.getElementById("siteDetailOverlay");
     if (_currentSiteId && ov && ov.style.display === "flex") {
@@ -2150,7 +2168,7 @@ function startListen() {
     }
   });
   db.ref("companies/" + company + "/siteCosts").on("value", (s) => {
-    siteCosts = s.val() || {};
+    siteCosts = smFixNums(s.val(), { amount: 0 });
     renderAll();
     const ov2 = document.getElementById("siteDetailOverlay");
     if (_currentSiteId && ov2 && ov2.style.display === "flex") {
@@ -2162,7 +2180,7 @@ function startListen() {
     renderSavedList();
   });
   db.ref("companies/" + company + "/expenses").on("value", (s) => {
-    expenses = s.val() || {};
+    expenses = smFixNums(s.val(), { amt: 0 });
     renderExpenses();
     renderAll();
   });
@@ -2172,11 +2190,11 @@ function startListen() {
     renderExpenses();
   });
   db.ref("companies/" + company + "/bijliBills").on("value", (s) => {
-    bijliBills = s.val() || {};
+    bijliBills = smFixNums(s.val(), { oldReading: undefined, newReading: undefined, rate: undefined, amount: undefined });
     bcRenderList();
   });
   db.ref("companies/" + company + "/withdrawals").on("value", (s) => {
-    withdrawals = s.val() || {};
+    withdrawals = smFixNums(s.val(), { amount: 0 });
     renderAll();
     whRenderList();
   });
@@ -2271,8 +2289,8 @@ function whRenderList() {
   list.innerHTML = rows.map(([wid, w]) => `
     <div style="display: flex; flex-wrap: wrap; row-gap: 6px; justify-content: space-between; align-items: center; padding: 9px 4px; border-bottom: 1px solid #F1F5F9;">
       <div style="flex: 1 1 120px; min-width: 0;">
-        <b style="font-size: 13px;">${labs[w.labourId]?.name || "?"}</b><br>
-        <small style="color: #64748B;">\u20B9${Number(w.amount || 0).toLocaleString("en-IN")}${w.note ? " \u2022 " + w.note : ""}</small>
+        <b style="font-size: 13px;">${mEsc(labs[w.labourId]?.name || "?")}</b><br>
+        <small style="color: #64748B;">\u20B9${Number(w.amount || 0).toLocaleString("en-IN")}${mEsc(w.note ? " \u2022 " + w.note : "")}</small>
       </div>
       <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 4px 9px; flex-shrink: 0; margin-left: auto;" onclick="whDelete('${wid}')">X</button>
     </div>`).join("");
@@ -2308,7 +2326,7 @@ function renderBcLabPicker() {
   window.bcSelectedLabIds = window.bcSelectedLabIds.filter((id) => activeIds.includes(id));
   box.innerHTML = activeIds.map((id) => {
     const sel = window.bcSelectedLabIds.includes(id);
-    return `<button type="button" onclick="bcToggleLab('${id}')" style="padding:7px 12px;border-radius:20px;border:1.5px solid ${sel ? "#4F46E5" : "#E2E8F0"};background:${sel ? "#EEF2FF" : "#fff"};color:${sel ? "#4338CA" : "#334155"};font-size:12.5px;font-weight:700;">${sel ? "\u2713 " : ""}${labs[id].name}</button>`;
+    return `<button type="button" onclick="bcToggleLab('${id}')" style="padding:7px 12px;border-radius:20px;border:1.5px solid ${sel ? "#4F46E5" : "#E2E8F0"};background:${sel ? "#EEF2FF" : "#fff"};color:${sel ? "#4338CA" : "#334155"};font-size:12.5px;font-weight:700;">${sel ? "\u2713 " : ""}${mEsc(labs[id].name)}</button>`;
   }).join("");
 }
 function bcToggleLab(id) {
@@ -2602,7 +2620,7 @@ function showSiteDetail(siteId) {
   `;
   const labourSummary = Object.values(sc.labourMap).map(
     (v) => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F1F5F9;font-size:13px">
-      <span>${v.name}</span><span><b>${v.days} \u0926\u093F\u0928</b></span>
+      <span>${mEsc(v.name)}</span><span><b>${v.days} \u0926\u093F\u0928</b></span>
     </div>`
   ).join("") || '<div style="color:#94A3B8;font-size:12px">\u0915\u094B\u0908 \u0928\u0939\u0940\u0902</div>';
   sumHtml += `
@@ -2628,7 +2646,7 @@ function showSiteDetail(siteId) {
             <div><b>${d}</b><div class="payment-timeline-date">${p.date || ""}</div></div>
             <div class="payment-timeline-amount">${profitUnlocked ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</div>
           </div>
-          <div class="payment-timeline-meta">${p.note ? `📝 ${p.note}` : "💳 Site payment received"}</div>
+          <div class="payment-timeline-meta">${mEsc(p.note ? `📝 ${p.note}` : "💳 Site payment received")}</div>
           <div class="payment-timeline-bottom">
             <span>Payment #${pays.length - idx}</span>
             <span>${profitUnlocked ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "Amount locked"}</span>
@@ -2665,7 +2683,7 @@ function showSiteDetail(siteId) {
       costHtml += `<tr>
         <td>${mTxt}</td>
         <td style="color:#B45309;font-weight:800">₹${Number(c.amount || 0).toLocaleString("en-IN")}</td>
-        <td style="font-size:11px;text-align:left">${c.note || "-"}</td>
+        <td style="font-size:11px;text-align:left">${mEsc(c.note || "-")}</td>
         <td><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deleteSiteCost('${cid}')">X</button></td>
       </tr>`;
     });
@@ -2752,9 +2770,9 @@ function showSiteDetail(siteId) {
         const d = new Date(e.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short" });
         html += `<tr>
           <td>${d}<br><small style="font-size:9px;color:#64748B">${e.date}</small></td>
-          <td style="text-align:left"><b>${l ? l.name : "?"}</b></td>
+          <td style="text-align:left"><b>${mEsc(l ? l.name : "?")}</b></td>
           <td>${e.days} \u0926\u093F\u0928<br><small style="color:#DC2626">\u20B9${e.withdraw || 0}</small></td>
-          <td style="font-size:10px;text-align:left">${e.note || "-"}</td>
+          <td style="font-size:10px;text-align:left">${mEsc(e.note || "-")}</td>
         </tr>`;
       });
       html += "</table>";
@@ -3109,8 +3127,8 @@ function renderAll() {
   let msEarnTotal = 0, msOpeningTotal = 0, msPaidTotal = 0, msOpeningLeftTotal = 0;
   Object.keys(sites).forEach((id) => {
     const s = sites[id];
-    if (eSiteSel) eSiteSel.innerHTML += `<option value="${id}">${s.house}</option>`;
-    if (spSiteSel) spSiteSel.innerHTML += `<option value="${id}">${s.house}</option>`;
+    if (eSiteSel) eSiteSel.innerHTML += `<option value="${id}">${mEsc(s.house)}</option>`;
+    if (spSiteSel) spSiteSel.innerHTML += `<option value="${id}">${mEsc(s.house)}</option>`;
   });
   const sortedLabIds = Object.keys(labs).sort((a, b) => {
     const na = (labs[a].name || "").toLowerCase();
@@ -3124,7 +3142,7 @@ function renderAll() {
   const whSel = document.getElementById("whLab");
   if (whSel) {
     const curWh = whSel.value;
-    whSel.innerHTML = '<option value="">\u{1F477} \u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u094B</option>' + activeIds.map((id) => `<option value="${id}">${labs[id].name}</option>`).join("");
+    whSel.innerHTML = '<option value="">\u{1F477} \u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u094B</option>' + activeIds.map((id) => `<option value="${id}">${mEsc(labs[id].name)}</option>`).join("");
     if (activeIds.includes(curWh)) whSel.value = curWh;
   }
   whRenderList();
@@ -3134,11 +3152,11 @@ function renderAll() {
   });
   filteredForDropdown.forEach((id) => {
     const l = labs[id];
-    if (eSel) eSel.innerHTML += `<option value="${id}">${l.name}</option>`;
+    if (eSel) eSel.innerHTML += `<option value="${id}">${mEsc(l.name)}</option>`;
   });
   sortedLabIds.forEach((id) => {
     const l = labs[id];
-    if (rSel) rSel.innerHTML += `<option value="${id}">${l.name}${l.archived ? " (Archived)" : ""}</option>`;
+    if (rSel) rSel.innerHTML += `<option value="${id}">${mEsc(l.name)}${l.archived ? " (Archived)" : ""}</option>`;
   });
   activeIds.forEach((id) => {
     const c = calcLabour(id, mon);
@@ -3201,8 +3219,8 @@ function renderAll() {
         <div style="display:flex;align-items:center;gap:11px;">
           <div style="width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#0F172A,#334155);color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;">${initials}</div>
           <div style="flex:1;min-width:0;">
-            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><b style="font-size:15px;color:#0F172A;">${l.name}</b><span style="font-size:9.5px;background:#ECFDF5;color:#047857;padding:4px 7px;border-radius:999px;font-weight:800;">ACTIVE</span></div>
-            <div style="font-size:10.5px;color:#64748B;margin-top:3px;">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन${l.phone ? " • " + l.phone : ""}</div>
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><b style="font-size:15px;color:#0F172A;">${mEsc(l.name)}</b><span style="font-size:9.5px;background:#ECFDF5;color:#047857;padding:4px 7px;border-radius:999px;font-weight:800;">ACTIVE</span></div>
+            <div style="font-size:10.5px;color:#64748B;margin-top:3px;">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन${mEsc(l.phone ? " • " + l.phone : "")}</div>
           </div>
           <div style="text-align:right;flex-shrink:0;"><div style="font-size:9.5px;color:#94A3B8;font-weight:700;">इस माह</div><b style="font-size:14px;color:${duePositive ? "#166534" : "#B91C1C"};">${duePositive ? "देना ₹"+c.net.toLocaleString("en-IN") : "लेना ₹"+Math.abs(c.net).toLocaleString("en-IN")}</b></div>
         </div>
@@ -3214,7 +3232,8 @@ function renderAll() {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;">
           <button class="btn-sm" style="background:#0F172A;color:white;padding:9px;border-radius:11px;font-weight:800;" onclick="openKarigarProfile('${id}')">👤 प्रोफाइल देखें</button>
           <button class="btn-sm" style="background:#EEF2FF;color:#3730A3;padding:9px;border-radius:11px;font-weight:800;" onclick="makeLabourReport('${id}')">📄 हिसाब देखें</button>
-          <button class="btn-sm" style="grid-column:1/-1;background:#F1F5F9;color:#475569;padding:9px;border-radius:11px;font-weight:800;" onclick="toggleArchive('${id}',true)">📦 Archive करो</button>
+          <button class="btn-sm" style="background:#FEF3C7;color:#92400E;padding:9px;border-radius:11px;font-weight:800;" onclick="editRent('${id}')">🏠 किराया${c.rent > 0 ? " ₹" + Math.round(c.rent).toLocaleString("en-IN") : " जोड़ो"}</button>
+          <button class="btn-sm" style="background:#F1F5F9;color:#475569;padding:9px;border-radius:11px;font-weight:800;" onclick="toggleArchive('${id}',true)">📦 Archive करो</button>
         </div>
       </div>
     `;
@@ -3231,7 +3250,7 @@ function renderAll() {
       archHtml += `
         <div class="archived-card" style="display:flex;justify-content:space-between;padding:14px;border-radius:16px;margin-bottom:10px">
           <div>
-            <b>${l.name}</b> <small style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px">Archived</small><br>
+            <b>${mEsc(l.name)}</b> <small style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px">Archived</small><br>
             <small style="color:#64748B">\u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")}</small>
           </div>
           <div style="text-align:right">
@@ -3281,16 +3300,16 @@ function renderAll() {
         return sum + (parseFloat(r[1].withdraw) || 0) + extraSum;
       }, 0);
       const shareIdx = window.__hazriShareData.length;
-      let shareMsg = `\u{1F3E0} *${g.name}*\n\u{1F4C5} ${todayDateForShare}\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
+      let shareMsg = `\u{1F3E0} *${mEsc(g.name)}*\n\u{1F4C5} ${todayDateForShare}\n\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n`;
       g.rows.forEach(([, e, l]) => {
         const daysNum = parseFloat(e.days || 0);
         const daysTxt = daysNum === 1 ? "P" : daysNum === 1.5 ? "P1/2" : daysNum === 2 ? "2P" : daysNum === 0.5 ? "P/2" : daysNum === 0 ? "A" : String(e.days);
-        shareMsg += `\u2022 ${l.name} \u2013 ${daysTxt}\n`;
+        shareMsg += `\u2022 ${mEsc(l.name)} \u2013 ${daysTxt}\n`;
       });
       window.__hazriShareData.push(shareMsg);
       tHtml += `<tr><td colspan="4" style="text-align:left;background:#EEF2FF;color:#3730A3;font-weight:800;font-size:12.5px;padding:8px 10px">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-          <span>\u{1F3E0} ${g.name} <span style="font-weight:700;font-size:11px;color:#64748B">\u2022 ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930 \u2022 ${totalDays} \u0926\u093F\u0928</span></span>
+          <span>\u{1F3E0} ${mEsc(g.name)} <span style="font-weight:700;font-size:11px;color:#64748B">\u2022 ${g.rows.length} \u0915\u093E\u0930\u0940\u0917\u0930 \u2022 ${totalDays} \u0926\u093F\u0928</span></span>
           <button class="btn-sm" style="background:#DCFCE7;color:#166534;flex-shrink:0" onclick="shareHazriToWhatsapp(${shareIdx})">\u{1F4E4} Share</button>
         </div>
       </td></tr>`;
@@ -3301,8 +3320,8 @@ function renderAll() {
           ? `<br><small style="color:#B45309;font-weight:700">+ Extra \u20B9${extraTotalRow.toLocaleString("en-IN")}</small>`
           : "";
         tHtml += `<tr>
-      <td style="text-align:left"><b>${l.name}</b></td>
-      <td style="font-size:10px;color:#64748B">${key === "__none__" ? "-" : g.name}</td>
+      <td style="text-align:left"><b>${mEsc(l.name)}</b></td>
+      <td style="font-size:10px;color:#64748B">${mEsc(key === "__none__" ? "-" : g.name)}</td>
       <td>${e.days} \u0926\u093F\u0928 <small style="color:#DC2626">\u20B9${e.withdraw || 0}</small>${extraRowHtml}</td>
       <td>
         <button class="btn-sm" onclick="editEntry('${eid}')">\u270F\uFE0F</button>
@@ -3326,7 +3345,7 @@ function renderAll() {
     if (missingIds.length === 0 && activeIds.length > 0) {
       missingBox.innerHTML = '<div style="background:#DCFCE7;border:1.5px solid #16a34a;padding:12px;border-radius:16px;text-align:center;font-weight:800;font-size:12.5px;color:#166534">\u2705 \u0938\u092C\u0915\u0940 \u0939\u093E\u091C\u093C\u0930\u0940 \u0939\u094B \u0917\u0908</div>';
     } else if (missingIds.length > 0) {
-      const chips = missingIds.map((id) => `<span class="missing-chip" onclick="quickSelectLabour('${id}')">${labs[id] ? labs[id].name : "?"}</span>`).join("");
+      const chips = missingIds.map((id) => `<span class="missing-chip" onclick="quickSelectLabour('${id}')">${mEsc(labs[id] ? labs[id].name : "?")}</span>`).join("");
       missingBox.innerHTML = `<div style="background:#FFFDF5;border:1.5px solid #F59E0B;padding:14px;border-radius:18px">
         <div style="font-weight:800;font-size:12.5px;margin-bottom:8px;color:#92400E">\u26A0\uFE0F \u091C\u093F\u0928\u0915\u0940 \u0939\u093E\u091C\u093C\u0930\u0940 \u092C\u093E\u0915\u0940 \u0939\u0948 (${missingIds.length}) - \u0915\u094D\u0932\u093F\u0915 \u0915\u0930\u0915\u0947 \u092D\u0930\u0947\u0902:</div>
         <div>${chips}</div>
@@ -3348,11 +3367,11 @@ function renderAll() {
     if (siteSearchQ && !((s.house || "").toLowerCase().includes(siteSearchQ) || (s.client || "").toLowerCase().includes(siteSearchQ) || (s.address || "").toLowerCase().includes(siteSearchQ))) return;
     const sc = calcSite(id);
     const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
-    const labourNames = Object.values(sc.labourMap).map((v) => `${v.name} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
+    const labourNames = Object.values(sc.labourMap).map((v) => `${mEsc(v.name)} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const isClosedS = (s.status || "").includes("\u092A\u0942\u0930\u093E");
     siteHtml += `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client ? s.client + " • " : ""}${s.address || ""}</div></div><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client ? s.client + " • " : "")}${mEsc(s.address || "")}</div></div><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
@@ -3377,10 +3396,10 @@ function renderAll() {
     const isClosed = (s.status || "").includes("\u092A\u0942\u0930\u093E");
     const searchIn = (s.house + " " + (s.client || "") + " " + (s.address || "")).toLowerCase();
     const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
-    const labourNames = Object.values(sc.labourMap).map((v) => `${v.name} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
+    const labourNames = Object.values(sc.labourMap).map((v) => `${mEsc(v.name)} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const cardHtml = `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${s.house}</div><div class="sm-site-client">${s.client || ""}${s.address ? " • " + s.address : ""}</div></div><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
@@ -3420,7 +3439,7 @@ function renderSiteCostSelect() {
   const cur = sel.value;
   let h = '<option value="">साइट चुनो</option>';
   Object.keys(sites).forEach((id) => {
-    h += `<option value="${id}">${sites[id].house}</option>`;
+    h += `<option value="${id}">${mEsc(sites[id].house)}</option>`;
   });
   sel.innerHTML = h;
   if (cur) sel.value = cur;
@@ -3495,7 +3514,7 @@ function renderRentBijliLists() {
   bijliRows.sort((a, b) => b.amount - a.amount);
   const rowHtml = (r, bg, fg) => `
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 4px; border-bottom: 1px solid #F8FAFC;">
-      <span style="font-size: 13px; font-weight: 600; color: #1E293B;">${r.name}</span>
+      <span style="font-size: 13px; font-weight: 600; color: #1E293B;">${mEsc(r.name)}</span>
       <div style="display: flex; align-items: center; gap: 8px;">
         <b style="font-size: 13.5px; color: ${fg};">\u20B9${r.amount.toLocaleString("en-IN")}</b>
         <button class="btn-sm" style="background: ${bg}; color: ${fg}; padding: 5px 9px;" onclick="editRentOrBijliFromList('${r.id}', '${bg === "#FEF3C7" ? "rent" : "bijli"}')">\u270F\uFE0F</button>
@@ -3598,7 +3617,7 @@ function showBreakdown(title, sub, rows) {
     total += r.amount;
     return `
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F8FAFC;">
-        <span style="font-size: 13px; font-weight: 600; color: #1E293B;">${r.name}</span>
+        <span style="font-size: 13px; font-weight: 600; color: #1E293B;">${mEsc(r.name)}</span>
         <b style="font-size: 13.5px; color: #0F172A; white-space: nowrap;">\u20B9${Math.round(r.amount).toLocaleString("en-IN")}</b>
       </div>`;
   }).join("") || '<div style="text-align:center;color:#94A3B8;font-size:12.5px;padding:20px 0;">\u0915\u094B\u0908 \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902</div>';
@@ -4319,8 +4338,8 @@ function renderKarigarProfile(){
     <div class="kp-hero">
       <button class="kp-close" onclick="closeKarigarProfile()">✕</button>
       <div class="kp-avatar">${initials}</div>
-      <div id="kpName" class="kp-name">${l.name}</div>
-      <div class="kp-sub">कारीगर प्रोफाइल ${l.phone?"• "+l.phone:""}</div>
+      <div id="kpName" class="kp-name">${mEsc(l.name)}</div>
+      <div class="kp-sub">कारीगर प्रोफाइल ${mEsc(l.phone?"• "+l.phone:"")}</div>
       <div class="kp-badges"><span class="kp-badge">${status}</span><span class="kp-badge">₹${Number(l.wage||0).toLocaleString("en-IN")}/दिन</span>${l.balance?`<span class="kp-badge">Opening ₹${Number(l.balance||0).toLocaleString("en-IN")}</span>`:""}</div>
     </div>
     <div class="kp-body">
@@ -4339,8 +4358,8 @@ function renderKarigarProfile(){
         <div class="kp-row"><span>बिजली</span><b>₹${Math.round(c.bijli+c.bijliCalc).toLocaleString("en-IN")}</b></div>
         <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
       </div></div>
-      <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${v.name}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
-      <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
+      <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${mEsc(v.name)}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
+      <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${mEsc(e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other")}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
     </div>`;
 }
@@ -4365,7 +4384,7 @@ function makeReport() {
       if (labs[id].archived) return;
       const c2 = calcLabour(id, mon);
       html += `<tr>
-        <td style="text-align:left"><b>${labs[id].name}</b></td>
+        <td style="text-align:left"><b>${mEsc(labs[id].name)}</b></td>
         <td style="color:${c2.net >= 0 ? "#166534" : "#DC2626"};font-weight:800">
           ${c2.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c2.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c2.net).toLocaleString("en-IN")}
         </td>
@@ -4416,13 +4435,13 @@ function makeReport() {
   const advHtml = advRows.map((r) => {
     const d = new Date(r.date).toLocaleDateString("hi-IN", { day: "numeric", month: "short" });
     return `<div class="rc-adv-item">
-      <span>\u2022 ${d} ${r.siteName ? '<span style="color:#64748B">(' + r.siteName + ")</span>" : r.note ? '<span style="color:#64748B">(' + r.note + ")</span>" : ""}</span>
+      <span>\u2022 ${d} ${r.siteName ? '<span style="color:#64748B">(' + mEsc(r.siteName) + ")</span>" : r.note ? '<span style="color:#64748B">(' + mEsc(r.note) + ")</span>" : ""}</span>
       <b>\u20B9${Number(r.amount || 0).toLocaleString("en-IN")}</b>
     </div>`;
   }).join("") || '<div style="font-size:11.5px;color:#94A3B8;padding:4px 0;font-style:italic">\u0907\u0938 \u092E\u093E\u0939 \u092E\u0947\u0902 \u0915\u094B\u0908 \u0928\u093F\u0915\u093E\u0938\u0940 \u0928\u0939\u0940\u0902</div>';
   const finalDena = totalEarn - totalAdv;
   const isPayable = finalDena >= 0;
-  const finalText = isPayable ? `${l.name} \u0915\u094B \u0926\u0947\u0928\u093E \u20B9${Math.abs(finalDena).toLocaleString("en-IN")}` : `${l.name} \u0938\u0947 \u0932\u0947\u0928\u093E \u20B9${Math.abs(finalDena).toLocaleString("en-IN")}`;
+  const finalText = isPayable ? `${mEsc(l.name)} \u0915\u094B \u0926\u0947\u0928\u093E \u20B9${Math.abs(finalDena).toLocaleString("en-IN")}` : `${mEsc(l.name)} \u0938\u0947 \u0932\u0947\u0928\u093E \u20B9${Math.abs(finalDena).toLocaleString("en-IN")}`;
   const monthName = new Date(year, month - 1, 1).toLocaleDateString("hi-IN", { month: "short" });
   const slipDate = (/* @__PURE__ */ new Date()).toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
   box.innerHTML = `
@@ -4443,8 +4462,8 @@ function makeReport() {
 
       <div class="rc-meta">
         <div>
-          <div class="rc-meta-worker">\u{1F477} ${l.name} ${l.archived ? '<span style="font-size:10px;background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px;margin-left:4px">Archived</span>' : '<span style="font-size:10px;background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:6px;margin-left:4px">Active</span>'}</div>
-          ${l.phone ? `<div style="font-size:11px;color:#64748B;margin-top:2px">\u{1F4F1} ${l.phone}</div>` : ""}
+          <div class="rc-meta-worker">\u{1F477} ${mEsc(l.name)} ${l.archived ? '<span style="font-size:10px;background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px;margin-left:4px">Archived</span>' : '<span style="font-size:10px;background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:6px;margin-left:4px">Active</span>'}</div>
+          ${l.phone ? `<div style="font-size:11px;color:#64748B;margin-top:2px">\u{1F4F1} ${mEsc(l.phone)}</div>` : ""}
         </div>
         <div class="rc-meta-period">
           <div><b>\u{1F4C5} 01 ${monthName} - ${totalDaysInMonth} ${monthName} ${year}</b></div>
@@ -4630,7 +4649,7 @@ function renderEditorItalian() {
   ed.innerHTML = "";
   italianData.forEach((sec, si) => {
     let html = `<div class="ag-edit-box">
-      <input class="input" value="${sec.title}" oninput="italianData[${si}].title=this.value;renderItalian()" placeholder="Section Title">
+      <input class="input" value="${mEsc(sec.title)}" oninput="italianData[${si}].title=this.value;renderItalian()" placeholder="Section Title">
       <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(${si})">\u274C Delete</button>`;
     if (sec.type === "dual") {
       ["left", "right"].forEach((side) => {
@@ -4691,7 +4710,7 @@ function renderItalian() {
   html += `</div></div>`;
   for (let i = 1; i < italianData.length; i++) {
     const sec = italianData[i];
-    html += `<div class="italian-sec-title">${sec.title}</div><div class="italian-col" style="border:0.5px solid #FCD34D">`;
+    html += `<div class="italian-sec-title">${mEsc(sec.title)}</div><div class="italian-col" style="border:0.5px solid #FCD34D">`;
     (sec.items || []).forEach((it) => {
       html += `<div class="italian-item"><span>\u2022 ${it.n}</span><span><b>${it.r}</b></span></div>`;
     });
@@ -4779,7 +4798,7 @@ function renderEditorTile() {
   ed.innerHTML = "";
   tileData.forEach((sec, si) => {
     let html = `<div class="ag-edit-box">
-      <input class="input" value="${sec.title}" oninput="tileData[${si}].title=this.value;renderTile()" placeholder="Section Title">
+      <input class="input" value="${mEsc(sec.title)}" oninput="tileData[${si}].title=this.value;renderTile()" placeholder="Section Title">
       <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(${si})">\u274C Delete</button>`;
     sec.items.forEach((it, ii) => {
       html += `<div class="ag-item-row">
@@ -4816,7 +4835,7 @@ function renderTile() {
     html += `
       <div class="tile-sec">
         <div class="tile-sec-h">
-          <i>${icons[idx] || "\u2022"}</i> ${sec.title}
+          <i>${icons[idx] || "\u2022"}</i> ${mEsc(sec.title)}
         </div>
         <div class="tile-sec-b">
     `;
@@ -4941,7 +4960,7 @@ function renderSavedList() {
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div>
             <b>${badge} - ${siteTxt}</b><br>
-            <small style="color:#64748B">${d} ${ag.client ? "- " + ag.client : ""} ${ag.phone ? "- " + ag.phone : ""} ${ag.mob ? "- " + ag.mob : ""}</small>
+            <small style="color:#64748B">${d} ${mEsc(ag.client ? "- " + ag.client : "")} ${mEsc(ag.phone ? "- " + ag.phone : "")} ${ag.mob ? "- " + ag.mob : ""}</small>
           </div>
           <div style="display:flex;gap:4px;flex-wrap:wrap">
             <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF" onclick="editSavedAg('${aid}')">Edit</button>
@@ -5226,7 +5245,7 @@ function renderExpenses() {
   };
   Object.entries(expenseCategories || {}).forEach(([id, label]) => { catNames[id] = { label, cls: "exp-others" }; });
   const filtered = monthExps.filter(([_, exp]) => {
-    const str = `${exp.note || ""} ${exp.cat || ""} ${exp.payMode || ""}`.toLowerCase();
+    const str = `${mEsc(exp.note || "")} ${exp.cat || ""} ${exp.payMode || ""}`.toLowerCase();
     return !q || str.includes(q);
   });
   if (filtered.length === 0) {
@@ -5242,12 +5261,12 @@ function renderExpenses() {
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border: 1px solid #EEF2FF; border-radius: 14px; margin-bottom: 8px; background: #FBFDFF;">
         <div>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="exp-badge ${catInfo.cls}">${catInfo.label}</span>
+            <span class="exp-badge ${catInfo.cls}">${mEsc(catInfo.label)}</span>
             <small style="color: #64748B;">${d}</small>
             <small style="background: #F1F5F9; padding: 2px 6px; border-radius: 6px; font-size: 10px;">${payModeTxt}</small>
           </div>
           <div style="font-size: 12px; color: #1E293B; margin-top: 4px; font-weight: 600;">
-            ${exp.note || "\u0915\u094B\u0908 \u0935\u093F\u0935\u0930\u0923 \u0928\u0939\u0940\u0902"}
+            ${mEsc(exp.note || "\u0915\u094B\u0908 \u0935\u093F\u0935\u0930\u0923 \u0928\u0939\u0940\u0902")}
           </div>
         </div>
         <div style="text-align: right; display: flex; align-items: center; gap: 8px;">
@@ -5293,7 +5312,7 @@ function renderPdfPreview() {
     if (c.net >= 0) td += c.net;
     else tl += Math.abs(c.net);
     labourRows += `<tr>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${l.name}</b> (${l.phone || "-"})</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${mEsc(l.name)}</b> (${mEsc(l.phone || "-")})</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">\u20B9${l.wage}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${c.days}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">\u20B9${c.earn}</td>
@@ -5311,7 +5330,7 @@ function renderPdfPreview() {
     totSiteRecv += sc.received;
     totProfit += sc.profit;
     siteRows += `<tr>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${s.house}</b> - ${s.client || ""}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${mEsc(s.house)}</b> - ${mEsc(s.client || "")}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${(s.status || "").includes("\u092A\u0942\u0930\u093E") ? "Archived" : (s.status || "\u091A\u0932 \u0930\u0939\u093E")}</td>
       <td style="padding: 6px; color: #B45309; border: 1px solid #CBD5E1;">\u20B9${sc.cost.toLocaleString("en-IN")}</td>
       <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${profitUnlocked ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `🔒`}</td>
@@ -5326,7 +5345,7 @@ function renderPdfPreview() {
     expRows += `<tr>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${exp.date}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${exp.cat}</td>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${exp.note || "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${mEsc(exp.note || "-")}</td>
       <td style="padding: 6px; color: #DC2626; font-weight: 700; border: 1px solid #CBD5E1;">\u20B9${Number(exp.amt).toLocaleString("en-IN")}</td>
     </tr>`;
   });
@@ -5338,11 +5357,11 @@ function renderPdfPreview() {
     const dTxt = new Date(e.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short" });
     entryRows += `<tr>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${dTxt}</td>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${l ? l.name : "?"}</td>
-      <td style="padding: 6px; border: 1px solid #CBD5E1;">${s ? s.house : "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${mEsc(l ? l.name : "?")}</td>
+      <td style="padding: 6px; border: 1px solid #CBD5E1;">${mEsc(s ? s.house : "-")}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${e.days}</td>
       <td style="padding: 6px; color: #DC2626; border: 1px solid #CBD5E1;">\u20B9${Number(e.withdraw || 0).toLocaleString("en-IN")}</td>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1; font-size: 10px;">${e.note || "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1; font-size: 10px;">${mEsc(e.note || "-")}</td>
     </tr>`;
   });
   let totPayRecv = 0;
@@ -5354,9 +5373,9 @@ function renderPdfPreview() {
     const dTxt = p.date ? new Date(p.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short" }) : "-";
     payRows += `<tr>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${dTxt}</td>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${s ? s.house : "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${mEsc(s ? s.house : "-")}</td>
       <td style="padding: 6px; color: #166534; font-weight: 800; border: 1px solid #CBD5E1;">\u20B9${Number(p.amount || 0).toLocaleString("en-IN")}</td>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1; font-size: 10px;">${p.note || "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1; font-size: 10px;">${mEsc(p.note || "-")}</td>
     </tr>`;
   });
   let totPrevCost = 0;
@@ -5366,9 +5385,9 @@ function renderPdfPreview() {
     totPrevCost += parseFloat(c.amount || 0);
     const s = sites[c.siteId];
     costRows += `<tr>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${s ? s.house : "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;">${mEsc(s ? s.house : "-")}</td>
       <td style="padding: 6px; color: #B45309; font-weight: 800; border: 1px solid #CBD5E1;">\u20B9${Number(c.amount || 0).toLocaleString("en-IN")}</td>
-      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1; font-size: 10px;">${c.note || "-"}</td>
+      <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1; font-size: 10px;">${mEsc(c.note || "-")}</td>
     </tr>`;
   });
   reportContent.innerHTML = `
@@ -5784,7 +5803,7 @@ async function downloadJsonBackup() {
     const blob = new Blob([JSON.stringify({version:1,timestamp:Date.now(),data:data},null,2)], {type:"application/json"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "Shukla-Marble-Auto-Backup-" + new Date().toISOString().slice(0,10) + ".json";
+    a.download = "Shukla-Marble-Auto-Backup-" + fmtLocalDate(new Date()) + ".json";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   } catch(e) { alert("❌ Backup file नहीं बन पाई।"); }
@@ -6205,7 +6224,7 @@ function matPaymentShareWhatsapp() {
   if (rows.length) {
     msg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u092A\u0947\u092E\u0947\u0902\u091F \u0939\u093F\u0938\u094D\u091F\u094D\u0930\u0940:\n`;
     rows.forEach((p) => {
-      msg += `\u2022 ${p.date}: ${mRs(p.amount)}${p.note ? " (" + p.note + ")" : ""}\n`;
+      msg += `\u2022 ${p.date}: ${mRs(p.amount)}${mEsc(p.note ? " (" + p.note + ")" : "")}\n`;
     });
   }
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
@@ -7630,6 +7649,24 @@ if (document.readyState === "loading") {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
   window.addEventListener('load', schedule);
   schedule();
+})();
+</script>
+
+<script>
+/* ===== DOUBLE-TAP GUARD: dobara tap se duplicate entry na bane ===== */
+(function () {
+  const NAMES = ["addLabour", "addSite", "addSitePayment", "addSiteCost", "saveHazri", "saveBulkHazri", "addExpense", "saveMatItem", "saveMatEntry", "saveBulkMat", "bcAddEntry", "whAdd", "matPaymentAdd", "addSiteExtra", "addMatSection"];
+  const last = {};
+  NAMES.forEach((n) => {
+    const f = window[n];
+    if (typeof f !== "function") return;
+    window[n] = function () {
+      const now = Date.now();
+      if (last[n] && now - last[n] < 900) return;
+      last[n] = now;
+      return f.apply(this, arguments);
+    };
+  });
 })();
 </script>
 </body>
