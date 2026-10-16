@@ -1105,6 +1105,17 @@ body.sm-page-out{animation:smPageOut .16s ease both}.sm-page-in{animation:smPage
 
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 img, canvas, svg, video { max-width: 100%; }
+
+.tg-row { display: grid; gap: 8px; }
+.tg-row.c3 { grid-template-columns: repeat(3, 1fr); }
+.tg-row.c2 { grid-template-columns: repeat(2, 1fr); }
+.tg-btn { border: 0; border-radius: 14px; padding: 10px 6px; font-weight: 800; font-size: 12px; line-height: 1.25; color: #fff; cursor: pointer; min-height: 46px; display: flex; align-items: center; justify-content: center; text-align: center; }
+.tg-btn.gold { background: linear-gradient(135deg, #D4AF55, #AD832E); color: #1a1405; }
+.tg-btn.dark { background: #0F172A; }
+.tg-btn.brown { background: #B45309; }
+.tg-btn.on { box-shadow: 0 0 0 3px rgba(173, 131, 46, 0.4); }
+.tg-card { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; margin: 8px 14px !important; }
+.tg-card > div[id] { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 14px; margin-top: 8px !important; box-shadow: 0 2px 10px rgba(21, 23, 28, 0.04); }
 </style>
 </head>
 <body>
@@ -1224,9 +1235,10 @@ img, canvas, svg, video { max-width: 100%; }
   <!-- TAB 2: SITES -->
   <div id="t-s" style="display: none;">
     <div class="card">
-      <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" id="addSiteToggleBtn" onclick="toggleBox('addSiteBox2')">
-        <span id="addSiteToggleTxt">🏠 नई साइट जोड़ो</span><span>▼</span>
-      </button>
+      <div class="tg-row c2">
+        <button type="button" class="tg-btn dark" id="addSiteToggleBtn" data-box="addSiteBox2" onclick="toggleBoxX('addSiteBox2')"><span id="addSiteToggleTxt">🏠 नई साइट जोड़ो</span></button>
+        <button type="button" class="tg-btn brown" data-box="addCostBox2" onclick="toggleBoxX('addCostBox2')">🧾 पिछली लागत जोड़ो</button>
+      </div>
       <div id="addSiteBox2" style="display: none; margin-top: 12px;">
         <input id="sHouse" class="input" placeholder="House No">
         <input id="sAddress" class="input" placeholder="पता / लोकेशन">
@@ -1237,6 +1249,16 @@ img, canvas, svg, video { max-width: 100%; }
         </select>
         <button class="btn btn-gold" id="siteSaveBtn" onclick="addSite()">+ साइट जोड़ो</button>
         <button class="btn" id="siteCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelSiteEdit()">Cancel</button>
+      </div>
+      <div id="addCostBox2" style="display: none; margin-top: 12px;">
+        <select id="scSite" class="input"></select>
+        <div style="display: flex; gap: 8px;">
+          <input id="scMonth" type="month" class="input">
+          <input id="scAmt" type="number" class="input" placeholder="लागत ₹">
+        </div>
+        <input id="scNote" class="input" placeholder="Note / टिप्पणी (जैसे: पुराना हिसाब)">
+        <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
+        <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
     </div>
 
@@ -1253,21 +1275,6 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
     </div>
 
-    <div class="card">
-      <button class="btn" style="background: #B45309; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('addCostBox2')">
-        <span>🧾 पिछली लागत जोड़ो (Month Wise)</span><span>▼</span>
-      </button>
-      <div id="addCostBox2" style="display: none; margin-top: 12px;">
-        <select id="scSite" class="input"></select>
-        <div style="display: flex; gap: 8px;">
-          <input id="scMonth" type="month" class="input">
-          <input id="scAmt" type="number" class="input" placeholder="लागत ₹">
-        </div>
-        <input id="scNote" class="input" placeholder="Note / टिप्पणी (जैसे: पुराना हिसाब)">
-        <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
-        <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
-      </div>
-    </div>
 
     <div class="card">
       <h3 style="margin-top: 0; font-size: 15px;">📊 साइट वाइज रिकॉर्ड</h3>
@@ -1278,11 +1285,13 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- TAB 3: LABOURS -->
   <div id="t-l" style="display: none;">
-    <!-- Add Labour Quick Box -->
+    <!-- Kaarigar quick actions (one compact row) -->
     <div class="card">
-      <button class="btn btn-gold" onclick="toggleBox('addLabourBoxMain')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>+ नया कारीगर जोड़ो</span><span>▼</span>
-      </button>
+      <div class="tg-row c3">
+        <button type="button" class="tg-btn gold" data-box="addLabourBoxMain" onclick="toggleBoxX('addLabourBoxMain')">➕ नया कारीगर</button>
+        <button type="button" class="tg-btn gold" data-box="rbListBox" onclick="toggleBoxX('rbListBox'); renderRentBijliLists();">🏠⚡ किराया / बिजली</button>
+        <button type="button" class="tg-btn gold" data-box="bijliCalcBox" onclick="toggleBoxX('bijliCalcBox')">⚡ बिजली कैलकुलेटर</button>
+      </div>
       <div id="addLabourBoxMain" style="display: none; margin-top: 12px;">
         <input id="fName" class="input" placeholder="कारीगर का नाम">
         <input id="fPhone" class="input" placeholder="मोबाइल नंबर">
@@ -1298,13 +1307,6 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-gold" onclick="addLabour()">कारीगर जोड़ो</button>
         <div id="addMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
-    </div>
-
-    <!-- Rent / Bijli overview — kiska kitna kiराya/bijli laga hai, usी mahine ka -->
-    <div class="card" style="border: 2px solid #E8D5A6;">
-      <button class="btn btn-gold" onclick="toggleBox('rbListBox'); renderRentBijliLists();" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>🏠⚡ किराया / बिजली — किसकी कितनी है</span><span>▼</span>
-      </button>
       <div id="rbListBox" style="display: none; margin-top: 14px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">ऊपर कारीगर tab के महीना-बटन से जुड़ा है — उसी महीने की लिस्ट दिखेगी</div>
 
@@ -1316,14 +1318,6 @@ img, canvas, svg, video { max-width: 100%; }
         <div id="bijliList"></div>
         <div id="bijliEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 10px 0;">इस महीने किसी की बिजली नहीं जोड़ी</div>
       </div>
-    </div>
-
-
-    <!-- Bijli Bill Calculator -->
-    <div class="card" style="border: 2px solid #FCD34D;">
-      <button class="btn btn-gold" onclick="toggleBox('bijliCalcBox')" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>⚡ बिजली बिल कैलकुलेटर (मीटर रीडिंग से)</span><span>▼</span>
-      </button>
       <div id="bijliCalcBox" style="display: none; margin-top: 12px; overflow: hidden;">
         <input id="bcMonth" type="month" class="input" style="max-width: 100%; box-sizing: border-box;" onchange="bcRenderList()">
         <div style="font-size: 11px; font-weight: 700; color: #64748B; margin: 2px 0 6px 2px;">कारीगर चुनो <span style="font-weight: 500;">(एक से ज़्यादा चुनोगे तो बिल बराबर बंट जाएगा)</span></div>
@@ -1423,7 +1417,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- BULK HAZRI -->
-    <div class="card" style="border: 2px solid #E8D5A6;">
+    <div class="card tg-card">
       <button class="btn" style="background: linear-gradient(135deg, #21242C, #15171C); display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bhBox'); renderBulkHazri(true);">
         <span>👥 सबकी हाज़री एक साथ</span><span>▼</span>
       </button>
@@ -1470,14 +1464,6 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="calendarMonthLabel" style="text-align:center;font-size:12px;font-weight:800;color:#334155;background:#F8FAFC;border-radius:10px;padding:7px;margin-bottom:9px;"></div>
       <div id="calendarLabourNames" class="calendar-labour-names"></div>
       <div id="calendarSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;"></div>
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center;">
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DCFCE7; border-color: #16A34A;"></span>हाज़िर 1P</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEF3C7; border-color: #F59E0B;"></span>आधा 0.5</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #F3E8FF; border-color: #A855F7;"></span>डेढ़ 1.5</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #DBEAFE; border-color: #2563EB;"></span>डबल 2P</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FEE2E2; border-color: #EF4444;"></span>छुट्टी A</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px;"><span class="legend-box" style="background: #FFFFFF; border: 1.5px dashed #CBD5E1;"></span>भविष्य</span>
-      </div>
       <div id="calendarBox"></div>
     </div>
   </div>
@@ -1523,7 +1509,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- Add New Expense Form -->
-    <div class="card">
+    <div class="card tg-card">
       <button class="btn btn-gold" onclick="toggleBox('addExpBox')" style="display: flex; justify-content: space-between; align-items: center;">
         <span>+ नया व्यापार खर्च जोड़ें</span><span>▼</span>
       </button>
@@ -1631,7 +1617,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- Item Master -->
-    <div class="card">
+    <div class="card tg-card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('mItemBox')">
         <span>📦 मटेरियल आइटम व रेट (एक बार सेव करें)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0</span>
       </button>
@@ -1681,7 +1667,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- BULK MATERIAL -->
-    <div class="card" style="border: 2px solid #E8D5A6;">
+    <div class="card tg-card">
       <button class="btn" style="background: linear-gradient(135deg, #21242C, #15171C); display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bmBox'); renderBulkMat(true);">
         <span>📦 एक साथ कई मटेरियल</span><span>▼</span>
       </button>
@@ -2046,6 +2032,17 @@ function toggleBox(id) {
   const d = el.style.display;
   el.style.display = d === "none" || d === "" ? "block" : "none";
 }
+function toggleBoxX(id) {
+  const btn = document.querySelector('.tg-btn[data-box="' + id + '"]');
+  const row = btn ? btn.closest(".tg-row") : null;
+  const ids = row ? [...row.querySelectorAll(".tg-btn")].map((b) => b.dataset.box) : [id];
+  const el = document.getElementById(id);
+  const willOpen = !!el && (el.style.display === "none" || el.style.display === "");
+  ids.forEach((g) => { const e = document.getElementById(g); if (e && g !== id) e.style.display = "none"; });
+  if (el) el.style.display = willOpen ? "block" : "none";
+  if (row) ids.forEach((g) => { const b = row.querySelector('.tg-btn[data-box="' + g + '"]'); const e = document.getElementById(g); if (b) b.classList.toggle("on", !!e && e.style.display === "block"); });
+}
+window.toggleBoxX = toggleBoxX;
 function showTab(id) {
   document.querySelectorAll("[id^=t-]").forEach((e) => e.style.display = "none");
   const target = document.getElementById("t-" + id);
@@ -3225,11 +3222,10 @@ function renderAll() {
           <div style="background:#EFF6FF;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">कमाई</small><br><b style="font-size:13px;color:#1D4ED8;">₹${Math.round(c.earn).toLocaleString("en-IN")}</b></div>
           <div style="background:#FFF9EA;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">भुगतान</small><br><b style="font-size:13px;color:#92400E;">₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:7px;margin-top:9px;">
           <button class="btn-sm" style="background:#0F172A;color:white;padding:9px;border-radius:11px;font-weight:800;" onclick="openKarigarProfile('${id}')">👤 प्रोफाइल देखें</button>
           <button class="btn-sm" style="background:#EEF2FF;color:#3730A3;padding:9px;border-radius:11px;font-weight:800;" onclick="makeLabourReport('${id}')">📄 हिसाब देखें</button>
-          <button class="btn-sm" style="background:#FEF3C7;color:#92400E;padding:9px;border-radius:11px;font-weight:800;" onclick="editRent('${id}')">🏠 किराया${c.rent > 0 ? " ₹" + Math.round(c.rent).toLocaleString("en-IN") : " जोड़ो"}</button>
-          <button class="btn-sm" style="background:#F1F5F9;color:#475569;padding:9px;border-radius:11px;font-weight:800;" onclick="toggleArchive('${id}',true)">📦 Archive करो</button>
+          <button class="btn-sm" style="background:#F1F5F9;color:#334155;padding:9px 14px;border-radius:11px;font-weight:800;" onclick="openLabMenu('${id}')">⋯</button>
         </div>
       </div>
     `;
@@ -3367,15 +3363,15 @@ function renderAll() {
     const isClosedS = (s.status || "").includes("\u092A\u0942\u0930\u093E");
     siteHtml += `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client ? s.client + " • " : "")}${mEsc(s.address || "")}</div></div><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client ? s.client + " • " : "")}${mEsc(s.address || "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
           ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
-        <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
-        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosedS ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}<button class="btn-sm" style="background:#fee2e2;color:#991b1b;padding:8px 13px" onclick="deleteSite('${id}')">Delete</button></div>
+        ${profitUnlocked ? `<div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
+        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>` : ""}
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
       </div>
     `;
   });
@@ -3395,15 +3391,15 @@ function renderAll() {
     const labourNames = Object.values(sc.labourMap).map((v) => `${mEsc(v.name)} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
     const cardHtml = `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',0)" aria-label="और विकल्प">⋯</button></span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
           ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
         </div>
-        <div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
-        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button><button class="btn-sm" style="background:#e0edff;color:#1e40af;padding:8px 13px" onclick="editSite('${id}')">✏️ Edit</button>${isClosed ? `<button class="btn-sm" style="background:#dcfce7;color:#166534;padding:8px 13px" onclick="toggleSiteStatus('${id}',false)">🟢 चालू करो</button>` : `<button class="btn-sm" style="background:#f1f5f9;color:#475569;padding:8px 13px" onclick="toggleSiteStatus('${id}',true)">📦 Archive</button>`}</div>
+        ${profitUnlocked ? `<div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
+        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>` : ""}
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
       </div>
     `;
     if (isClosed) {
@@ -3424,6 +3420,12 @@ function renderAll() {
   if (oc) oc.innerText = ongoingCnt + " Sites";
   const cc = document.getElementById("closedCount");
   if (cc) cc.innerText = closedCnt + " Sites";
+  const _ongTotal = Object.values(sites).filter((x) => !((x.status || "").includes("\u092A\u0942\u0930\u093E"))).length;
+  const _clTotal = Object.keys(sites).length - _ongTotal;
+  if (dashSearchOngoing) dashSearchOngoing.style.display = (_ongTotal > 5 || ongoingQ) ? "" : "none";
+  if (dashSearchClosed) dashSearchClosed.style.display = (_clTotal > 5 || closedQ) ? "" : "none";
+  const _closedCard = document.getElementById("closedList") ? document.getElementById("closedList").closest(".card") : null;
+  if (_closedCard) _closedCard.style.display = (_clTotal > 0 || closedQ) ? "" : "none";
   renderSiteCostSelect();
   renderCalendar();
   updateDupInfo();
@@ -5254,22 +5256,19 @@ function renderExpenses() {
     const d = new Date(exp.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short" });
     const payModeTxt = exp.payMode === "upi" ? "\u{1F4F2} UPI" : "\u{1F4B5} Cash";
     html += `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border: 1px solid #EEF2FF; border-radius: 14px; margin-bottom: 8px; background: #FBFDFF;">
-        <div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="exp-badge ${catInfo.cls}">${mEsc(catInfo.label)}</span>
-            <small style="color: #64748B;">${d}</small>
-            <small style="background: #F1F5F9; padding: 2px 6px; border-radius: 6px; font-size: 10px;">${payModeTxt}</small>
-          </div>
-          <div style="font-size: 12px; color: #1E293B; margin-top: 4px; font-weight: 600;">
-            ${mEsc(exp.note || "\u0915\u094B\u0908 \u0935\u093F\u0935\u0930\u0923 \u0928\u0939\u0940\u0902")}
+      <div style="padding: 12px 14px; border: 1px solid #EEF2FF; border-radius: 14px; margin-bottom: 8px; background: #FBFDFF;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <span class="exp-badge ${catInfo.cls}">${mEsc(catInfo.label)}</span>
+          <b style="color: #DC2626; font-size: 16px; white-space: nowrap;">- \u20B9${Number(exp.amt || 0).toLocaleString("en-IN")}</b>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px;">
+          <small style="color: #64748B; white-space: nowrap;">${d} \u2022 ${payModeTxt}</small>
+          <div style="display: flex; gap: 6px; flex-shrink: 0;">
+            <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editExpense('${id}')">✏️</button>
+            <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 6px 10px;" onclick="deleteExpense('${id}')">X</button>
           </div>
         </div>
-        <div style="text-align: right; display: flex; align-items: center; gap: 8px;">
-          <b style="color: #DC2626; font-size: 15px;">- \u20B9${Number(exp.amt || 0).toLocaleString("en-IN")}</b>
-          <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editExpense('${id}')">✏️</button>
-          <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 6px 10px;" onclick="deleteExpense('${id}')">X</button>
-        </div>
+        ${exp.note ? `<div style="font-size: 12px; color: #1E293B; margin-top: 6px; font-weight: 600;">${mEsc(exp.note)}</div>` : ""}
       </div>
     `;
   });
@@ -7516,6 +7515,44 @@ if (document.readyState === "loading") {
         if (sd && getComputedStyle(sd).display !== 'none' && typeof _currentSiteId !== 'undefined' && _currentSiteId) showSiteDetail(_currentSiteId);
       } catch (e) {}
     });
+  };
+
+  /* "⋯" menus (site / kaarigar) */
+  function openMenu(title, items) {
+    if (cur) userClose();
+    titleEl.textContent = title;
+    bodyEl.innerHTML = '';
+    items.forEach((it) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn';
+      b.style.cssText = 'margin:0 0 8px;' + (it.style || '');
+      b.textContent = it.label;
+      b.addEventListener('click', () => { finish(); setTimeout(it.fn, 30); });
+      bodyEl.appendChild(b);
+    });
+    cur = { cfg: {}, recs: [], obs: null, timer: null };
+    show();
+  }
+  window.openSiteMenu = function (id, full) {
+    let closed = false, name = '';
+    try { closed = ((sites[id].status || '').indexOf('पूरा') > -1); name = sites[id].house || ''; } catch (e) {}
+    const items = [
+      { label: '✏️ Edit साइट', style: 'background:#E0EDFF;color:#1E40AF;', fn: () => window.editSite(id) },
+      closed
+        ? { label: '🟢 चालू करो', style: 'background:#DCFCE7;color:#166534;', fn: () => window.toggleSiteStatus(id, false) }
+        : { label: '📦 Archive', style: 'background:#F1F5F9;color:#475569;', fn: () => window.toggleSiteStatus(id, true) }
+    ];
+    if (full) items.push({ label: '🗑️ Delete', style: 'background:#FEE2E2;color:#991B1B;', fn: () => window.deleteSite(id) });
+    openMenu('🏠 ' + name, items);
+  };
+  window.openLabMenu = function (id) {
+    let name = '', rent = 0;
+    try { name = labs[id].name || ''; rent = calcLabour(id, document.getElementById('kMonth').value).rent || 0; } catch (e) {}
+    openMenu('👷 ' + name, [
+      { label: '🏠 किराया' + (rent > 0 ? ' ₹' + Math.round(rent).toLocaleString('en-IN') : ' जोड़ो'), style: 'background:#FEF3C7;color:#92400E;', fn: () => window.editRent(id) },
+      { label: '📦 Archive करो', style: 'background:#F1F5F9;color:#475569;', fn: () => window.toggleArchive(id, true) }
+    ]);
   };
 
   /* Har site card se "पैसा लिया" popup */
