@@ -1165,13 +1165,13 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
       <div id="monTxt" style="text-align: center; color: #4F46E5; font-size: 11px; font-weight: 700; margin-bottom: 10px;"></div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center;">
+        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">🔒</b><br><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">पासवर्ड से देखें ›</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
         </div>
-        <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #DCFCE7;">
+        <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #DCFCE7;">
           <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div onclick="showBreakdownLena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; border: 2px solid #FECACA;">
+        <div onclick="showBreakdownLena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #FECACA;">
           <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
       </div>
@@ -1196,12 +1196,8 @@ img, canvas, svg, video { max-width: 100%; }
           <small style="color: #92400E; font-weight: 700; font-size: 10px;">पिछले महीने का बकाया (<span id="msOpening">₹0</span>) — अब कितना बचा</small><br>
           <b id="msOpeningLeft" style="color: #B45309; font-size: 18px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div onclick="showBreakdownDena()" style="cursor: pointer; background: #FEE2E2; padding: 12px 4px; border-radius: 16px; text-align: center; grid-column: span 2;">
-          <small style="color: #991B1B; font-weight: 700; font-size: 10px;">अभी भी कुल कितना देना है (इस महीने की कमाई मिलाकर)</small><br>
-          <b id="msRemaining" style="color: #991B1B; font-size: 15px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
-        </div>
       </div>
-      <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर कारीगर tab के महीना-चुनने वाले बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
+      <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर के महीना बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
     </div>
 
     <!-- Ongoing Sites -->
