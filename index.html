@@ -2451,6 +2451,19 @@ function bcDeleteEntry(bid) {
   if (bcEditId === bid) bcCancelEdit();
   db.ref("companies/" + company + "/bijliBills/" + bid).remove();
 }
+// WhatsApp text share: native share sheet (no extra browser page is opened, so no blank white page is left behind on return)
+function openWhatsAppText(msg) {
+  if (navigator.share) {
+    navigator.share({ text: msg }).catch(() => {});
+    return;
+  }
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.location.href = "whatsapp://send?text=" + encodeURIComponent(msg);
+  } else {
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+  }
+}
+window.openWhatsAppText = openWhatsAppText;
 function bcShareWhatsapp() {
   const mon = bcGetMonth();
   const rows = Object.values(bijliBills)
@@ -2466,12 +2479,12 @@ function bcShareWhatsapp() {
     msg += `\u2022 ${nm}: ${b.oldReading} \u2192 ${b.newReading} = ${b.units} \u092F\u0942\u0928\u093F\u091F \u00D7 \u20B9${b.rate} = \u20B9${(parseFloat(b.bill) || 0).toLocaleString("en-IN")}${splitTxt}\n`;
   });
   msg += `\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\u2015\n\u0915\u0941\u0932 \u092C\u093F\u0932: \u20B9${total.toLocaleString("en-IN")}`;
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+  openWhatsAppText(msg);
 }
 function shareHazriToWhatsapp(idx) {
   const msg = window.__hazriShareData && window.__hazriShareData[idx];
   if (!msg) return;
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+  openWhatsAppText(msg);
 }
 // Pure per-month calc given an explicit opening balance for that month.
 // rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 — never carried forward).
@@ -6222,7 +6235,7 @@ function matPaymentShareWhatsapp() {
       msg += `\u2022 ${p.date}: ${mRs(p.amount)}${mEsc(p.note ? " (" + p.note + ")" : "")}\n`;
     });
   }
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+  openWhatsAppText(msg);
 }
 function setMatMode(m) {
   matMode = m;
@@ -6745,7 +6758,7 @@ async function shareMatReport() {
       pdf.save(fileName);
       alert("\u2705 PDF \u0921\u093E\u0909\u0928\u0932\u094B\u0921 \u0939\u094B \u0917\u092F\u093E! \u0905\u092C \u0907\u0938\u0947 WhatsApp \u092A\u0930 \u0905\u091F\u0948\u091A \u0915\u0930\u0915\u0947 \u092D\u0947\u091C\u0947\u0902\u0964");
       const waTxt = "\u{1F9F1} *SHUKLA MARBLE " + nsTag + " - \u092E\u091F\u0947\u0930\u093F\u092F\u0932 \u0939\u093F\u0938\u093E\u092C*\n\u{1F4C5} " + per.label + (custTxt ? "\n\u{1F464} " + custTxt : "") + "\n\u{1F4B0} \u0915\u0941\u0932: " + mRs(total) + "\n\n(PDF \u092B\u093E\u0907\u0932 \u0905\u092D\u0940 \u0921\u093E\u0909\u0928\u0932\u094B\u0921 \u0939\u0941\u0908 \u2014 \u0909\u0938\u0947 \u0905\u0932\u0917 \u0938\u0947 \u0905\u091F\u0948\u091A \u0915\u0930\u0947\u0902)";
-      window.open("https://wa.me/?text=" + encodeURIComponent(waTxt), "_blank");
+      openWhatsAppText(waTxt);
     }
   } catch (err) {
     console.error("Material PDF share error:", err);
