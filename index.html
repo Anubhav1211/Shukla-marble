@@ -1350,7 +1350,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <div class="card">
-      <h3 style="margin-top: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px;"><h3 style="margin: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3><button type="button" class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 7px 11px; font-weight: 800; flex-shrink: 0;" onclick="openAudit()">🔍 हिसाब जाँच</button></div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(-1)">◀</button>
         <input id="kMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('kMonth')">
@@ -2574,6 +2574,8 @@ function calcLabour(id, mon) {
     R = { months, byMonth: {} };
     let running = parseFloat(l.balance) || 0;
     for (const m of months) {
+      const ov = labourMonthly[id] && labourMonthly[id][m] ? labourMonthly[id][m].openBal : undefined;
+      if (ov !== undefined && ov !== null && ov !== "" && isFinite(parseFloat(ov))) running = parseFloat(ov);
       const r = calcLabourForMonth(id, m, running);
       R.byMonth[m] = r;
       running = r.net;
@@ -3307,8 +3309,7 @@ function renderAll() {
       archHtml += `
         <div class="archived-card" style="display:flex;justify-content:space-between;padding:14px;border-radius:16px;margin-bottom:10px">
           <div>
-            <b>${mEsc(l.name)}</b> <small style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px">Archived</small><br>
-            <small style="color:#64748B">\u092C\u0915\u093E\u092F\u093E \u20B9${c.bal.toLocaleString("en-IN")}</small>
+            <b>${mEsc(l.name)}</b> <small style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:6px">Archived</small>
           </div>
           <div style="text-align:right">
             <div style="background:#EEF2FF;padding:4px 8px;border-radius:10px;font-size:11px;font-weight:700">
@@ -3603,7 +3604,7 @@ function editWage(id) {
   openEditField(id, "wage", "\u0926\u093F\u0939\u093E\u0921\u093C\u0940 \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B", "\u0930\u094B\u091C\u093C\u093E\u0928\u093E \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940");
 }
 function editBalance(id) {
-  openEditField(id, "balance", "\u0936\u0941\u0930\u0942\u0906\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u0905\u092A\u0921\u0947\u091F \u0915\u0930\u094B", "\u0910\u092A \u0907\u0938\u094D\u0924\u0947\u092E\u093E\u0932 \u0915\u0930\u0928\u0947 \u0938\u0947 \u092A\u0939\u0932\u0947 \u0915\u093E \u092C\u0915\u093E\u092F\u093E (+ \u0926\u0947\u0928\u093E, \u2013 \u0932\u0947\u0928\u093E) \u2013 \u0939\u0930 \u092E\u0939\u0940\u0928\u0947 \u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0916\u0941\u0926 \u0905\u0917\u0932\u0947 \u092E\u0939\u0940\u0928\u0947 \u092E\u0947\u0902 \u0906\u0917\u0947 \u092C\u0922\u093C\u0924\u093E \u0939\u0948");
+  openEditField(id, "balance", "\u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E \u0938\u0939\u0940 \u0915\u0930\u094B", "\u092F\u0939\u093E\u0901 \u091C\u094B \u0930\u0915\u092E \u0921\u093E\u0932\u094B\u0917\u0947 \u0935\u0939\u0940 \u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u093E \u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E \u092E\u093E\u0928\u093E \u091C\u093E\u090F\u0917\u093E (+ \u0926\u0947\u0928\u093E, \u2212 \u0932\u0947\u0928\u093E). \u0916\u093E\u0932\u0940 \u091B\u094B\u0921\u093C\u094B \u0924\u094B \u092E\u0948\u0928\u094D\u092F\u0941\u0905\u0932 \u0938\u0947\u091F\u093F\u0902\u0917 \u0939\u091F \u091C\u093E\u090F\u0917\u0940.");
 }
 function openEditField(id, field, title, sub) {
   const l = labs[id];
@@ -3616,9 +3617,11 @@ function openEditField(id, field, title, sub) {
   if (titleEl) titleEl.innerText = (l.name ? l.name + " - " : "") + title;
   if (subEl) subEl.innerText = sub || "";
   const curMon = document.getElementById("kMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
-  const isMonthly = field === "rent" || field === "bijli";
+  const isMonthly = field === "rent" || field === "bijli" || field === "balance";
   if (inputEl) {
-    if (isMonthly) {
+    if (field === "balance") {
+      inputEl.value = Math.round(calcLabour(id, curMon).bal * 100) / 100;
+    } else if (isMonthly) {
       const existing = (labourMonthly[id] && labourMonthly[id][curMon] && labourMonthly[id][curMon][field]) || 0;
       inputEl.value = existing || "";
     } else {
@@ -3642,6 +3645,10 @@ function openEditField(id, field, title, sub) {
     rbm.style.display = isMonthly ? "block" : "none";
     const rbMonthEl = document.getElementById("rbMonth");
     if (rbMonthEl) rbMonthEl.value = curMon;
+    const rbNote = rbm.lastElementChild;
+    if (rbNote) rbNote.innerText = field === "balance"
+      ? "\u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u093E \u0936\u0941\u0930\u0942\u0906\u0924\u0940 \u092C\u0915\u093E\u092F\u093E \u0924\u092F \u0939\u094B\u0917\u093E \u2014 \u092A\u0941\u0930\u093E\u0928\u0947 \u092E\u0939\u0940\u0928\u094B\u0902 \u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0928\u0939\u0940\u0902 \u092C\u0926\u0932\u0947\u0917\u093E, \u0906\u0917\u0947 \u0915\u0947 \u092E\u0939\u0940\u0928\u0947 \u0907\u0938\u0940 \u0938\u0947 \u091A\u0932\u0947\u0902\u0917\u0947"
+      : "\u0938\u093F\u0930\u094D\u092B \u0907\u0938\u0940 \u092E\u0939\u0940\u0928\u0947 \u092A\u0930 \u0932\u093E\u0917\u0942 \u0939\u094B\u0917\u093E \u2014 \u0905\u0917\u0932\u0947/\u092A\u093F\u091B\u0932\u0947 \u092E\u0939\u0940\u0928\u0947 \u0905\u092A\u0928\u0947 \u0906\u092A \u0928\u0939\u0940\u0902 \u092C\u0926\u0932\u0947\u0902\u0917\u0947";
   }
   const modal = document.getElementById("editFieldModal");
   if (modal) modal.style.display = "flex";
@@ -3651,6 +3658,10 @@ function rbMonthChanged() {
   if (!efLabourId || !efField) return;
   const mon = document.getElementById("rbMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
   const inputEl = document.getElementById("efInput");
+  if (efField === "balance") {
+    if (inputEl) inputEl.value = Math.round(calcLabour(efLabourId, mon).bal * 100) / 100;
+    return;
+  }
   const existing = (labourMonthly[efLabourId] && labourMonthly[efLabourId][mon] && labourMonthly[efLabourId][mon][efField]) || 0;
   if (inputEl) inputEl.value = existing || "";
 }
@@ -3886,6 +3897,16 @@ function saveEditField() {
     db.ref(base + "labours/" + efLabourId + "/wage").set(val).then(() => {
       closeEditFieldModal();
     });
+    return;
+  }
+  if (efField === "balance") {
+    const mon = document.getElementById("rbMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
+    const raw = (inputEl?.value || "").trim();
+    const ref = db.ref(base + "labourMonthly/" + efLabourId + "/" + mon + "/openBal");
+    if (raw === "") { ref.remove(); closeEditFieldModal(); return; }
+    const cur = calcLabour(efLabourId, mon).bal;
+    if (Math.abs(val - cur) < 0.5) { closeEditFieldModal(); return; }
+    ref.set(val).then(() => { closeEditFieldModal(); });
     return;
   }
   if (efField === "rent" || efField === "bijli") {
@@ -7642,6 +7663,95 @@ if (document.readyState === "loading") {
     });
   };
 
+  /* ===== Hisab jaanch: month-wise ledger + gadbad pakadne wala audit ===== */
+  const fm = (n) => (n < 0 ? '−' : '') + '₹' + Math.abs(Math.round(n)).toLocaleString('en-IN');
+  const he = (t) => (typeof mEsc === 'function' ? mEsc(t) : String(t == null ? '' : t));
+  function openPanel(title, html) {
+    if (cur) userClose();
+    titleEl.textContent = title;
+    bodyEl.innerHTML = html;
+    cur = { cfg: {}, recs: [], obs: null, timer: null };
+    show();
+  }
+  window.openLabLedger = function (id) {
+    const l = labs[id]; if (!l) return;
+    const nowM = fmtLocalDate(new Date()).slice(0, 7);
+    calcLabour(id, nowM);
+    const R = smIndex().res[id] || { months: [] };
+    const months = Array.from(new Set(R.months.concat([nowM]))).sort();
+    const th = 'padding:6px 5px;font-size:10.5px;color:#64748B;font-weight:800;text-align:right;white-space:nowrap';
+    const td = 'padding:7px 5px;font-size:12px;text-align:right;white-space:nowrap;border-top:1px solid #EEF2F7';
+    let rows = '';
+    months.forEach((m) => {
+      const c = calcLabour(id, m);
+      const ov = labourMonthly[id] && labourMonthly[id][m] ? labourMonthly[id][m].openBal : undefined;
+      const hasOv = ov !== undefined && ov !== null && ov !== '' && isFinite(parseFloat(ov));
+      const odd = c.days > 31;
+      const other = (c.rent || 0) + (c.bijli || 0) + (c.bijliCalc || 0);
+      rows += '<tr style="' + (odd ? 'background:#FEF2F2' : '') + '">' +
+        '<td style="' + td + ';text-align:left;font-weight:800">' + m + '</td>' +
+        '<td style="' + td + '">' + (hasOv ? '🔧 ' : '') + fm(c.bal) + '</td>' +
+        '<td style="' + td + '">' + fm(c.earn) + '<br><small style="color:#94A3B8">' + (Math.round(c.days * 10) / 10) + ' दिन</small></td>' +
+        '<td style="' + td + '">' + (c.with ? '−' + fm(c.with) : '–') + '</td>' +
+        '<td style="' + td + '">' + (other ? '−' + fm(other) : '–') + '</td>' +
+        '<td style="' + td + ';font-weight:800;color:' + (c.net >= 0 ? '#166534' : '#B91C1C') + '">' + fm(c.net) + '</td></tr>';
+    });
+    const seed = parseFloat(l.balance) || 0;
+    openPanel('📊 ' + (l.name || '') + ' — महीने-वार हिसाब',
+      '<div style="font-size:11.5px;color:#64748B;margin-bottom:8px;line-height:1.5">हर महीने का <b>अंत</b> ही अगले महीने का <b>पिछला</b> बनता है. 🔧 = हाथ से सेट किया हुआ पिछला बकाया.' +
+      (seed ? '<br>शुरुआती बकाया (एक बार का): <b>' + fm(seed) + '</b>' : '') + '</div>' +
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:420px"><tr>' +
+      '<th style="' + th + ';text-align:left">महीना</th><th style="' + th + '">पिछला</th><th style="' + th + '">कमाई</th><th style="' + th + '">निकासी</th><th style="' + th + '">किराया+बिजली</th><th style="' + th + '">अंत</th></tr>' + rows + '</table></div>');
+  };
+
+  function auditScan() {
+    const out = { dups: [], multi: [], odd: [], manual: [] };
+    const byKey = {};
+    Object.entries(ents).forEach(([eid, e]) => {
+      if (!e || !e.labourId || !e.date) return;
+      (byKey[e.labourId + '|' + e.date] = byKey[e.labourId + '|' + e.date] || []).push([eid, e]);
+      const l = labs[e.labourId]; const w = l ? (parseFloat(l.wage) || 0) : 0; const r = parseFloat(e.rate);
+      const d = parseFloat(e.days) || 0;
+      if (d > 2 || (w > 0 && isFinite(r) && (r > w * 2.5 || r < w * 0.4))) out.odd.push({ eid, e, why: d > 2 ? d + ' दिन' : 'दर ' + fm(r) + ' (अभी की दिहाड़ी ' + fm(w) + ')' });
+    });
+    Object.values(byKey).forEach((arr) => {
+      if (arr.length < 2) return;
+      const sites = new Set(arr.map(([, e]) => e.siteId || ''));
+      (sites.size < arr.length ? out.dups : out.multi).push(arr);
+    });
+    Object.keys(labs).forEach((id) => {
+      const l = labs[id]; const seed = parseFloat(l.balance) || 0;
+      if (Math.abs(seed) >= 1000) out.manual.push({ id, text: (l.name || '') + ' — शुरुआती बकाया ' + fm(seed) + ' (सारे महीनों में जुड़ा हुआ)' });
+      Object.keys(labourMonthly[id] || {}).forEach((m) => {
+        const ov = labourMonthly[id][m] && labourMonthly[id][m].openBal;
+        if (ov !== undefined && ov !== null && ov !== '' && isFinite(parseFloat(ov))) out.manual.push({ id, text: (l.name || '') + ' — ' + m + ' का पिछला बकाया हाथ से ' + fm(parseFloat(ov)) + ' सेट है' });
+      });
+    });
+    return out;
+  }
+  const nm = (id) => (labs[id] && labs[id].name) || '?';
+  function entryRow(eid, e, withDel) {
+    const site = e.siteId && sites[e.siteId] ? ' • ' + he(sites[e.siteId].house) : '';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #EEF2F7;font-size:12.5px">' +
+      '<span><b>' + he(nm(e.labourId)) + '</b> • ' + he(e.date) + site + ' • ' + (parseFloat(e.days) || 0) + ' दिन' + (e.rate != null ? ' × ' + fm(parseFloat(e.rate)) : '') + '</span>' +
+      '<span style="display:flex;gap:6px;flex-shrink:0"><button type="button" class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 9px" onclick="auditEdit(\'' + eid + '\')">✏️</button>' +
+      (withDel ? '<button type="button" class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 9px" onclick="auditDel(\'' + eid + '\')">X</button>' : '') + '</span></div>';
+  }
+  window.auditEdit = function (eid) { finish(); setTimeout(() => window.editEntry(eid), 40); };
+  window.auditDel = function (eid) { window.deleteEntry(eid); setTimeout(() => { if (cur) window.openAudit(); }, 500); };
+  window.openAudit = function () {
+    const a = auditScan();
+    const sec = (title, color, inner) => '<div style="margin-bottom:12px"><div style="font-weight:800;font-size:13px;color:' + color + ';margin-bottom:2px">' + title + '</div>' + inner + '</div>';
+    let html = '<div style="font-size:11.5px;color:#64748B;margin-bottom:10px;line-height:1.5">बकाया अचानक बढ़ने के आम कारण यहाँ ढूँढे गए हैं.</div>';
+    let found = 0;
+    if (a.dups.length) { found++; html += sec('⚠️ एक ही दिन की डुप्लीकेट एंट्री (' + a.dups.length + ')', '#B91C1C', a.dups.slice(0, 40).map((arr) => arr.map(([eid, e], i) => entryRow(eid, e, i > 0)).join('')).join('<div style="height:6px"></div>') + '<div style="font-size:11px;color:#94A3B8;margin-top:4px">पहली एंट्री रखकर बाकी पर X दबाओ</div>'); }
+    if (a.multi.length) { found++; html += sec('ℹ️ एक कारीगर, एक दिन, अलग-अलग साइट (' + a.multi.length + ')', '#B45309', a.multi.slice(0, 40).map((arr) => arr.map(([eid, e]) => entryRow(eid, e, false)).join('')).join('<div style="height:6px"></div>')); }
+    if (a.odd.length) { found++; html += sec('⚠️ अजीब दिन / दर (' + a.odd.length + ')', '#B91C1C', a.odd.slice(0, 40).map((o) => entryRow(o.eid, o.e, false) + '<div style="font-size:11px;color:#B91C1C">' + he(o.why) + '</div>').join('')); }
+    if (a.manual.length) { found++; html += sec('🔧 हाथ से डाला हुआ बकाया (' + a.manual.length + ')', '#4338CA', a.manual.slice(0, 60).map((m) => '<div style="font-size:12.5px;padding:6px 0;border-top:1px solid #EEF2F7">' + he(m.text) + '</div>').join('') + '<div style="font-size:11px;color:#94A3B8;margin-top:4px">कारीगर के ⋯ → "📊 महीने-वार हिसाब" में देखो कहाँ से बढ़ा</div>'); }
+    if (!found) html += '<div style="text-align:center;padding:24px 0;color:#166534;font-weight:800">✅ कोई गड़बड़ नहीं मिली</div>';
+    openPanel('🔍 हिसाब जाँच', html);
+  };
+
   /* "⋯" menus (site / kaarigar) */
   function openMenu(title, items) {
     if (cur) userClose();
@@ -7676,6 +7786,7 @@ if (document.readyState === "loading") {
     try { name = labs[id].name || ''; rent = calcLabour(id, document.getElementById('kMonth').value).rent || 0; } catch (e) {}
     openMenu('👷 ' + name, [
       { label: '🏠 किराया' + (rent > 0 ? ' ₹' + Math.round(rent).toLocaleString('en-IN') : ' जोड़ो'), style: 'background:#FEF3C7;color:#92400E;', fn: () => window.editRent(id) },
+      { label: '📊 महीने-वार हिसाब', style: 'background:#EEF2FF;color:#4338CA;', fn: () => window.openLabLedger(id) },
       { label: '📦 Archive करो', style: 'background:#F1F5F9;color:#475569;', fn: () => window.toggleArchive(id, true) }
     ]);
   };
@@ -7884,6 +7995,7 @@ if (document.readyState === "loading") {
     saveEditField: () => {
       let f = ""; try { f = efField; } catch (e) {}
       const el = $("efInput"); const v = el ? parseFloat(el.value) : NaN;
+      if (f === "balance" && isFinite(v) && Math.abs(v) > MAXAMT) return "\u0930\u0915\u092E \u092C\u0939\u0941\u0924 \u092C\u0921\u093C\u0940 \u0939\u0948";
       if ((f === "wage" || f === "rent" || f === "bijli") && isFinite(v)) {
         if (v < 0) return "\u0930\u0915\u092E 0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0924\u0940";
         if (v > MAXAMT) return "\u0930\u0915\u092E \u092C\u0939\u0941\u0924 \u092C\u0921\u093C\u0940 \u0939\u0948";
