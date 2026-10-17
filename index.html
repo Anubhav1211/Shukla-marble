@@ -1116,6 +1116,13 @@ img, canvas, svg, video { max-width: 100%; }
 .tg-btn.on { box-shadow: 0 0 0 3px rgba(173, 131, 46, 0.4); }
 .tg-card { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; margin: 8px 14px !important; }
 .tg-card > div[id] { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 14px; margin-top: 8px !important; box-shadow: 0 2px 10px rgba(21, 23, 28, 0.04); }
+
+#hzTopCard { display: flex; flex-direction: column; }
+#hzDateBlock { order: 1; }
+#hzToggles { order: 2; }
+#hzSingleBox { order: 3; }
+#bhBox { order: 4; }
+#missingBox { margin: 12px 14px 0 !important; }
 </style>
 </head>
 <body>
@@ -1359,7 +1366,8 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
   <div id="t-e" style="display: none;">
-    <div class="card">
+    <div class="card" id="hzTopCard">
+      <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(-1)">◀</button>
@@ -1367,6 +1375,8 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftEDate(1)">▶</button>
         <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setEDateToday()">आज</button>
       </div>
+      </div>
+      <div id="hzSingleBox" style="display: none; margin-top: 12px;">
       <input id="eLabSearch" type="hidden" oninput="renderAll()">
       <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ हाज़री एडिट हो रही है (<span id="eDateTxt"></span>)</div>
       
@@ -1394,6 +1404,24 @@ img, canvas, svg, video { max-width: 100%; }
       <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
       <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
+      </div>
+      <div class="tg-row c2" id="hzToggles">
+        <button type="button" class="tg-btn dark" data-box="bhBox" onclick="toggleBoxX('bhBox'); renderBulkHazri(true);">👥 सबकी हाज़री एक साथ</button>
+        <button type="button" class="tg-btn dark" data-box="hzSingleBox" onclick="toggleBoxX('hzSingleBox')">👤 एक बार में एक दिहाड़ी</button>
+      </div>
+      <div id="bhBox" style="display: none; margin-top: 12px;">
+        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
+        <select id="bhSite" class="input"><option value="">🏠 साइट (सबके लिए, Optional)</option></select>
+        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+          <button class="btn-sm" style="flex: 1; background: #DCFCE7; color: #166534; padding: 10px 6px;" onclick="bulkHazriAll(1)">सबको P</button>
+          <button class="btn-sm" style="flex: 1; background: #FEF3C7; color: #92400E; padding: 10px 6px;" onclick="bulkHazriAll(0.5)">सबको आधा</button>
+          <button class="btn-sm" style="flex: 1; background: #F1F5F9; color: #475569; padding: 10px 6px;" onclick="bulkHazriAll(null)">सब साफ</button>
+        </div>
+        <div id="bhList"></div>
+        <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;"></div>
+        <button class="btn btn-save" onclick="saveBulkHazri()">💾 सबकी हाज़री सेव करें</button>
+        <div id="bhMsg" style="font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
+      </div>
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
@@ -1416,25 +1444,8 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
     </div>
 
-    <!-- BULK HAZRI -->
-    <div class="card tg-card">
-      <button class="btn" style="background: linear-gradient(135deg, #21242C, #15171C); display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('bhBox'); renderBulkHazri(true);">
-        <span>👥 सबकी हाज़री एक साथ</span><span>▼</span>
-      </button>
-      <div id="bhBox" style="display: none; margin-top: 12px;">
-        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
-        <select id="bhSite" class="input"><option value="">🏠 साइट (सबके लिए, Optional)</option></select>
-        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
-          <button class="btn-sm" style="flex: 1; background: #DCFCE7; color: #166534; padding: 10px 6px;" onclick="bulkHazriAll(1)">सबको P</button>
-          <button class="btn-sm" style="flex: 1; background: #FEF3C7; color: #92400E; padding: 10px 6px;" onclick="bulkHazriAll(0.5)">सबको आधा</button>
-          <button class="btn-sm" style="flex: 1; background: #F1F5F9; color: #475569; padding: 10px 6px;" onclick="bulkHazriAll(null)">सब साफ</button>
-        </div>
-        <div id="bhList"></div>
-        <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;"></div>
-        <button class="btn btn-save" onclick="saveBulkHazri()">💾 सबकी हाज़री सेव करें</button>
-        <div id="bhMsg" style="font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
-      </div>
-    </div>
+    <!-- BULK HAZRI (now inside the top card) -->
+
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
@@ -2131,30 +2142,35 @@ function closeMoreMenu() {
   const el = document.getElementById("moreMenuOverlay");
   if (el) el.style.display = "none";
 }
+let _smRT = null;
+function smRenderSoon() {
+  if (_smRT) return;
+  _smRT = setTimeout(() => { _smRT = null; renderAll(); }, 40);
+}
 function startListen() {
   if (!db) return;
   startAdminPinListener();
   db.ref("companies/" + company + "/labours").on("value", (s) => {
     labs = smFixNums(s.val(), { wage: undefined, rent: undefined, bijli: undefined, balance: undefined });
-    renderAll();
+    smRenderSoon();
   });
   db.ref("companies/" + company + "/entries").on("value", (s) => {
     ents = smFixNums(s.val(), { days: 0, withdraw: undefined, rate: undefined });
-    renderAll();
+    smRenderSoon();
   });
   db.ref("companies/" + company + "/labourMonthly").on("value", (s) => {
     labourMonthly = s.val() || {};
-    renderAll();
+    smRenderSoon();
     renderRentBijliLists();
   });
   db.ref("companies/" + company + "/sites").on("value", (s) => {
     sites = s.val() || {};
-    renderAll();
+    smRenderSoon();
     renderMaterial();
   });
   db.ref("companies/" + company + "/sitePayments").on("value", (s) => {
     sitePays = smFixNums(s.val(), { amount: 0 });
-    renderAll();
+    smRenderSoon();
     const ov = document.getElementById("siteDetailOverlay");
     if (_currentSiteId && ov && ov.style.display === "flex") {
       showSiteDetail(_currentSiteId);
@@ -2162,7 +2178,7 @@ function startListen() {
   });
   db.ref("companies/" + company + "/siteCosts").on("value", (s) => {
     siteCosts = smFixNums(s.val(), { amount: 0 });
-    renderAll();
+    smRenderSoon();
     const ov2 = document.getElementById("siteDetailOverlay");
     if (_currentSiteId && ov2 && ov2.style.display === "flex") {
       showSiteDetail(_currentSiteId);
@@ -2175,7 +2191,7 @@ function startListen() {
   db.ref("companies/" + company + "/expenses").on("value", (s) => {
     expenses = smFixNums(s.val(), { amt: 0 });
     renderExpenses();
-    renderAll();
+    smRenderSoon();
   });
   db.ref("companies/" + company + "/expenseCategories").on("value", (s) => {
     expenseCategories = s.val() || {};
@@ -2185,10 +2201,11 @@ function startListen() {
   db.ref("companies/" + company + "/bijliBills").on("value", (s) => {
     bijliBills = smFixNums(s.val(), { oldReading: undefined, newReading: undefined, rate: undefined, amount: undefined });
     bcRenderList();
+    smRenderSoon();
   });
   db.ref("companies/" + company + "/withdrawals").on("value", (s) => {
     withdrawals = smFixNums(s.val(), { amount: 0 });
-    renderAll();
+    smRenderSoon();
     whRenderList();
   });
   startMatSectionsListener();
@@ -2488,40 +2505,59 @@ function shareHazriToWhatsapp(idx) {
 }
 // Pure per-month calc given an explicit opening balance for that month.
 // rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 — never carried forward).
-function calcLabourForMonth(id, mon, bal) {
-  const l = labs[id];
-  let d = 0;
-  let w = 0;
-  let earn = 0;
+// ---- Fast per-labour / per-month index (rebuilt only when the underlying data objects change) ----
+let _smIdx = null;
+function smIndex() {
+  if (_smIdx && _smIdx.k0 === ents && _smIdx.k1 === withdrawals && _smIdx.k2 === bijliBills && _smIdx.k3 === labourMonthly && _smIdx.k4 === labs) return _smIdx;
+  const I = { k0: ents, k1: withdrawals, k2: bijliBills, k3: labourMonthly, k4: labs, ent: {}, bj: {}, months: {}, res: {} };
+  const bucket = (id, m) => {
+    const byM = I.ent[id] || (I.ent[id] = {});
+    return byM[m] || (byM[m] = { d: 0, w: 0, earn: 0 });
+  };
+  const addMonth = (id, m) => { (I.months[id] || (I.months[id] = new Set())).add(m); };
   Object.values(ents).forEach((e) => {
-    if (e.labourId === id && e.date && e.date.startsWith(mon)) {
-      const dd = parseFloat(e.days || 0);
-      d += dd;
-      w += parseFloat(e.withdraw || 0);
-      earn += dd * entryRate(e, l);
-    }
+    if (!e || !e.labourId || !e.date) return;
+    const m = e.date.slice(0, 7);
+    const o = bucket(e.labourId, m);
+    const dd = parseFloat(e.days || 0);
+    o.d += dd;
+    o.w += parseFloat(e.withdraw || 0);
+    o.earn += dd * entryRate(e, labs[e.labourId]);
+    addMonth(e.labourId, m);
   });
-  // Extra/standalone payments (same labourer, same day, more than one payment) — tracked separately from attendance
   Object.values(withdrawals).forEach((wd) => {
-    if (wd.labourId === id && wd.date && wd.date.startsWith(mon)) {
-      w += parseFloat(wd.amount || 0);
-    }
+    if (!wd || !wd.labourId || !wd.date) return;
+    const m = wd.date.slice(0, 7);
+    bucket(wd.labourId, m).w += parseFloat(wd.amount || 0);
+    addMonth(wd.labourId, m);
   });
+  Object.values(bijliBills).forEach((b) => {
+    if (!b || !b.labourId || !b.month) return;
+    const byM = I.bj[b.labourId] || (I.bj[b.labourId] = {});
+    byM[b.month] = (byM[b.month] || 0) + (parseFloat(b.bill) || 0);
+    addMonth(b.labourId, b.month);
+  });
+  Object.keys(labourMonthly).forEach((id) => { Object.keys(labourMonthly[id] || {}).forEach((m) => addMonth(id, m)); });
+  _smIdx = I;
+  return I;
+}
+// Pure per-month calc given an explicit opening balance for that month.
+// rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 — never carried forward).
+function calcLabourForMonth(id, mon, bal) {
+  const I = smIndex();
+  const o = (I.ent[id] && I.ent[id][mon]) || { d: 0, w: 0, earn: 0 };
   const monthly = (labourMonthly[id] && labourMonthly[id][mon]) || {};
   const rent = parseFloat(monthly.rent) || 0;
   const bijli = parseFloat(monthly.bijli) || 0;
-  let bijliCalc = 0;
-  Object.values(bijliBills).forEach((b) => {
-    if (b.labourId === id && b.month === mon) bijliCalc += parseFloat(b.bill) || 0;
-  });
+  const bijliCalc = (I.bj[id] && I.bj[id][mon]) || 0;
   return {
-    days: d,
-    earn,
-    with: w,
+    days: o.d,
+    earn: o.earn,
+    with: o.w,
     rent,
     bijli,
     bijliCalc,
-    net: earn + bal - w - rent - bijli - bijliCalc,
+    net: o.earn + bal - o.w - rent - bijli - bijliCalc,
     bal
   };
 }
@@ -2531,37 +2567,51 @@ function calcLabourForMonth(id, mon, bal) {
 function calcLabour(id, mon) {
   const l = labs[id];
   if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, bijliCalc: 0, net: 0, bal: 0 };
-  const openingBal = parseFloat(l.balance) || 0;
-  const monthsSet = new Set();
-  Object.values(ents).forEach((e) => { if (e.labourId === id && e.date) monthsSet.add(e.date.slice(0, 7)); });
-  if (labourMonthly[id]) Object.keys(labourMonthly[id]).forEach((m) => monthsSet.add(m));
-  Object.values(bijliBills).forEach((b) => { if (b.labourId === id && b.month) monthsSet.add(b.month); });
-  Object.values(withdrawals).forEach((wd) => { if (wd.labourId === id && wd.date) monthsSet.add(wd.date.slice(0, 7)); });
-  monthsSet.add(mon);
-  const allMonths = Array.from(monthsSet).sort();
-  let runningBal = openingBal;
-  let result = null;
-  for (const m of allMonths) {
-    const r = calcLabourForMonth(id, m, runningBal);
-    if (m === mon) { result = r; break; }
-    runningBal = r.net;
+  const I = smIndex();
+  let R = I.res[id];
+  if (!R) {
+    const months = Array.from(I.months[id] || []).sort();
+    R = { months, byMonth: {} };
+    let running = parseFloat(l.balance) || 0;
+    for (const m of months) {
+      const r = calcLabourForMonth(id, m, running);
+      R.byMonth[m] = r;
+      running = r.net;
+    }
+    R.opening = parseFloat(l.balance) || 0;
+    I.res[id] = R;
   }
-  return result || calcLabourForMonth(id, mon, runningBal);
+  if (R.byMonth[mon]) return Object.assign({}, R.byMonth[mon]);
+  // month with no data of its own: opening = net of the latest earlier month (or the seed balance)
+  let bal = R.opening;
+  for (let i = R.months.length - 1; i >= 0; i--) {
+    if (R.months[i] < mon) { bal = R.byMonth[R.months[i]].net; break; }
+  }
+  return calcLabourForMonth(id, mon, bal);
+}
+let _smSiteIdx = null;
+function smSiteEntIdx() {
+  if (_smSiteIdx && _smSiteIdx.k0 === ents && _smSiteIdx.k1 === labs) return _smSiteIdx.map;
+  const map = {};
+  Object.values(ents).forEach((e) => {
+    if (!e || !e.siteId) return;
+    const l = labs[e.labourId];
+    if (!l) return;
+    const c = parseFloat(e.days || 0) * entryRate(e, l);
+    const m = map[e.siteId] || (map[e.siteId] = { cost: 0, labourMap: {} });
+    m.cost += c;
+    if (!m.labourMap[e.labourId]) m.labourMap[e.labourId] = { name: l.name, days: 0, cost: 0 };
+    m.labourMap[e.labourId].days += parseFloat(e.days || 0);
+    m.labourMap[e.labourId].cost += c;
+  });
+  _smSiteIdx = { k0: ents, k1: labs, map };
+  return map;
 }
 function calcSite(siteId) {
-  let cost = 0;
+  const si = smSiteEntIdx()[siteId];
+  let cost = si ? si.cost : 0;
   const labourMap = {};
-  Object.values(ents).forEach((e) => {
-    if (e.siteId === siteId) {
-      const l = labs[e.labourId];
-      if (!l) return;
-      const c = parseFloat(e.days || 0) * entryRate(e, l);
-      cost += c;
-      if (!labourMap[e.labourId]) labourMap[e.labourId] = { name: l.name, days: 0, cost: 0 };
-      labourMap[e.labourId].days += parseFloat(e.days || 0);
-      labourMap[e.labourId].cost += c;
-    }
-  });
+  if (si) Object.keys(si.labourMap).forEach((k) => { labourMap[k] = Object.assign({}, si.labourMap[k]); });
   let received = 0;
   Object.values(sitePays).forEach((p) => {
     if (p.siteId === siteId) received += parseFloat(p.amount || 0);
@@ -3029,6 +3079,8 @@ function editEntryByDay(dayNum) {
   if (list.length === 1) editEntry(list[0][0]);
 }
 function quickSelectLabour(id) {
+  const _sb = document.getElementById("hzSingleBox");
+  if (_sb && (_sb.style.display === "none" || _sb.style.display === "")) toggleBoxX("hzSingleBox");
   const eLabour = document.getElementById("eLabour");
   if (eLabour) eLabour.value = id;
   renderAll();
@@ -3853,8 +3905,21 @@ function saveEditField() {
     }
   }).catch((err) => alert("सेव नहीं हुआ: " + (err && err.message ? err.message : err)));
 }
+function labourRecordCount(id) {
+  let n = 0;
+  Object.values(ents).forEach((e) => { if (e && e.labourId === id) n++; });
+  Object.values(withdrawals).forEach((w) => { if (w && w.labourId === id) n++; });
+  Object.values(bijliBills).forEach((b) => { if (b && b.labourId === id) n++; });
+  if (labourMonthly[id] && Object.keys(labourMonthly[id]).length) n++;
+  return n;
+}
 function deleteLab(id) {
-  if (confirm("Delete?")) db.ref("companies/" + company + "/labours/" + id).remove();
+  const n = labourRecordCount(id);
+  if (n > 0) {
+    alert("\u26A0\uFE0F \u0907\u0938 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u0947 " + n + " \u0930\u093F\u0915\u0949\u0930\u094D\u0921 (\u0939\u093E\u091C\u093C\u0930\u0940 / \u092A\u0948\u0938\u0947 / \u0915\u093F\u0930\u093E\u092F\u093E) \u092E\u094C\u091C\u0942\u0926 \u0939\u0948\u0902. Delete \u0915\u0930\u0928\u0947 \u0938\u0947 \u0909\u0928\u0915\u093E \u092A\u0948\u0938\u0947 \u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0917\u093E\u092F\u092C \u0939\u094B \u091C\u093E\u090F\u0917\u093E. Archive \u0915\u0930\u094B.");
+    return;
+  }
+  if (confirm("\u0907\u0938 \u0915\u093E\u0930\u0940\u0917\u0930 \u0915\u094B \u0939\u092E\u0947\u0936\u093E \u0915\u0947 \u0932\u093F\u090F Delete \u0915\u0930\u0928\u093E \u0939\u0948?")) db.ref("companies/" + company + "/labours/" + id).remove();
 }
 function addSite() {
   const sHouse = document.getElementById("sHouse");
@@ -3934,8 +3999,21 @@ function toggleSiteStatus(id, close) {
   if (close && !confirm("\u092F\u0947 \u0938\u093E\u0907\u091F \u0906\u0930\u094D\u0915\u093E\u0907\u0935 (Archived) \u0915\u0930\u0928\u0940 \u0939\u0948?")) return;
   db.ref("companies/" + company + "/sites/" + id + "/status").set(newStatus);
 }
+function siteRecordCount(id) {
+  let n = 0;
+  Object.values(ents).forEach((e) => { if (e && e.siteId === id) n++; });
+  Object.values(sitePays).forEach((x) => { if (x && x.siteId === id) n++; });
+  Object.values(siteCosts).forEach((x) => { if (x && x.siteId === id) n++; });
+  try { Object.values(matEntriesAll()).forEach((x) => { if (x && x.siteId === id) n++; }); } catch (e) {}
+  return n;
+}
 function deleteSite(id) {
-  if (confirm("\u0921\u093F\u0932\u0940\u091F \u0915\u0930\u0947\u0902?")) db.ref("companies/" + company + "/sites/" + id).remove();
+  const n = siteRecordCount(id);
+  if (n > 0) {
+    alert("\u26A0\uFE0F \u0907\u0938 \u0938\u093E\u0907\u091F \u092A\u0930 " + n + " \u090F\u0902\u091F\u094D\u0930\u0940 (\u092E\u091C\u093C\u0926\u0942\u0930\u0940 / \u092A\u0948\u0938\u093E / \u0916\u0930\u094D\u091A / \u092E\u091F\u0947\u0930\u093F\u092F\u0932) \u0939\u0948\u0902. Delete \u0915\u0930\u0928\u0947 \u0938\u0947 \u0932\u093E\u092D-\u0939\u093E\u0928\u093F \u0915\u093E \u0939\u093F\u0938\u093E\u092C \u092C\u093F\u0917\u0921\u093C\u0947\u0917\u093E. Archive \u0915\u0930\u094B.");
+    return;
+  }
+  if (confirm("\u0907\u0938 \u0938\u093E\u0907\u091F \u0915\u094B \u0939\u092E\u0947\u0936\u093E \u0915\u0947 \u0932\u093F\u090F Delete \u0915\u0930\u0928\u093E \u0939\u0948?")) db.ref("companies/" + company + "/sites/" + id).remove();
 }
 function addSitePayment() {
   const spSite = document.getElementById("spSite");
@@ -6797,8 +6875,41 @@ let smOutbox = (function () { try { return JSON.parse(localStorage.getItem(SM_OU
 const smListeners = {}; // path -> [cb]
 const smData = {}; // path -> latest merged value
 function smClone(v) { return v == null ? null : JSON.parse(JSON.stringify(v)); }
-function smSaveOutbox() { try { localStorage.setItem(SM_OUTBOX_KEY, JSON.stringify(smOutbox)); } catch (e) {} updateSyncBadge(); }
-function smSaveCache(path, v) { try { localStorage.setItem(SM_CACHE_PREFIX + path, JSON.stringify(v)); } catch (e) {} }
+let _smQuotaWarned = false;
+// Free browser storage by dropping the biggest cached collection (cache is only a convenience; the outbox must always fit)
+function smEvictBiggestCache() {
+  let bigK = null, bigLen = 0;
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k || k.indexOf(SM_CACHE_PREFIX) !== 0) continue;
+      const len = (localStorage.getItem(k) || "").length;
+      if (len > bigLen) { bigLen = len; bigK = k; }
+    }
+    if (bigK) { localStorage.removeItem(bigK); return true; }
+  } catch (e) {}
+  return false;
+}
+function smSaveOutbox() {
+  const data = JSON.stringify(smOutbox);
+  let ok = false;
+  for (let tries = 0; tries < 6 && !ok; tries++) {
+    try { localStorage.setItem(SM_OUTBOX_KEY, data); ok = true; }
+    catch (e) { if (!smEvictBiggestCache()) break; }
+  }
+  if (!ok && smOutbox.length && !_smQuotaWarned) {
+    _smQuotaWarned = true;
+    try { alert("\u26A0\uFE0F \u092B\u094B\u0928 \u0915\u0940 \u092E\u0947\u092E\u094B\u0930\u0940 \u092D\u0930 \u0917\u0908 \u0939\u0948 \u2014 \u0905\u092D\u0940 \u0907\u0902\u091F\u0930\u0928\u0947\u091F \u091A\u093E\u0932\u0942 \u0930\u0916\u094B, \u0935\u0930\u0928\u093E \u0928\u092F\u093E \u0921\u0947\u091F\u093E \u0916\u094B \u0938\u0915\u0924\u093E \u0939\u0948"); } catch (e) {}
+  }
+  updateSyncBadge();
+}
+function smSaveCache(path, v) {
+  try { localStorage.setItem(SM_CACHE_PREFIX + path, JSON.stringify(v)); }
+  catch (e) {
+    // quota full: this collection is too big to cache — drop its stale copy so the outbox keeps its space
+    try { localStorage.removeItem(SM_CACHE_PREFIX + path); } catch (e2) {}
+  }
+}
 function smLoadCache(path) { try { const v = localStorage.getItem(SM_CACHE_PREFIX + path); return v ? JSON.parse(v) : undefined; } catch (e) { return undefined; } }
 function smApplyOp(rootVal, rel, op, val) {
   // rel: array of keys below the root
@@ -7372,7 +7483,7 @@ if (document.readyState === "loading") {
   function moveBack(rec) {
     rec.nodes.forEach((n) => {
       rec.ph.parentNode.insertBefore(n, rec.ph);
-      if (rec.force) { n.style.display = 'none'; n.classList.remove('sm-in-edit'); }
+      if (rec.forced && rec.forced.has(n)) { n.style.display = 'none'; n.classList.remove('sm-in-edit'); }
     });
     rec.ph.remove();
   }
@@ -7404,10 +7515,11 @@ if (document.readyState === "loading") {
     bodyEl.innerHTML = '';
     const ph = document.createComment('sm-edit');
     nodes[0].parentNode.insertBefore(ph, nodes[0]);
-    const rec = { ph, nodes, force: !!cfg.box };
+    const forced = new Set(nodes.filter((n) => cfg.box && (!cfg.boxFilter || cfg.boxFilter(n))));
+    const rec = { ph, nodes, forced };
     nodes.forEach((n) => {
       bodyEl.appendChild(n);
-      if (cfg.box) { n.style.display = 'block'; n.classList.add('sm-in-edit'); }
+      if (forced.has(n)) { n.style.display = 'block'; n.classList.add('sm-in-edit'); }
     });
     cur = { cfg, recs: [rec], obs: null, timer: null };
     const btn = cfg.cancelBtn ? $(cfg.cancelBtn) : null;
@@ -7452,7 +7564,7 @@ if (document.readyState === "loading") {
   }
 
   const CF = {
-    editEntry:       { title: '✏️ हाज़री एडिट', cancelBtn: 'cancelEdit', cancelFn: 'cancelEdit', region: () => [card('saveBtn')] },
+    editEntry:       { title: '✏️ हाज़री एडिट', cancelBtn: 'cancelEdit', cancelFn: 'cancelEdit', box: true, boxFilter: (n) => n.id === 'hzSingleBox', region: () => range('hzDateBlock', 'hzSingleBox') },
     editSite:        { title: '✏️ साइट एडिट', cancelBtn: 'siteCancelBtn', cancelFn: 'cancelSiteEdit', box: true, region: () => [$('addSiteBox2')] },
     editSitePayment: { title: '✏️ पेमेंट एडिट', cancelBtn: 'spCancelBtn', cancelFn: 'cancelSitePayEdit', box: true, region: () => [$('addPayBox2')] },
     bcEditEntry:     { title: '✏️ बिजली बिल एडिट', cancelBtn: 'bcCancelEditBtn', cancelFn: 'bcCancelEdit', region: () => range('bcMonth', 'bcMsg') },
@@ -7710,6 +7822,82 @@ if (document.readyState === "loading") {
       const now = Date.now();
       if (last[n] && now - last[n] < 900) return;
       last[n] = now;
+      return f.apply(this, arguments);
+    };
+  });
+})();
+</script>
+
+<script>
+/* ===== INPUT VALIDATION: galat / negative / bahut badi rakam aur galat tareekh rok do ===== */
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const e = $(id); return e && e.value !== "" ? parseFloat(e.value) : NaN; };
+  const MAXAMT = 1e8;
+  function badDate(v) {
+    if (!v) return "\u0924\u093E\u0930\u0940\u0916 \u091A\u0941\u0928\u094B";
+    if (v < "2015-01-01") return "\u0924\u093E\u0930\u0940\u0916 \u092C\u0939\u0941\u0924 \u092A\u0941\u0930\u093E\u0928\u0940 \u0939\u0948";
+    const lim = new Date(); lim.setDate(lim.getDate() + 7);
+    if (v > fmtLocalDate(lim)) return "\u0924\u093E\u0930\u0940\u0916 \u0906\u0917\u0947 \u0915\u0940 \u0939\u0948 \u2014 \u091C\u093E\u0901\u091A \u0932\u094B";
+    return "";
+  }
+  function badAmt(v, label, allowZero) {
+    if (!isFinite(v)) return label + " \u0921\u093E\u0932\u094B";
+    if (v < 0 || (!allowZero && v === 0)) return label + " 0 \u0938\u0947 \u091C\u093C\u094D\u092F\u093E\u0926\u093E \u0939\u094B\u0928\u0940 \u091A\u093E\u0939\u093F\u090F";
+    if (v > MAXAMT) return label + " \u092C\u0939\u0941\u0924 \u092C\u0921\u093C\u0940 \u0939\u0948 \u2014 \u091C\u093C\u0940\u0930\u094B \u0917\u093F\u0928\u0915\u0930 \u0926\u0947\u0916\u094B";
+    return "";
+  }
+  const badDays = (n) => (!(n >= 0 && n <= 4)) ? "\u0926\u093F\u0928 0 \u0938\u0947 4 \u0915\u0947 \u092C\u0940\u091A \u0939\u094B\u0928\u0947 \u091A\u093E\u0939\u093F\u090F" : "";
+  const RAKAM = "\u0930\u0915\u092E";
+  const V = {
+    addExpense: () => badDate($("xDate").value) || badAmt(num("xAmt"), RAKAM),
+    addSitePayment: () => badDate($("spDate").value) || badAmt(num("spAmt"), RAKAM),
+    addSiteCost: () => badAmt(num("scAmt"), RAKAM),
+    addSiteExtra: () => badDate($("seDate") ? $("seDate").value : "") || badAmt(num("seAmt"), RAKAM),
+    whAdd: () => badDate($("whDate").value) || badAmt(num("whAmt"), RAKAM),
+    matPaymentAdd: () => badAmt(num("mpAmount"), RAKAM),
+    saveMatEntry: () => { const q = num("meQty"), r = num("meRate"); if (isFinite(q) && q < 0) return "\u092E\u093E\u0924\u094D\u0930\u093E 0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0924\u0940"; if (isFinite(r) && r < 0) return "\u0930\u0947\u091F 0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0924\u093E"; return ""; },
+    saveMatItem: () => { const r = num("miRate"); return (isFinite(r) && r < 0) ? "\u0930\u0947\u091F 0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0924\u093E" : ""; },
+    saveHazri: () => {
+      const e1 = badDate($("eDate").value); if (e1) return e1;
+      const w = $("eWith") && $("eWith").value !== "" ? parseFloat($("eWith").value) : 0;
+      const e2 = badAmt(w, "\u0928\u093F\u0915\u093E\u0938\u0940", true); if (e2) return e2;
+      const c = $("eCustom");
+      if (c && c.style.display !== "none") { const n = parseFloat(c.value); if (!(n > 0 && n <= 4)) return "\u0915\u0938\u094D\u091F\u092E \u0926\u093F\u0928 0 \u0938\u0947 \u091C\u093C\u094D\u092F\u093E\u0926\u093E \u0914\u0930 4 \u0938\u0947 \u0915\u092E \u0939\u094B\u0928\u0947 \u091A\u093E\u0939\u093F\u090F"; }
+      return "";
+    },
+    saveBulkHazri: () => {
+      let bad = "";
+      Object.values(bhState || {}).forEach((st) => {
+        if (!st || bad) return;
+        if (st.days !== undefined && st.days !== null && st.days !== "") { bad = badDays(parseFloat(st.days)); }
+        if (!bad && st.withdraw !== undefined && st.withdraw !== null && st.withdraw !== "") { bad = badAmt(parseFloat(st.withdraw), "\u0928\u093F\u0915\u093E\u0938\u0940", true); }
+      });
+      return bad;
+    },
+    addLabour: () => {
+      const w = num("fWage"); const r = num("fRent");
+      if (isFinite(w) && (w < 0 || w > MAXAMT)) return "\u0926\u093F\u0939\u093E\u0921\u093C\u0940 \u0938\u0939\u0940 \u0921\u093E\u0932\u094B (0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902)";
+      if (isFinite(r) && (r < 0 || r > MAXAMT)) return "\u0915\u093F\u0930\u093E\u092F\u093E \u0938\u0939\u0940 \u0921\u093E\u0932\u094B (0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902)";
+      return "";
+    },
+    saveEditField: () => {
+      let f = ""; try { f = efField; } catch (e) {}
+      const el = $("efInput"); const v = el ? parseFloat(el.value) : NaN;
+      if ((f === "wage" || f === "rent" || f === "bijli") && isFinite(v)) {
+        if (v < 0) return "\u0930\u0915\u092E 0 \u0938\u0947 \u0915\u092E \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0924\u0940";
+        if (v > MAXAMT) return "\u0930\u0915\u092E \u092C\u0939\u0941\u0924 \u092C\u0921\u093C\u0940 \u0939\u0948";
+      }
+      return "";
+    }
+  };
+  Object.keys(V).forEach((n) => {
+    const f = window[n];
+    if (typeof f !== "function") return;
+    window[n] = function () {
+      let err = "";
+      try { err = V[n]() || ""; } catch (e) { err = ""; }
+      if (err) { alert("\u26A0\uFE0F " + err); return; }
       return f.apply(this, arguments);
     };
   });
