@@ -1405,9 +1405,10 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
       </div>
-      <div class="tg-row c2" id="hzToggles">
+      <div class="tg-row c3" id="hzToggles">
         <button type="button" class="tg-btn dark" data-box="bhBox" onclick="toggleBoxX('bhBox'); renderBulkHazri(true);">👥 सबकी हाज़री एक साथ</button>
         <button type="button" class="tg-btn dark" data-box="hzSingleBox" onclick="toggleBoxX('hzSingleBox')">👤 एक बार में एक दिहाड़ी</button>
+        <button type="button" class="tg-btn dark" id="hzListBtn" onclick="toggleHzList()">📋 हाज़री सूची</button>
       </div>
       <div id="bhBox" style="display: none; margin-top: 12px;">
         <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
@@ -1449,7 +1450,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card">
+    <div class="card" id="hzListCard" style="display: none;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -2046,7 +2047,7 @@ function toggleBox(id) {
 function toggleBoxX(id) {
   const btn = document.querySelector('.tg-btn[data-box="' + id + '"]');
   const row = btn ? btn.closest(".tg-row") : null;
-  const ids = row ? [...row.querySelectorAll(".tg-btn")].map((b) => b.dataset.box) : [id];
+  const ids = row ? [...row.querySelectorAll(".tg-btn")].map((b) => b.dataset.box).filter(Boolean) : [id];
   const el = document.getElementById(id);
   const willOpen = !!el && (el.style.display === "none" || el.style.display === "");
   ids.forEach((g) => { const e = document.getElementById(g); if (e && g !== id) e.style.display = "none"; });
@@ -2054,6 +2055,15 @@ function toggleBoxX(id) {
   if (row) ids.forEach((g) => { const b = row.querySelector('.tg-btn[data-box="' + g + '"]'); const e = document.getElementById(g); if (b) b.classList.toggle("on", !!e && e.style.display === "block"); });
 }
 window.toggleBoxX = toggleBoxX;
+function toggleHzList() {
+  const card = document.getElementById("hzListCard");
+  const btn = document.getElementById("hzListBtn");
+  if (!card) return;
+  const open = card.style.display === "none" || card.style.display === "";
+  card.style.display = open ? "block" : "none";
+  if (btn) btn.classList.toggle("on", open);
+}
+window.toggleHzList = toggleHzList;
 function showTab(id) {
   document.querySelectorAll("[id^=t-]").forEach((e) => e.style.display = "none");
   const target = document.getElementById("t-" + id);
