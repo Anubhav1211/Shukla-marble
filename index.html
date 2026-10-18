@@ -1119,10 +1119,21 @@ img, canvas, svg, video { max-width: 100%; }
 
 #hzTopCard { display: flex; flex-direction: column; }
 #hzDateBlock { order: 1; }
-#hzToggles { order: 2; }
 #hzSingleBox { order: 3; }
 #bhBox { order: 4; }
 #missingBox { margin: 12px 14px 0 !important; }
+
+.hz-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 14px; }
+.hz-tile { position: relative; overflow: hidden; border: 0; border-radius: 20px; padding: 14px; min-height: 108px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 10px; text-align: left; color: #fff; cursor: pointer; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16); transition: transform 0.12s ease; }
+.hz-tile:active { transform: scale(0.97); }
+.hz-tile .ic { width: 42px; height: 42px; border-radius: 14px; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.hz-tile b { display: block; font-size: 15.5px; font-weight: 800; line-height: 1.2; }
+.hz-tile small { display: block; font-size: 11px; font-weight: 600; opacity: 0.85; margin-top: 3px; }
+.hz-tile.t-bulk { background: linear-gradient(145deg, #1E293B, #0B1220); }
+.hz-tile.t-single { background: linear-gradient(145deg, #D9B55A, #99701F); color: #1a1405; }
+.hz-tile.t-single .ic { background: rgba(255, 255, 255, 0.35); }
+.hz-tile.t-list { background: linear-gradient(145deg, #22A559, #166534); }
+.hz-tile.t-cal { background: linear-gradient(145deg, #6D70F5, #4338CA); }
 </style>
 </head>
 <body>
@@ -1405,11 +1416,6 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
       </div>
-      <div class="tg-row c3" id="hzToggles">
-        <button type="button" class="tg-btn dark" data-box="bhBox" onclick="toggleBoxX('bhBox'); renderBulkHazri(true);">👥 सबकी हाज़री एक साथ</button>
-        <button type="button" class="tg-btn dark" data-box="hzSingleBox" onclick="toggleBoxX('hzSingleBox')">👤 एक बार में एक दिहाड़ी</button>
-        <button type="button" class="tg-btn dark" id="hzListBtn" onclick="toggleHzList()">📋 हाज़री सूची</button>
-      </div>
       <div id="bhBox" style="display: none; margin-top: 12px;">
         <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
         <select id="bhSite" class="input"><option value="">🏠 साइट (सबके लिए, Optional)</option></select>
@@ -1423,6 +1429,12 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-save" onclick="saveBulkHazri()">💾 सबकी हाज़री सेव करें</button>
         <div id="bhMsg" style="font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       </div>
+    </div>
+    <div class="hz-tiles" id="hzToggles">
+      <button type="button" class="hz-tile t-bulk" onclick="openHzPanel('bulk')"><span class="ic">👥</span><span><b>सबकी हाज़री</b><small>एक साथ, सबकी</small></span></button>
+      <button type="button" class="hz-tile t-single" onclick="openHzPanel('single')"><span class="ic">👤</span><span><b>एक दिहाड़ी</b><small>एक कारीगर, एक बार</small></span></button>
+      <button type="button" class="hz-tile t-list" onclick="openHzPanel('list')"><span class="ic">📋</span><span><b>हाज़री सूची</b><small id="hzTileCount">आज की हाज़री</small></span></button>
+      <button type="button" class="hz-tile t-cal" onclick="openHzPanel('cal')"><span class="ic">🗓️</span><span><b>कैलेंडर</b><small>महीने का हिसाब</small></span></button>
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
@@ -1464,7 +1476,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="hzCalCard" style="display: none;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
@@ -3086,13 +3098,16 @@ function editEntryByDay(dayNum) {
   if (list.length === 0) {
     if (eDate) eDate.value = targetDate;
     renderAll();
+    if (typeof openHzPanel === "function") openHzPanel("single");
     return;
   }
-  if (list.length === 1) editEntry(list[0][0]);
+  if (list.length === 1) { editEntry(list[0][0]); return; }
+  if (eDate) eDate.value = targetDate;
+  renderAll();
+  if (typeof openHzPanel === "function") openHzPanel("list");
 }
 function quickSelectLabour(id) {
-  const _sb = document.getElementById("hzSingleBox");
-  if (_sb && (_sb.style.display === "none" || _sb.style.display === "")) toggleBoxX("hzSingleBox");
+  if (typeof openHzPanel === "function") openHzPanel("single");
   const eLabour = document.getElementById("eLabour");
   if (eLabour) eLabour.value = id;
   renderAll();
@@ -7761,6 +7776,31 @@ if (document.readyState === "loading") {
     if (!found) html += '<div style="text-align:center;padding:24px 0;color:#166534;font-weight:800">✅ कोई गड़बड़ नहीं मिली</div>';
     openPanel('🔍 हिसाब जाँच', html);
   };
+
+  /* ===== Hazri tab: 4 tiles, each opens in a popup ===== */
+  function hzDateTxt() {
+    const v = $('eDate') && $('eDate').value;
+    try { return new Date(v + 'T00:00:00').toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; }
+  }
+  const HZ = {
+    bulk:   { title: () => '👥 सबकी हाज़री — ' + hzDateTxt(), el: 'bhBox', before: () => { try { renderBulkHazri(true); } catch (e) {} } },
+    single: { title: () => '👤 एक दिहाड़ी — ' + hzDateTxt(), el: 'hzSingleBox' },
+    list:   { title: () => '📋 हाज़री सूची — ' + hzDateTxt(), el: 'hzListCard' },
+    cal:    { title: () => '🗓️ कैलेंडर', el: 'hzCalCard' }
+  };
+  window.openHzPanel = function (kind) {
+    const c = HZ[kind]; if (!c || !$(c.el)) return;
+    if (cur) userClose();
+    if (c.before) c.before();
+    openMove({ title: c.title(), box: true, region: () => [$(c.el)] }, []);
+  };
+  (function syncTileCount() {
+    const src = $('todayCount'), dst = $('hzTileCount');
+    if (!src || !dst) return;
+    const sync = () => { const t = (src.textContent || '').trim(); dst.textContent = t ? t : 'आज की हाज़री'; };
+    new MutationObserver(sync).observe(src, { childList: true, characterData: true, subtree: true });
+    sync();
+  })();
 
   /* "⋯" menus (site / kaarigar) */
   function openMenu(title, items) {
