@@ -1134,6 +1134,18 @@ img, canvas, svg, video { max-width: 100%; }
 .hz-tile.t-single .ic { background: rgba(255, 255, 255, 0.35); }
 .hz-tile.t-list { background: linear-gradient(145deg, #22A559, #166534); }
 .hz-tile.t-cal { background: linear-gradient(145deg, #6D70F5, #4338CA); }
+
+.ds-card { padding: 16px; }
+.ds-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+.ds-title { font-size: 17px; font-weight: 800; color: #0F172A; }
+.ds-sub { font-size: 11.5px; color: #64748B; font-weight: 600; margin-top: 2px; }
+.ds-chips { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; scrollbar-width: none; }
+.ds-chips::-webkit-scrollbar { display: none; }
+.ds-chip { flex: 1 1 0; border: 1.5px solid #E2E8F0; background: #fff; color: #475569; border-radius: 999px; padding: 9px 10px; font-size: 12.5px; font-weight: 800; cursor: pointer; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; }
+.ds-chip b { background: #F1F5F9; color: #334155; border-radius: 999px; padding: 1px 8px; font-size: 11.5px; }
+.ds-chip.on { background: #0F172A; border-color: #0F172A; color: #fff; }
+.ds-chip.on b { background: rgba(255, 255, 255, 0.18); color: #fff; }
+.ds-empty { text-align: center; color: #94A3B8; padding: 22px 10px; font-weight: 700; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -1160,7 +1172,6 @@ img, canvas, svg, video { max-width: 100%; }
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
-    <button class="tab bnav-item" id="bt-s" onclick="showTab('s')"><span class="ti">🏠</span><span class="tl">साइट</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
     <button class="tab bnav-item" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
     <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
@@ -1229,34 +1240,29 @@ img, canvas, svg, video { max-width: 100%; }
       <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर के महीना बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
     </div>
 
-    <!-- Ongoing Sites -->
-    <div class="card" style="border: 2px solid #16A34A;">
-      <h3 style="margin: 0 0 10px 0; color: #166534; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
-        <span>🟢 On Going Running Sites</span>
-        <span id="ongoingCount" style="background: #DCFCE7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 11px;"></span>
-      </h3>
-      <input id="dashSearchOngoing" class="input" placeholder="🔍 On Going खोजो - House No / Client" oninput="renderAll()">
-      <div id="ongoingList"></div>
-    </div>
-
-    <!-- Archived Sites -->
-    <div class="card" style="border: 2px solid #94A3B8;">
-      <h3 style="margin: 0 0 10px 0; color: #475569; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
-        <span>📦 Archived Sites</span>
-        <span id="closedCount" style="background: #F1F5F9; color: #475569; padding: 4px 10px; border-radius: 20px; font-size: 11px;"></span>
-      </h3>
-      <input id="dashSearchClosed" class="input" placeholder="🔍 Archived खोजो..." oninput="renderAll()">
-      <div id="closedList"></div>
-    </div>
-  </div>
-
-  <!-- TAB 2: SITES -->
-  <div id="t-s" style="display: none;">
-    <div class="card">
-      <div class="tg-row c2">
-        <button type="button" class="tg-btn dark" id="addSiteToggleBtn" data-box="addSiteBox2" onclick="toggleBoxX('addSiteBox2')"><span id="addSiteToggleTxt">🏠 नई साइट जोड़ो</span></button>
-        <button type="button" class="tg-btn brown" data-box="addCostBox2" onclick="toggleBoxX('addCostBox2')">🧾 पिछली लागत जोड़ो</button>
+    <!-- SITES (merged from the old Site tab) -->
+    <div class="card ds-card" id="dsCard">
+      <div class="ds-head">
+        <div>
+          <div class="ds-title">🏗️ साइट्स</div>
+          <div class="ds-sub" id="dsSub"></div>
+        </div>
       </div>
+      <div class="tg-row c2" style="margin-bottom: 12px;">
+        <button type="button" class="tg-btn dark" onclick="openSiteAdd()">➕ नई साइट जोड़ो</button>
+        <button type="button" class="tg-btn brown" onclick="openCostAdd()">🧾 पिछली लागत जोड़ो</button>
+      </div>
+      <div class="ds-chips" id="dsChips">
+        <button type="button" class="ds-chip on" data-f="ongoing" onclick="setDsFilter('ongoing')">🟢 चालू <b id="dsCntO">0</b></button>
+        <button type="button" class="ds-chip" data-f="closed" onclick="setDsFilter('closed')">📦 पूरा <b id="dsCntC">0</b></button>
+        <button type="button" class="ds-chip" data-f="all" onclick="setDsFilter('all')">सब <b id="dsCntA">0</b></button>
+      </div>
+      <input id="dsSearch" class="input" placeholder="🔍 साइट खोजो — House No / Client" oninput="renderAll()">
+      <div id="dsList"></div>
+    </div>
+
+    <!-- hidden holders: these forms open inside popups -->
+    <div id="siteFormsHolder" style="display: none;">
       <div id="addSiteBox2" style="display: none; margin-top: 12px;">
         <input id="sHouse" class="input" placeholder="House No">
         <input id="sAddress" class="input" placeholder="पता / लोकेशन">
@@ -1278,9 +1284,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
         <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
-    </div>
-
-    <div class="card" id="payHolderCard" style="display: none;">
+      <div class="card" id="payHolderCard" style="display: none;">
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
@@ -1292,13 +1296,8 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn" id="spCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelSitePayEdit()">Cancel</button>
       </div>
     </div>
-
-
-    <div class="card">
-      <h3 style="margin-top: 0; font-size: 15px;">📊 साइट वाइज रिकॉर्ड</h3>
-      <input id="siteSearch" class="input" placeholder="🔍 साइट खोजो - House No / Client" oninput="renderAll()">
-      <div id="siteList"></div>
     </div>
+
   </div>
 
   <!-- TAB 3: LABOURS -->
@@ -2077,6 +2076,7 @@ function toggleHzList() {
 }
 window.toggleHzList = toggleHzList;
 function showTab(id) {
+  if (id === "s") id = "d";
   document.querySelectorAll("[id^=t-]").forEach((e) => e.style.display = "none");
   const target = document.getElementById("t-" + id);
   if (target) target.style.display = "block";
@@ -3199,10 +3199,8 @@ function renderAll() {
   const curSp = spSiteSel ? spSiteSel.value : "";
   const eLabSearch = document.getElementById("eLabSearch");
   const labSearch = document.getElementById("labSearch");
-  const siteSearch = document.getElementById("siteSearch");
   const eLabQ = (eLabSearch?.value || "").toLowerCase();
   const labSearchQ = (labSearch?.value || "").toLowerCase();
-  const siteSearchQ = (siteSearch?.value || "").toLowerCase();
   if (eSel) eSel.innerHTML = "";
   if (rSel) rSel.innerHTML = '<option value="all">\u0938\u092C\u0915\u093E \u0939\u093F\u0938\u093E\u092C</option>';
   if (eSiteSel) eSiteSel.innerHTML = '<option value="">\u{1F3E0} \u0938\u093E\u0907\u091F (Optional)</option>';
@@ -3444,45 +3442,23 @@ function renderAll() {
   const selId = eSel ? eSel.value : "";
   const selLabName2 = document.getElementById("selLabName2");
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
-  let siteHtml = "";
-  siteIdsByActivity().forEach((id) => {
-    const s = sites[id];
-    if (siteSearchQ && !((s.house || "").toLowerCase().includes(siteSearchQ) || (s.client || "").toLowerCase().includes(siteSearchQ) || (s.address || "").toLowerCase().includes(siteSearchQ))) return;
-    const sc = calcSite(id);
-    const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
-    const labourNames = Object.values(sc.labourMap).map((v) => `${mEsc(v.name)} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
-    const isClosedS = (s.status || "").includes("\u092A\u0942\u0930\u093E");
-    siteHtml += `
+  renderDashSites();
+  renderSiteCostSelect();
+  renderCalendar();
+  updateDupInfo();
+  if (typeof renderBulkHazri === "function") renderBulkHazri(false);
+}
+function isClosedSite(s) { return ((s && s.status) || "").includes("\u092A\u0942\u0930\u093E"); }
+function siteCardHtml(id) {
+  const s = sites[id];
+  const sc = calcSite(id);
+  const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
+  const labourNames = Object.values(sc.labourMap).map((v) => `${mEsc(v.name)} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
+  const isClosed = isClosedSite(s);
+  const isClosedS = isClosed;
+  return `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client ? s.client + " • " : "")}${mEsc(s.address || "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosedS ? "#64748b" : "#16a34a"};color:white">${isClosedS ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
-        <div class="sm-site-metrics">
-          <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
-          <div class="sm-site-metric" style="background:#eff6ff;cursor:${profitUnlocked ? "default" : "pointer"}" onclick="${profitUnlocked ? "" : "unlockProfit('site')"}">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
-          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
-        </div>
-        ${profitUnlocked ? `<div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
-        <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>` : ""}
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
-      </div>
-    `;
-  });
-  const siteList = document.getElementById("siteList");
-  if (siteList) siteList.innerHTML = siteHtml || '<div style="color:#94A3B8;padding:10px">\u0915\u094B\u0908 \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902</div>';
-  const dashSearchOngoing = document.getElementById("dashSearchOngoing");
-  const dashSearchClosed = document.getElementById("dashSearchClosed");
-  const ongoingQ = (dashSearchOngoing?.value || "").toLowerCase();
-  const closedQ = (dashSearchClosed?.value || "").toLowerCase();
-  let ongoingHtml = "", closedHtml = "", ongoingCnt = 0, closedCnt = 0;
-  siteIdsByActivity().forEach((id) => {
-    const s = sites[id];
-    const sc = calcSite(id);
-    const isClosed = (s.status || "").includes("\u092A\u0942\u0930\u093E");
-    const searchIn = (s.house + " " + (s.client || "") + " " + (s.address || "")).toLowerCase();
-    const profitColor = sc.profit >= 0 ? "#16a34a" : "#DC2626";
-    const labourNames = Object.values(sc.labourMap).map((v) => `${mEsc(v.name)} (${v.days} \u0926\u093F\u0928)`).join(", ") || "\u0915\u094B\u0908 \u0928\u0939\u0940\u0902";
-    const cardHtml = `
-      <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',0)" aria-label="और विकल्प">⋯</button></span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
@@ -3493,34 +3469,33 @@ function renderAll() {
         <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
       </div>
     `;
-    if (isClosed) {
-      if (closedQ && !searchIn.includes(closedQ)) return;
-      closedCnt++;
-      closedHtml += cardHtml;
-    } else {
-      if (ongoingQ && !searchIn.includes(ongoingQ)) return;
-      ongoingCnt++;
-      ongoingHtml += cardHtml;
-    }
+}
+let dsFilter = "ongoing";
+function setDsFilter(f) { dsFilter = f; renderDashSites(); }
+window.setDsFilter = setDsFilter;
+function renderDashSites() {
+  const listEl = document.getElementById("dsList");
+  if (!listEl) return;
+  const q = (document.getElementById("dsSearch")?.value || "").toLowerCase();
+  const ids = siteIdsByActivity();
+  let nO = 0, nC = 0;
+  ids.forEach((id) => { if (isClosedSite(sites[id])) nC++; else nO++; });
+  const setTxt = (i, t) => { const e = document.getElementById(i); if (e) e.innerText = t; };
+  setTxt("dsCntO", nO); setTxt("dsCntC", nC); setTxt("dsCntA", ids.length);
+  setTxt("dsSub", ids.length ? ("\u0915\u0941\u0932 " + ids.length + " \u0938\u093E\u0907\u091F \u2022 \u0938\u092C\u0938\u0947 \u0928\u0908 \u092E\u091C\u093C\u0926\u0942\u0930\u0940 \u0935\u093E\u0932\u0940 \u0909\u092A\u0930") : "\u0905\u092D\u0940 \u0915\u094B\u0908 \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902");
+  document.querySelectorAll("#dsChips .ds-chip").forEach((c) => c.classList.toggle("on", c.dataset.f === dsFilter));
+  const searchEl = document.getElementById("dsSearch");
+  if (searchEl) searchEl.style.display = (ids.length > 5 || q) ? "" : "none";
+  let html = "";
+  ids.forEach((id) => {
+    const s = sites[id];
+    const closed = isClosedSite(s);
+    if (dsFilter === "ongoing" && closed) return;
+    if (dsFilter === "closed" && !closed) return;
+    if (q && !((s.house || "") + " " + (s.client || "") + " " + (s.address || "")).toLowerCase().includes(q)) return;
+    html += siteCardHtml(id);
   });
-  const oEl = document.getElementById("ongoingList");
-  if (oEl) oEl.innerHTML = ongoingHtml || '<div style="color:#94A3B8;padding:12px;text-align:center">\u0915\u094B\u0908 On Going \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902</div>';
-  const cEl = document.getElementById("closedList");
-  if (cEl) cEl.innerHTML = closedHtml || '<div style="color:#94A3B8;padding:12px;text-align:center">\u0915\u094B\u0908 Closed \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902</div>';
-  const oc = document.getElementById("ongoingCount");
-  if (oc) oc.innerText = ongoingCnt + " Sites";
-  const cc = document.getElementById("closedCount");
-  if (cc) cc.innerText = closedCnt + " Sites";
-  const _ongTotal = Object.values(sites).filter((x) => !((x.status || "").includes("\u092A\u0942\u0930\u093E"))).length;
-  const _clTotal = Object.keys(sites).length - _ongTotal;
-  if (dashSearchOngoing) dashSearchOngoing.style.display = (_ongTotal > 5 || ongoingQ) ? "" : "none";
-  if (dashSearchClosed) dashSearchClosed.style.display = (_clTotal > 5 || closedQ) ? "" : "none";
-  const _closedCard = document.getElementById("closedList") ? document.getElementById("closedList").closest(".card") : null;
-  if (_closedCard) _closedCard.style.display = (_clTotal > 0 || closedQ) ? "" : "none";
-  renderSiteCostSelect();
-  renderCalendar();
-  updateDupInfo();
-  if (typeof renderBulkHazri === "function") renderBulkHazri(false);
+  listEl.innerHTML = html || '<div class="ds-empty">' + (q ? "\u0915\u094B\u0908 \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902 \u092E\u093F\u0932\u0940" : (dsFilter === "closed" ? "\u0915\u094B\u0908 Archived \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902" : "\u0915\u094B\u0908 On Going \u0938\u093E\u0907\u091F \u0928\u0939\u0940\u0902")) + '</div>';
 }
 function renderSiteCostSelect() {
   const sel = document.getElementById("scSite");
@@ -3994,6 +3969,7 @@ function addSite() {
       if (sHouse) sHouse.value = "";
       if (sAddress) sAddress.value = "";
       if (sClient) sClient.value = "";
+      cancelSiteEdit();
     });
   }
 }
@@ -7802,6 +7778,22 @@ if (document.readyState === "loading") {
     sync();
   })();
 
+  /* ===== Dashboard: nayi site / purani lagat popup ===== */
+  window.openSiteAdd = function () {
+    if (cur) userClose();
+    try { window.cancelSiteEdit(); } catch (e) {}
+    const cb = $('siteCancelBtn'); if (cb) cb.style.display = 'block';
+    openMove({ title: '🏠 नई साइट जोड़ो', cancelBtn: 'siteCancelBtn', cancelFn: 'cancelSiteEdit', box: true, region: () => [$('addSiteBox2')] }, []);
+    setTimeout(() => { const h = $('sHouse'); if (h && cur) h.focus(); }, 150);
+  };
+  window.openCostAdd = function (siteId) {
+    if (cur) userClose();
+    let name = '';
+    try { name = siteId && sites[siteId] ? sites[siteId].house : ''; } catch (e) {}
+    const sel = $('scSite'); if (sel && siteId) sel.value = siteId;
+    openMove({ title: '🧾 पिछली लागत जोड़ो' + (name ? ' — ' + name : ''), box: true, region: () => [$('addCostBox2')] }, []);
+  };
+
   /* "⋯" menus (site / kaarigar) */
   function openMenu(title, items) {
     if (cur) userClose();
@@ -7824,6 +7816,7 @@ if (document.readyState === "loading") {
     try { closed = ((sites[id].status || '').indexOf('पूरा') > -1); name = sites[id].house || ''; } catch (e) {}
     const items = [
       { label: '✏️ Edit साइट', style: 'background:#E0EDFF;color:#1E40AF;', fn: () => window.editSite(id) },
+      { label: '🧾 पिछली लागत जोड़ो', style: 'background:#FFF7ED;color:#B45309;', fn: () => window.openCostAdd(id) },
       closed
         ? { label: '🟢 चालू करो', style: 'background:#DCFCE7;color:#166534;', fn: () => window.toggleSiteStatus(id, false) }
         : { label: '📦 Archive', style: 'background:#F1F5F9;color:#475569;', fn: () => window.toggleSiteStatus(id, true) }
