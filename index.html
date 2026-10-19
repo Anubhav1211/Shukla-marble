@@ -1146,6 +1146,15 @@ img, canvas, svg, video { max-width: 100%; }
 .ds-chip.on { background: #0F172A; border-color: #0F172A; color: #fff; }
 .ds-chip.on b { background: rgba(255, 255, 255, 0.18); color: #fff; }
 .ds-empty { text-align: center; color: #94A3B8; padding: 22px 10px; font-weight: 700; font-size: 13px; }
+
+.tg-btn.green { background: #166534; }
+.tg-btn.indigo { background: #4338CA; }
+
+.ag-sec-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; cursor: pointer; }
+.ag-sec-head b { flex: 1; min-width: 0; font-size: 13px; color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-sec-head small { color: #64748B; font-weight: 700; font-size: 11px; white-space: nowrap; }
+.ag-sec-head .chev { color: #4338CA; font-weight: 800; }
+.ag-sec-body { margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -1196,48 +1205,41 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- TAB 1: DASHBOARD -->
   <div id="t-d">
-    <div class="card">
-      <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 800;">ओवरव्यू</h3>
-      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftDMonth(-1)">◀</button>
+    <div class="card" id="dashTopCard" style="padding: 12px 14px;">
+      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
         <input id="dMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('dMonth')">
-        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftDMonth(1)">▶</button>
+        <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(1)">▶</button>
       </div>
-      <div id="monTxt" style="text-align: center; color: #4F46E5; font-size: 11px; font-weight: 700; margin-bottom: 10px;"></div>
+      <span id="monTxt" style="display: none;"></span><span id="msMonTxt" style="display: none;"></span>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 14px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">🔒</b><br><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">पासवर्ड से देखें ›</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
         </div>
-        <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #DCFCE7;">
+        <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #DCFCE7;">
           <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div onclick="showBreakdownLena()" style="cursor: pointer; background: white; padding: 14px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #FECACA;">
+        <div onclick="showBreakdownLena()" style="cursor: pointer; background: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #FECACA;">
           <b id="kLena" style="color: #DC2626; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #DC2626; font-weight: 700;">कुल लेना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
       </div>
-    </div>
 
-    <!-- Monthly Summary (सब कारीगर मिलाकर, महीना-वार) -->
-    <div class="card" style="border: 2px solid #E2E8F0;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0; font-size: 15px; font-weight: 800;">📊 मासिक सारांश</h3>
-        <span id="msMonTxt" style="background: #F1F5F9; color: #475569; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 14px;">
-        <div onclick="showBreakdownEarn()" style="cursor: pointer; background: #EEF2FF; padding: 12px 4px; border-radius: 16px; text-align: center;">
+      <div style="height: 1px; background: #EEF2F7; margin: 12px 0 10px;"></div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 0;">
+        <div onclick="showBreakdownEarn()" style="cursor: pointer; background: #EEF2FF; padding: 9px 4px; border-radius: 16px; text-align: center;">
           <small style="color: #4338CA; font-weight: 700; font-size: 10px;">इस महीने की कुल दिहाड़ी बनी</small><br>
           <b id="msEarn" style="color: #4338CA; font-size: 15px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div onclick="showBreakdownPaid()" style="cursor: pointer; background: #DCFCE7; padding: 12px 4px; border-radius: 16px; text-align: center;">
+        <div onclick="showBreakdownPaid()" style="cursor: pointer; background: #DCFCE7; padding: 9px 4px; border-radius: 16px; text-align: center;">
           <small style="color: #166534; font-weight: 700; font-size: 10px;">इस महीने कुल दिया गया</small><br>
           <b id="msPaid" style="color: #166534; font-size: 15px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
         </div>
-        <div onclick="showBreakdownOpeningLeft()" style="cursor: pointer; background: #FEF3C7; padding: 12px 4px; border-radius: 16px; text-align: center; grid-column: span 2;">
-          <small style="color: #92400E; font-weight: 700; font-size: 10px;">पिछले महीने का बकाया (<span id="msOpening">₹0</span>) — अब कितना बचा</small><br>
-          <b id="msOpeningLeft" style="color: #B45309; font-size: 18px; white-space: nowrap;">₹0</b><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
+        <div onclick="showBreakdownOpeningLeft()" style="cursor: pointer; background: #FEF3C7; padding: 9px 12px; border-radius: 16px; grid-column: span 2; display: flex; justify-content: space-between; align-items: center; gap: 8px; text-align: left;">
+          <small style="color: #92400E; font-weight: 700; font-size: 10.5px; line-height: 1.3;">पिछले महीने का बकाया (<span id="msOpening">₹0</span>)<br>अब कितना बचा ›</small>
+          <b id="msOpeningLeft" style="color: #B45309; font-size: 18px; white-space: nowrap;">₹0</b>
         </div>
       </div>
-      <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500; text-align: center; margin-top: 10px;">ऊपर के महीना बटन से महीना बदलो, ये अपने आप उसी महीने का दिखाएगा</div>
+
     </div>
 
     <!-- SITES (merged from the old Site tab) -->
@@ -1366,7 +1368,6 @@ img, canvas, svg, video { max-width: 100%; }
         <input id="kMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('kMonth')">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(1)">▶</button>
       </div>
-      <div style="font-size: 11px; color: #94A3B8; font-weight: 600; text-align: center; margin-bottom: 12px;">इस महीने का पूरा हिसाब — दिहाड़ी, किराया, बिजली, बकाया — यहीं देखो और बदलो</div>
       <input id="labSearch" class="input" placeholder="🔍 नाम से खोजो..." oninput="renderAll()">
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
@@ -1515,19 +1516,14 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- TAB: BUSINESS EXPENSES (व्यापार खर्च) -->
   <div id="t-x" style="display: none;">
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
-          <span>💸</span> व्यापारिक खर्च (Business Expenses)
-        </h3>
+    <div class="card" style="padding: 12px 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px;">
+        <h3 style="margin: 0; font-size: 15px; font-weight: 800;">💸 व्यापारिक खर्च</h3>
         <input id="xMonth" type="month" class="input" style="width: auto; margin: 0; padding: 6px 10px;" onchange="renderExpenses()">
       </div>
-
-      <!-- Total expense (tap -> category wise popup) -->
-      <div onclick="showExpenseBreakdown()" style="margin-top: 14px; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 18px 12px; border-radius: 18px; text-align: center; cursor: pointer;">
-        <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च</small><br>
-        <b id="xTotAmt" style="font-size: 26px; color: #F87171;">₹0</b><br>
-        <small style="color: #94A3B8; font-size: 11px;">विवरण देखें ›</small>
+      <div onclick="showExpenseBreakdown()" style="background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 10px 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer;">
+        <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च ›</small>
+        <b id="xTotAmt" style="font-size: 22px; color: #F87171; white-space: nowrap;">₹0</b>
       </div>
     </div>
 
@@ -1604,7 +1600,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- Payment Received -->
-    <div class="card" style="border: 2px solid #E8D5A6;">
+    <div class="card" id="matPayCard" style="border: 2px solid #E8D5A6; display: none;">
       <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 800;">💰 <span id="mpNSLabel">NOVA</span> से पेमेंट (पेमेंट प्राप्ति)</h3>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
         <div style="background: #EEF2FF; padding: 10px 4px; border-radius: 14px; text-align: center;">
@@ -1663,14 +1659,17 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- Entry Form -->
-    <div class="card">
+    <div class="card" id="meTopCard">
+      <div id="meDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनें</div>
-      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
+      <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftMDate(-1)">◀</button>
         <input id="meDate" type="date" class="input" style="margin-bottom: 0; flex: 1;" onchange="renderMaterial()">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftMDate(1)">▶</button>
         <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setMDateToday()">आज</button>
       </div>
+      </div>
+      <div id="meFormBox" style="display: none; margin-top: 12px;">
       <div id="meEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ मटेरियल एंट्री एडिट हो रही है</div>
       <select id="meItem" class="input" onchange="onMatItemPick()"></select>
       <div style="display: flex; gap: 8px;">
@@ -1687,6 +1686,12 @@ img, canvas, svg, video { max-width: 100%; }
       <button class="btn btn-save" id="meSaveBtn" onclick="saveMatEntry()">💾 मटेरियल एंट्री सेव</button>
       <button class="btn" id="meCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelMatEntryEdit()">Cancel</button>
       <div id="meMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
+      </div>
+    </div>
+    <div class="tg-row c3" style="margin: 0 14px 12px;" id="matTiles">
+      <button type="button" class="tg-btn gold" onclick="openMatPanel('entry')">➕ एंट्री जोड़ो</button>
+      <button type="button" class="tg-btn green" onclick="openMatPanel('pay')">💰 पेमेंट</button>
+      <button type="button" class="tg-btn indigo" onclick="openMatPanel('report')">📊 रिपोर्ट</button>
     </div>
 
     <!-- BULK MATERIAL -->
@@ -1720,7 +1725,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- Reports -->
-    <div class="card">
+    <div class="card" id="matReportCard" style="display: none;">
       <h3 style="font-size: 15px; margin-top: 0; margin-bottom: 10px;">📊 मटेरियल रिपोर्ट</h3>
       <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px;">
         <button class="ag-subtab m-mode" id="mMode-day" onclick="setMatMode('day')">दिन</button>
@@ -1768,16 +1773,17 @@ img, canvas, svg, video { max-width: 100%; }
         <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <b>Rate Card Preview</b>
+            <button type="button" class="btn-sm" id="agPrevBtnIt" style="background: #EEF2FF; color: #4338CA; padding: 6px 12px; font-weight: 800;" onclick="toggleAgPreview('It')">👁️ Preview ▸</button>
             <div style="display: flex; gap: 6px;">
               <button class="btn-sm" style="background: #0F172A; color: white; padding: 6px 12px; font-weight: 700;" onclick="downloadAgreementPdf('italianCard')">📄 PDF डाउनलोड</button>
               <button class="btn-sm" style="background: #25D366; color: white; padding: 6px 12px; font-weight: 800;" onclick="shareImg('italianCard')">📸 WhatsApp</button>
             </div>
           </div>
-          <div id="italianCard" class="italian-preview">
+          <div id="agPrevBodyIt" style="display: none;"><div id="italianCard" class="italian-preview">
             <div class="italian-head">SHUKLA MARBLE CONTRACTOR</div>
             <div id="italianPreviewBody"></div>
             <div style="background: #0F172A; color: #F59E0B; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1px;">Professional | Reliable | Quality Work</div>
-          </div>
+          </div></div>
         </div>
       </div>
 
@@ -1798,14 +1804,15 @@ img, canvas, svg, video { max-width: 100%; }
         <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <b>Rate Card Preview</b>
+            <button type="button" class="btn-sm" id="agPrevBtnTile" style="background: #EEF2FF; color: #4338CA; padding: 6px 12px; font-weight: 800;" onclick="toggleAgPreview('Tile')">👁️ Preview ▸</button>
             <div style="display: flex; gap: 6px;">
               <button class="btn-sm" style="background: #0F172A; color: white; padding: 6px 12px; font-weight: 700;" onclick="downloadAgreementPdf('tileCard')">📄 PDF डाउनलोड</button>
               <button class="btn-sm" style="background: #25D366; color: white; padding: 6px 12px; font-weight: 800;" onclick="shareImg('tileCard')">📸 WhatsApp</button>
             </div>
           </div>
-          <div id="tileCard" class="tile-preview">
+          <div id="agPrevBodyTile" style="display: none;"><div id="tileCard" class="tile-preview">
             <div id="tilePreviewBody"></div>
-          </div>
+          </div></div>
         </div>
       </div>
     </div>
@@ -3201,6 +3208,7 @@ function renderAll() {
   const labSearch = document.getElementById("labSearch");
   const eLabQ = (eLabSearch?.value || "").toLowerCase();
   const labSearchQ = (labSearch?.value || "").toLowerCase();
+  if (labSearch) labSearch.style.display = (Object.keys(labs).length > 8 || labSearchQ) ? "" : "none";
   if (eSel) eSel.innerHTML = "";
   if (rSel) rSel.innerHTML = '<option value="all">\u0938\u092C\u0915\u093E \u0939\u093F\u0938\u093E\u092C</option>';
   if (eSiteSel) eSiteSel.innerHTML = '<option value="">\u{1F3E0} \u0938\u093E\u0907\u091F (Optional)</option>';
@@ -4754,12 +4762,25 @@ const italianDefault = [
 function safeLoad(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : JSON.parse(JSON.stringify(d)); } catch (e) { return JSON.parse(JSON.stringify(d)); } }
 function safeSave(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 let italianData = safeLoad("shukla_italian_v27", italianDefault);
+let agOpen = { it: {}, tile: {} };
+function toggleAgSec(kind, si, head) {
+  agOpen[kind][si] = !agOpen[kind][si];
+  const body = head.nextElementSibling;
+  if (body) body.style.display = agOpen[kind][si] ? "block" : "none";
+  const chev = head.querySelector(".chev");
+  if (chev) chev.textContent = agOpen[kind][si] ? "\u25BE" : "\u25B8";
+}
+window.toggleAgSec = toggleAgSec;
 function renderEditorItalian() {
   const ed = document.getElementById("editorItalian");
   if (!ed) return;
   ed.innerHTML = "";
   italianData.forEach((sec, si) => {
+    const _open = !!agOpen.it[si];
+    const _cnt = sec.type === "dual" ? ((sec.left?.items?.length || 0) + (sec.right?.items?.length || 0)) : (sec.items?.length || 0);
     let html = `<div class="ag-edit-box">
+      <div class="ag-sec-head" onclick="toggleAgSec('it', ${si}, this)"><b>${mEsc(sec.title) || "Section"}</b><small>${_cnt} \u0932\u093E\u0907\u0928</small><span class="chev">${_open ? "\u25BE" : "\u25B8"}</span></div>
+      <div class="ag-sec-body" style="display:${_open ? "block" : "none"}">
       <input class="input" value="${mEsc(sec.title)}" oninput="italianData[${si}].title=this.value;renderItalian()" placeholder="Section Title">
       <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(${si})">\u274C Delete</button>`;
     if (sec.type === "dual") {
@@ -4786,7 +4807,7 @@ function renderEditorItalian() {
       });
       html += `<button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(${si},'single')">+ Line</button>`;
     }
-    html += `</div>`;
+    html += `</div></div>`;
     ed.innerHTML += html;
   });
 }
@@ -4844,6 +4865,7 @@ function removeItemIt(si, side, ii) {
 }
 function removeSecIt(si) {
   if (confirm("Delete?")) {
+    agOpen.it = {};
     italianData.splice(si, 1);
     renderEditorItalian();
     renderItalian();
@@ -4851,12 +4873,14 @@ function removeSecIt(si) {
 }
 function addSecItalian() {
   italianData.push({ title: "NEW SECTION", type: "single", items: [{ n: "", r: "" }] });
+  agOpen.it[italianData.length - 1] = true;
   renderEditorItalian();
   renderItalian();
 }
 function resetItalian() {
   if (confirm("Reset?")) {
     italianData = JSON.parse(JSON.stringify(italianDefault));
+    agOpen.it = {};
     renderEditorItalian();
     renderItalian();
   }
@@ -4908,7 +4932,10 @@ function renderEditorTile() {
   if (!ed) return;
   ed.innerHTML = "";
   tileData.forEach((sec, si) => {
+    const _open = !!agOpen.tile[si];
     let html = `<div class="ag-edit-box">
+      <div class="ag-sec-head" onclick="toggleAgSec('tile', ${si}, this)"><b>${mEsc(sec.title) || "Section"}</b><small>${sec.items?.length || 0} \u0932\u093E\u0907\u0928</small><span class="chev">${_open ? "\u25BE" : "\u25B8"}</span></div>
+      <div class="ag-sec-body" style="display:${_open ? "block" : "none"}">
       <input class="input" value="${mEsc(sec.title)}" oninput="tileData[${si}].title=this.value;renderTile()" placeholder="Section Title">
       <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(${si})">\u274C Delete</button>`;
     sec.items.forEach((it, ii) => {
@@ -4918,7 +4945,7 @@ function renderEditorTile() {
         <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(${si},${ii})">X</button>
       </div>`;
     });
-    html += `<button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(${si})">+ Line</button></div>`;
+    html += `<button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(${si})">+ Line</button></div></div>`;
     ed.innerHTML += html;
   });
 }
@@ -4978,6 +5005,7 @@ function removeItemTile(si, ii) {
 }
 function removeSecTile(si) {
   if (confirm("Delete?")) {
+    agOpen.tile = {};
     tileData.splice(si, 1);
     renderEditorTile();
     renderTile();
@@ -4985,12 +5013,14 @@ function removeSecTile(si) {
 }
 function addSecTile() {
   tileData.push({ title: "NEW SECTION", items: [{ n: "", r: "" }] });
+  agOpen.tile[tileData.length - 1] = true;
   renderEditorTile();
   renderTile();
 }
 function resetTile() {
   if (confirm("Reset?")) {
     tileData = JSON.parse(JSON.stringify(tileDefault));
+    agOpen.tile = {};
     renderEditorTile();
     renderTile();
   }
@@ -5369,19 +5399,15 @@ function renderExpenses() {
     const d = new Date(exp.date).toLocaleDateString("hi-IN", { day: "2-digit", month: "short" });
     const payModeTxt = exp.payMode === "upi" ? "\u{1F4F2} UPI" : "\u{1F4B5} Cash";
     html += `
-      <div style="padding: 12px 14px; border: 1px solid #EEF2FF; border-radius: 14px; margin-bottom: 8px; background: #FBFDFF;">
+      <div style="padding: 9px 12px; border: 1px solid #EEF2FF; border-radius: 12px; margin-bottom: 6px; background: #FBFDFF;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <span class="exp-badge ${catInfo.cls}">${mEsc(catInfo.label)}</span>
-          <b style="color: #DC2626; font-size: 16px; white-space: nowrap;">- \u20B9${Number(exp.amt || 0).toLocaleString("en-IN")}</b>
+          <span class="exp-badge ${catInfo.cls}" style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${mEsc(catInfo.label)}</span>
+          <span style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+            <b style="color: #DC2626; font-size: 15px; white-space: nowrap;">- \u20B9${Number(exp.amt || 0).toLocaleString("en-IN")}</b>
+            <button class="btn-sm" style="background: #F1F5F9; color: #334155; padding: 4px 11px; font-weight: 800;" onclick="openExpMenu('${id}')">⋯</button>
+          </span>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px;">
-          <small style="color: #64748B; white-space: nowrap;">${d} \u2022 ${payModeTxt}</small>
-          <div style="display: flex; gap: 6px; flex-shrink: 0;">
-            <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 6px 10px;" onclick="editExpense('${id}')">✏️</button>
-            <button class="btn-sm" style="background: #FEE2E2; color: #991B1B; padding: 6px 10px;" onclick="deleteExpense('${id}')">X</button>
-          </div>
-        </div>
-        ${exp.note ? `<div style="font-size: 12px; color: #1E293B; margin-top: 6px; font-weight: 600;">${mEsc(exp.note)}</div>` : ""}
+        <div style="font-size: 11.5px; color: #64748B; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${d} \u2022 ${payModeTxt}${exp.note ? " \u2022 " + mEsc(exp.note) : ""}</div>
       </div>
     `;
   });
@@ -7592,7 +7618,7 @@ if (document.readyState === "loading") {
     bcEditEntry:     { title: '✏️ बिजली बिल एडिट', cancelBtn: 'bcCancelEditBtn', cancelFn: 'bcCancelEdit', region: () => range('bcMonth', 'bcMsg') },
     editExpense:     { title: '✏️ खर्च एडिट', cancelBtn: 'xCancelBtn', cancelFn: 'cancelExpenseEdit', box: true, region: () => [$('addExpBox')] },
     editMatItem:     { title: '✏️ आइटम एडिट', cancelBtn: 'miCancelBtn', cancelFn: 'cancelMatItemEdit', keep: ['mItemBox'], region: () => range('miName', 'miMsg') },
-    editMatEntry:    { title: '✏️ मटेरियल एंट्री एडिट', cancelBtn: 'meCancelBtn', cancelFn: 'cancelMatEntryEdit', region: () => [card('meSaveBtn')] },
+    editMatEntry:    { title: '✏️ मटेरियल एंट्री एडिट', cancelBtn: 'meCancelBtn', cancelFn: 'cancelMatEntryEdit', box: true, boxFilter: (n) => n.id === 'meFormBox', region: () => range('meDateBlock', 'meFormBox') },
     matPaymentEdit:  { title: '✏️ पेमेंट एडिट', cancelBtn: 'mpCancelBtn', cancelFn: 'matPaymentCancelEdit', box: true, region: () => [$('mpBox')] },
     editSavedAg: {
       title: '✏️ एग्रीमेंट एडिट', poll: true,
@@ -7792,6 +7818,26 @@ if (document.readyState === "loading") {
     try { name = siteId && sites[siteId] ? sites[siteId].house : ''; } catch (e) {}
     const sel = $('scSite'); if (sel && siteId) sel.value = siteId;
     openMove({ title: '🧾 पिछली लागत जोड़ो' + (name ? ' — ' + name : ''), box: true, region: () => [$('addCostBox2')] }, []);
+  };
+
+  window.openExpMenu = function (id) {
+    openMenu('💸 खर्च', [
+      { label: '✏️ Edit', style: 'background:#E0EDFF;color:#1E40AF;', fn: () => window.editExpense(id) },
+      { label: '🗑️ Delete', style: 'background:#FEE2E2;color:#991B1B;', fn: () => window.deleteExpense(id) }
+    ]);
+  };
+
+  /* ===== Material tab: entry / payment / report open in popups ===== */
+  const MP = {
+    entry:  { title: () => '➕ मटेरियल एंट्री — ' + (($('meDate') && $('meDate').value) || ''), el: 'meFormBox' },
+    pay:    { title: () => '💰 पेमेंट', el: 'matPayCard' },
+    report: { title: () => '📊 मटेरियल रिपोर्ट', el: 'matReportCard' }
+  };
+  window.openMatPanel = function (kind) {
+    const c = MP[kind]; if (!c || !$(c.el)) return;
+    if (cur) userClose();
+    try { if (kind === 'entry' && !$('meEditTag').style.display.includes('block')) window.cancelMatEntryEdit(true); } catch (e) {}
+    openMove({ title: c.title(), box: true, region: () => [$(c.el)] }, []);
   };
 
   /* "⋯" menus (site / kaarigar) */
@@ -8055,6 +8101,31 @@ if (document.readyState === "loading") {
       if (err) { alert("\u26A0\uFE0F " + err); return; }
       return f.apply(this, arguments);
     };
+  });
+})();
+</script>
+
+<script>
+/* ===== Agreement preview: collapsed by default, auto-opens for PDF / WhatsApp export ===== */
+(function () {
+  function toggleAgPreview(k, force) {
+    const body = document.getElementById("agPrevBody" + k), btn = document.getElementById("agPrevBtn" + k);
+    if (!body) return;
+    const open = force !== undefined ? force : (body.style.display === "none");
+    body.style.display = open ? "block" : "none";
+    if (btn) btn.textContent = open ? "\u{1F441}\uFE0F Preview \u25BE" : "\u{1F441}\uFE0F Preview \u25B8";
+  }
+  window.toggleAgPreview = toggleAgPreview;
+  async function ensureAgPreview(id) {
+    const k = id === "italianCard" ? "It" : id === "tileCard" ? "Tile" : null;
+    if (!k) return;
+    const body = document.getElementById("agPrevBody" + k);
+    if (body && body.style.display === "none") { toggleAgPreview(k, true); await new Promise((r) => setTimeout(r, 200)); }
+  }
+  ["shareImg", "downloadAgreementPdf"].forEach((n) => {
+    const f = window[n];
+    if (typeof f !== "function") return;
+    window[n] = async function (id) { await ensureAgPreview(id); return f.apply(this, arguments); };
   });
 })();
 </script>
