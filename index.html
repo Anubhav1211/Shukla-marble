@@ -1155,6 +1155,9 @@ img, canvas, svg, video { max-width: 100%; }
 .ag-sec-head small { color: #64748B; font-weight: 700; font-size: 11px; white-space: nowrap; }
 .ag-sec-head .chev { color: #4338CA; font-weight: 800; }
 .ag-sec-body { margin-top: 8px; }
+
+.eye-btn { border: 0; background: #EEF2FF; color: #4338CA; border-radius: 12px; min-width: 42px; height: 38px; font-size: 18px; cursor: pointer; flex-shrink: 0; padding: 0 10px; }
+.eye-fab { position: absolute; top: 6px; right: 6px; border: 0; background: rgba(255, 255, 255, 0.16); color: #fff; border-radius: 10px; width: 30px; height: 30px; min-height: 0; font-size: 15px; padding: 0; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -1213,8 +1216,9 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
       <span id="monTxt" style="display: none;"></span><span id="msMonTxt" style="display: none;"></span>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-        <div onclick="unlockProfit('total')" style="cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">🔒</b><br><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small style="color: #64748B; font-size: 9px;">पासवर्ड से देखें ›</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
+        <div onclick="unlockProfit('total')" style="position: relative; cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <button type="button" class="eye-fab eye-sync" onclick="toggleProfitEye(event)" aria-label="रकम दिखाओ / छुपाओ">👁️</button>
+          <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">••••</b><br><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><br><small id="kTotHint" style="color: #64748B; font-size: 9px;">👁️ दबाकर देखें</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
         </div>
         <div onclick="showBreakdownDena()" style="cursor: pointer; background: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #DCFCE7;">
           <b id="kDena" style="color: #166534; font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">₹0</b><br><small style="color: #166534; font-weight: 700;">कुल देना</small><br><small style="color: #94A3B8; font-size: 9px;">विवरण देखें ›</small>
@@ -1249,6 +1253,7 @@ img, canvas, svg, video { max-width: 100%; }
           <div class="ds-title">🏗️ साइट्स</div>
           <div class="ds-sub" id="dsSub"></div>
         </div>
+        <button type="button" class="eye-btn eye-sync" onclick="toggleProfitEye(event)" aria-label="रकम दिखाओ / छुपाओ">👁️</button>
       </div>
       <div class="tg-row c2" style="margin-bottom: 12px;">
         <button type="button" class="tg-btn dark" onclick="openSiteAdd()">➕ नई साइट जोड़ो</button>
@@ -1826,23 +1831,7 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
 
-  <!-- Professional Profit Password Modal -->
-  <div id="profitLockOverlay" class="profit-lock-overlay" onclick="if(event.target===this)closeProfitPassword()">
-    <div id="profitLockBox" class="profit-lock-box" role="dialog" aria-modal="true" aria-labelledby="profitLockTitle">
-      <div class="profit-lock-icon">🔐</div>
-      <h3 id="profitLockTitle" class="profit-lock-title">Profit Protected</h3>
-      <div class="profit-lock-sub">मुनाफ़ा देखने के लिए अपना 4-digit password डालें</div>
-      <div class="profit-pin-wrap">
-        <input id="profitPasswordInput" class="profit-pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" oninput="profitPasswordTyping()" onkeydown="if(event.key==='Enter')submitProfitPassword()">
-        <button class="profit-eye" type="button" aria-label="Show password" onclick="toggleProfitPassword()">👁️</button>
-      </div>
-      <div id="profitPasswordError" class="profit-error">❌ गलत password — दोबारा कोशिश करें</div>
-      <div class="profit-actions">
-        <button class="profit-cancel" type="button" onclick="closeProfitPassword()">Cancel</button>
-        <button class="profit-unlock" type="button" onclick="submitProfitPassword()">🔓 Unlock Profit</button>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Professional Karigar Profile -->
   <div id="karigarProfileOverlay" class="kp-overlay" onclick="if(event.target===this)closeKarigarProfile()">
@@ -2694,14 +2683,14 @@ function showSiteDetail(siteId) {
       <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
       </div>
-      <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
-        ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>`}
+      <div style="background:#DBEAFE;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden;cursor:pointer" onclick="toggleProfitEye(event)">
+        ${profitUnlocked ? `<small style="color:#1E40AF;font-weight:700;font-size:10px">\u0932\u093F\u092F\u093E</small><br><b style="color:#1D4ED8;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569;font-weight:700;font-size:10px">👁️ \u0932\u093F\u092F\u093E</small><br><b style="color:#475569;font-size:13px">••••</b>`}
       </div>
-      ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
+      ${profitUnlocked ? `<div style="background:${sc.profit >= 0 ? "#DCFCE7" : "#FEE2E2"};padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden;cursor:pointer" onclick="toggleProfitEye(event)">
         <small style="color:${sc.profit >= 0 ? "#166534" : "#991B1B"};font-weight:700;font-size:10px">\u0932\u093E\u092D (${sc.profitPct.toFixed(1)}%)</small><br>
         <b style="color:${sc.profit >= 0 ? "#15803D" : "#DC2626"};font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.profit.toLocaleString("en-IN")}</b>
-      </div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer" onclick="unlockProfit('site')">
-        <small style="color:#475569;font-weight:700;font-size:10px">🔒 \u0932\u093E\u092D</small><br><b style="color:#475569;font-size:13px">पासवर्ड से देखें</b>
+      </div>` : `<div style="background:#F1F5F9;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer" onclick="toggleProfitEye(event)">
+        <small style="color:#475569;font-weight:700;font-size:10px">👁️ \u0932\u093E\u092D</small><br><b style="color:#475569;font-size:13px">••••</b>
       </div>`}
     </div>
   `;
@@ -2731,12 +2720,12 @@ function showSiteDetail(siteId) {
         <div class="payment-timeline-card">
           <div class="payment-timeline-top">
             <div><b>${d}</b><div class="payment-timeline-date">${p.date || ""}</div></div>
-            <div class="payment-timeline-amount">${profitUnlocked ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `🔒`}</div>
+            <div class="payment-timeline-amount">${profitUnlocked ? `₹${Number(p.amount || 0).toLocaleString("en-IN")}` : `••••`}</div>
           </div>
           <div class="payment-timeline-meta">${mEsc(p.note ? `📝 ${p.note}` : "💳 Site payment received")}</div>
           <div class="payment-timeline-bottom">
             <span>Payment #${pays.length - idx}</span>
-            <span>${profitUnlocked ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "Amount locked"}</span>
+            <span>${profitUnlocked ? `Total received: ₹${runningTotal.toLocaleString("en-IN")}` : "रकम छुपी है"}</span>
           </div>
           <div class="payment-timeline-actions">
             <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px" onclick="event.stopPropagation();editSitePayment('${pid}')">✏️ Edit</button>
@@ -2753,7 +2742,7 @@ function showSiteDetail(siteId) {
       <div style="background:#F0FDF4;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #BBF7D0">
         <div style="display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:8px">
           <span>\u0915\u0941\u0932 ${pays.length} \u092C\u093E\u0930 \u0932\u093F\u092F\u093E</span>
-          ${profitUnlocked ? `<span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>` : `<span style="color:#475569">🔒 पासवर्ड से देखें</span>`}
+          ${profitUnlocked ? `<span style="color:#166534">\u20B9${sc.received.toLocaleString("en-IN")}</span>` : `<span style="color:#475569;cursor:pointer" onclick="toggleProfitEye(event)">👁️ ••••</span>`}
         </div>
         ${payHtml}
       </div>
@@ -3289,7 +3278,7 @@ function renderAll() {
     Object.values(expenses || {}).forEach((e) => { totalBizExpense += parseFloat(e.amt) || 0; });
     const totalProfit = totalSiteProfit + totalMaterialPayment - totalBizExpense;
     const shownProfit = profitViewMode === "month" ? calcMonthlyTotalProfit(mon) : totalProfit;
-    kTot.innerText = profitUnlocked ? "\u20B9" + Math.round(shownProfit).toLocaleString("en-IN") : "🔒";
+    kTot.innerText = profitUnlocked ? "\u20B9" + Math.round(shownProfit).toLocaleString("en-IN") : "\u2022\u2022\u2022\u2022";
     const kTotLabel = document.getElementById("kTotLabel");
     if (kTotLabel) kTotLabel.innerText = profitViewMode === "month" ? "मासिक मुनाफ़ा" : "कुल मुनाफ़ा";
     const pt = document.getElementById("profitTotalBtn"), pm = document.getElementById("profitMonthBtn");
@@ -3451,6 +3440,7 @@ function renderAll() {
   const selLabName2 = document.getElementById("selLabName2");
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
   renderDashSites();
+  syncProfitEye();
   renderSiteCostSelect();
   renderCalendar();
   updateDupInfo();
@@ -3469,8 +3459,8 @@ function siteCardHtml(id) {
         <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
-          <div class="sm-site-metric" style="background:#eff6ff">${profitUnlocked ? `<small style="color:#1e40af">लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">🔒 लिया</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b>`}</div>
-          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"}"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="unlockProfit('site')"><small style="color:#475569">🔒 लाभ</small><b style="color:#475569;font-size:11px">पासवर्ड से देखें</b></div>`}
+          <div class="sm-site-metric" style="background:#eff6ff;cursor:pointer" onclick="toggleProfitEye(event)">${profitUnlocked ? `<small style="color:#1e40af">🙈 लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">👁️ लिया</small><b style="color:#475569">••••</b>`}</div>
+          ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"};cursor:pointer" onclick="toggleProfitEye(event)"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">🙈 लाभ • ${sc.profitPct.toFixed(1)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="toggleProfitEye(event)"><small style="color:#475569">👁️ लाभ</small><b style="color:#475569">••••</b></div>`}
         </div>
         ${profitUnlocked ? `<div class="sm-site-progress"><div class="sm-site-progress-row"><span>Payment progress</span><span>${Math.min(100, sc.cost > 0 ? Math.round((sc.received / sc.cost) * 100) : 0)}%</span></div><div class="sm-site-progress-track"><div class="sm-site-progress-fill" style="width:${Math.min(100, sc.cost > 0 ? Math.max(0,(sc.received / sc.cost) * 100) : 0)}%"></div></div></div>
         <div class="sm-site-labour"><b>👷 मजदूर</b> · ${labourNames}</div>` : ""}
@@ -3728,61 +3718,36 @@ function calcMonthlyTotalProfit(mon) {
   return totalSiteProfit + totalMaterialPayment - totalBizExpense;
 }
 function setProfitView(mode) { profitViewMode = mode === "month" ? "month" : "total"; renderAll(); }
-let profitUnlockView = "total";
-function openProfitPassword(view = "total") {
-  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
-  profitUnlockView = view || "total";
-  const overlay = document.getElementById("profitLockOverlay");
-  const input = document.getElementById("profitPasswordInput");
-  const err = document.getElementById("profitPasswordError");
-  const box = document.getElementById("profitLockBox");
-  if (err) err.classList.remove("show");
-  if (box) box.classList.remove("shake");
-  if (input) { input.value = ""; input.type = "password"; }
-  const eye = document.querySelector(".profit-eye");
-  if (eye) eye.innerText = "👁️";
-  if (overlay) overlay.style.display = "flex";
-  setTimeout(() => input?.focus(), 120);
-  return false;
+function syncProfitEye() {
+  document.querySelectorAll(".eye-sync").forEach((b) => {
+    b.textContent = profitUnlocked ? "\u{1F648}" : "\u{1F441}\uFE0F";
+    b.setAttribute("aria-pressed", profitUnlocked ? "true" : "false");
+  });
+  const h = document.getElementById("kTotHint");
+  if (h) h.textContent = profitUnlocked ? "\u0935\u093F\u0935\u0930\u0923 \u0926\u0947\u0916\u0947\u0902 \u203A" : "\u{1F441}\uFE0F \u0926\u092C\u093E\u0915\u0930 \u0926\u0947\u0916\u0947\u0902";
 }
-function closeProfitPassword() {
-  const overlay = document.getElementById("profitLockOverlay");
-  if (overlay) overlay.style.display = "none";
-}
-function toggleProfitPassword() {
-  const input = document.getElementById("profitPasswordInput");
-  const eye = document.querySelector(".profit-eye");
-  if (!input) return;
-  input.type = input.type === "password" ? "text" : "password";
-  if (eye) eye.innerText = input.type === "password" ? "👁️" : "🙈";
-  input.focus();
-}
-function profitPasswordTyping() {
-  const err = document.getElementById("profitPasswordError");
-  if (err) err.classList.remove("show");
-}
-function submitProfitPassword() {
-  const input = document.getElementById("profitPasswordInput");
-  const err = document.getElementById("profitPasswordError");
-  const box = document.getElementById("profitLockBox");
-  const password = input ? input.value : "";
-  if (password !== "1234") {
-    if (err) err.classList.add("show");
-    if (box) { box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
-    input?.focus();
-    input?.select();
-    return;
-  }
-  profitUnlocked = true;
-  closeProfitPassword();
+function setProfitVisible(v) {
+  profitUnlocked = !!v;
   renderAll();
-  if (profitUnlockView === "total") showBreakdownProfit();
+  syncProfitEye();
+  try {
+    const sd = document.getElementById("siteDetailOverlay");
+    if (sd && getComputedStyle(sd).display !== "none" && typeof _currentSiteId !== "undefined" && _currentSiteId) showSiteDetail(_currentSiteId);
+  } catch (e) {}
+}
+function toggleProfitEye(ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  setProfitVisible(!profitUnlocked);
 }
 function unlockProfit(view) {
-  if (profitUnlocked) { if (view === "total") showBreakdownProfit(); return true; }
-  openProfitPassword(view);
-  return false;
+  if (!profitUnlocked) { setProfitVisible(true); return false; }
+  if (view === "total") showBreakdownProfit();
+  return true;
 }
+function openProfitPassword(view) { return unlockProfit(view); }
+window.toggleProfitEye = toggleProfitEye;
+window.setProfitVisible = setProfitVisible;
+window.syncProfitEye = syncProfitEye;
 function showBreakdownProfit() {
   if (!profitUnlocked) { unlockProfit("total"); return; }
   const rows = [];
@@ -5467,7 +5432,7 @@ function renderPdfPreview() {
       <td style="text-align: left; padding: 6px; border: 1px solid #CBD5E1;"><b>${mEsc(s.house)}</b> - ${mEsc(s.client || "")}</td>
       <td style="padding: 6px; border: 1px solid #CBD5E1;">${(s.status || "").includes("\u092A\u0942\u0930\u093E") ? "Archived" : (s.status || "\u091A\u0932 \u0930\u0939\u093E")}</td>
       <td style="padding: 6px; color: #B45309; border: 1px solid #CBD5E1;">\u20B9${sc.cost.toLocaleString("en-IN")}</td>
-      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${profitUnlocked ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `🔒`}</td>
+      <td style="padding: 6px; color: #1D4ED8; border: 1px solid #CBD5E1;">${profitUnlocked ? `\u20B9${sc.received.toLocaleString("en-IN")}` : `••••`}</td>
       <td style="padding: 6px; font-weight: 800; color: ${sc.profit >= 0 ? "#166534" : "#DC2626"}; border: 1px solid #CBD5E1;">\u20B9${sc.profit.toLocaleString("en-IN")} (${sc.profitPct.toFixed(1)}%)</td>
     </tr>`;
   });
