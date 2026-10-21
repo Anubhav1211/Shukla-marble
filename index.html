@@ -1194,6 +1194,12 @@ img, canvas, svg, video { max-width: 100%; }
 .hs-amt.lena { color: #B91C1C; }
 .hs-back { border: 0; background: #EEF2FF; color: #4338CA; border-radius: 12px; padding: 9px 14px; font-weight: 800; font-size: 13px; cursor: pointer; }
 .hs-empty { text-align: center; color: #94A3B8; font-weight: 700; padding: 26px 10px; }
+
+.hs-filter-btn { flex: 0 0 auto; border: 1.5px solid #E2E8F0; background: #fff; color: #334155; border-radius: 14px; padding: 0 14px; min-height: 46px; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.hs-filter-btn.on { background: #4338CA; border-color: #4338CA; color: #fff; }
+.hs-opt-title { font-size: 12px; font-weight: 800; color: #64748B; margin: 4px 0 8px; }
+.hs-opt { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 1.5px solid #E2E8F0; background: #fff; color: #0F172A; border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
+.hs-opt.on { border-color: #4338CA; background: #EEF2FF; color: #3730A3; }
 </style>
 </head>
 <body>
@@ -1540,7 +1546,10 @@ img, canvas, svg, video { max-width: 100%; }
         <input id="rMonth" type="month" class="input" style="margin: 0; flex: 1; text-align: center; font-weight: 800;" onchange="syncMonthFrom('rMonth')">
         <button type="button" class="hs-nav" onclick="shiftMonthInput('rMonth', 1)" aria-label="अगला महीना">▶</button>
       </div>
-      <div class="hs-chips" id="hsChips"></div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <input id="hsSearch" class="input" style="margin: 0; flex: 1;" placeholder="🔍 कारीगर खोजो..." oninput="hsRenderAll()">
+        <button type="button" class="hs-filter-btn" id="hsFilterBtn" onclick="openHsFilter()">⚙️ फ़िल्टर</button>
+      </div>
     </div>
     <div style="display: none;">
       <select id="rLabour"><option value="all">सबका हिसाब</option></select>
@@ -1549,8 +1558,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
     <div id="hsAll"></div>
     <div class="card" id="hsOne" style="display: none;">
-      <button type="button" class="hs-back" onclick="hsPick('all')">← सबका हिसाब</button>
-      <div id="reportBox" style="margin-top: 12px;"></div>
+      <div id="reportBox"></div>
     </div>
   </div>
 
@@ -4484,25 +4492,13 @@ function renderKarigarProfile(){
 }
 
 let hsFilter = "all";
+let hsSort = "name";
+let hsShowArch = false;
 function hsMon() { return document.getElementById("rMonth")?.value || fmtLocalDate(new Date()).slice(0, 7); }
 function hsMoney(n) { return "\u20B9" + Math.abs(Math.round(n)).toLocaleString("en-IN"); }
-function hsSetMode(one) {
-  const a = document.getElementById("hsAll"), o = document.getElementById("hsOne");
-  if (a) a.style.display = one ? "none" : "block";
-  if (o) o.style.display = one ? "block" : "none";
-}
-function hsRenderChips(cur) {
-  const box = document.getElementById("hsChips");
-  if (!box) return;
-  const ids = Object.keys(labs).filter((id) => !labs[id].archived || id === cur).sort((a, b) => (labs[a].name || "").toLowerCase().localeCompare((labs[b].name || "").toLowerCase()));
-  const chip = (id, label) => `<button type="button" class="hs-chip ${id === cur ? "on" : ""}" onclick="hsPick('${id}')">${label}</button>`;
-  box.innerHTML = chip("all", "\u{1F465} \u0938\u092C\u0915\u093E") + ids.map((id) => chip(id, "\u{1F477} " + mEsc(labs[id].name || ""))).join("");
-  const act = box.querySelector(".hs-chip.on");
-  if (act) box.scrollLeft = act.offsetLeft - box.clientWidth / 2 + act.clientWidth / 2;
-}
 function hsRows() {
   const mon = hsMon();
-  return Object.keys(labs).filter((id) => !labs[id].archived).map((id) => ({ id, l: labs[id], c: calcLabour(id, mon) }));
+  return Object.keys(labs).filter((id) => hsShowArch || !labs[id].archived).map((id) => ({ id, l: labs[id], c: calcLabour(id, mon) }));
 }
 function hsRenderAll() {
   const box = document.getElementById("hsAll");
@@ -4512,12 +4508,18 @@ function hsRenderAll() {
   const sumD = dena.reduce((a, r) => a + r.c.net, 0), sumL = lena.reduce((a, r) => a - r.c.net, 0);
   let shown = rows.slice();
   if (hsFilter === "dena") shown = dena; else if (hsFilter === "lena") shown = lena;
-  shown.sort((a, b) => Math.abs(b.c.net) - Math.abs(a.c.net));
+  const q = (document.getElementById("hsSearch")?.value || "").trim().toLowerCase();
+  if (q) shown = shown.filter((r) => (r.l.name || "").toLowerCase().includes(q));
+  const byName = (a, b) => (a.l.name || "").toLowerCase().localeCompare((b.l.name || "").toLowerCase());
+  if (hsSort === "name") shown.sort(byName);
+  else if (hsSort === "nameDesc") shown.sort((a, b) => byName(b, a));
+  else if (hsSort === "amtDesc") shown.sort((a, b) => Math.abs(b.c.net) - Math.abs(a.c.net));
+  else if (hsSort === "amtAsc") shown.sort((a, b) => Math.abs(a.c.net) - Math.abs(b.c.net));
+  const fb = document.getElementById("hsFilterBtn");
+  if (fb) fb.classList.toggle("on", hsSort !== "name" || hsFilter !== "all" || hsShowArch);
   const maxAbs = Math.max(1, ...rows.map((r) => Math.abs(r.c.net)));
   const initials = (n) => (n || "K").trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("").toUpperCase();
-  const fbtn = (f, label, n) => `<button type="button" class="hs-fbtn ${hsFilter === f ? "on" : ""}" onclick="hsSetFilter('${f}')">${label} ${n}</button>`;
   let html = `<div class="hs-sums"><div class="hs-sum dena"><small>\u0915\u0941\u0932 \u0926\u0947\u0928\u093E</small><b>${hsMoney(sumD)}</b></div><div class="hs-sum lena"><small>\u0915\u0941\u0932 \u0932\u0947\u0928\u093E</small><b>${hsMoney(sumL)}</b></div></div>`;
-  html += `<div class="hs-filter">${fbtn("all", "\u0938\u092C", rows.length)}${fbtn("dena", "\u0926\u0947\u0928\u093E", dena.length)}${fbtn("lena", "\u0932\u0947\u0928\u093E", lena.length)}</div>`;
   html += '<div class="hs-list">' + (shown.map((r) => {
     const due = r.c.net >= 0;
     const pct = Math.max(4, Math.round(Math.abs(r.c.net) / maxAbs * 100));
@@ -4526,7 +4528,10 @@ function hsRenderAll() {
   html += '<div style="margin: 12px 14px 0;"><button type="button" class="btn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;" onclick="hsShareAll()">\u{1F4E4} \u0938\u092C\u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0936\u0947\u092F\u0930 \u0915\u0930\u094B</button></div>';
   box.innerHTML = html;
 }
-function hsSetFilter(f) { hsFilter = f; hsRenderAll(); }
+function hsSetSort(k) { hsSort = k; hsRenderAll(); if (window.openHsFilter) window.openHsFilter(true); }
+function hsSetFilter(f) { hsFilter = f; hsRenderAll(); if (window.openHsFilter) window.openHsFilter(true); }
+function hsToggleArch() { hsShowArch = !hsShowArch; hsRenderAll(); if (window.openHsFilter) window.openHsFilter(true); }
+function hsFilterReset() { hsSort = "name"; hsFilter = "all"; hsShowArch = false; hsRenderAll(); if (window.openHsFilter) window.openHsFilter(true); }
 function hsPick(id) {
   const sel = document.getElementById("rLabour");
   if (sel) sel.value = id;
@@ -4538,9 +4543,8 @@ function hsRender() {
   const sel = document.getElementById("rLabour");
   let cur = sel ? sel.value : "all";
   if (cur !== "all" && !labs[cur]) { cur = "all"; if (sel) sel.value = "all"; }
-  hsRenderChips(cur);
-  if (cur === "all") { hsSetMode(false); hsRenderAll(); }
-  else { makeReport(); }
+  hsRenderAll();
+  if (cur !== "all") makeReport();
 }
 function hsShareAll() {
   const mon = hsMon();
@@ -4556,7 +4560,7 @@ function hsShareAll() {
   msg += "\n*\u0915\u0941\u0932 \u0926\u0947\u0928\u093E: " + hsMoney(d) + "*\n*\u0915\u0941\u0932 \u0932\u0947\u0928\u093E: " + hsMoney(l) + "*";
   openWhatsAppText(msg);
 }
-window.hsPick = hsPick; window.hsSetFilter = hsSetFilter; window.hsShareAll = hsShareAll; window.hsRender = hsRender;
+window.hsPick = hsPick; window.hsSetFilter = hsSetFilter; window.hsSetSort = hsSetSort; window.hsToggleArch = hsToggleArch; window.hsFilterReset = hsFilterReset; window.hsShareAll = hsShareAll; window.hsRender = hsRender; window.hsRenderAll = hsRenderAll;
 function makeReport() {
   const rMonth = document.getElementById("rMonth");
   const rLabour = document.getElementById("rLabour");
@@ -4573,8 +4577,7 @@ function makeReport() {
     return;
   }
   if (!labId || !labs[labId]) return;
-  hsSetMode(true);
-  hsRenderChips(labId);
+  if (typeof openHsPopup === "function") openHsPopup(labId);
   const l = labs[labId];
   const c = calcLabour(labId, mon);
   const entries = Object.values(ents).filter((e) => e.labourId === labId && e.date.startsWith(mon)).sort((a, b) => a.date.localeCompare(b.date));
@@ -7902,6 +7905,40 @@ if (document.readyState === "loading") {
     openMove({ title: c.title(), box: true, region: () => [$(c.el)] }, []);
   };
 
+  /* ===== Hisab tab: kaarigar card -> popup, filter panel ===== */
+  window.openHsPopup = function (labId) {
+    const l = labs[labId]; if (!l || !$('hsOne')) return;
+    if (cur && cur.cfg && cur.cfg.hsFor === labId) return;
+    if (cur) userClose();
+    let monthLabel = '';
+    try { monthLabel = new Date(hsMon() + '-01T00:00:00').toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' }); } catch (e) {}
+    openMove({
+      title: '🧾 ' + (l.name || '') + (monthLabel ? ' — ' + monthLabel : ''),
+      box: true, hsFor: labId,
+      onClose: () => { const sel = $('rLabour'); if (sel) sel.value = 'all'; try { hsRender(); } catch (e) {} },
+      region: () => [$('hsOne')]
+    }, []);
+  };
+  window.openHsFilter = function (refresh) {
+    const opt = (on, onclick, label) => '<button type="button" class="hs-opt ' + (on ? 'on' : '') + '" onclick="' + onclick + '"><span>' + label + '</span><span>' + (on ? '✔' : '') + '</span></button>';
+    const html =
+      '<div class="hs-opt-title">क्रम (Sort)</div>' +
+      opt(hsSort === 'name', "hsSetSort('name')", 'नाम A → Z') +
+      opt(hsSort === 'nameDesc', "hsSetSort('nameDesc')", 'नाम Z → A') +
+      opt(hsSort === 'amtDesc', "hsSetSort('amtDesc')", 'रकम ज़्यादा → कम') +
+      opt(hsSort === 'amtAsc', "hsSetSort('amtAsc')", 'रकम कम → ज़्यादा') +
+      '<div class="hs-opt-title" style="margin-top:10px">दिखाओ</div>' +
+      opt(hsFilter === 'all', "hsSetFilter('all')", 'सब कारीगर') +
+      opt(hsFilter === 'dena', "hsSetFilter('dena')", 'सिर्फ देना (हमें देना है)') +
+      opt(hsFilter === 'lena', "hsSetFilter('lena')", 'सिर्फ लेना (हमें लेना है)') +
+      '<div style="height:6px"></div>' +
+      opt(hsShowArch, 'hsToggleArch()', '📦 Archived (घर गए) भी दिखाओ') +
+      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin:4px 0 0" onclick="hsFilterReset()">↺ रीसेट</button>';
+    if (refresh && cur && cur.cfg && cur.cfg.kind === 'hsfilter') { bodyEl.innerHTML = html; return; }
+    openPanel('⚙️ फ़िल्टर', html);
+    cur.cfg.kind = 'hsfilter';
+  };
+
   /* "⋯" menus (site / kaarigar) */
   function openMenu(title, items) {
     if (cur) userClose();
@@ -8188,6 +8225,34 @@ if (document.readyState === "loading") {
     const f = window[n];
     if (typeof f !== "function") return;
     window[n] = async function (id) { await ensureAgPreview(id); return f.apply(this, arguments); };
+  });
+})();
+</script>
+
+<script>
+/* ===== html2canvas inside popups: capture an off-screen clone (popup scroll/clip never affects the PDF/image) ===== */
+(function () {
+  let raw = window.html2canvas;
+  function wrapped(el, opts) {
+    try {
+      const ov = document.getElementById("smEditOv");
+      if (raw && el && el.nodeType === 1 && ov && ov.contains(el)) {
+        const w = Math.round(el.getBoundingClientRect().width) || el.offsetWidth || 360;
+        const host = document.createElement("div");
+        host.style.cssText = "position:fixed;top:-9999px;left:0;width:" + w + "px;background:#ffffff;";
+        const clone = el.cloneNode(true);
+        clone.removeAttribute("id");
+        host.appendChild(clone);
+        document.body.appendChild(host);
+        return Promise.resolve(raw.call(this, clone, opts)).finally(() => host.remove());
+      }
+    } catch (e) {}
+    return raw.apply(this, arguments);
+  }
+  Object.defineProperty(window, "html2canvas", {
+    configurable: true,
+    get() { return raw ? wrapped : undefined; },
+    set(v) { raw = v; }
   });
 })();
 </script>
