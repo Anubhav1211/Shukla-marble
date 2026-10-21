@@ -1163,6 +1163,37 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-site-metric small { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
 .sm-site-metric b { display: block; max-width: 100%; font-size: 14px; white-space: nowrap; overflow: visible; text-overflow: clip; }
 .eye-mini { border: 0; background: rgba(255, 255, 255, 0.16); color: #fff; border-radius: 9px; width: 26px; height: 26px; min-height: 0; padding: 0; font-size: 13px; cursor: pointer; flex-shrink: 0; }
+
+.hs-nav { flex: 0 0 44px; height: 44px; border: 0; border-radius: 14px; background: #EEF2FF; color: #4338CA; font-size: 16px; cursor: pointer; }
+.hs-chips { display: flex; gap: 8px; overflow-x: auto; margin-top: 12px; padding-bottom: 2px; scrollbar-width: none; }
+.hs-chips::-webkit-scrollbar { display: none; }
+.hs-chip { flex: 0 0 auto; border: 1.5px solid #E2E8F0; background: #fff; color: #334155; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; min-height: 38px; }
+.hs-chip.on { background: #0F172A; border-color: #0F172A; color: #fff; }
+.hs-sums { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 14px 0; }
+.hs-sum { border-radius: 18px; padding: 12px; text-align: center; }
+.hs-sum small { display: block; font-size: 11.5px; font-weight: 800; }
+.hs-sum b { display: block; font-size: 21px; font-weight: 800; margin-top: 4px; white-space: nowrap; }
+.hs-sum.dena { background: #DCFCE7; color: #166534; }
+.hs-sum.lena { background: #FEE2E2; color: #B91C1C; }
+.hs-filter { display: flex; gap: 8px; margin: 12px 14px 0; }
+.hs-fbtn { flex: 1; border: 1.5px solid #E2E8F0; background: #fff; color: #475569; border-radius: 12px; padding: 9px 6px; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+.hs-fbtn.on { background: #4338CA; border-color: #4338CA; color: #fff; }
+.hs-list { margin: 10px 14px 0; display: flex; flex-direction: column; gap: 8px; }
+.hs-card { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 12px; cursor: pointer; box-shadow: 0 2px 10px rgba(21, 23, 28, 0.04); }
+.hs-card:active { transform: scale(0.99); }
+.hs-av { flex: 0 0 44px; height: 44px; border-radius: 14px; background: linear-gradient(145deg, #21242C, #15171C); color: #D9B55A; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; }
+.hs-mid { flex: 1; min-width: 0; }
+.hs-mid b { display: block; font-size: 14.5px; color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hs-mid small { display: block; font-size: 11px; color: #64748B; margin-top: 2px; font-weight: 600; }
+.hs-bar { height: 5px; border-radius: 99px; background: #EEF2F7; margin-top: 7px; overflow: hidden; }
+.hs-bar i { display: block; height: 100%; border-radius: 99px; }
+.hs-amt { flex: 0 0 auto; text-align: right; min-width: 74px; }
+.hs-amt small { display: block; font-size: 10.5px; font-weight: 800; }
+.hs-amt b { display: block; font-size: 16px; font-weight: 800; white-space: nowrap; }
+.hs-amt.dena { color: #166534; }
+.hs-amt.lena { color: #B91C1C; }
+.hs-back { border: 0; background: #EEF2FF; color: #4338CA; border-radius: 12px; padding: 9px 14px; font-weight: 800; font-size: 13px; cursor: pointer; }
+.hs-empty { text-align: center; color: #94A3B8; font-weight: 700; padding: 26px 10px; }
 </style>
 </head>
 <body>
@@ -1503,23 +1534,23 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- TAB 5: HISAB & RATE CARD -->
   <div id="t-r" style="display: none;">
-    <div class="card">
-      <h3 style="margin-top: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
-        <span>🧾</span> हिसाब - मजदूर रेट कार्ड जनरेटर
-      </h3>
-      <div style="display: flex; gap: 8px;">
-        <input id="rMonth" type="month" class="input" onchange="syncMonthFrom('rMonth')">
-        <select id="rLabour" class="input">
-          <option value="all">सबका हिसाब</option>
-        </select>
+    <div class="card" id="hsTop" style="padding: 12px 14px;">
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <button type="button" class="hs-nav" onclick="shiftMonthInput('rMonth', -1)" aria-label="पिछला महीना">◀</button>
+        <input id="rMonth" type="month" class="input" style="margin: 0; flex: 1; text-align: center; font-weight: 800;" onchange="syncMonthFrom('rMonth')">
+        <button type="button" class="hs-nav" onclick="shiftMonthInput('rMonth', 1)" aria-label="अगला महीना">▶</button>
       </div>
-      <input id="rLabSearch" class="input" placeholder="🔍 हिसाब के लिए कारीगर खोजो..." oninput="filterRLab()">
-      <button class="btn btn-gold" onclick="makeReport()" style="display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px;">
-        <span>📄 रेट कार्ड देखें एवं WhatsApp पर्ची बनाएं</span>
-      </button>
-
-      <!-- The Rate Card Output Box -->
-      <div id="reportBox" style="margin-top: 14px;"></div>
+      <div class="hs-chips" id="hsChips"></div>
+    </div>
+    <div style="display: none;">
+      <select id="rLabour"><option value="all">सबका हिसाब</option></select>
+      <input id="rLabSearch" oninput="filterRLab()">
+      <button type="button" onclick="makeReport()">रेट कार्ड</button>
+    </div>
+    <div id="hsAll"></div>
+    <div class="card" id="hsOne" style="display: none;">
+      <button type="button" class="hs-back" onclick="hsPick('all')">← सबका हिसाब</button>
+      <div id="reportBox" style="margin-top: 12px;"></div>
     </div>
   </div>
 
@@ -2087,6 +2118,7 @@ function showTab(id) {
     try { bt.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {}
   }
   if (id === "m" && typeof renderMaterial === "function") renderMaterial();
+  if (id === "r") { try { hsRender(); } catch (e) {} }
   const bnavMore = document.getElementById("bnav-more");
   if (bnavMore) bnavMore.classList.toggle("bnav-more-active", ["s", "x", "m", "a"].includes(id));
 }
@@ -3445,6 +3477,7 @@ function renderAll() {
   if (selLabName2) selLabName2.innerText = selId && labs[selId] ? labs[selId].name : "";
   renderDashSites();
   syncProfitEye();
+  try { hsRender(); } catch (e) {}
   renderSiteCostSelect();
   renderCalendar();
   updateDupInfo();
@@ -4450,6 +4483,80 @@ function renderKarigarProfile(){
     </div>`;
 }
 
+let hsFilter = "all";
+function hsMon() { return document.getElementById("rMonth")?.value || fmtLocalDate(new Date()).slice(0, 7); }
+function hsMoney(n) { return "\u20B9" + Math.abs(Math.round(n)).toLocaleString("en-IN"); }
+function hsSetMode(one) {
+  const a = document.getElementById("hsAll"), o = document.getElementById("hsOne");
+  if (a) a.style.display = one ? "none" : "block";
+  if (o) o.style.display = one ? "block" : "none";
+}
+function hsRenderChips(cur) {
+  const box = document.getElementById("hsChips");
+  if (!box) return;
+  const ids = Object.keys(labs).filter((id) => !labs[id].archived || id === cur).sort((a, b) => (labs[a].name || "").toLowerCase().localeCompare((labs[b].name || "").toLowerCase()));
+  const chip = (id, label) => `<button type="button" class="hs-chip ${id === cur ? "on" : ""}" onclick="hsPick('${id}')">${label}</button>`;
+  box.innerHTML = chip("all", "\u{1F465} \u0938\u092C\u0915\u093E") + ids.map((id) => chip(id, "\u{1F477} " + mEsc(labs[id].name || ""))).join("");
+  const act = box.querySelector(".hs-chip.on");
+  if (act) box.scrollLeft = act.offsetLeft - box.clientWidth / 2 + act.clientWidth / 2;
+}
+function hsRows() {
+  const mon = hsMon();
+  return Object.keys(labs).filter((id) => !labs[id].archived).map((id) => ({ id, l: labs[id], c: calcLabour(id, mon) }));
+}
+function hsRenderAll() {
+  const box = document.getElementById("hsAll");
+  if (!box) return;
+  const rows = hsRows();
+  const dena = rows.filter((r) => r.c.net > 0.5), lena = rows.filter((r) => r.c.net < -0.5);
+  const sumD = dena.reduce((a, r) => a + r.c.net, 0), sumL = lena.reduce((a, r) => a - r.c.net, 0);
+  let shown = rows.slice();
+  if (hsFilter === "dena") shown = dena; else if (hsFilter === "lena") shown = lena;
+  shown.sort((a, b) => Math.abs(b.c.net) - Math.abs(a.c.net));
+  const maxAbs = Math.max(1, ...rows.map((r) => Math.abs(r.c.net)));
+  const initials = (n) => (n || "K").trim().split(/\s+/).slice(0, 2).map((x) => x[0]).join("").toUpperCase();
+  const fbtn = (f, label, n) => `<button type="button" class="hs-fbtn ${hsFilter === f ? "on" : ""}" onclick="hsSetFilter('${f}')">${label} ${n}</button>`;
+  let html = `<div class="hs-sums"><div class="hs-sum dena"><small>\u0915\u0941\u0932 \u0926\u0947\u0928\u093E</small><b>${hsMoney(sumD)}</b></div><div class="hs-sum lena"><small>\u0915\u0941\u0932 \u0932\u0947\u0928\u093E</small><b>${hsMoney(sumL)}</b></div></div>`;
+  html += `<div class="hs-filter">${fbtn("all", "\u0938\u092C", rows.length)}${fbtn("dena", "\u0926\u0947\u0928\u093E", dena.length)}${fbtn("lena", "\u0932\u0947\u0928\u093E", lena.length)}</div>`;
+  html += '<div class="hs-list">' + (shown.map((r) => {
+    const due = r.c.net >= 0;
+    const pct = Math.max(4, Math.round(Math.abs(r.c.net) / maxAbs * 100));
+    return `<div class="hs-card" onclick="hsPick('${r.id}')"><div class="hs-av">${mEsc(initials(r.l.name))}</div><div class="hs-mid"><b>${mEsc(r.l.name || "")}</b><small>${Math.round(r.c.days * 10) / 10} \u0926\u093F\u0928 \u2022 \u0915\u092E\u093E\u0908 ${hsMoney(r.c.earn)} \u2022 \u0928\u093F\u0915\u093E\u0938\u0940 ${hsMoney(r.c.with)}</small><div class="hs-bar"><i style="width:${pct}%;background:${due ? "#22C55E" : "#EF4444"}"></i></div></div><div class="hs-amt ${due ? "dena" : "lena"}"><small>${due ? "\u0926\u0947\u0928\u093E" : "\u0932\u0947\u0928\u093E"}</small><b>${hsMoney(r.c.net)}</b></div></div>`;
+  }).join("") || '<div class="hs-empty">\u0915\u094B\u0908 \u0915\u093E\u0930\u0940\u0917\u0930 \u0928\u0939\u0940\u0902</div>') + "</div>";
+  html += '<div style="margin: 12px 14px 0;"><button type="button" class="btn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;" onclick="hsShareAll()">\u{1F4E4} \u0938\u092C\u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0936\u0947\u092F\u0930 \u0915\u0930\u094B</button></div>';
+  box.innerHTML = html;
+}
+function hsSetFilter(f) { hsFilter = f; hsRenderAll(); }
+function hsPick(id) {
+  const sel = document.getElementById("rLabour");
+  if (sel) sel.value = id;
+  hsRender();
+}
+function hsRender() {
+  const tab = document.getElementById("t-r");
+  if (!tab || tab.style.display === "none") return;
+  const sel = document.getElementById("rLabour");
+  let cur = sel ? sel.value : "all";
+  if (cur !== "all" && !labs[cur]) { cur = "all"; if (sel) sel.value = "all"; }
+  hsRenderChips(cur);
+  if (cur === "all") { hsSetMode(false); hsRenderAll(); }
+  else { makeReport(); }
+}
+function hsShareAll() {
+  const mon = hsMon();
+  const monthLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
+  const rows = hsRows().sort((a, b) => (a.l.name || "").toLowerCase().localeCompare((b.l.name || "").toLowerCase()));
+  let msg = "*SHUKLA MARBLE \u2014 \u0939\u093F\u0938\u093E\u092C (" + monthLabel + ")*\n\n";
+  let d = 0, l = 0;
+  rows.forEach((r) => {
+    if (Math.abs(r.c.net) < 0.5) return;
+    msg += r.l.name + " \u2014 " + (r.c.net >= 0 ? "\u0926\u0947\u0928\u093E " : "\u0932\u0947\u0928\u093E ") + hsMoney(r.c.net) + "\n";
+    if (r.c.net >= 0) d += r.c.net; else l += -r.c.net;
+  });
+  msg += "\n*\u0915\u0941\u0932 \u0926\u0947\u0928\u093E: " + hsMoney(d) + "*\n*\u0915\u0941\u0932 \u0932\u0947\u0928\u093E: " + hsMoney(l) + "*";
+  openWhatsAppText(msg);
+}
+window.hsPick = hsPick; window.hsSetFilter = hsSetFilter; window.hsShareAll = hsShareAll; window.hsRender = hsRender;
 function makeReport() {
   const rMonth = document.getElementById("rMonth");
   const rLabour = document.getElementById("rLabour");
@@ -4462,24 +4569,12 @@ function makeReport() {
     return;
   }
   if (labId === "all") {
-    let html = "<table><tr><th>\u0928\u093E\u092E</th><th>\u0926\u0947\u0928\u093E/\u0932\u0947\u0928\u093E</th></tr>";
-    const sortedAll = Object.keys(labs).sort(
-      (a, b) => (labs[a].name || "").toLowerCase().localeCompare((labs[b].name || "").toLowerCase())
-    );
-    sortedAll.forEach((id) => {
-      if (labs[id].archived) return;
-      const c2 = calcLabour(id, mon);
-      html += `<tr>
-        <td style="text-align:left"><b>${mEsc(labs[id].name)}</b></td>
-        <td style="color:${c2.net >= 0 ? "#166534" : "#DC2626"};font-weight:800">
-          ${c2.net >= 0 ? "\u0926\u0947\u0928\u093E \u20B9" + c2.net.toLocaleString("en-IN") : "\u0932\u0947\u0928\u093E \u20B9" + Math.abs(c2.net).toLocaleString("en-IN")}
-        </td>
-      </tr>`;
-    });
-    box.innerHTML = html + "</table>";
+    hsRender();
     return;
   }
   if (!labId || !labs[labId]) return;
+  hsSetMode(true);
+  hsRenderChips(labId);
   const l = labs[labId];
   const c = calcLabour(labId, mon);
   const entries = Object.values(ents).filter((e) => e.labourId === labId && e.date.startsWith(mon)).sort((a, b) => a.date.localeCompare(b.date));
