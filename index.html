@@ -1200,6 +1200,10 @@ img, canvas, svg, video { max-width: 100%; }
 .hs-opt-title { font-size: 12px; font-weight: 800; color: #64748B; margin: 4px 0 8px; }
 .hs-opt { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 1.5px solid #E2E8F0; background: #fff; color: #0F172A; border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
 .hs-opt.on { border-color: #4338CA; background: #EEF2FF; color: #3730A3; }
+
+.hs-cal-btn { display: block; margin: 0 0 3px auto; border: 0; background: #EEF2FF; color: #4338CA; border-radius: 10px; width: 34px; height: 30px; min-height: 0; padding: 0; font-size: 16px; line-height: 1; cursor: pointer; }
+.hs-cal-btn.wide { width: auto; height: 36px; padding: 0 14px; font-size: 13px; font-weight: 800; border-radius: 12px; margin: 0; }
+.hs-pop-actions { display: flex; justify-content: flex-end; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -1558,6 +1562,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
     <div id="hsAll"></div>
     <div class="card" id="hsOne" style="display: none;">
+      <div class="hs-pop-actions"><button type="button" class="hs-cal-btn wide" onclick="openHsCal(document.getElementById('rLabour').value, hsMon(), true)">🗓️ कैलेंडर</button></div>
       <div id="reportBox"></div>
     </div>
   </div>
@@ -4523,7 +4528,7 @@ function hsRenderAll() {
   html += '<div class="hs-list">' + (shown.map((r) => {
     const due = r.c.net >= 0;
     const pct = Math.max(4, Math.round(Math.abs(r.c.net) / maxAbs * 100));
-    return `<div class="hs-card" onclick="hsPick('${r.id}')"><div class="hs-av">${mEsc(initials(r.l.name))}</div><div class="hs-mid"><b>${mEsc(r.l.name || "")}</b><small>${Math.round(r.c.days * 10) / 10} \u0926\u093F\u0928 \u2022 \u0915\u092E\u093E\u0908 ${hsMoney(r.c.earn)} \u2022 \u0928\u093F\u0915\u093E\u0938\u0940 ${hsMoney(r.c.with)}</small><div class="hs-bar"><i style="width:${pct}%;background:${due ? "#22C55E" : "#EF4444"}"></i></div></div><div class="hs-amt ${due ? "dena" : "lena"}"><small>${due ? "\u0926\u0947\u0928\u093E" : "\u0932\u0947\u0928\u093E"}</small><b>${hsMoney(r.c.net)}</b></div></div>`;
+    return `<div class="hs-card" onclick="hsPick('${r.id}')"><div class="hs-av">${mEsc(initials(r.l.name))}</div><div class="hs-mid"><b>${mEsc(r.l.name || "")}</b><small>${Math.round(r.c.days * 10) / 10} \u0926\u093F\u0928 \u2022 \u0915\u092E\u093E\u0908 ${hsMoney(r.c.earn)} \u2022 \u0928\u093F\u0915\u093E\u0938\u0940 ${hsMoney(r.c.with)}</small><div class="hs-bar"><i style="width:${pct}%;background:${due ? "#22C55E" : "#EF4444"}"></i></div></div><div class="hs-amt ${due ? "dena" : "lena"}"><button type="button" class="hs-cal-btn" onclick="event.stopPropagation();openHsCal('${r.id}')" aria-label="\u0915\u0948\u0932\u0947\u0902\u0921\u0930">\u{1F5D3}\uFE0F</button><small>${due ? "\u0926\u0947\u0928\u093E" : "\u0932\u0947\u0928\u093E"}</small><b>${hsMoney(r.c.net)}</b></div></div>`;
   }).join("") || '<div class="hs-empty">\u0915\u094B\u0908 \u0915\u093E\u0930\u0940\u0917\u0930 \u0928\u0939\u0940\u0902</div>') + "</div>";
   html += '<div style="margin: 12px 14px 0;"><button type="button" class="btn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;" onclick="hsShareAll()">\u{1F4E4} \u0938\u092C\u0915\u093E \u0939\u093F\u0938\u093E\u092C \u0936\u0947\u092F\u0930 \u0915\u0930\u094B</button></div>';
   box.innerHTML = html;
@@ -7574,8 +7579,10 @@ if (document.readyState === "loading") {
   document.body.appendChild(ov);
   const bodyEl = $('smEditBody');
   const titleEl = $('smEditTitle');
-  $('smEditX').addEventListener('click', () => userClose());
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && cur) userClose(); });
+  let userClosedFlag = false;
+  const closeByUser = () => { userClosedFlag = true; try { userClose(); } finally { userClosedFlag = false; } };
+  $('smEditX').addEventListener('click', () => closeByUser());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && cur) closeByUser(); });
 
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const card = (id) => { const e = $(id); return e ? e.closest('.card') : null; };
@@ -7937,6 +7944,60 @@ if (document.readyState === "loading") {
     if (refresh && cur && cur.cfg && cur.cfg.kind === 'hsfilter') { bodyEl.innerHTML = html; return; }
     openPanel('⚙️ फ़िल्टर', html);
     cur.cfg.kind = 'hsfilter';
+  };
+
+  /* ===== Hisab: kaarigar ka calendar popup ===== */
+  let hsCalSt = null;
+  function hsCalDraw() {
+    const st = hsCalSt; const l = labs[st.labId]; if (!l) return;
+    const [y, m] = st.mon.split('-').map(Number);
+    const label = new Date(y, m - 1, 1).toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' });
+    const dim = new Date(y, m, 0).getDate();
+    const map = {};
+    Object.values(ents).forEach((e) => {
+      if (e && e.labourId === st.labId && e.date && e.date.startsWith(st.mon)) {
+        const d = parseInt(e.date.slice(8)); (map[d] = map[d] || { days: 0, withdraw: 0 });
+        map[d].days += parseFloat(e.days || 0); map[d].withdraw += parseFloat(e.withdraw || 0);
+      }
+    });
+    const now = new Date(); const isCur = now.getFullYear() === y && now.getMonth() + 1 === m; const today = now.getDate();
+    let present = 0, half = 0, oneFive = 0, dbl = 0, absent = 0, paid = 0;
+    Object.values(map).forEach((i) => { const dv = i.days; paid += i.withdraw; if (dv >= 2) dbl++; else if (dv === 1.5) oneFive++; else if (dv === 1) present++; else if (dv === 0.5) half++; else if (dv <= 0) absent++; else oneFive++; });
+    for (let d = 1; d <= dim; d++) if (!map[d] && !(isCur && d >= today)) absent++;
+    const box = (bg, bd, col, n, t) => '<div style="background:' + bg + ';border:1px solid ' + bd + ';border-radius:10px;padding:7px 4px;text-align:center"><b style="display:block;font-size:15px;color:' + col + '">' + n + '</b><small style="color:' + col + ';font-size:10.5px">' + t + '</small></div>';
+    const grid = buildCalendarGridHtml(st.labId, st.mon).replace(/<div class="cal-day (present|half|onefive|double|absent)">(\s*)<b>(\d+)<\/b>/g, (mm, c, sp, d) => '<div class="cal-day ' + c + '" onclick="hsCalDay(' + d + ')">' + sp + '<b>' + d + '</b>');
+    const html =
+      (st.back ? '<button type="button" class="hs-back" onclick="hsCalBack()" style="margin-bottom:10px">← हिसाब पर वापस</button>' : '') +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><button type="button" class="hs-nav" onclick="hsCalShift(-1)">◀</button><div style="flex:1;text-align:center;font-weight:800;font-size:15px;color:#0F172A">' + label + '</div><button type="button" class="hs-nav" onclick="hsCalShift(1)">▶</button></div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px">' +
+        box('#DCFCE7', '#BBF7D0', '#166534', present, 'P / दिन') + box('#FEF3C7', '#FDE68A', '#92400E', half, '½ दिन') + box('#F3E8FF', '#D8B4FE', '#7E22CE', oneFive, '1.5 दिन') +
+        box('#DBEAFE', '#BFDBFE', '#1D4ED8', dbl, '2 दिन') + box('#FEE2E2', '#FECACA', '#991B1B', absent, 'A') + box('#EEF2FF', '#C7D2FE', '#3730A3', '₹' + Math.round(paid).toLocaleString('en-IN'), 'निकासी') +
+      '</div>' + grid;
+    if (cur && cur.cfg && cur.cfg.kind === 'hscal') { bodyEl.innerHTML = html; titleEl.textContent = '🗓️ ' + (l.name || ''); return; }
+    openPanel('🗓️ ' + (l.name || ''), html);
+    cur.cfg.kind = 'hscal';
+    cur.cfg.onClose = () => { if (userClosedFlag && hsCalSt && hsCalSt.back) { const id = hsCalSt.labId; setTimeout(() => window.hsPick(id), 30); } };
+  }
+  window.openHsCal = function (labId, mon, fromHisab) {
+    if (!labs[labId]) return;
+    hsCalSt = { labId, mon: mon || hsMon(), back: !!fromHisab };
+    if (cur) userClose();
+    hsCalDraw();
+  };
+  window.hsCalShift = function (d) {
+    if (!hsCalSt) return;
+    const [y, m] = hsCalSt.mon.split('-').map(Number);
+    const x = new Date(y, m - 1 + d, 1);
+    hsCalSt.mon = x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0');
+    hsCalDraw();
+  };
+  window.hsCalBack = function () { closeByUser(); };
+  window.hsCalDay = function (d) {
+    if (!hsCalSt) return;
+    const el = $('eLabour'), ed = $('eDate');
+    if (el) el.value = hsCalSt.labId;
+    if (ed) ed.value = hsCalSt.mon + '-' + String(d).padStart(2, '0');
+    window.editEntryByDay(d);
   };
 
   /* "⋯" menus (site / kaarigar) */
