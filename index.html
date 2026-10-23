@@ -1581,6 +1581,7 @@ img, canvas, svg, video { max-width: 100%; }
         <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च ›</small>
         <b id="xTotAmt" style="font-size: 22px; color: #F87171; white-space: nowrap;">₹0</b>
       </div>
+      <button type="button" id="finalAmtBtn" class="btn" style="display: none; margin: 10px 0 0; background: linear-gradient(135deg, #D9B55A, #99701F); color: #1a1405;" onclick="openFinalAmount()">💰 Final Amount</button>
     </div>
 
     <!-- Add New Expense Form -->
@@ -7374,6 +7375,15 @@ window.saveBulkMat = saveBulkMat;
 let appUnlocked = false;
 try { appUnlocked = localStorage.getItem("adminUnlocked") === "1"; } catch (e) {}
 let adminPin = "1947";
+const FINAL_AMOUNT_PIN = "9999";
+let secretFinalVisible = false;
+function syncFinalBtn() {
+  const b = document.getElementById("finalAmtBtn");
+  if (b) b.style.display = secretFinalVisible ? "block" : "none";
+}
+window.syncFinalBtn = syncFinalBtn;
+function hideFinalBtn() { secretFinalVisible = false; syncFinalBtn(); }
+window.hideFinalBtn = hideFinalBtn;
 let pendingPinAction = null;
 const PIN_PROTECTED_FNS = [
   "deletePay", "toggleArchive", "addLabour", "saveEditField", "deleteLab",
@@ -7426,6 +7436,12 @@ function submitPin() {
     const action = pendingPinAction;
     pendingPinAction = null;
     if (action) action();
+  } else if (val && val === FINAL_AMOUNT_PIN) {
+    secretFinalVisible = true;
+    syncFinalBtn();
+    pendingPinAction = null;
+    const ov = document.getElementById("pinOverlay");
+    if (ov) ov.style.display = "none";
   } else {
     const err = document.getElementById("pinError");
     if (err) err.style.display = "block";
@@ -7437,6 +7453,7 @@ function lockApp() {
   if (!confirm("\u0910\u092A \u0932\u0949\u0915 \u0915\u0930\u0947\u0902? (Edit / Add / Delete / \u0939\u093E\u095B\u0930\u0940 \u0926\u0941\u092C\u093E\u0930\u093E PIN \u092E\u093E\u0902\u0917\u0947\u0917\u093E)")) return;
   appUnlocked = false;
   try { localStorage.removeItem("adminUnlocked"); } catch (e) {}
+  hideFinalBtn();
   updateLockUI();
 }
 function toggleLockBtn() {
@@ -8011,6 +8028,13 @@ if (document.readyState === "loading") {
     if (el) el.value = hsCalSt.labId;
     if (ed) ed.value = hsCalSt.mon + '-' + String(d).padStart(2, '0');
     window.editEntryByDay(d);
+  };
+
+  /* ===== Kharch tab: hidden "Final Amount" popup (content to be defined) ===== */
+  window.openFinalAmount = function () {
+    openPanel('💰 Final Amount',
+      '<div style="text-align:center;padding:26px 8px 18px;color:#64748B;font-weight:700;line-height:1.6">यहाँ Final Amount का data दिखेगा.<br><small style="color:#94A3B8">कौन-सा data दिखाना है, वो बताने के बाद जोड़ा जाएगा.</small></div>' +
+      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin:0" onclick="hideFinalBtn();document.getElementById(\'smEditX\').click()">🙈 बटन छुपाओ</button>');
   };
 
   /* "⋯" menus (site / kaarigar) */
