@@ -1207,6 +1207,9 @@ img, canvas, svg, video { max-width: 100%; }
 
 .sm-site-dihadi { font-size: 12.5px; font-weight: 700; color: #475569; margin-top: 3px; white-space: nowrap; }
 .sm-site-dihadi b { color: #4338CA; font-weight: 800; }
+
+.bk-row { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; padding: 11px 12px; margin-bottom: 8px; cursor: pointer; }
+.bk-row:active { background: #F8FAFC; }
 </style>
 </head>
 <body>
@@ -1219,7 +1222,7 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 6px;">
-      <button class="btn-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212,169,78,0.35); color: #F0E6CC; padding: 6px 12px; border-radius: 20px; font-weight: 700; cursor: pointer;" onclick="openPdfBackup()">📥 PDF बैकअप</button>
+      <button class="btn-sm" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(212,169,78,0.35); color: #F0E6CC; padding: 6px 12px; border-radius: 20px; font-weight: 700; cursor: pointer;" onclick="openBackupCenter()">💾 बैकअप</button>
       <button id="installBtn" class="btn-sm" style="display: none; background: linear-gradient(135deg, #D4A94E, #AD832E); color: #2A1E05; padding: 6px 10px; border-radius: 20px; font-weight: 800; cursor: pointer; align-items: center; gap: 4px;" onclick="installApp()">📲 इंस्टॉल</button>
       <div id="syncBadge" style="background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #86EFAC; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
         <span style="font-size: 8px;">●</span> LIVE SYNC
@@ -1238,22 +1241,7 @@ img, canvas, svg, video { max-width: 100%; }
     <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
   </div>
 
-  <!-- Automatic Backup / Restore Modal -->
-  <div id="autoBackupModal" class="site-detail-modal" style="display:none;">
-    <div class="site-detail-box" style="max-width:520px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
-        <h3 style="margin:0;font-size:18px;">☁️ Automatic Backup / Restore</h3>
-        <button class="btn-sm" style="background:#F1F5F9;color:#64748B;" onclick="closeAutoBackup()">✕ बंद करें</button>
-      </div>
-      <div id="autoBackupStatus" style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:12px;font-size:13px;color:#334155;margin-bottom:12px;">Backup status loading...</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-        <button class="btn" style="background:#16A34A;" onclick="backupNow()">☁️ अभी Backup</button>
-        <button class="btn" style="background:#0F172A;" onclick="restoreLatestBackup()">♻️ Restore</button>
-      </div>
-      <button class="btn" style="background:#475569;margin-top:8px;" onclick="downloadJsonBackup()">📥 Backup File डाउनलोड</button>
-      <div style="font-size:11px;color:#64748B;margin-top:10px;text-align:center;">हर 24 घंटे में automatic cloud backup होगा।</div>
-    </div>
-  </div>
+  
 
   <!-- TAB 1: DASHBOARD -->
   <div id="t-d">
@@ -2056,6 +2044,7 @@ let labourMonthly = {};
 let agreements = {};
 let expenses = {};
 let expenseCategories = {};
+let finalAmountData = {};
 let bijliBills = {};
 let withdrawals = {};
 let siteCosts = {};
@@ -2221,6 +2210,10 @@ function smRenderSoon() {
 function startListen() {
   if (!db) return;
   startAdminPinListener();
+  db.ref("companies/" + company + "/finalAmount").on("value", (s) => {
+    finalAmountData = s.val() || {};
+    if (typeof window.redrawFinalAmount === "function") window.redrawFinalAmount();
+  });
   db.ref("companies/" + company + "/labours").on("value", (s) => {
     labs = smFixNums(s.val(), { wage: undefined, rent: undefined, bijli: undefined, balance: undefined });
     smRenderSoon();
@@ -5937,100 +5930,216 @@ window.downloadAgreementPdf = downloadAgreementPdf;
 window.printPdfReport = printPdfReport;
 window.downloadExcelBackup = downloadExcelBackup;
 window.exportExcel = downloadExcelBackup;
-// ================= AUTOMATIC BACKUP / RESTORE =================
-const SM_AUTO_BACKUP_KEY = "shukla_marble_auto_backup_v1";
-const SM_AUTO_BACKUP_INTERVAL = 24 * 60 * 60 * 1000;
-let smLatestBackup = null;
+// ================= BACKUP CENTER: versioned cloud backups (data layer) =================
+const BK_KEEP_AUTO = 15, BK_KEEP_OTHER = 15, BK_INTERVAL = 24 * 60 * 60 * 1000, BK_CHUNK = 900000;
+const BK_KEY_OK = "shukla_bk_last_ok_v2", BK_KEY_ERR = "shukla_bk_last_err_v2", BK_KEY_CHECK = "shukla_bk_last_check_v2";
+const BK_KNOWN = ["labours", "entries", "withdrawals", "sites", "sitePayments", "siteCosts", "expenses", "expenseCategories", "bijliBills", "labourMonthly", "agreements", "materialSections", "settings", "finalAmount"];
+const BK_LABELS = { labours: "कारीगर", entries: "हाज़री एंट्री", withdrawals: "Extra पेमेंट", sites: "साइट", sitePayments: "साइट पेमेंट", siteCosts: "साइट लागत", expenses: "खर्च", expenseCategories: "खर्च Category", bijliBills: "बिजली बिल", labourMonthly: "किराया/बिजली (महीने-वार)", agreements: "एग्रीमेंट", materialSections: "मटेरियल सेक्शन", materialItems: "मटेरियल आइटम", materialEntries: "मटेरियल एंट्री", materialPayments: "मटेरियल पेमेंट" };
+const BK_HIDE_COUNT = { settings: 1, finalAmount: 1 };
+let bkBusy = false;
 
-function backupRootRef() {
-  return db && db.raw ? db.raw.ref("companies/" + company) : null;
+function bkRoot() { return db && db.raw ? db.raw.ref("companies/" + company) : null; }
+function bkDevice() {
+  const ua = navigator.userAgent || "";
+  if (/iPhone|iPad|iPod/.test(ua)) return "iPhone/iPad";
+  if (/Android/.test(ua)) return "Android";
+  if (/Windows/.test(ua)) return "Windows";
+  if (/Macintosh|Mac OS/.test(ua)) return "Mac";
+  return "Browser";
 }
-function cleanBackupData(data) {
-  const clone = data ? JSON.parse(JSON.stringify(data)) : {};
-  delete clone._autoBackup;
-  return clone;
+function bkHash(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+  return (h >>> 0).toString(16).padStart(8, "0") + "-" + str.length;
 }
-async function createAutoBackup(force) {
-  if (!db || !db.raw) return false;
-  try {
-    const root = backupRootRef();
-    const snap = await root.once("value");
-    const data = cleanBackupData(snap.val() || {});
-    const now = Date.now();
-    const payload = { timestamp: now, data: data };
-    await root.child("_autoBackup").set(payload);
-    smLatestBackup = payload;
-    try { localStorage.setItem(SM_AUTO_BACKUP_KEY, JSON.stringify({ timestamp: now })); } catch(e) {}
-    updateAutoBackupStatus();
-    return true;
-  } catch (e) {
-    console.error("Automatic backup failed", e);
-    return false;
+function bkB64(buf) {
+  const u8 = new Uint8Array(buf); let bin = "";
+  for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+async function bkEncode(json) {
+  if (typeof CompressionStream !== "undefined") {
+    try {
+      const stream = new Blob([json]).stream().pipeThrough(new CompressionStream("gzip"));
+      return { enc: "gz-b64", text: bkB64(await new Response(stream).arrayBuffer()) };
+    } catch (e) {}
   }
+  return { enc: "raw", text: json };
+}
+async function bkDecode(enc, text) {
+  if (enc !== "gz-b64") return text;
+  const bin = atob(text); const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  const stream = new Blob([u8]).stream().pipeThrough(new DecompressionStream("gzip"));
+  return await new Response(stream).text();
+}
+async function bkTopKeys() {
+  const set = new Set(BK_KNOWN);
+  try {
+    Object.keys(matSections || {}).forEach((id) => ["materialItems", "materialEntries", "materialPayments"].forEach((b) => set.add(b + matSectionSuffix(id))));
+  } catch (e) {}
+  ["materialItems", "materialEntries", "materialPayments", "materialItemsAcc", "materialEntriesAcc", "materialPaymentsAcc"].forEach((k) => set.add(k));
+  try {
+    const base = (firebase.app().options.databaseURL || "").replace(/\/$/, "");
+    if (base) {
+      const ctl = new AbortController(); const tm = setTimeout(() => ctl.abort(), 6000);
+      const res = await fetch(base + "/companies/" + encodeURIComponent(company) + ".json?shallow=true", { signal: ctl.signal });
+      clearTimeout(tm);
+      if (res.ok) { const o = await res.json(); Object.keys(o || {}).forEach((k) => set.add(k)); }
+    }
+  } catch (e) {}
+  return [...set].filter((k) => k && k[0] !== "_");
+}
+async function bkSnapshot() {
+  const root = bkRoot();
+  if (!root) throw new Error("Database उपलब्ध नहीं है");
+  const keys = await bkTopKeys();
+  const parts = await Promise.all(keys.map((k) => root.child(k).once("value").then((s) => [k, s.val()])));
+  const data = {};
+  parts.forEach(([k, v]) => { if (v !== null && v !== undefined) data[k] = v; });
+  return data;
+}
+function bkCounts(data) {
+  const c = {};
+  Object.keys(data || {}).forEach((k) => {
+    if (k[0] === "_" || BK_HIDE_COUNT[k]) return;
+    const v = data[k];
+    if (v && typeof v === "object") c[k] = Object.keys(v).length;
+  });
+  return c;
+}
+async function bkList() {
+  const root = bkRoot(); if (!root) return [];
+  const v = (await root.child("_backupIndex").once("value")).val() || {};
+  return Object.keys(v).map((id) => Object.assign({ id }, v[id])).sort((a, b) => b.ts - a.ts);
+}
+async function bkDelete(id) {
+  const root = bkRoot();
+  await root.child("_backupIndex/" + id).remove();
+  await root.child("_backups/" + id).remove();
+}
+async function bkPrune() {
+  const list = await bkList();
+  const del = [...list.filter((b) => b.type === "auto").slice(BK_KEEP_AUTO), ...list.filter((b) => b.type !== "auto").slice(BK_KEEP_OTHER)];
+  for (const b of del) { try { await bkDelete(b.id); } catch (e) {} }
+}
+async function bkCreate(type, note) {
+  const root = bkRoot();
+  if (!root) throw new Error("Database उपलब्ध नहीं है");
+  try {
+    const data = await bkSnapshot();
+    const json = JSON.stringify(data);
+    const enc = await bkEncode(json);
+    const chunks = [];
+    for (let i = 0; i < enc.text.length; i += BK_CHUNK) chunks.push(enc.text.slice(i, i + BK_CHUNK));
+    const id = String(Date.now());
+    const payload = { enc: enc.enc, n: chunks.length };
+    chunks.forEach((c, i) => { payload["c" + i] = c; });
+    await root.child("_backups/" + id).set(payload);
+    const meta = { ts: Date.now(), type, note: note || "", device: bkDevice(), counts: bkCounts(data), rawBytes: json.length, bytes: enc.text.length, n: chunks.length, enc: enc.enc, hash: bkHash(json), ver: 2 };
+    try { await root.child("_backupIndex/" + id).set(meta); }
+    catch (e) { try { await root.child("_backups/" + id).remove(); } catch (_) {} throw e; }
+    try { localStorage.setItem(BK_KEY_OK, JSON.stringify({ ts: meta.ts, type })); localStorage.removeItem(BK_KEY_ERR); } catch (e) {}
+    bkPrune().catch(() => {});
+    return Object.assign({ id }, meta);
+  } catch (e) {
+    try { localStorage.setItem(BK_KEY_ERR, JSON.stringify({ ts: Date.now(), msg: String((e && e.message) || e).slice(0, 160) })); } catch (_) {}
+    throw e;
+  }
+}
+async function bkLoad(id, metaIn) {
+  const root = bkRoot();
+  const meta = metaIn || (await root.child("_backupIndex/" + id).once("value")).val();
+  const p = (await root.child("_backups/" + id).once("value")).val();
+  if (!p) throw new Error("Backup का data नहीं मिला");
+  let text = "";
+  for (let i = 0; i < (p.n || 0); i++) text += p["c" + i] || "";
+  let json, parsed;
+  try { json = await bkDecode(p.enc, text); parsed = JSON.parse(json); }
+  catch (e) { throw new Error("Backup का data खराब है — पढ़ा नहीं जा सका (checksum fail)"); }
+  const verified = meta && meta.hash ? bkHash(json) === meta.hash : null;
+  return { data: parsed, meta, verified };
+}
+async function bkLegacyInfo() {
+  const root = bkRoot(); if (!root) return null;
+  try { const ts = (await root.child("_autoBackup/timestamp").once("value")).val(); return ts ? { ts: Number(ts) } : null; } catch (e) { return null; }
+}
+async function bkLoadLegacy() {
+  const b = (await bkRoot().child("_autoBackup").once("value")).val();
+  if (!b || !b.data) throw new Error("पुराना backup नहीं मिला");
+  return { data: b.data, meta: { ts: b.timestamp, type: "legacy", counts: bkCounts(b.data) }, verified: null };
+}
+function bkFileObject(meta, data) {
+  return { app: "shukla-marble", version: 2, createdAt: meta.ts, type: meta.type, device: meta.device || "", note: meta.note || "", counts: meta.counts || bkCounts(data), hash: meta.hash || bkHash(JSON.stringify(data)), company, data };
+}
+function bkDownloadFile(obj) {
+  const d = new Date(obj.createdAt || Date.now());
+  const name = "Shukla-Marble-Backup-" + fmtLocalDate(d) + "_" + String(d.getHours()).padStart(2, "0") + "-" + String(d.getMinutes()).padStart(2, "0") + ".json";
+  const blob = new Blob([JSON.stringify(obj, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  return name;
+}
+function bkParseFile(text) {
+  const o = JSON.parse(text);
+  let data = null, verified = null, meta = {};
+  if (o && o.data && typeof o.data === "object") {
+    data = o.data;
+    meta = { ts: o.createdAt || o.timestamp || Date.now(), type: "file", device: o.device || "", note: o.note || "", counts: bkCounts(data) };
+    if (o.hash) verified = bkHash(JSON.stringify(data)) === o.hash;
+  } else if (o && typeof o === "object" && BK_KNOWN.some((k) => k in o)) {
+    data = o; meta = { ts: Date.now(), type: "file", counts: bkCounts(data) };
+  }
+  if (!data || !BK_KNOWN.concat(["materialItems", "materialEntries"]).some((k) => k in data)) throw new Error("ये Shukla Marble की backup file नहीं लगती");
+  return { data, meta, verified };
+}
+async function bkRestore(data) {
+  const root = bkRoot();
+  if (!root) throw new Error("Database उपलब्ध नहीं है");
+  await bkCreate("safety", "Restore से पहले का data (अपने आप बना — undo के लिए)");
+  const keys = await bkTopKeys();
+  const all = new Set([...keys, ...Object.keys(data)]);
+  const jobs = [];
+  all.forEach((k) => {
+    if (!k || k[0] === "_" || k === "settings") return;
+    if (data[k] !== undefined && data[k] !== null) jobs.push(root.child(k).set(data[k]));
+    else jobs.push(root.child(k).remove());
+  });
+  await Promise.all(jobs);
+  try {
+    const rm = [];
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && (k.indexOf(SM_CACHE_PREFIX) === 0 || k === SM_OUTBOX_KEY)) rm.push(k); }
+    rm.forEach((k) => localStorage.removeItem(k));
+  } catch (e) {}
+}
+async function bkMaybeAuto() {
+  if (bkBusy || !db || !db.raw) return;
+  bkBusy = true;
+  try {
+    try { localStorage.setItem(BK_KEY_CHECK, String(Date.now())); } catch (e) {}
+    const last = (await bkList()).find((b) => b.type === "auto");
+    if (!last || Date.now() - last.ts >= BK_INTERVAL) await bkCreate("auto");
+  } catch (e) { console.warn("auto backup", e); }
+  finally { bkBusy = false; }
 }
 function scheduleAutoBackup() {
-  const run = async () => {
-    let last = 0;
-    try { last = Number(JSON.parse(localStorage.getItem(SM_AUTO_BACKUP_KEY) || "{}").timestamp || 0); } catch(e) {}
-    if (!last || Date.now() - last >= SM_AUTO_BACKUP_INTERVAL) await createAutoBackup(false);
-  };
-  setTimeout(run, 5000);
-  setInterval(run, 60 * 60 * 1000);
+  setTimeout(bkMaybeAuto, 6000);
+  setInterval(bkMaybeAuto, 60 * 60 * 1000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") return;
+    let t = 0; try { t = Number(localStorage.getItem(BK_KEY_CHECK) || 0); } catch (e) {}
+    if (Date.now() - t > 30 * 60 * 1000) bkMaybeAuto();
+  });
 }
-function updateAutoBackupStatus() {
-  const el = document.getElementById("autoBackupStatus");
-  if (!el) return;
-  let ts = smLatestBackup && smLatestBackup.timestamp;
-  if (!ts) { try { ts = Number(JSON.parse(localStorage.getItem(SM_AUTO_BACKUP_KEY) || "{}").timestamp || 0); } catch(e) {} }
-  el.innerHTML = ts
-    ? "✅ Last backup: <b>" + new Date(ts).toLocaleString("en-IN") + "</b>"
-    : "⚠️ अभी तक automatic backup नहीं हुआ है।";
-}
-function openAutoBackup() {
-  const m = document.getElementById("autoBackupModal");
-  if (m) { m.style.display = "flex"; updateAutoBackupStatus(); }
-}
-function closeAutoBackup() {
-  const m = document.getElementById("autoBackupModal");
-  if (m) m.style.display = "none";
-}
-async function backupNow() {
-  const ok = await createAutoBackup(true);
-  alert(ok ? "✅ Backup सफलतापूर्वक हो गया।" : "❌ Backup नहीं हो पाया। Internet check करें।");
-}
-async function restoreLatestBackup() {
-  if (!db || !db.raw) return alert("Database उपलब्ध नहीं है।");
-  if (!confirm("⚠️ Latest backup restore होगा और अभी का data replace हो जाएगा। आगे बढ़ें?")) return;
-  try {
-    const snap = await db.raw.ref("companies/" + company + "/_autoBackup").once("value");
-    const b = snap.val();
-    if (!b || !b.data) return alert("❌ कोई backup नहीं मिला।");
-    await db.raw.ref("companies/" + company).set(b.data);
-    alert("✅ Restore पूरा हो गया। Page reload होगा।");
-    location.reload();
-  } catch (e) {
-    console.error(e);
-    alert("❌ Restore नहीं हो पाया।");
-  }
-}
-async function downloadJsonBackup() {
-  if (!db || !db.raw) return alert("Database उपलब्ध नहीं है।");
-  try {
-    const snap = await db.raw.ref("companies/" + company).once("value");
-    const data = cleanBackupData(snap.val() || {});
-    const blob = new Blob([JSON.stringify({version:1,timestamp:Date.now(),data:data},null,2)], {type:"application/json"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "Shukla-Marble-Auto-Backup-" + fmtLocalDate(new Date()) + ".json";
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  } catch(e) { alert("❌ Backup file नहीं बन पाई।"); }
-}
-window.openAutoBackup = openAutoBackup;
-window.closeAutoBackup = closeAutoBackup;
-window.backupNow = backupNow;
-window.restoreLatestBackup = restoreLatestBackup;
-window.downloadJsonBackup = downloadJsonBackup;
+async function backupNow() { try { const m = await bkCreate("manual", ""); alert("✅ Backup हो गया (" + new Date(m.ts).toLocaleString("hi-IN") + ")"); } catch (e) { alert("❌ Backup नहीं हो पाया — Internet check करें।"); } }
+function openAutoBackup() { if (typeof window.openBackupCenter === "function") window.openBackupCenter(); }
+function closeAutoBackup() {}
+window.bkCreate = bkCreate; window.bkList = bkList; window.bkLoad = bkLoad; window.bkRestore = bkRestore; window.bkSnapshot = bkSnapshot; window.bkMaybeAuto = bkMaybeAuto;
+window.bkDelete = bkDelete; window.bkFileObject = bkFileObject; window.bkDownloadFile = bkDownloadFile; window.bkParseFile = bkParseFile;
+window.bkLegacyInfo = bkLegacyInfo; window.bkLoadLegacy = bkLoadLegacy; window.bkCounts = bkCounts; window.bkHash = bkHash; window.bkTopKeys = bkTopKeys;
+window.openAutoBackup = openAutoBackup; window.closeAutoBackup = closeAutoBackup; window.backupNow = backupNow;
 
 // ================= MATERIAL (मटेरियल) - multi-section (NOVA / ACC / +user-added) =================
 let matItems = {};
@@ -8030,11 +8139,189 @@ if (document.readyState === "loading") {
     window.editEntryByDay(d);
   };
 
-  /* ===== Kharch tab: hidden "Final Amount" popup (content to be defined) ===== */
-  window.openFinalAmount = function () {
-    openPanel('💰 Final Amount',
-      '<div style="text-align:center;padding:26px 8px 18px;color:#64748B;font-weight:700;line-height:1.6">यहाँ Final Amount का data दिखेगा.<br><small style="color:#94A3B8">कौन-सा data दिखाना है, वो बताने के बाद जोड़ा जाएगा.</small></div>' +
-      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin:0" onclick="hideFinalBtn();document.getElementById(\'smEditX\').click()">🙈 बटन छुपाओ</button>');
+  /* ===== Kharch tab: hidden "Final Amount" popup ===== */
+  let faEdit = false;
+  function faMoney(n) { return (n < 0 ? '−' : '') + '₹' + Math.abs(Math.round(n * 100) / 100).toLocaleString('en-IN'); }
+  function faHtml() {
+    const has = finalAmountData && finalAmountData.opening !== undefined && finalAmountData.opening !== null && isFinite(parseFloat(finalAmountData.opening));
+    const val = has ? parseFloat(finalAmountData.opening) : null;
+    let upd = '';
+    if (has && finalAmountData.updated) { try { upd = new Date(finalAmountData.updated).toLocaleString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }); } catch (e) {} }
+    const editing = faEdit || !has;
+    let box;
+    if (!editing) {
+      box = '<div style="font-size:12px;font-weight:800;color:#64748B">Opening Balance</div>' +
+        '<div style="font-size:30px;font-weight:800;color:' + (val < 0 ? '#B91C1C' : '#166534') + ';margin:6px 0 2px;white-space:nowrap">' + faMoney(val) + '</div>' +
+        (upd ? '<div style="font-size:11px;color:#94A3B8;font-weight:600;margin-bottom:12px">अपडेट: ' + upd + '</div>' : '<div style="height:12px"></div>') +
+        '<button type="button" class="btn" style="background:#EEF2FF;color:#4338CA;margin:0" onclick="faStartEdit()">✏️ Edit करो</button>';
+    } else {
+      box = '<div style="font-size:12px;font-weight:800;color:#64748B;margin-bottom:8px">' + (has ? 'Opening Balance बदलो' : 'Opening Balance डालो') + '</div>' +
+        '<input id="faInput" type="number" inputmode="decimal" step="any" class="input" placeholder="₹ रकम (माइनस भी चलेगा)" value="' + (has ? val : '') + '" onkeydown="if(event.key===\'Enter\')faSave()">' +
+        '<div id="faMsg" style="min-height:16px;font-size:12px;font-weight:700;color:#B91C1C;margin:-4px 0 8px"></div>' +
+        '<button type="button" class="btn btn-gold" style="margin:0" onclick="faSave()">💾 सेव करो</button>' +
+        (has ? '<button type="button" class="btn" style="background:#F1F5F9;color:#64748B;margin:8px 0 0" onclick="faCancel()">Cancel</button>' : '');
+    }
+    return '<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:16px;margin-bottom:12px">' + box + '</div>' +
+      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin:0" onclick="hideFinalBtn();document.getElementById(\'smEditX\').click()">🙈 बटन छुपाओ</button>';
+  }
+  function faDraw() {
+    if (cur && cur.cfg && cur.cfg.kind === 'finalamt') { bodyEl.innerHTML = faHtml(); }
+    else { openPanel('💰 Final Amount', faHtml()); cur.cfg.kind = 'finalamt'; }
+    const i = $('faInput'); if (i) setTimeout(() => { if (cur && cur.cfg && cur.cfg.kind === 'finalamt') { i.focus(); i.select(); } }, 120);
+  }
+  window.openFinalAmount = function () { faEdit = false; faDraw(); };
+  window.redrawFinalAmount = function () { if (cur && cur.cfg && cur.cfg.kind === 'finalamt' && !faEdit) bodyEl.innerHTML = faHtml(); };
+  window.faStartEdit = function () { faEdit = true; faDraw(); };
+  window.faCancel = function () { faEdit = false; faDraw(); };
+  window.faSave = function () {
+    const inp = $('faInput'), msg = $('faMsg');
+    const raw = inp ? inp.value.trim() : '';
+    const v = parseFloat(raw);
+    if (raw === '' || !isFinite(v)) { if (msg) msg.textContent = 'सही रकम डालो'; return; }
+    if (Math.abs(v) > 1e9) { if (msg) msg.textContent = 'रकम बहुत बड़ी है'; return; }
+    db.ref('companies/' + company + '/finalAmount').set({ opening: v, updated: Date.now() }).then(() => { faEdit = false; faDraw(); });
+  };
+
+  /* ===== BACKUP CENTER UI ===== */
+  const bkFmtDT = (ts) => { try { return new Date(ts).toLocaleString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }); } catch (e) { return ''; } };
+  const bkAgo = (ts) => {
+    const m = Math.round((Date.now() - ts) / 60000);
+    if (m < 1) return 'अभी';
+    if (m < 60) return m + ' मिनट पहले';
+    const h = Math.round(m / 60); if (h < 48) return h + ' घंटे पहले';
+    return Math.round(h / 24) + ' दिन पहले';
+  };
+  const bkKB = (n) => n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+  const bkTypeInfo = { auto: ['Auto', '#DCFCE7', '#166534'], manual: ['Manual', '#DBEAFE', '#1D4ED8'], safety: ['Safety', '#FEF3C7', '#92400E'], legacy: ['पुराना', '#F1F5F9', '#475569'], file: ['File', '#F3E8FF', '#7E22CE'] };
+  const bkTag = (t) => { const i = bkTypeInfo[t] || bkTypeInfo.manual; return '<span style="display:inline-block;background:' + i[1] + ';color:' + i[2] + ';border-radius:99px;padding:2px 9px;font-size:11px;font-weight:800">' + i[0] + '</span>'; };
+  const bkLabel = (k) => { if (BK_LABELS[k]) return BK_LABELS[k]; const b = Object.keys(BK_LABELS).find((x) => k.indexOf(x) === 0); return b ? BK_LABELS[b] + ' (' + k.slice(b.length).replace(/^_/, '') + ')' : k; };
+  const bkCountLine = (c) => Object.keys(c || {}).filter((k) => c[k] > 0).sort().map((k) => bkLabel(k) + ' ' + c[k].toLocaleString('en-IN')).join(' • ') || '—';
+  let bkReturn = null;   // function that redraws the previous panel
+
+  function bkLiveCounts() {
+    const n = (o) => Object.keys(o || {}).length;
+    return { labours: n(labs), entries: n(ents), withdrawals: n(withdrawals), sites: n(sites), sitePayments: n(sitePays), siteCosts: n(siteCosts), expenses: n(expenses), bijliBills: n(bijliBills), agreements: n(agreements) };
+  }
+  window.openBackupCenter = async function () {
+    openPanel('💾 Backup Center', '<div style="text-align:center;padding:30px 0;color:#64748B;font-weight:700">⏳ लोड हो रहा है…</div>');
+    cur.cfg.kind = 'bkcenter';
+    bkReturn = window.openBackupCenter;
+    let list = [], legacy = null, err = '';
+    try { list = await bkList(); legacy = await bkLegacyInfo(); } catch (e) { err = String((e && e.message) || e); }
+    if (!cur || cur.cfg.kind !== 'bkcenter') return;
+    let ok = null, bad = null;
+    try { ok = JSON.parse(localStorage.getItem(BK_KEY_OK) || 'null'); } catch (e) {}
+    try { bad = JSON.parse(localStorage.getItem(BK_KEY_ERR) || 'null'); } catch (e) {}
+    const lastAny = list[0], lastAuto = list.find((b) => b.type === 'auto');
+    const old = lastAny ? (Date.now() - lastAny.ts) > 2 * BK_INTERVAL : true;
+    let head;
+    if (err) head = '<div style="color:#B91C1C;font-weight:800">⚠️ Backup list नहीं मिली</div><div style="font-size:12px;color:#64748B;margin-top:4px">' + he(err) + '</div>';
+    else if (!lastAny) head = '<div style="color:#B45309;font-weight:800">⚠️ अभी तक कोई backup नहीं बना</div><div style="font-size:12px;color:#64748B;margin-top:4px">नीचे "☁️ अभी Backup" दबाओ.</div>';
+    else head = '<div style="color:' + (old ? '#B45309' : '#166534') + ';font-weight:800">' + (old ? '⚠️ ' : '✅ ') + 'आखिरी backup ' + bkAgo(lastAny.ts) + '</div><div style="font-size:12px;color:#64748B;margin-top:4px">' + bkFmtDT(lastAny.ts) + ' • ' + bkTypeInfo[lastAny.type][0] + (lastAny.device ? ' • ' + he(lastAny.device) : '') + '</div>';
+    const nextAuto = lastAuto ? lastAuto.ts + BK_INTERVAL : null;
+    const lines = [];
+    if (bad && (!ok || bad.ts > ok.ts)) lines.push('<div style="color:#B91C1C;font-size:12px;font-weight:700;margin-top:8px">❌ पिछला backup fail हुआ (' + bkFmtDT(bad.ts) + '): ' + he(bad.msg) + '</div>');
+    if (nextAuto) lines.push('<div style="font-size:12px;color:#64748B;margin-top:6px">अगला auto backup: ' + (nextAuto <= Date.now() ? '<b>अभी due है</b> (app खुलते ही)' : bkFmtDT(nextAuto) + ' के बाद') + '</div>');
+    lines.push('<div style="font-size:12px;color:#64748B;margin-top:6px">अभी का data: ' + he(bkCountLine(bkLiveCounts())) + '</div>');
+    let pend = 0; try { pend = (typeof smOutbox !== 'undefined' && smOutbox) ? smOutbox.length : 0; } catch (e) {}
+    if (pend) lines.push('<div style="font-size:12px;color:#B45309;font-weight:700;margin-top:6px">⏳ ' + pend + ' बदलाव अभी cloud पर sync नहीं हुए</div>');
+    const tot = list.reduce((a, b) => a + (b.bytes || 0), 0);
+    lines.push('<div style="font-size:12px;color:#94A3B8;margin-top:6px">' + list.length + ' backups सुरक्षित • ' + bkKB(tot) + ' • Auto: आखिरी 15 रखे जाते हैं</div>');
+    const btn = (bg, col, fn, label) => '<button type="button" class="btn" style="background:' + bg + ';color:' + col + ';margin:0;font-size:13px;padding:12px 8px" onclick="' + fn + '">' + label + '</button>';
+    let rows = list.map((b) => '<div class="bk-row" onclick="bkDetails(\'' + b.id + '\')"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' + bkTag(b.type) + '<b style="font-size:13px;color:#0F172A">' + bkFmtDT(b.ts) + '</b></div><div style="font-size:11.5px;color:#64748B;margin-top:6px;line-height:1.5">' + he(bkCountLine(b.counts)) + '</div><div style="font-size:11px;color:#94A3B8;margin-top:4px">' + bkKB(b.rawBytes || b.bytes || 0) + (b.device ? ' • ' + he(b.device) : '') + (b.note ? ' • ' + he(b.note) : '') + '</div></div>').join('');
+    if (legacy) rows += '<div class="bk-row" onclick="bkDetails(\'__legacy\')"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' + bkTag('legacy') + '<b style="font-size:13px;color:#0F172A">' + bkFmtDT(legacy.ts) + '</b></div><div style="font-size:11.5px;color:#64748B;margin-top:6px">पुराने system का single backup</div></div>';
+    bodyEl.innerHTML =
+      '<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:14px;margin-bottom:12px">' + head + lines.join('') + '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">' +
+        btn('linear-gradient(135deg,#D9B55A,#99701F)', '#1a1405', 'bkRunManual(this)', '☁️ अभी Backup') +
+        btn('#EEF2FF', '#4338CA', 'bkDownloadNow(this)', '📥 File डाउनलोड') +
+        btn('#FEF3C7', '#92400E', 'bkPickFile()', '📤 File से Restore') +
+        btn('#F1F5F9', '#334155', 'closeByUserFn();openPdfBackup()', '📄 PDF / Excel रिपोर्ट') +
+      '</div>' +
+      '<input type="file" id="bkFileIn" accept=".json,application/json" style="display:none" onchange="bkFileChosen(this)">' +
+      '<div style="font-weight:800;font-size:13px;color:#475569;margin:14px 2px 8px">सुरक्षित backups</div>' + (rows || '<div style="text-align:center;color:#94A3B8;font-weight:700;padding:18px 0">कोई backup नहीं</div>');
+  };
+  window.closeByUserFn = function () { finish(); };
+  const bkBusyBtn = (el, txt) => { if (el) { el.disabled = true; el.dataset.t = el.innerHTML; el.innerHTML = txt; } };
+  const bkFree = (el) => { if (el && el.dataset.t) { el.disabled = false; el.innerHTML = el.dataset.t; } };
+  window.bkRunManual = async function (el) {
+    const note = window.prompt('इस backup का नाम / note (optional)', '');
+    if (note === null) return;
+    bkBusyBtn(el, '⏳ हो रहा है…');
+    try { await bkCreate('manual', note.trim()); await window.openBackupCenter(); }
+    catch (e) { bkFree(el); alert('❌ Backup नहीं हो पाया: ' + ((e && e.message) || e)); }
+  };
+  window.bkDownloadNow = async function (el) {
+    bkBusyBtn(el, '⏳ …');
+    try { const data = await bkSnapshot(); const json = JSON.stringify(data); bkDownloadFile(bkFileObject({ ts: Date.now(), type: 'manual', device: bkDevice(), counts: bkCounts(data), hash: bkHash(json) }, data)); }
+    catch (e) { alert('❌ File नहीं बन पाई: ' + ((e && e.message) || e)); }
+    bkFree(el);
+  };
+  window.bkPickFile = function () { const i = $('bkFileIn'); if (i) i.click(); };
+  window.bkFileChosen = async function (inp) {
+    const f = inp.files && inp.files[0]; if (!f) return;
+    try { const parsed = bkParseFile(await f.text()); parsed.meta.note = parsed.meta.note || f.name; bkRestorePanel(parsed, 'file'); }
+    catch (e) { alert('❌ ' + ((e && e.message) || 'File पढ़ी नहीं जा सकी')); }
+    inp.value = '';
+  };
+  window.bkDetails = async function (id) {
+    openPanel('🔎 Backup details', '<div style="text-align:center;padding:30px 0;color:#64748B;font-weight:700">⏳ …</div>');
+    cur.cfg.kind = 'bkdetail';
+    try {
+      const loaded = id === '__legacy' ? await bkLoadLegacy() : await bkLoad(id);
+      const m = loaded.meta || {};
+      const ver = loaded.verified === true ? '<span style="color:#166534;font-weight:800">✔ सही (checksum मिला)</span>' : loaded.verified === false ? '<span style="color:#B91C1C;font-weight:800">✖ गड़बड़ — data बदला हुआ लगता है</span>' : '<span style="color:#64748B">जाँच उपलब्ध नहीं</span>';
+      const rowsH = Object.keys(loaded.data || {}).filter((k) => k[0] !== '_' && !BK_HIDE_COUNT[k]).sort().map((k) => '<tr><td style="padding:6px 4px;font-size:12.5px;border-top:1px solid #EEF2F7">' + he(bkLabel(k)) + '</td><td style="padding:6px 4px;text-align:right;font-weight:800;border-top:1px solid #EEF2F7">' + Object.keys(loaded.data[k] || {}).length.toLocaleString('en-IN') + '</td></tr>').join('');
+      bodyEl.innerHTML =
+        '<button type="button" class="hs-back" onclick="openBackupCenter()" style="margin-bottom:10px">← Backup Center</button>' +
+        '<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:14px;margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:center">' + bkTag(m.type || 'manual') + '<b>' + bkFmtDT(m.ts) + '</b></div>' +
+        '<div style="font-size:12px;color:#64748B;margin-top:8px;line-height:1.7">' + (m.device ? 'Device: ' + he(m.device) + '<br>' : '') + (m.note ? 'Note: ' + he(m.note) + '<br>' : '') + (m.rawBytes ? 'Size: ' + bkKB(m.rawBytes) + (m.bytes && m.enc === 'gz-b64' ? ' (compressed ' + bkKB(m.bytes) + ')' : '') + '<br>' : '') + 'Integrity: ' + ver + '</div></div>' +
+        '<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr><th style="text-align:left;font-size:11px;color:#64748B">Data</th><th style="text-align:right;font-size:11px;color:#64748B">Records</th></tr>' + rowsH + '</table>' +
+        '<button type="button" class="btn" style="background:linear-gradient(135deg,#DC2626,#991B1B);color:#fff;margin:0 0 8px" onclick="bkRestoreFromId(\'' + id + '\')">♻️ इसे Restore करो</button>' +
+        '<button type="button" class="btn" style="background:#EEF2FF;color:#4338CA;margin:0 0 8px" onclick="bkDownloadId(\'' + id + '\',this)">📥 File डाउनलोड</button>' +
+        (id === '__legacy' ? '' : '<button type="button" class="btn" style="background:#FEE2E2;color:#991B1B;margin:0" onclick="bkDeleteId(\'' + id + '\')">🗑️ Backup हटाओ</button>');
+    } catch (e) { bodyEl.innerHTML = '<div style="color:#B91C1C;font-weight:800;padding:18px 4px">❌ ' + he((e && e.message) || e) + '</div><button type="button" class="hs-back" onclick="openBackupCenter()">← वापस</button>'; }
+  };
+  window.bkDownloadId = async function (id, el) {
+    bkBusyBtn(el, '⏳ …');
+    try { const l = id === '__legacy' ? await bkLoadLegacy() : await bkLoad(id); bkDownloadFile(bkFileObject(l.meta, l.data)); }
+    catch (e) { alert('❌ ' + ((e && e.message) || e)); }
+    bkFree(el);
+  };
+  window.bkDeleteId = async function (id) {
+    if (!confirm('इस backup को हमेशा के लिए हटाना है?')) return;
+    try { await bkDelete(id); await window.openBackupCenter(); } catch (e) { alert('❌ ' + ((e && e.message) || e)); }
+  };
+  window.bkRestoreFromId = async function (id) {
+    try { const l = id === '__legacy' ? await bkLoadLegacy() : await bkLoad(id); bkRestorePanel(l, id); } catch (e) { alert('❌ ' + ((e && e.message) || e)); }
+  };
+  let bkPending = null;
+  async function bkRestorePanel(loaded, src) {
+    bkPending = loaded;
+    openPanel('♻️ Restore — पुष्टि', '<div style="text-align:center;padding:30px 0;color:#64748B;font-weight:700">⏳ अभी के data से तुलना हो रही है…</div>');
+    cur.cfg.kind = 'bkrestore';
+    let curCounts = {};
+    try { curCounts = bkCounts(await bkSnapshot()); } catch (e) { curCounts = bkLiveCounts(); }
+    const bc = bkCounts(loaded.data);
+    const keys = Array.from(new Set(Object.keys(curCounts).concat(Object.keys(bc)))).sort();
+    let diff = 0;
+    const rowsH = keys.map((k) => { const a = curCounts[k] || 0, b = bc[k] || 0; const d = a !== b; if (d) diff++; return '<tr style="' + (d ? 'background:#FFFBEB' : '') + '"><td style="padding:6px 4px;font-size:12.5px;border-top:1px solid #EEF2F7">' + he(bkLabel(k)) + '</td><td style="padding:6px 4px;text-align:right;border-top:1px solid #EEF2F7">' + a.toLocaleString('en-IN') + '</td><td style="padding:6px 4px;text-align:right;font-weight:800;border-top:1px solid #EEF2F7">' + b.toLocaleString('en-IN') + '</td><td style="padding:6px 4px;text-align:right;font-size:11.5px;font-weight:800;color:' + (b > a ? '#166534' : '#B91C1C') + ';border-top:1px solid #EEF2F7">' + (d ? (b > a ? '+' : '−') + Math.abs(b - a).toLocaleString('en-IN') : '=') + '</td></tr>'; }).join('');
+    const bad = loaded.verified === false;
+    bodyEl.innerHTML =
+      '<button type="button" class="hs-back" onclick="' + (src === 'file' ? 'openBackupCenter()' : 'bkDetails(\'' + src + '\')') + '" style="margin-bottom:10px">← वापस</button>' +
+      (bad ? '<div style="background:#FEE2E2;color:#991B1B;border-radius:12px;padding:10px 12px;font-weight:800;font-size:12.5px;margin-bottom:10px">✖ इस backup की integrity जाँच fail हुई — data बदला/खराब हो सकता है. सोच-समझकर आगे बढ़ो.</div>' : '') +
+      '<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:12px;margin-bottom:10px;font-size:12.5px;color:#475569;line-height:1.6">Backup: <b>' + bkFmtDT(loaded.meta.ts) + '</b> (' + bkTypeInfo[loaded.meta.type || 'manual'][0] + ')<br>' + (diff ? '<b style="color:#B45309">' + diff + ' जगह फ़र्क है</b> — नीचे देखो' : 'अभी का data और backup बराबर हैं') + '</div>' +
+      '<table style="width:100%;border-collapse:collapse;margin-bottom:12px"><tr><th style="text-align:left;font-size:11px;color:#64748B">Data</th><th style="text-align:right;font-size:11px;color:#64748B">अभी</th><th style="text-align:right;font-size:11px;color:#64748B">Backup</th><th></th></tr>' + rowsH + '</table>' +
+      '<div style="background:#ECFDF5;color:#166534;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:700;margin-bottom:12px;line-height:1.5">🛟 Restore से पहले अभी का पूरा data अपने आप "Safety" backup में सुरक्षित हो जाएगा — गलती हो तो उसे वापस restore कर सकते हो. (PIN settings नहीं बदलतीं)</div>' +
+      '<button type="button" class="btn" id="bkGoBtn" style="background:linear-gradient(135deg,#DC2626,#991B1B);color:#fff;margin:0 0 8px" onclick="bkConfirmRestore(this)">♻️ हाँ, Restore करो</button>' +
+      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin:0" onclick="closeByUserFn()">Cancel</button>';
+  }
+  window.bkConfirmRestore = async function (el) {
+    if (!bkPending) return;
+    if (!confirm('⚠️ अभी का data backup के data से बदल जाएगा. पक्का आगे बढ़ें?')) return;
+    bkBusyBtn(el, '⏳ Safety backup + restore हो रहा है… (app बंद मत करो)');
+    try { await bkRestore(bkPending.data); alert('✅ Restore पूरा हुआ. App दोबारा खुलेगा.'); location.reload(); }
+    catch (e) { bkFree(el); alert('❌ Restore नहीं हो पाया: ' + ((e && e.message) || e) + '\nआपका पुराना data सुरक्षित है.'); }
   };
 
   /* "⋯" menus (site / kaarigar) */
