@@ -1,4 +1,4 @@
-<html lang="hi" style=""><head><style>
+<html lang="hi"><head><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -1310,6 +1310,13 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- SITES (merged from the old Site tab) -->
+    <div id="quickFixBar" style="background:#FEF3C7; border:2px solid #F59E0B; border-radius:12px; padding:10px 12px; margin:10px 0; display:flex; gap:8px; align-items:center; justify-content:space-between;">
+      <div style="font-size:11px; font-weight:800; color:#92400E;">Calculation bada dikhe to:</div>
+      <div style="display:flex; gap:6px;">
+        <button id="dashClearCache" type="button" style="background:#DC2626; color:white; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🗑️ Clear Cache</button>
+        <button id="dashRecalc" type="button" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 Fix</button>
+      </div>
+    </div>
     <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 45ms;">
       <div class="ds-head">
         <div>
@@ -2219,7 +2226,7 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Site selector - NO Backup/Restore buttons now, synced with main backup -->
     <div class="bill-card">
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <select id="billSiteSelect" class="bill-input" style="flex:1; min-width:180px; font-weight:800;" onchange="billSwitchSite(this.value)"><option value="bill_1793637082896" selected="">96/97 (Pankaj Gupta)</option></select>
+        <select id="billSiteSelect" class="bill-input" style="flex:1; min-width:180px; font-weight:800;" onchange="billSwitchSite(this.value)"><option value="bill_1793637760243" selected="">96/97 (Pankaj Gupta)</option></select>
         <button class="bill-btn-sm" style="background:#D4A94E; color:#1a1405; padding:11px 16px; border-radius:12px;" onclick="billOpenNewSite()">+ New Site</button>
       </div>
       <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
@@ -9183,27 +9190,89 @@ if (document.readyState === "loading") {
     return { labours: n(labs), entries: n(ents), withdrawals: n(withdrawals), sites: n(sites), sitePayments: n(sitePays), siteCosts: n(siteCosts), expenses: n(expenses), bijliBills: n(bijliBills), agreements: n(agreements) };
   }
   
+
   window.clearOfflineCacheAndFix = function() {
-    if (!confirm("⚠️ Ye aapke phone ka purana cache clear karega jo calculation ko bada kar raha hai.\n\nFirebase ka asli data safe rahega, sirf local cache clear hoga.\n\nContinue?")) return;
+    console.log("Clear cache clicked");
+    if (!confirm("⚠️ Phone ka purana cache clear karna hai?\n\nFirebase ka asli data SAFE rahega, sirf local cache clear hoga jo calculation ko bada kar raha hai.\n\nContinue?")) return;
     try {
-      const keys = [];
-      for (let i=0;i<localStorage.length;i++) { const k=localStorage.key(i); if(k && (k.indexOf('sm_cache_')===0 || k.indexOf('sm_outbox_')===0 || k.indexOf('shukla_')===0)) keys.push(k); }
-      // Keep important backups and billing
-      keys.forEach(k => {
-        if (k.indexOf('sm_cache_v2:')===0 || k.indexOf('sm_outbox_v2')===0) localStorage.removeItem(k);
+      // Remove ALL sm cache versions
+      const toRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k) continue;
+        if (k.indexOf('sm_cache_') === 0 || k.indexOf('sm_outbox_') === 0) toRemove.push(k);
+      }
+      toRemove.forEach(k => {
+        try { localStorage.removeItem(k); console.log("Removed", k); } catch(e){}
       });
-      // Clear index caches
-      _smIdx = null; _smSiteIdx = null;
-      alert("✅ Cache clear ho gaya! App reload ho raha hai, ab calculation sahi dikhegi.");
-      location.reload();
-    } catch(e) { alert("Error: "+e.message); }
+      _smIdx = null; 
+      try { _smSiteIdx = null; } catch(e){}
+      localStorage.removeItem('shukla_marble_billing');
+      alert("✅ Cache clear ho gaya! Ab app reload hoga aur calculation sahi dikhegi.");
+      setTimeout(() => location.reload(), 500);
+    } catch(e) { alert("Error: " + e.message); console.error(e); }
   };
   window.forceRecalculate = function() {
-    _smIdx = null; _smSiteIdx = null;
-    renderAll();
-    alert("✅ Recalculate ho gaya! Ab sahi calculation dikh rahi hai.");
+    console.log("Force recalc clicked");
+    try {
+      _smIdx = null;
+      try { _smSiteIdx = null; } catch(e){}
+      // Force reload data from Firebase by clearing in-memory caches
+      if (typeof renderAll === 'function') renderAll();
+      if (typeof renderDash === 'function') {
+        // Trigger re-render via smRenderSoon if exists
+        try { _smRT = null; } catch(e){}
+      }
+      alert("✅ Recalculate ho gaya! Dashboard check karo - ab sahi amount dikhna chahiye.\n\nAgar fir bhi bada dikhe to Cache Clear wala button dabao.");
+    } catch(e) { alert("Error: "+e.message); }
   };
 
+  window.bindFixButtons = function() {
+    setTimeout(() => {
+      const b1 = document.getElementById('btnClearCacheFix');
+      const b2 = document.getElementById('btnForceRecalc');
+      if (b1) {
+        b1.onclick = function(e) { e.preventDefault(); e.stopPropagation(); window.clearOfflineCacheAndFix(); };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      const d1 = document.getElementById('dashClearCache');
+      const d2 = document.getElementById('dashRecalc');
+      if (d1) { d1.onclick = window.clearOfflineCacheAndFix; console.log('Dash clear bound'); }
+      if (d2) { d2.onclick = window.forceRecalculate; console.log('Dash recalc bound'); }
+    }, 800);
+  });
+  // Also bind after every renderAll
+  const _origRenderAll = window.renderAll || renderAll;
+  // Wrap renderAll to rebind
+  if (typeof renderAll === 'function') {
+    const __origRenderAllForFix = renderAll;
+    window.renderAll = function() {
+      __origRenderAllForFix.apply(this, arguments);
+      setTimeout(() => {
+        const d1 = document.getElementById('dashClearCache');
+        const d2 = document.getElementById('dashRecalc');
+        if (d1 && !d1._bound) { d1.onclick = window.clearOfflineCacheAndFix; d1._bound = true; }
+        if (d2 && !d2._bound) { d2.onclick = window.forceRecalculate; d2._bound = true; }
+      }, 100);
+    };
+  }
+
+        b1.addEventListener('touchend', function(e) { e.preventDefault(); window.clearOfflineCacheAndFix(); }, {passive:false});
+        console.log('Clear button bound');
+      }
+      if (b2) {
+        b2.onclick = function(e) { e.preventDefault(); e.stopPropagation(); window.forceRecalculate(); };
+        b2.addEventListener('touchend', function(e) { e.preventDefault(); window.forceRecalculate(); }, {passive:false});
+        console.log('Recalc button bound');
+      }
+      // Also bind dashboard fix buttons if present
+      const db1 = document.getElementById('dashClearCache');
+      const db2 = document.getElementById('dashRecalc');
+      if (db1) db1.onclick = window.clearOfflineCacheAndFix;
+      if (db2) db2.onclick = window.forceRecalculate;
+    }, 200);
+  };
 
   window.openBackupCenter = async function () {
     openPanel('💾 Backup Center', '<div style="text-align:center;padding:30px 0;color:#64748B;font-weight:700">⏳ लोड हो रहा है…</div>');
@@ -9228,8 +9297,7 @@ if (document.readyState === "loading") {
     lines.push('<div style="font-size:12px;color:#64748B;margin-top:6px">अभी का data: ' + he(bkCountLine(bkLiveCounts())) + '</div>');
     let pend = 0; try { pend = (typeof smOutbox !== 'undefined' && smOutbox) ? smOutbox.length : 0; } catch (e) {}
     if (pend) lines.push('<div style="font-size:12px;color:#B45309;font-weight:700;margin-top:6px">⏳ ' + pend + ' बदलाव अभी cloud पर sync नहीं हुए</div>');
-        lines.push('<div style="background:#FEF3C7; border:1.5px solid #FCD34D; border-radius:12px; padding:12px; margin-top:12px;"><div style="font-weight:900; font-size:12px; color:#92400E; margin-bottom:8px;">🔧 Data Fix - Agar calculation apne aap badh raha hai:</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><button type="button" class="btn" style="background:#DC2626; color:white; margin:0; font-size:11px; padding:10px;" onclick="clearOfflineCacheAndFix()">🗑️ Cache Clear & Fix</button><button type="button" class="btn" style="background:#0F172A; color:#FDE68A; margin:0; font-size:11px; padding:10px;" onclick="forceRecalculate()">🔄 Recalculate</button></div><div style="font-size:10px; color:#92400E; margin-top:6px;">Ye Firebase ka data delete nahi karta, sirf phone ka purana cache clear karta hai jo calculation ko bada kar deta hai.</div></div>');
-    const tot = list.reduce((a, b) => a + (b.bytes || 0), 0);
+        const tot = list.reduce((a, b) => a + (b.bytes || 0), 0);
     lines.push('<div style="font-size:12px;color:#94A3B8;margin-top:6px">' + list.length + ' backups सुरक्षित • ' + bkKB(tot) + ' • Auto: आखिरी 15 रखे जाते हैं</div>');
     const btn = (bg, col, fn, label) => '<button type="button" class="btn" style="background:' + bg + ';color:' + col + ';margin:0;font-size:13px;padding:12px 8px" onclick="' + fn + '">' + label + '</button>';
     let rows = list.map((b) => '<div class="bk-row" onclick="bkDetails(\'' + b.id + '\')"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' + bkTag(b.type) + '<b style="font-size:13px;color:#0F172A">' + bkFmtDT(b.ts) + '</b></div><div style="font-size:11.5px;color:#64748B;margin-top:6px;line-height:1.5">' + he(bkCountLine(b.counts)) + '</div><div style="font-size:11px;color:#94A3B8;margin-top:4px">' + bkKB(b.rawBytes || b.bytes || 0) + (b.device ? ' • ' + he(b.device) : '') + (b.note ? ' • ' + he(b.note) : '') + '</div></div>').join('');
@@ -9418,7 +9486,7 @@ if (document.readyState === "loading") {
     show();
   };
 })();
-</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
+</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
 
 <script>
 /* ===== AUTO-FIT PACK: har phone ki screen ke hisab se numbers apne aap fit ho jayein ===== */
