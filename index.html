@@ -2312,13 +2312,12 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="billSubTab-rates" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName"></b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"></div></div></div>
     <div id="billSubTab-adv" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color:#FBBF24; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color:#F87171; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div></div></div></div>
-    <div id="billSubTab-print" style="display:none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share</button></div>
-    <div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight:900; font-size:12px;">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
+    <div id="billSubTab-print" style="display:none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900; border-radius:12px;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share (A4 Print)</button></div><div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight:900; font-size:12px;">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
 
     <div id="billNewSiteModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
       <div style="background:white; border-radius:22px; padding:22px; width:100%; max-width:380px;">
         <h3 style="margin:0 0 14px 0; font-weight:900; font-size:18px;">🏗️ New Site</h3>
-        <input id="billNewSiteName" class="bill-input" placeholder="Site Name e.g. House No, Project" style="margin-bottom:10px;">
+        <input id="billNewSiteName" class="bill-input" placeholder="Site Name e.g. 96/97" style="margin-bottom:10px;">
         <input id="billNewSiteClient" class="bill-input" placeholder="Client Name" style="margin-bottom:10px;">
         <input id="billNewSiteAddr" class="bill-input" placeholder="Address (Optional)" style="margin-bottom:10px;">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
@@ -2330,7 +2329,7 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <script>
-  const BILL_DEFAULT_RATES = {}; // No hardcoded rates - user will add via Rate Card
+  const BILL_DEFAULT_RATES = {};
   let billEditingItemId = null;
   let billSites = {};
   let billCurrentId = null;
@@ -2353,10 +2352,8 @@ img, canvas, svg, video { max-width: 100%; }
       }
     }catch(e){}
     if(!billCurrentId || !billSites[billCurrentId]){
-      // No default site - user must create new site
       if(Object.keys(billSites).length===0){
         billCurrentId=null;
-        // Don't auto-create 96/97 site anymore
       } else {
         billCurrentId=Object.keys(billSites)[0];
       }
@@ -2369,7 +2366,7 @@ img, canvas, svg, video { max-width: 100%; }
 
   function billEnsureRates(){
     const site=billGetCurrent(); if(!site) return;
-    if(!site.rates) { site.rates={}; billSaveLocal(); } // Don't auto-fill hardcoded rates
+    if(!site.rates) { site.rates={}; billSaveLocal(); }
   }
 
   function billListenFirebase(){
@@ -2557,7 +2554,6 @@ img, canvas, svg, video { max-width: 100%; }
     let dimText=dimTexts.join(' + ');
     if(dimTexts.length>1 && mult!==1) dimText='('+dimText+') X '+mult+' Nos';
     else if(mult!==1) dimText=dimText+' X '+mult+' Nos';
-    // If editing, update existing item
     if(billEditingItemId){
       const existing = site.items.find(i=>i.id===billEditingItemId);
       if(existing){
@@ -2614,36 +2610,25 @@ img, canvas, svg, video { max-width: 100%; }
   function billEditItem(id){
     const site=billGetCurrent(); if(!site) return;
     const it=site.items.find(i=>i.id===id); if(!it) return;
-    // Load into edit mode
     billEditingItemId = id;
-    // Populate form fields
     const secEl=document.getElementById('billSec'); if(secEl) secEl.value=it.section||'General';
     const subEl=document.getElementById('billSubHead'); if(subEl) subEl.value=it.subHeading||'Main Work';
     const subSubEl=document.getElementById('billSubSub'); if(subSubEl) subSubEl.value=it.subSubHeading||'';
     const nameEl=document.getElementById('billItemName'); if(nameEl) nameEl.value=it.item||'';
     const catEl=document.getElementById('billCategory'); if(catEl) catEl.value=it.category||'General';
-    const unitEl=document.getElementById('billUnit'); if(unitEl) { unitEl.value=it.unitType||'sqft'; }
+    const unitEl=document.getElementById('billUnit'); if(unitEl) unitEl.value=it.unitType||'sqft';
     const multEl=document.getElementById('billMultiplier'); if(multEl) multEl.value=it.multiplier||'1';
-    // Restore dimension rows - use stored dimRows if available, else try to parse
     if(it.dimRows && Array.isArray(it.dimRows) && it.dimRows.length>0){
       billDimRows = JSON.parse(JSON.stringify(it.dimRows));
     } else {
-      // Fallback: create one row from qty if possible
-      billDimRows = [{ lFt:'', lIn:'', wFt:'', wIn:'' }];
-      // Try to keep qty visible
+      billDimRows = [{lFt:'',lIn:'',wFt:'',wIn:''}];
     }
     billRenderDimRows();
-    // Change button text
     const addBtn = document.querySelector('[onclick="billAddEntry()"]');
     if(addBtn) { addBtn.innerText='✏️ Update Entry'; addBtn.style.background='#4338CA'; }
-    // Show measurement tab
     billShowSubTab('meas');
     window.scrollTo({top:0, behavior:'smooth'});
-    // Highlight editing
-    const msg = document.getElementById('billCalcPreview');
-    if(msg) msg.innerText = '✏️ Editing: ' + it.item + ' - Change dimensions and click Update';
   }
-  
   function billCancelEdit(){
     billEditingItemId = null;
     billDimRows=[{lFt:'',lIn:'',wFt:'',wIn:''}];
@@ -2663,109 +2648,284 @@ img, canvas, svg, video { max-width: 100%; }
   function billDelAdv(id){ if(!confirm('Delete advance?')) return; const site=billGetCurrent(); site.advancePayments=(site.advancePayments||[]).filter(p=>p.id!==id); billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billRenderStats(){ const site=billGetCurrent(); if(!site) return; let sq=0, rft=0, cost=0; (site.items||[]).forEach(it=>{ const rate=site.rates[it.category]||0; cost+=it.qty*rate; if(it.unitType==='sqft') sq+=it.qty; else rft+=it.qty; }); const adv=(site.advancePayments||[]).reduce((s,p)=>s+(parseFloat(p.amount)||0),0); const el1=document.getElementById('billTotSqft'); if(el1) el1.innerText=sq.toFixed(2)+' Sqft'; const el2=document.getElementById('billTotRft'); if(el2) el2.innerText=rft.toFixed(2)+' RFT'; const el3=document.getElementById('billTotCost'); if(el3) el3.innerText='₹'+cost.toLocaleString('en-IN'); const el4=document.getElementById('billBalDue'); if(el4) el4.innerText='₹'+(cost-adv).toLocaleString('en-IN'); }
   
+  function billRenderPrint(){
+    const site=billGetCurrent(); 
+    if(!site){
+      const area=document.getElementById('billPrintArea'); 
+      if(area) area.innerHTML='<div style="text-align:center; padding:40px; color:#94A3B8;">No site selected. Create new site.</div>';
+      return;
+    }
+    const showAdv=document.getElementById('billShowAdv')?.checked;
+    let cost=0; const grouped={}; (site.items||[]).forEach(it=>{ const sec=it.section||'General'; const sub=it.subHeading||'Main'; if(!grouped[sec]) grouped[sec]={}; if(!grouped[sec][sub]) grouped[sec][sub]=[]; grouped[sec][sub].push(it); const rate=site.rates[it.category]||0; cost+=it.qty*rate; });
+    const adv=site.advancePayments||[]; const totalAdv=adv.reduce((s,p)=>s+(parseFloat(p.amount)||0),0);
+    const billNo = 'SM-'+(site.createdDate||'').replace(/-/g,'')+'-'+String(Date.now()).slice(-4);
+    const dt = new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
+    
+    let html = `
+    <style>
+      .a4-sheet { width:100%; max-width:800px; margin:0 auto; background:white; padding:12px; box-sizing:border-box; font-family:'Plus Jakarta Sans', sans-serif; color:#15171C; border:1.5px solid #E2E8F0; border-radius:12px; }
+      .a4-header-gold { height:3px; background:linear-gradient(90deg, #AD832E, #D4A94E, #AD832E); border-radius:2px; margin-bottom:8px; }
+      .a4-title { text-align:center; }
+      .a4-title h1 { margin:0; font-size:20px; font-weight:900; color:#0F172A; }
+      .a4-title .sub { margin:3px 0 0 0; font-size:9px; font-weight:700; color:#AD832E; letter-spacing:1px; text-transform:uppercase; }
+      .a4-title .gold-line { width:60px; height:2px; background:#AD832E; margin:6px auto; border-radius:1px; }
+      .a4-info-box { display:grid; grid-template-columns:1fr 1fr; gap:0; background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:10px; padding:10px; margin-top:10px; font-size:11px; }
+      .a4-info-col { display:grid; gap:4px; }
+      .a4-info-col.right { border-left:1px solid #E2E8F0; padding-left:10px; }
+      .a4-info-row { display:flex; gap:6px; }
+      .a4-info-row b { min-width:55px; color:#64748B; font-weight:800; font-size:10px; }
+      .a4-info-row span { color:#0F172A; font-weight:700; }
+      .a4-section { border:1.5px solid #0F172A; border-radius:10px; overflow:hidden; margin-top:12px; }
+      .a4-main-head { background:#0F172A; color:#D4A94E; padding:8px 12px; font-weight:900; font-size:11px; display:flex; justify-content:space-between; }
+      .a4-sub-head { background:#FEF3C7; border-bottom:1px solid #FCD34D; padding:6px 12px; font-weight:800; font-size:11px; color:#92400E; display:flex; justify-content:space-between; }
+      .a4-table { width:100%; border-collapse:collapse; font-size:10px; }
+      .a4-table th { background:#0F172A; color:white; padding:8px 6px; font-weight:800; text-align:left; font-size:9px; }
+      .a4-table th.right { text-align:right; }
+      .a4-table td { padding:6px; border-bottom:1px solid #F1F5F9; vertical-align:top; }
+      .a4-table td.right { text-align:right; }
+      .a4-table tr:nth-child(even) { background:#F9FAFB; }
+      .a4-subtotal { background:#F0FDF4; padding:6px 12px; font-weight:800; font-size:11px; display:flex; justify-content:space-between; color:#166534; border-top:1px solid #BBF7D0; }
+      .a4-grand { background:#0F172A; color:white; padding:14px; border-radius:10px; margin-top:14px; }
+      .a4-grand .row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; }
+      .a4-grand .row.gold { color:#FBBF24; }
+      .a4-grand .row.green { color:#4ADE80; font-size:14px; font-weight:900; border-top:1.5px solid #334155; padding-top:8px; margin-top:6px; }
+      @media print { @page { size:A4; margin:10mm; } .a4-sheet { border:none; box-shadow:none; } .no-print { display:none !important; } }
+    </style>
+    <div class="a4-sheet" id="a4Sheet">
+      <div class="a4-header-gold"></div>
+      <div class="a4-title">
+        <h1>SHUKLA MARBLE CONTRACTOR</h1>
+        <div class="sub">PREMIUM MARBLE, GRANITE & TILE FITTING WORK</div>
+        <div class="gold-line"></div>
+      </div>
+      <div class="a4-info-box">
+        <div class="a4-info-col">
+          <div class="a4-info-row"><b>SITE:</b><span>`+(site.name||'N/A')+`</span></div>
+          <div class="a4-info-row"><b>CLIENT:</b><span>`+(site.client||'N/A')+`</span></div>
+          <div class="a4-info-row"><b>ADDRESS:</b><span>`+((site.address||'N/A').slice(0,60))+`</span></div>
+        </div>
+        <div class="a4-info-col right">
+          <div class="a4-info-row"><b>DATE:</b><span>`+(site.createdDate||new Date().toISOString().split('T')[0])+`</span></div>
+          <div class="a4-info-row"><b>BILL NO:</b><span>`+billNo+`</span></div>
+          <div class="a4-info-row"><b>TOTAL:</b><span style="color:#16A34A; font-weight:900;">Rs.`+cost.toLocaleString('en-IN')+`</span></div>
+        </div>
+      </div>
+    `;
+    
+    if(Object.keys(grouped).length===0){
+      html+=`<div style="text-align:center; padding:30px; color:#94A3B8; background:#F8FAFC; border-radius:10px; margin-top:12px; border:1.5px dashed #E2E8F0;">No items yet. Add items from Measurement tab.</div>`;
+    } else {
+      Object.keys(grouped).sort().forEach(sec=>{
+        const secCost=Object.values(grouped[sec]).flat().reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
+        html+=`<div class="a4-section"><div class="a4-main-head"><span>MAIN SECTION: `+sec.toUpperCase()+`</span><span>Rs.`+secCost.toLocaleString('en-IN')+`</span></div>`;
+        Object.keys(grouped[sec]).sort().forEach(sub=>{
+          const subItems=grouped[sec][sub];
+          const subCost=subItems.reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
+          html+=`<div class="a4-sub-head"><span>Sub-Heading: `+sub+`</span><span>Rs.`+subCost.toLocaleString('en-IN')+`</span></div>`;
+          html+=`<table class="a4-table"><tr><th>Sub-Sub</th><th>Item</th><th>Dimensions</th><th class="right">Qty</th><th class="right">Rate</th><th class="right">Total</th></tr>`;
+          let lastSub='';
+          subItems.forEach(it=>{
+            const rate=site.rates[it.category]||0;
+            const tot=it.qty*rate;
+            let subSub=(it.subSubHeading||'').trim();
+            if(subSub===lastSub) subSub=''; else lastSub=(it.subSubHeading||'').trim();
+            html+=`<tr><td>`+subSub+`</td><td><b>`+(it.category||it.item)+`</b><br><span style="font-size:9px; color:#64748B;">`+it.item+`</span></td><td style="font-family:monospace; font-size:9px;">`+(it.dimText||'')+`</td><td class="right">`+it.qty.toFixed(2)+` `+(it.unitType==='sqft'?'Sq Ft':'RFT')+`</td><td class="right">`+rate+`</td><td class="right" style="font-weight:900; color:#16A34A;">Rs.`+tot.toLocaleString('en-IN')+`</td></tr>`;
+          });
+          html+=`</table><div class="a4-subtotal"><span>Sub-Total for "`+sub+`":</span><span>Rs.`+subCost.toLocaleString('en-IN')+`</span></div>`;
+        });
+        html+=`</div>`;
+      });
+    }
+    
+    html+=`<div class="a4-grand"><div class="row"><span>GRAND TOTAL:</span><span>Rs.`+cost.toLocaleString('en-IN')+`</span></div><div class="row gold"><span>Total Advance:</span><span>Rs.`+totalAdv.toLocaleString('en-IN')+`</span></div><div class="row green"><span>BALANCE DUE:</span><span>Rs.`+(cost-totalAdv).toLocaleString('en-IN')+`</span></div></div>`;
+    
+    if(showAdv && adv.length>0){
+      html+=`<div style="border:1.5px solid #E2E8F0; border-radius:10px; padding:12px; margin-top:12px; background:#F8FAFC;"><b style="font-size:11px;">Advance History</b><table class="a4-table" style="margin-top:8px;"><tr><th>Date</th><th>Note</th><th class="right">Amount</th></tr>`+adv.map(p=>`<tr><td>`+p.date+`</td><td>`+p.note+`</td><td class="right" style="font-weight:800;">Rs.`+p.amount.toLocaleString('en-IN')+`</td></tr>`).join('')+`</table></div>`;
+    }
+    
+    html+=`<div style="display:flex; justify-content:space-between; font-size:9px; color:#94A3B8; margin-top:12px; border-top:1px solid #E2E8F0; padding-top:8px;"><span>https://anubhav1211.github.io/shuklacalc/</span><span>`+dt+`</span><span>Thank you!</span></div></div>`;
+    
+    const area=document.getElementById('billPrintArea'); if(area) area.innerHTML=html;
+  }
+
+
 
   function billUpdatePrintScale(val){ const txt=document.getElementById('billScaleTxt'); if(txt) txt.innerText=val+'%'; const area=document.getElementById('billPrintArea'); if(area) area.style.zoom=val+'%'; }
   function billSwitchSite(id){ billCurrentId=id; billSaveLocal(); billRenderAll(); }
   function billOpenNewSite(){ const m=document.getElementById('billNewSiteModal'); if(m) m.style.display='flex'; }
-  function billCreateSite(){ const name=document.getElementById('billNewSiteName')?.value.trim()||''; const client=document.getElementById('billNewSiteClient')?.value.trim()||''; const addr=document.getElementById('billNewSiteAddr')?.value.trim()||''; if(!name){ alert('Site name dalo'); return; } const id='bill_'+Date.now(); const site={ id, name, client, address:addr, createdDate:new Date().toISOString().split('T')[0], rates:{}, advancePayments:[], items:[] }; billSites[id]=site; billCurrentId=id; const modal=document.getElementById('billNewSiteModal'); if(modal) modal.style.display='none'; const n1=document.getElementById('billNewSiteName'); const n2=document.getElementById('billNewSiteClient'); const n3=document.getElementById('billNewSiteAddr'); if(n1) n1.value=''; if(n2) n2.value=''; if(n3) n3.value=''; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
+  function billCreateSite(){ const name=document.getElementById('billNewSiteName')?.value.trim()||''; const client=document.getElementById('billNewSiteClient')?.value.trim()||'Client'; const addr=document.getElementById('billNewSiteAddr')?.value.trim()||''; if(!name){ alert('Site name dalo'); return; } const id='bill_'+Date.now(); const site={ id, name, client, address:addr, createdDate:new Date().toISOString().split('T')[0], rates:{}, advancePayments:[], items:[] }; billSites[id]=site; billCurrentId=id; const modal=document.getElementById('billNewSiteModal'); if(modal) modal.style.display='none'; const n1=document.getElementById('billNewSiteName'); const n2=document.getElementById('billNewSiteClient'); const n3=document.getElementById('billNewSiteAddr'); if(n1) n1.value=''; if(n2) n2.value=''; if(n3) n3.value=''; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billDeleteSite(){ if(Object.keys(billSites).length<=1){ alert('Last site delete nahi kar sakte'); return; } const cur=billGetCurrent(); if(!cur) return; if(!confirm('Delete site '+cur.name+'?')) return; const id=billCurrentId; delete billSites[id]; billDeleteFromFirebase(id); billCurrentId=Object.keys(billSites)[0]; billSaveLocal(); billRenderAll(); }
   function billUpdateClient(){ const site=billGetCurrent(); if(!site) return; const el=document.getElementById('billClientName'); if(el) site.client=el.value; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billUpdateSiteName(){ const site=billGetCurrent(); if(!site) return; const el=document.getElementById('billSiteNameInput'); if(el) site.name=el.value; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   
   
-  
-  
-
-
-  
-
-
-  
-
-
-  
-
-
-  
   function billShareWhatsApp(){ billGenerateAndSharePDF(); }
-  
   async function billGenerateAndSharePDF(){
     const site=billGetCurrent(); 
-    if(!site || !site.items || site.items.length===0){ alert('Bill me item nahi hai'); return; }
+    if(!site || !site.items || site.items.length===0){ alert('Bill me item nahi hai, pehle Measurement tab se items add karo'); return; }
     const btn=document.getElementById('billPdfBtn');
     const status=document.getElementById('billPdfStatus');
+    const orig='📄 PDF - Download & WhatsApp Share (A4 Print)';
     try{
       if(btn){ btn.innerText='⏳ A4 PDF Bana Rahe Hain...'; btn.disabled=true; btn.style.background='#F59E0B'; }
-      if(status){ status.style.display='block'; status.innerHTML='⏳ A4 size PDF bana rahe hain...<br>UI jaisa hi print hoga'; }
-      
+      if(status){ status.style.display='block'; status.innerHTML='⏳ A4 size PDF bana rahe hain...<br>UI jaisa hi print hoga'; status.style.background='#FEF3C7'; }
       let total=0; site.items.forEach(it=> total+=it.qty*(site.rates[it.category]||0));
-      const fileName = (site.name||'Bill').replace(/[^a-zA-Z0-9]/g,'_')+'_A4.pdf';
+      const adv=(site.advancePayments||[]).reduce((s,p)=>s+(parseFloat(p.amount)||0),0);
+      const bal=total-adv;
+      const fileName = (site.name||'Bill').replace(/[^a-zA-Z0-9]/g,'_')+'_A4_Bill.pdf';
       
-      // Ensure billRenderPrint has rendered A4 sheet
-      billRenderPrint();
-      await new Promise(r=>setTimeout(r,300));
-      
-      const a4Sheet = document.getElementById('a4Sheet');
-      if(!a4Sheet){ alert('Print area not found'); return; }
-      
-      if(status) status.innerHTML='📸 A4 page ka screenshot le rahe hain...';
-      
-      // Use html2canvas to capture A4 sheet exactly as UI
-      const canvas = await window.html2canvas(a4Sheet, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        width: a4Sheet.offsetWidth,
-        height: a4Sheet.offsetHeight,
-        windowWidth: 794, // A4 width in px at 96dpi ~ 794
-      });
-      
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      // Text-based reliable PDF with premium header matching A4 UI
       const doc = getJsPdfInstance('p','mm','a4');
-      const pdfW = doc.internal.pageSize.getWidth();
-      const pdfH = doc.internal.pageSize.getHeight();
-      
-      // Calculate image dimensions to fit A4 with margins 0 (since our HTML already has margins)
-      const imgW = pdfW;
-      const imgH = (canvas.height * pdfW) / canvas.width;
-      
-      let heightLeft = imgH;
-      let position = 0;
-      
-      doc.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
-      heightLeft -= pdfH;
-      
-      while(heightLeft > 0){
-        position = heightLeft - imgH;
-        doc.addPage();
-        doc.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
-        heightLeft -= pdfH;
+      const W=210, H=297, M=10;
+      let y=M, pg=1;
+      function footer(){
+        doc.setFontSize(6); doc.setTextColor(130,130,130); doc.setFont('helvetica','normal');
+        const dt = new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
+        doc.text('https://anubhav1211.github.io/shuklacalc/', M, H-5);
+        doc.text(dt, W/2, H-5, {align:'center'});
+        doc.text('Page '+pg, W-M, H-5, {align:'right'});
+      }
+      function newPageIf(need){
+        if(y+need > H-18){ footer(); doc.addPage(); pg++; y=M; return true; }
+        return false;
       }
       
-      const blob = doc.output('blob');
+      // GOLD TOP BAR
+      doc.setFillColor(173,131,46); doc.rect(0,0,W,1.2,'F');
+      // TITLE CENTERED BIG
+      y+=4;
+      doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(15,23,42);
+      doc.text('SHUKLA MARBLE CONTRACTOR', W/2, y, {align:'center'}); y+=7;
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(173,131,46);
+      doc.text('PREMIUM MARBLE, GRANITE & TILE FITTING WORK', W/2, y, {align:'center'}); y+=4;
+      doc.setDrawColor(173,131,46); doc.setLineWidth(0.3); doc.line(W/2-25, y, W/2+25, y); y+=5;
+      
+      // INFO BOX DIVIDED BOTH SIDES
+      const boxH=16;
+      doc.setFillColor(248,250,252); doc.setDrawColor(226,232,240); doc.setLineWidth(0.2);
+      doc.rect(M, y, W-2*M, boxH, 'FD');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(100,100,100);
+      doc.text('SITE:', M+3, y+4); doc.text('CLIENT:', M+3, y+8); doc.text('ADDRESS:', M+3, y+12);
+      doc.setFont('helvetica','normal'); doc.setTextColor(15,23,42); doc.setFontSize(7);
+      doc.text((site.name||'N/A'), M+16, y+4);
+      doc.text((site.client||'N/A'), M+16, y+8);
+      let addr=(site.address||'N/A'); if(addr.length>45) addr=addr.slice(0,45)+'..';
+      doc.text(addr, M+16, y+12);
+      const midX=W/2;
+      doc.line(midX, y+2, midX, y+boxH-2);
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(100,100,100);
+      doc.text('DATE:', midX+4, y+4); doc.text('BILL NO:', midX+4, y+8); doc.text('TOTAL:', midX+4, y+12);
+      doc.setFont('helvetica','normal'); doc.setTextColor(15,23,42); doc.setFontSize(7);
+      doc.text((site.createdDate||new Date().toISOString().split('T')[0]), midX+18, y+4);
+      const billNo='SM-'+(site.createdDate||'').replace(/-/g,'')+'-'+String(Date.now()).slice(-4);
+      doc.text(billNo, midX+18, y+8);
+      doc.setFont('helvetica','bold'); doc.setTextColor(16,122,60); doc.text('Rs.'+total.toLocaleString('en-IN'), midX+18, y+12);
+      y+=boxH+6;
+      
+      // GROUP
+      const groups={};
+      site.items.forEach(it=>{
+        const main=(it.section||'General').trim()||'General';
+        const sub=(it.subHeading||'Main').trim()||'Main';
+        if(!groups[main]) groups[main]={};
+        if(!groups[main][sub]) groups[main][sub]=[];
+        groups[main][sub].push(it);
+      });
+      const colW=[26,30,44,24,16,30];
+      const colX=[M];
+      for(let i=1;i<colW.length;i++) colX.push(colX[i-1]+colW[i-1]);
+      const totW=colW.reduce((a,b)=>a+b,0);
+      
+      function tableHead(){
+        newPageIf(7);
+        doc.setFillColor(15,23,42); doc.rect(M, y, totW, 6, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(5.2); doc.setTextColor(255,255,255);
+        const hh=['Sub-Sub','Item Desc','Dimensions','Qty','Rate','Total (Rs)'];
+        hh.forEach((h,i)=>{
+          const x=i>=3?colX[i]+colW[i]-1:colX[i]+1;
+          doc.text(h, x, y+4, {align:i>=3?'right':'left'});
+        });
+        y+=6;
+      }
+      
+      Object.keys(groups).sort().forEach(mainSec=>{
+        const subs=groups[mainSec];
+        const mainTotal=Object.values(subs).flat().reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
+        newPageIf(10);
+        doc.setFillColor(15,23,42); doc.rect(M, y, totW, 7, 'F');
+        doc.setFillColor(173,131,46); doc.rect(M, y, 1.2, 7, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(212,169,78);
+        doc.text('MAIN SECTION: '+mainSec.toUpperCase(), M+4, y+4.5);
+        doc.setTextColor(255,255,255); doc.setFontSize(6);
+        doc.text('Rs.'+mainTotal.toLocaleString('en-IN'), M+totW-2, y+4.5, {align:'right'});
+        y+=8;
+        Object.keys(subs).sort().forEach(subHead=>{
+          const items=subs[subHead];
+          const subTotal=items.reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
+          newPageIf(7);
+          doc.setFillColor(254,243,199); doc.setDrawColor(252,211,77); doc.rect(M, y, totW, 5.5, 'FD');
+          doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(146,64,14);
+          doc.text('Sub-Heading: '+subHead, M+2, y+3.8); y+=6.5;
+          tableHead();
+          let last='';
+          items.forEach((it,idx)=>{
+            newPageIf(6);
+            const h=6;
+            if(idx%2==0){ doc.setFillColor(249,250,251); doc.rect(M,y,totW,h,'F'); }
+            doc.setDrawColor(241,245,249); doc.rect(M,y,totW,h,'S');
+            for(let i=1;i<colX.length;i++) doc.line(colX[i],y,colX[i],y+h);
+            doc.setFontSize(5.3); doc.setFont('helvetica','normal'); doc.setTextColor(0,0,0);
+            const rate=site.rates[it.category]||0; const t=it.qty*rate;
+            let ss=(it.subSubHeading||'').trim(); if(ss===last) ss=''; else last=(it.subSubHeading||'').trim();
+            function sh(s,w){ let txt=s||''; while(txt && doc.getTextWidth(txt)>w-1) txt=txt.slice(0,-1); return txt; }
+            doc.text(sh(ss,colW[0]), colX[0]+1, y+3.8);
+            doc.setFont('helvetica','bold'); doc.text(sh(it.category||it.item,colW[1]), colX[1]+1, y+3.8);
+            doc.setFont('helvetica','normal'); doc.text(sh(it.dimText||'',colW[2]), colX[2]+1, y+3.8);
+            doc.text(it.qty.toFixed(2)+' '+(it.unitType==='sqft'?'SqFt':'RFT'), colX[3]+colW[3]-1, y+3.8, {align:'right'});
+            doc.text(rate.toString(), colX[4]+colW[4]-1, y+3.8, {align:'right'});
+            doc.setFont('helvetica','bold'); doc.setTextColor(16,122,60);
+            doc.text(t.toLocaleString('en-IN',{minimumFractionDigits:2}), colX[5]+colW[5]-1, y+3.8, {align:'right'});
+            doc.setTextColor(0,0,0); y+=h;
+          });
+          newPageIf(6);
+          doc.setFillColor(240,253,244); doc.setDrawColor(187,247,208); doc.rect(M,y,totW,5.5,'FD');
+          doc.setFont('helvetica','bold'); doc.setFontSize(5.5); doc.setTextColor(22,101,52);
+          doc.text('Sub-Total "'+subHead+'":', M+2, y+3.8);
+          doc.text('Rs.'+subTotal.toLocaleString('en-IN'), M+totW-2, y+3.8, {align:'right'}); y+=7;
+        });
+        y+=1.5;
+      });
+      
+      newPageIf(20);
+      doc.setFillColor(173,131,46); doc.rect(M,y,totW,1,'F'); y+=1;
+      doc.setFillColor(15,23,42); doc.rect(M,y,totW,18,'F');
+      doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255); doc.setFontSize(7);
+      doc.text('GRAND TOTAL:', M+3, y+5); doc.text('Rs.'+total.toLocaleString('en-IN'), M+totW-3, y+5, {align:'right'});
+      doc.setFontSize(6); doc.setTextColor(253,230,138); doc.text('Total Advance:', M+3, y+10); doc.text('Rs.'+adv.toLocaleString('en-IN'), M+totW-3, y+10, {align:'right'});
+      doc.setTextColor(74,222,128); doc.setFontSize(8.5); doc.text('BALANCE DUE: Rs.'+bal.toLocaleString('en-IN'), M+3, y+15); doc.text('Rs.'+bal.toLocaleString('en-IN'), M+totW-3, y+15, {align:'right'}); y+=22;
+      doc.setFont('helvetica','italic'); doc.setFontSize(6); doc.setTextColor(100,100,100); doc.text('Thank you for your business! | Shukla Marble', W/2, y, {align:'center'});
+      footer();
+      const blob=doc.output('blob');
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a'); a.href=url; a.download=fileName; document.body.appendChild(a); a.click();
       setTimeout(()=>{ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); },1500);
-      
-      if(status) status.innerHTML='✅ A4 PDF Ready!<br>File: '+fileName+'<br>📱 WhatsApp pe share...';
-      
+      if(status){ status.innerHTML='✅ A4 PDF Ready - Same as Print<br>File: '+fileName+'<br>📱 WhatsApp pe share...'; status.style.background='#DCFCE7'; }
       setTimeout(async()=>{
         if(navigator.share && blob){
           try{
             const file=new File([blob], fileName, {type:'application/pdf'});
             if(!navigator.canShare || navigator.canShare({files:[file]})){
-              await navigator.share({files:[file], title:site.name+' Bill A4', text:'Shukla Marble - '+site.name+' | Total Rs.'+total.toLocaleString('en-IN')});
-              if(status) status.innerHTML='✅ A4 PDF WhatsApp pe share ho gaya!';
-              if(btn){ btn.innerText='✅ Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText='📄 PDF - WhatsApp Share'; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; },3000); }
+              await navigator.share({files:[file], title:site.name+' Bill', text:'Bill Total Rs.'+total.toLocaleString('en-IN')});
+              if(status) status.innerHTML='✅ WhatsApp pe PDF file share ho gaya!';
+              if(btn){ btn.innerText='✅ Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=orig; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; },3000); }
               return;
             }
-          }catch(e){ if(e.name==='AbortError'){ btn.innerText='📄 PDF - WhatsApp Share'; btn.disabled=false; btn.style.background='#15171C'; return; } }
+          }catch(e){ if(e.name==='AbortError'){ if(btn){ btn.innerText=orig; btn.disabled=false; btn.style.background='#15171C'; } return; } }
         }
-        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('A4 Bill: '+site.name+' Total Rs.'+total.toLocaleString('en-IN')), '_blank');
-        if(btn){ btn.innerText='📱 WhatsApp Opened'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText='📄 PDF - WhatsApp Share'; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; },4000); }
-      },700);
-      
-    }catch(e){ console.error(e); alert('PDF Error: '+e.message+'\n\nDirect print try kar rahe hain'); window.print(); const b=document.getElementById('billPdfBtn'); if(b){ b.innerText='📄 PDF - WhatsApp Share'; b.disabled=false; } }
+        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Bill: '+site.name+' Total Rs.'+total.toLocaleString('en-IN')+' | PDF Downloaded'), '_blank');
+        if(btn){ btn.innerText='📱 WhatsApp Opened'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=orig; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; },4000); }
+      },600);
+    }catch(e){ console.error(e); alert('PDF Error: '+e.message); const b=document.getElementById('billPdfBtn'); if(b){ b.innerText='📄 PDF - Download & WhatsApp Share (A4 Print)'; b.disabled=false; b.style.background='#15171C'; } const s=document.getElementById('billPdfStatus'); if(s) s.style.display='none'; }
   }
 
 
@@ -2933,17 +3093,16 @@ if (typeof jsPDF !== "undefined") {
 }
 function getJsPdfInstance(orientation = "p", unit = "mm", format = "a4") {
   const win = window;
-  try {
-    if (win.jspdf && win.jspdf.jsPDF) return new win.jspdf.jsPDF(orientation, unit, format);
-    if (win.jspdf && typeof win.jspdf === 'function') return new win.jspdf(orientation, unit, format);
-    if (win.jsPDF && typeof win.jsPDF === 'function') return new win.jsPDF(orientation, unit, format);
-    if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF) return new window.jspdf.jsPDF(orientation, unit, format);
-    if (typeof jsPDF !== "undefined") {
-      if (jsPDF.jsPDF) return new jsPDF.jsPDF(orientation, unit, format);
-      return new jsPDF(orientation, unit, format);
-    }
-  } catch(e){ console.error('jsPDF init error', e); }
-  throw new Error("jsPDF library not available - check CDN");
+  if (win.jspdf && win.jspdf.jsPDF) {
+    return new win.jspdf.jsPDF(orientation, unit, format);
+  }
+  if (win.jsPDF) {
+    return new win.jsPDF(orientation, unit, format);
+  }
+  if (typeof jsPDF !== "undefined") {
+    return new jsPDF(orientation, unit, format);
+  }
+  throw new Error("jsPDF library not available");
 }
 const firebaseConfig = {
   apiKey: "AIzaSyBnxbOT8-MzlcSpH4zQW1j0m9s2TyGH5mE",
