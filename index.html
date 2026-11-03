@@ -1238,7 +1238,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body class="">
+<body>
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1258,20 +1258,20 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
     <button class="tab bnav-item" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
     <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
-    <button class="tab bnav-item active" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
+    <button class="tab bnav-item" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
   </div>
 
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d" style="display: none;">
+  <div id="t-d">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -2192,7 +2192,7 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
-  <div id="t-bill" style="display: block; padding-bottom: 150px;" class="sm-page-in">
+  <div id="t-bill" style="display: none; padding-bottom: 150px;">
     <style>
       #t-bill .bill-card { background:#fff; margin:10px 12px; padding:14px; border-radius:18px; border:1.5px solid #E2E8F0; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
       #t-bill .bill-input { width:100%; min-width:0; padding:11px 12px; border:1.8px solid #E2E8F0; border-radius:12px; font-size:13px; font-weight:600; background:white; box-sizing:border-box; }
@@ -2248,21 +2248,21 @@ img, canvas, svg, video { max-width: 100%; }
       <div class="bill-stat">
         <div class="bill-stat-box" style="background:#EEF2FF; border-color:#C7D2FE; color:#4338CA;"><div style="font-size:11px; font-weight:800;">Total Area</div><div id="billTotSqft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 Sqft</div></div>
         <div class="bill-stat-box" style="background:#F5F3FF; border-color:#DDD6FE; color:#6D28D9;"><div style="font-size:11px; font-weight:800;">Running Ft</div><div id="billTotRft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 RFT</div></div>
-        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
-        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
+        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
+        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
       </div>
     </div>
 
     <div class="bill-card" style="padding:10px;">
       <div class="bill-tabs-wrap"><div class="bill-tabs">
-        <button class="bill-tab" id="billTabBtn-meas" onclick="billShowSubTab('meas')">📐 Measurement</button>
+        <button class="bill-tab active" id="billTabBtn-meas" onclick="billShowSubTab('meas')">📐 Measurement</button>
         <button class="bill-tab" id="billTabBtn-rates" onclick="billShowSubTab('rates')">💰 Rate Card</button>
         <button class="bill-tab" id="billTabBtn-adv" onclick="billShowSubTab('adv')">💵 Advance</button>
-        <button class="bill-tab active" id="billTabBtn-print" onclick="billShowSubTab('print')">📄 Print Bill</button>
+        <button class="bill-tab" id="billTabBtn-print" onclick="billShowSubTab('print')">📄 Print Bill</button>
       </div></div>
     </div>
 
-    <div id="billSubTab-meas" style="display: none;">
+    <div id="billSubTab-meas">
       <div class="bill-card">
         <h3 style="margin:0 0 12px 0; font-size:15px; font-weight:900;">+ New Entry with Headings</h3>
         <div class="head-grid" style="background:#FFFBEB; border:2px solid #FDE68A; padding:12px; border-radius:14px; margin-bottom:12px;">
@@ -2312,8 +2312,8 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="billSubTab-rates" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName"></b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"></div></div></div>
     <div id="billSubTab-adv" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color:#FBBF24; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color:#F87171; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div></div></div></div>
-    <div id="billSubTab-print" style="display: block;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share</button></div>
-    <div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight: 900; font-size: 12px; white-space: nowrap; flex-shrink: 0;" data-sm-base="12" data-smk="90%|175">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
+    <div id="billSubTab-print" style="display:none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share</button></div>
+    <div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight:900; font-size:12px;">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
 
     <div id="billNewSiteModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
       <div style="background:white; border-radius:22px; padding:22px; width:100%; max-width:380px;">
@@ -2683,199 +2683,304 @@ img, canvas, svg, video { max-width: 100%; }
   
   
   
+  
 
 
   
-  function billShareWhatsApp(){ 
-    billGenerateAndSharePDF();
-  }
+  function billShareWhatsApp(){ billGenerateAndSharePDF(); }
   
   async function billGenerateAndSharePDF(){
     const site=billGetCurrent(); 
-    if(!site){ alert('Site not loaded, pehle site banao'); return; }
+    if(!site){ alert('Site not loaded'); return; }
+    if(!site.items || site.items.length===0){ alert('Bill me koi item nahi hai, pehle items add karo'); return; }
+    
     const btn=document.getElementById('billPdfBtn');
     const status=document.getElementById('billPdfStatus');
     const originalText = '📄 PDF - WhatsApp Share';
+    
     try{
       if(btn){ btn.innerText='⏳ PDF Bana Rahe Hain...'; btn.disabled=true; btn.style.background='#F59E0B'; }
-      if(status){ status.style.display='block'; status.innerHTML='⏳ PDF file bana rahe hain...<br><span style="font-size:10px;">Puri PDF WhatsApp pe share hogi</span>'; status.style.background='#FEF3C7'; }
+      if(status){ status.style.display='block'; status.innerHTML='⏳ PDF bana rahe hain...<br><span style="font-size:10px;">Example jaisa organized PDF</span>'; }
       
       let total=0; (site.items||[]).forEach(it=> total+=it.qty*(site.rates[it.category]||0));
       const adv=(site.advancePayments||[]).reduce((s,p)=>s+(parseFloat(p.amount)||0),0);
       const bal=total-adv;
+      const fileName = (site.name||'Bill').replace(/[^a-zA-Z0-9]/g,'_')+'_Bill.pdf';
       
-      let pdfBlob=null;
-      let pdfFileName = (site.name||'Bill').replace(/[^a-zA-Z0-9]/g,'_')+'_Bill_'+(new Date().toISOString().split('T')[0])+'.pdf';
-      
-      // Generate TEXT PDF
       const doc = getJsPdfInstance('p', 'mm', 'a4');
+      const pageWidth = 210, pageHeight = 297;
+      const margin = 8;
+      let y = margin;
+      let pageNo = 1;
       
-      // Header
-      doc.setFillColor(21,23,28);
-      doc.rect(0,0,210,22,'F');
-      doc.setTextColor(212,169,78);
-      doc.setFontSize(16);
-      doc.setFont('helvetica','bold');
-      doc.text('SHUKLA MARBLE CONTRACTOR', 10, 10);
-      doc.setFontSize(8);
-      doc.setTextColor(173,131,46);
-      doc.text('PREMIUM MARBLE, GRANITE & TILE FITTING - ESTIMATE / BILL', 10, 15);
-      doc.setTextColor(255,255,255);
-      doc.setFontSize(9);
-      doc.text('ESTIMATE', 165, 12);
+      // Helper to add footer
+      function addFooter(){
+        const ts = new Date().toLocaleString('en-IN', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true });
+        doc.setFontSize(6);
+        doc.setTextColor(120,120,120);
+        doc.setFont('helvetica','normal');
+        doc.text('https://anubhav1211.github.io/shuklacalc/', margin, pageHeight-4);
+        doc.text(ts, pageWidth/2, pageHeight-4, {align:'center'});
+        doc.text('Page '+pageNo, pageWidth-margin, pageHeight-4, {align:'right'});
+      }
       
-      // Site details
-      doc.setFillColor(248,250,252);
-      doc.setDrawColor(226,232,240);
-      doc.rect(10, 26, 190, 18, 'FD');
-      doc.setTextColor(0,0,0);
-      doc.setFontSize(10);
-      doc.setFont('helvetica','bold');
-      doc.text('Site: '+(site.name||''), 12, 32);
-      doc.text('Client: '+(site.client||''), 12, 38);
-      doc.setFont('helvetica','normal');
-      doc.text('Date: '+(site.createdDate||new Date().toISOString().split('T')[0]), 130, 32);
-      doc.setFont('helvetica','bold');
-      doc.setTextColor(22,163,74);
-      doc.text('Total: Rs.'+total.toLocaleString('en-IN'), 130, 38);
+      function checkPage(need){
+        if(y+need > pageHeight-15){
+          addFooter();
+          doc.addPage();
+          pageNo++;
+          y = margin;
+          // Re-add table header if needed will be handled by caller
+          return true;
+        }
+        return false;
+      }
       
-      let y=52;
-      doc.setTextColor(0,0,0);
+      // Header on first page
+      doc.setFillColor(255,255,255);
+      doc.rect(0,0,pageWidth,16,'F');
+      doc.setDrawColor(200,200,200);
+      doc.line(0,16,pageWidth,16);
+      doc.setTextColor(30,30,30);
       doc.setFontSize(11);
       doc.setFont('helvetica','bold');
-      doc.text('BILL ITEMS:', 10, y); y+=4;
+      doc.text('SHUKLA MARBLE CONTRACTOR', margin, 9);
+      doc.setFontSize(7);
+      doc.setFont('helvetica','normal');
+      doc.setTextColor(100,100,100);
+      doc.text('PREMIUM MARBLE, GRANITE & TILE FITTING', margin, 12.5);
+      doc.setFontSize(7);
+      doc.setTextColor(0,0,0);
+      doc.text('Site: '+(site.name||'')+' | Client: '+(site.client||'')+' | Date: '+(site.createdDate||new Date().toISOString().split('T')[0])+' | Total: Rs.'+total.toLocaleString('en-IN'), margin, 15);
+      y = 20;
       
-      const grouped={};
+      // Group by MAIN SECTION and Sub-Heading
+      const groupedMain = {};
       (site.items||[]).forEach(it=>{
-        const sec=it.section||'General';
-        if(!grouped[sec]) grouped[sec]=[];
-        grouped[sec].push(it);
+        const main = (it.section||'General').trim() || 'General';
+        const sub = (it.subHeading||'Main Work').trim() || 'Main Work';
+        if(!groupedMain[main]) groupedMain[main]={};
+        if(!groupedMain[main][sub]) groupedMain[main][sub]=[];
+        groupedMain[main][sub].push(it);
       });
       
-      doc.setFontSize(8);
-      Object.keys(grouped).forEach(sec=>{
-        if(y>270){ doc.addPage(); y=15; }
-        const secItems=grouped[sec];
-        const secCost=secItems.reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
-        doc.setFillColor(21,23,28);
-        doc.rect(10, y, 190, 7, 'F');
-        doc.setTextColor(212,169,78);
+      // Table column widths: Sub-Sub, Item Description, Dimensions, Qty, Rate, Total
+      const colW = [28, 32, 48, 28, 18, 24]; // total ~178 + margins 8+8=16 -> 194, fits in 210
+      const colX = [margin];
+      for(let i=1;i<colW.length;i++) colX.push(colX[i-1]+colW[i-1]);
+      const tableWidth = colW.reduce((a,b)=>a+b,0);
+      
+      function drawTableHeader(){
+        checkPage(8);
+        doc.setFillColor(241,245,249);
+        doc.rect(margin, y, tableWidth, 6, 'F');
+        doc.setDrawColor(226,232,240);
+        doc.rect(margin, y, tableWidth, 6, 'S');
+        doc.setFontSize(6);
         doc.setFont('helvetica','bold');
-        doc.text('SECTION: '+sec.toUpperCase()+' - Rs.'+secCost.toLocaleString('en-IN'), 12, y+5);
-        y+=9;
-        secItems.forEach((it,i)=>{
-          if(y>275){ doc.addPage(); y=15; }
-          const rate=site.rates[it.category]||0;
-          const itemTotal=it.qty*rate;
-          doc.setTextColor(0,0,0);
-          doc.setFont('helvetica','bold');
-          doc.text((i+1)+'. '+it.item, 12, y);
-          doc.setFont('helvetica','normal');
-          doc.setFontSize(7);
-          doc.text('['+it.category+'] '+(it.dimText||'')+' | '+(it.unitType||'')+' | Qty:'+it.qty.toFixed(2), 12, y+3);
-          doc.setFontSize(8);
-          doc.setFont('helvetica','bold');
-          doc.text('Rs.'+itemTotal.toLocaleString('en-IN'), 170, y, {align:'right'});
-          doc.setFont('helvetica','normal');
-          doc.text('Rs.'+rate+' x '+it.qty.toFixed(2), 170, y+3, {align:'right'});
-          y+=9;
-          doc.setDrawColor(241,245,249);
-          doc.line(10,y-2,200,y-2);
+        doc.setTextColor(80,80,80);
+        const headers = ['Sub-Sub', 'Item Description', 'Dimensions', 'Qty', 'Rate', 'Total (₹)'];
+        headers.forEach((h,i)=>{
+          let x = colX[i]+1;
+          let align = 'left';
+          if(i>=3) { x = colX[i]+colW[i]-1; align='right'; }
+          doc.text(h, x, y+4, {align: align==='right'?'right':'left'});
         });
+        y+=6;
+      }
+      
+      // Iterate MAIN SECTIONS
+      Object.keys(groupedMain).sort().forEach(mainSec=>{
+        const mainSubs = groupedMain[mainSec];
+        const mainTotal = Object.values(mainSubs).flat().reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
+        
+        // MAIN SECTION header - dark blue like example
+        checkPage(10);
+        doc.setFillColor(15,23,42);
+        doc.rect(margin, y, tableWidth, 8, 'F');
+        doc.setTextColor(212,169,78);
+        doc.setFontSize(8);
+        doc.setFont('helvetica','bold');
+        doc.text('MAIN SECTION: '+mainSec.toUpperCase(), margin+2, y+5);
+        doc.setTextColor(255,255,255);
+        doc.text('Section Total: ₹'+mainTotal.toLocaleString('en-IN'), margin+tableWidth-2, y+5, {align:'right'});
+        y+=9;
+        
+        // Iterate Sub-Headings
+        Object.keys(mainSubs).sort().forEach(subHead=>{
+          const items = mainSubs[subHead];
+          const subTotal = items.reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
+          
+          // Sub-Heading header - light gray
+          checkPage(8);
+          doc.setFillColor(241,245,249);
+          doc.setDrawColor(226,232,240);
+          doc.rect(margin, y, tableWidth, 6, 'FD');
+          doc.setTextColor(30,30,30);
+          doc.setFontSize(7);
+          doc.setFont('helvetica','bold');
+          doc.text('Sub-Heading: '+subHead, margin+2, y+4);
+          y+=7;
+          
+          drawTableHeader();
+          
+          // Group by Sub-Sub for merging like example
+          let lastSubSub = '';
+          items.forEach((it, idx)=>{
+            const rate = site.rates[it.category]||0;
+            const itemTotal = it.qty*rate;
+            const rowH = 6;
+            checkPage(rowH+2);
+            
+            // Alternate row background
+            if(idx%2===0){
+              doc.setFillColor(249,250,251);
+              doc.rect(margin, y, tableWidth, rowH, 'F');
+            }
+            doc.setDrawColor(241,245,249);
+            doc.rect(margin, y, tableWidth, rowH, 'S');
+            // vertical lines
+            for(let i=1;i<colX.length;i++){
+              doc.line(colX[i], y, colX[i], y+rowH);
+            }
+            
+            doc.setFontSize(6);
+            doc.setFont('helvetica','normal');
+            doc.setTextColor(0,0,0);
+            
+            // Sub-Sub - show only if different from previous like example
+            const subSub = (it.subSubHeading||'').trim() || it.item.split(' ')[0] || '';
+            let subSubDisplay = subSub;
+            if(subSub === lastSubSub) subSubDisplay = '';
+            else lastSubSub = subSub;
+            
+            // Truncate long texts
+            function fitText(txt, w){
+              if(doc.getTextWidth(txt) <= w-2) return txt;
+              let t=txt;
+              while(t.length>0 && doc.getTextWidth(t+'..') > w-2) t=t.slice(0,-1);
+              return t+'..';
+            }
+            
+            doc.text(fitText(subSubDisplay, colW[0]), colX[0]+1, y+3.5);
+            doc.setFont('helvetica','bold');
+            doc.text(fitText(it.category||it.item, colW[1]), colX[1]+1, y+3.5);
+            doc.setFont('helvetica','normal');
+            doc.text(fitText(it.dimText||'', colW[2]), colX[2]+1, y+3.5);
+            
+            // Qty
+            const qtyStr = it.qty.toFixed(2)+' '+(it.unitType==='sqft'?'Sq Ft':(it.unitType||'RFT'));
+            doc.text(qtyStr, colX[3]+colW[3]-1, y+3.5, {align:'right'});
+            // Rate
+            doc.text('₹'+rate, colX[4]+colW[4]-1, y+3.5, {align:'right'});
+            // Total in green like example
+            doc.setTextColor(16,122,60);
+            doc.setFont('helvetica','bold');
+            doc.text('₹'+itemTotal.toLocaleString('en-IN', {minimumFractionDigits:1}), colX[5]+colW[5]-1, y+3.5, {align:'right'});
+            doc.setTextColor(0,0,0);
+            
+            y+=rowH;
+          });
+          
+          // Sub-Total row
+          checkPage(7);
+          doc.setFillColor(248,250,252);
+          doc.setDrawColor(226,232,240);
+          doc.rect(margin, y, tableWidth, 6, 'FD');
+          doc.setFontSize(6.5);
+          doc.setFont('helvetica','bold');
+          doc.setTextColor(50,50,50);
+          doc.text('Sub-Total for "'+subHead+'":', margin+2, y+4);
+          doc.setTextColor(16,122,60);
+          doc.text('₹'+subTotal.toLocaleString('en-IN'), margin+tableWidth-2, y+4, {align:'right'});
+          y+=8;
+        });
+        
+        // Add some space after main section
         y+=2;
       });
       
-      if(y>230){ doc.addPage(); y=15; }
-      doc.setFillColor(21,23,28);
-      doc.rect(10, y, 190, 25, 'F');
+      // Grand Total Summary at end - like example would have
+      checkPage(30);
+      doc.setFillColor(15,23,42);
+      doc.rect(margin, y, tableWidth, 22, 'F');
       doc.setTextColor(255,255,255);
-      doc.setFontSize(10);
-      doc.text('GRAND TOTAL:', 12, y+7);
-      doc.text('Rs.'+total.toLocaleString('en-IN'), 195, y+7, {align:'right'});
-      doc.setTextColor(251,191,36);
-      doc.text('Total Advance: Rs.'+adv.toLocaleString('en-IN'), 12, y+13);
-      doc.text('Rs.'+adv.toLocaleString('en-IN'), 195, y+13, {align:'right'});
-      doc.setTextColor(74,222,128);
-      doc.setFontSize(12);
+      doc.setFontSize(9);
       doc.setFont('helvetica','bold');
-      doc.text('BALANCE DUE: Rs.'+(bal).toLocaleString('en-IN'), 12, y+20);
-      doc.text('Rs.'+(bal).toLocaleString('en-IN'), 195, y+20, {align:'right'});
-      y+=30;
+      doc.text('GRAND TOTAL:', margin+2, y+6);
+      doc.text('₹'+total.toLocaleString('en-IN'), margin+tableWidth-2, y+6, {align:'right'});
+      doc.setFontSize(8);
+      doc.setTextColor(251,191,36);
+      doc.text('Total Advance:', margin+2, y+12);
+      doc.text('₹'+adv.toLocaleString('en-IN'), margin+tableWidth-2, y+12, {align:'right'});
+      doc.setTextColor(74,222,128);
+      doc.setFontSize(10);
+      doc.text('BALANCE DUE: ₹'+bal.toLocaleString('en-IN'), margin+2, y+18);
+      doc.text('₹'+bal.toLocaleString('en-IN'), margin+tableWidth-2, y+18, {align:'right'});
+      y+=26;
       
+      // Advance history if any
       if((site.advancePayments||[]).length>0){
-        if(y>220){ doc.addPage(); y=15; }
+        checkPage(10);
+        doc.setFontSize(7);
         doc.setTextColor(0,0,0);
-        doc.setFontSize(9);
         doc.setFont('helvetica','bold');
-        doc.text('ADVANCE PAYMENT HISTORY:', 10, y); y+=5;
+        doc.text('Advance Payment History:', margin, y); y+=4;
         doc.setFont('helvetica','normal');
-        doc.setFontSize(8);
         (site.advancePayments||[]).forEach(p=>{
-          if(y>280){ doc.addPage(); y=15; }
-          doc.text(p.date+' - Rs.'+p.amount+' ('+p.note+')', 12, y);
-          y+=5;
+          checkPage(5);
+          doc.text(p.date+' - ₹'+p.amount+' ('+p.note+')', margin+2, y);
+          y+=4;
         });
       }
       
-      pdfBlob = doc.output('blob');
+      addFooter();
       
-      if(status) status.innerHTML='✅ PDF Ban Gaya!<br><span style="font-size:11px;">📱 WhatsApp pe PDF share kar rahe hain...</span>';
+      // Generate blob
+      const pdfBlob = doc.output('blob');
       
-      // DIRECT PDF FILE SHARE TO WHATSAPP using Web Share API
-      if(navigator.share && pdfBlob){
-        try{
-          const file = new File([pdfBlob], pdfFileName, { type:'application/pdf' });
-          const canShareFile = navigator.canShare ? navigator.canShare({ files:[file] }) : true;
-          
-          if(canShareFile){
-            if(status) status.innerHTML='📤 WhatsApp Share Sheet khul raha hai...<br><span style="font-size:11px;">WhatsApp select karo, PDF file attach ho jayegi</span>';
-            await navigator.share({
-              files: [file],
-              title: (site.name||'Bill')+' - Shukla Marble Bill',
-              text: 'Shukla Marble Contractor - '+site.name+' Bill\nTotal: Rs.'+total.toLocaleString('en-IN')+' | Balance: Rs.'+bal.toLocaleString('en-IN')
-            });
-            if(status) status.innerHTML='✅ PDF WhatsApp pe share ho gaya!<br><span style="font-size:10px;">File: '+pdfFileName+'</span>';
-            if(btn){ btn.innerText='✅ WhatsApp Pe Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; if(status) status.style.display='none'; }, 4000); }
-            return;
-          }
-        }catch(e){
-          if(e.name === 'AbortError'){
-            if(status) status.innerHTML='⚠️ Share cancel kiya<br><span style="font-size:10px;">PDF Downloaded folder me hai</span>';
-            if(btn){ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; }
-            // Still download the PDF
-            const url = URL.createObjectURL(pdfBlob);
-            const a=document.createElement('a'); a.href=url; a.download=pdfFileName; document.body.appendChild(a); a.click();
-            setTimeout(()=>{ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); }, 1500);
-            return;
-          }
-          console.log('Share failed, fallback to download', e);
-        }
-      }
-      
-      // FALLBACK: If Web Share not supported, download PDF and show manual share instructions
+      // Download
       const url = URL.createObjectURL(pdfBlob);
-      const a=document.createElement('a'); a.href=url; a.download=pdfFileName; document.body.appendChild(a); a.click();
+      const a=document.createElement('a'); a.href=url; a.download=fileName; document.body.appendChild(a); a.click();
       setTimeout(()=>{ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); }, 1500);
       
-      if(status){
-        status.innerHTML='✅ PDF Downloaded: '+pdfFileName+'<br><br>📱 <b>WhatsApp pe PDF share karne ke liye:</b><br>1. Downloads folder kholo<br>2. PDF file select karo<br>3. Share button dabao<br>4. WhatsApp select karo<br><br><span style="font-size:10px; background:#25D366; color:white; padding:4px 8px; border-radius:6px;">💡 Android me Share Sheet se direct PDF share hota hai</span>';
-        status.style.background='#DCFCE7';
-        status.style.borderColor='#86EFAC';
-      }
-      if(btn){ 
-        btn.innerText='📥 PDF Downloaded - Manual Share Karo'; 
-        btn.style.background='#0F172A';
-        setTimeout(()=>{ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; }, 5000);
-      }
+      if(status) status.innerHTML='✅ PDF Ready! Example jaisa organized<br><span style="font-size:10px;">File: '+fileName+'</span><br>📱 WhatsApp pe share kar rahe hain...';
+      
+      // Share PDF file directly to WhatsApp via Web Share API
+      setTimeout(async ()=>{
+        if(navigator.share && pdfBlob){
+          try{
+            const file = new File([pdfBlob], fileName, { type:'application/pdf' });
+            if(!navigator.canShare || navigator.canShare({ files:[file] })){
+              await navigator.share({
+                files: [file],
+                title: (site.name||'Bill')+' - Shukla Marble',
+                text: 'Shukla Marble - '+site.name+' Bill\nTotal: Rs.'+total.toLocaleString('en-IN')+' | Balance: Rs.'+bal.toLocaleString('en-IN')
+              });
+              if(status) status.innerHTML='✅ PDF WhatsApp pe share ho gaya!';
+              if(btn){ btn.innerText='✅ Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; }, 3000); }
+              return;
+            }
+          }catch(e){
+            if(e.name==='AbortError'){
+              if(btn){ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; }
+              return;
+            }
+            console.log('Share failed', e);
+          }
+        }
+        // Fallback download already done
+        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Shukla Marble Bill - '+site.name+'\nTotal: Rs.'+total.toLocaleString('en-IN')+'\nPDF Downloaded: '+fileName), '_blank');
+        if(btn){ btn.innerText='📱 WhatsApp Opened!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; }, 4000); }
+      }, 800);
       
     }catch(err){
-      console.error('PDF Full Error', err);
+      console.error(err);
       alert('PDF Error: '+err.message);
       const b=document.getElementById('billPdfBtn'); if(b){ b.innerText='📄 PDF - WhatsApp Share'; b.disabled=false; b.style.background='#15171C'; }
       const s=document.getElementById('billPdfStatus'); if(s) s.style.display='none';
     }
   }
-
 
 
   try{ billInit(); }catch(e){}
