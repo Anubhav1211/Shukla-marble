@@ -1334,6 +1334,20 @@ img, canvas, svg, video { max-width: 100%; }
         <button type="button" class="ds-chip" data-f="closed" onclick="setDsFilter('closed')">📦 पूरा <b id="dsCntC" data-sm-base="11.5" data-smk="0|101" style="white-space: nowrap; flex-shrink: 0; font-size: 11.5px;">0</b></button>
         <button type="button" class="ds-chip" data-f="all" onclick="setDsFilter('all')">सब <b id="dsCntA" data-sm-base="11.5" data-smk="0|101" style="white-space: nowrap; flex-shrink: 0; font-size: 11.5px;">0</b></button>
       </div>
+      <div style="display:flex; gap:8px; margin:10px 0 8px 0; flex-wrap:wrap; align-items:center;">
+        <div style="flex:1; min-width:160px; position:relative;">
+          <select id="dsSort" onchange="setDsSort(this.value)" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #E2E8F0; background:white; font-size:12px; font-weight:700; color:#0F172A; appearance:none; cursor:pointer;">
+            <option value="activity">🕒 Recent Activity</option>
+            <option value="profitHigh">💰 Profit High → Low (Rs)</option>
+            <option value="profitLow">💰 Profit Low → High (Rs)</option>
+            <option value="profitPctHigh">📈 Profit % High → Low</option>
+            <option value="profitPctLow">📉 Profit % Low → High</option>
+          </select>
+        </div>
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:6px 10px; font-size:10px; font-weight:800; color:#64748B; display:flex; align-items:center; gap:4px;">
+          <span>💹</span><span>Profit Filter</span>
+        </div>
+      </div>
       <input id="dsSearch" class="input" placeholder="🔍 साइट खोजो — House No / Client" oninput="renderAll()">
       <div id="dsList"></div>
     </div>
@@ -4607,13 +4621,32 @@ function siteCardHtml(id) {
     `;
 }
 let dsFilter = "ongoing";
+let dsSort = "activity";
 function setDsFilter(f) { dsFilter = f; renderDashSites(); }
+function setDsSort(v) { dsSort = v; renderDashSites(); }
 window.setDsFilter = setDsFilter;
+window.setDsSort = setDsSort;
+function getSortedSiteIds(){
+  let ids = siteIdsByActivity();
+  try{
+    if(dsSort === 'profitHigh'){
+      ids = [...ids].sort((a,b)=> calcSite(b).profit - calcSite(a).profit);
+    } else if(dsSort === 'profitLow'){
+      ids = [...ids].sort((a,b)=> calcSite(a).profit - calcSite(b).profit);
+    } else if(dsSort === 'profitPctHigh'){
+      ids = [...ids].sort((a,b)=> calcSite(b).profitPct - calcSite(a).profitPct);
+    } else if(dsSort === 'profitPctLow'){
+      ids = [...ids].sort((a,b)=> calcSite(a).profitPct - calcSite(b).profitPct);
+    }
+  }catch(e){ console.log('Sort error', e); }
+  return ids;
+}
+
 function renderDashSites() {
   const listEl = document.getElementById("dsList");
   if (!listEl) return;
   const q = (document.getElementById("dsSearch")?.value || "").toLowerCase();
-  const ids = siteIdsByActivity();
+  const ids = getSortedSiteIds();
   let nO = 0, nC = 0;
   ids.forEach((id) => { if (isClosedSite(sites[id])) nC++; else nO++; });
   const setTxt = (i, t) => { const e = document.getElementById(i); if (e) e.innerText = t; };
