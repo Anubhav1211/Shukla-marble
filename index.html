@@ -1238,7 +1238,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body class="">
+<body>
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1258,20 +1258,20 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
     <button class="tab bnav-item" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
     <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
-    <button class="tab bnav-item active" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
+    <button class="tab bnav-item" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
   </div>
 
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d" style="display: none;">
+  <div id="t-d">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -2192,7 +2192,7 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
-  <div id="t-bill" style="display: block; padding-bottom: 150px;" class="sm-page-in">
+  <div id="t-bill" style="display: none; padding-bottom: 150px;">
     <style>
       #t-bill .bill-card { background:#fff; margin:10px 12px; padding:14px; border-radius:18px; border:1.5px solid #E2E8F0; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
       #t-bill .bill-input { width:100%; min-width:0; padding:11px 12px; border:1.8px solid #E2E8F0; border-radius:12px; font-size:13px; font-weight:600; background:white; box-sizing:border-box; }
@@ -2248,8 +2248,8 @@ img, canvas, svg, video { max-width: 100%; }
       <div class="bill-stat">
         <div class="bill-stat-box" style="background:#EEF2FF; border-color:#C7D2FE; color:#4338CA;"><div style="font-size:11px; font-weight:800;">Total Area</div><div id="billTotSqft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 Sqft</div></div>
         <div class="bill-stat-box" style="background:#F5F3FF; border-color:#DDD6FE; color:#6D28D9;"><div style="font-size:11px; font-weight:800;">Running Ft</div><div id="billTotRft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 RFT</div></div>
-        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
-        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
+        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
+        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
       </div>
     </div>
 
@@ -2262,7 +2262,7 @@ img, canvas, svg, video { max-width: 100%; }
       </div></div>
     </div>
 
-    <div id="billSubTab-meas" style="display: block;">
+    <div id="billSubTab-meas">
       <div class="bill-card">
         <h3 style="margin:0 0 12px 0; font-size:15px; font-weight:900;">+ New Entry with Headings</h3>
         <div class="head-grid" style="background:#FFFBEB; border:2px solid #FDE68A; padding:12px; border-radius:14px; margin-bottom:12px;">
@@ -2310,10 +2310,10 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="billGroupedList" style="margin:0 12px;"></div>
     </div>
 
-    <div id="billSubTab-rates" style="display: none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName"></b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"></div></div></div>
-    <div id="billSubTab-adv" style="display: none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color: rgb(251, 191, 36); font-size: 18px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="18" data-smk="₹0|148">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color: rgb(248, 113, 113); font-size: 18px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="18" data-smk="₹0|148">₹0</div></div></div></div></div>
-    <div id="billSubTab-print" style="display: none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share</button></div>
-    <div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight: 900; font-size: 12px; white-space: nowrap; flex-shrink: 0;" data-sm-base="12" data-smk="90%|175">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
+    <div id="billSubTab-rates" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName"></b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"></div></div></div>
+    <div id="billSubTab-adv" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color:#FBBF24; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color:#F87171; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div></div></div></div>
+    <div id="billSubTab-print" style="display:none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share</button></div>
+    <div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight:900; font-size:12px;">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
 
     <div id="billNewSiteModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
       <div style="background:white; border-radius:22px; padding:22px; width:100%; max-width:380px;">
