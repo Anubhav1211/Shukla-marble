@@ -2662,16 +2662,7 @@ img, canvas, svg, video { max-width: 100%; }
   function billRenderAdvance(){ const site=billGetCurrent(); if(!site) return; const list=document.getElementById('billAdvList'); const adv=site.advancePayments||[]; if(!list) return; if(adv.length===0){ list.innerHTML='<div style="text-align:center; color:#94A3B8; padding:20px; background:#F8FAFC; border-radius:12px; border:1.5px dashed #E2E8F0;">No advance payments</div>'; } else { list.innerHTML=adv.map(p=>'<div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:white; border:1.5px solid #E2E8F0; border-radius:12px; margin-bottom:8px;"><div><div style="font-weight:800;">₹'+p.amount.toLocaleString('en-IN')+' <span style="font-weight:600; color:#64748B; font-size:11px;">on '+p.date+'</span></div><div style="font-size:11px; color:#475569;">'+p.note+'</div></div><button onclick="billDelAdv('+p.id+')" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FECACA; padding:8px 14px; border-radius:10px; font-weight:800;">Delete</button></div>').join(''); } const totalAdv=adv.reduce((s,p)=>s+(parseFloat(p.amount)||0),0); const e1=document.getElementById('billAdvTotal'); if(e1) e1.innerText='₹'+totalAdv.toLocaleString('en-IN'); const totalCost=(site.items||[]).reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0); const e2=document.getElementById('billAdvBal'); if(e2) e2.innerText='₹'+(totalCost-totalAdv).toLocaleString('en-IN'); }
   function billDelAdv(id){ if(!confirm('Delete advance?')) return; const site=billGetCurrent(); site.advancePayments=(site.advancePayments||[]).filter(p=>p.id!==id); billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billRenderStats(){ const site=billGetCurrent(); if(!site) return; let sq=0, rft=0, cost=0; (site.items||[]).forEach(it=>{ const rate=site.rates[it.category]||0; cost+=it.qty*rate; if(it.unitType==='sqft') sq+=it.qty; else rft+=it.qty; }); const adv=(site.advancePayments||[]).reduce((s,p)=>s+(parseFloat(p.amount)||0),0); const el1=document.getElementById('billTotSqft'); if(el1) el1.innerText=sq.toFixed(2)+' Sqft'; const el2=document.getElementById('billTotRft'); if(el2) el2.innerText=rft.toFixed(2)+' RFT'; const el3=document.getElementById('billTotCost'); if(el3) el3.innerText='₹'+cost.toLocaleString('en-IN'); const el4=document.getElementById('billBalDue'); if(el4) el4.innerText='₹'+(cost-adv).toLocaleString('en-IN'); }
-  function billRenderPrint(){
-    const site=billGetCurrent(); if(!site) return; const showAdv=document.getElementById('billShowAdv')?.checked;
-    let cost=0; const grouped={}; (site.items||[]).forEach(it=>{ const sec=it.section||'General'; const sub=it.subHeading||'Main'; if(!grouped[sec]) grouped[sec]={}; if(!grouped[sec][sub]) grouped[sec][sub]=[]; grouped[sec][sub].push(it); const rate=site.rates[it.category]||0; cost+=it.qty*rate; });
-    const adv=site.advancePayments||[]; const totalAdv=adv.reduce((s,p)=>s+(parseFloat(p.amount)||0),0);
-    let html='<div style="border-bottom:3px solid #15171C; padding-bottom:12px; margin-bottom:14px;"><div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;"><div><h1 style="margin:0; font-size:18px; font-weight:900;">SHUKLA MARBLE CONTRACTOR</h1><p style="margin:4px 0 0 0; font-size:10px; font-weight:800; color:#AD832E;">PREMIUM MARBLE, GRANITE & TILE FITTING</p></div><div style="background:#15171C; color:#D4A94E; padding:6px 14px; border-radius:20px; font-size:11px; font-weight:900;">ESTIMATE / BILL</div></div><div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; font-size:12px; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div>Client: <b>'+(site.client||'')+'</b><br>Site: <b>'+(site.name||'')+'</b></div><div style="text-align:right;">Date: <b>'+(site.createdDate||'')+'</b><br>Total: <b style="color:#16A34A;">₹'+cost.toLocaleString('en-IN')+'</b></div></div></div>';
-    Object.keys(grouped).forEach(sec=>{ const secCost=Object.values(grouped[sec]).flat().reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0); html+='<div style="border:2px solid #15171C; border-radius:14px; overflow:hidden; margin-bottom:14px;"><div style="background:#15171C; color:#D4A94E; padding:10px 14px; font-weight:900; font-size:13px; display:flex; justify-content:space-between;"><span>SECTION: '+sec.toUpperCase()+'</span><span style="color:white;">₹'+secCost.toLocaleString('en-IN')+'</span></div>'; Object.keys(grouped[sec]).forEach(sub=>{ const subItems=grouped[sec][sub]; const subCost=subItems.reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0); html+='<div style="background:#EEF2FF; padding:8px 14px; font-weight:900; font-size:12px; border-bottom:1.5px solid #C7D2FE; display:flex; justify-content:space-between;"><span>📍 '+sub+'</span><span>₹'+subCost.toLocaleString('en-IN')+'</span></div><table style="width:100%; font-size:11px; border-collapse:collapse;"><tr style="background:#F8FAFC; font-weight:800; color:#475569;"><td style="padding:8px; border-bottom:1px solid #E2E8F0;">Item</td><td style="padding:8px; border-bottom:1px solid #E2E8F0;">Dims</td><td style="padding:8px; text-align:right; border-bottom:1px solid #E2E8F0;">Qty</td><td style="padding:8px; text-align:right; border-bottom:1px solid #E2E8F0;">Rate</td><td style="padding:8px; text-align:right; border-bottom:1px solid #E2E8F0;">Total</td></tr>'; subItems.forEach(it=>{ const rate=site.rates[it.category]||0; html+='<tr><td style="padding:8px; border-bottom:1px solid #F1F5F9;"><b>'+it.item+'</b><br><span style="background:#F1F5F9; padding:2px 6px; border-radius:10px; font-size:9px;">'+it.category+'</span> '+(it.subSubHeading?'<span style="background:#FEF3C7; padding:2px 6px; border-radius:10px; font-size:9px;">'+it.subSubHeading+'</span>':'')+'<br><span style="font-size:9px; color:'+(it.unitType==='sqft'?'#4338CA':'#166534')+';">'+(it.unitType==='sqft'?'SqFt':'RFT')+'</span></td><td style="padding:8px; font-family:monospace; font-size:10px; border-bottom:1px solid #F1F5F9;">'+it.dimText+'</td><td style="padding:8px; text-align:right; font-weight:800; border-bottom:1px solid #F1F5F9;">'+it.qty.toFixed(2)+' '+(it.unitType==='sqft'?'Sq':'RFT')+'</td><td style="padding:8px; text-align:right; border-bottom:1px solid #F1F5F9;">₹'+rate+'</td><td style="padding:8px; text-align:right; font-weight:900; color:#16A34A; border-bottom:1px solid #F1F5F9;">₹'+(it.qty*rate).toLocaleString('en-IN')+'</td></tr>'; }); html+='</table>'; }); html+='</div>'; });
-    html+='<div style="background:#15171C; color:white; padding:16px; border-radius:14px; margin-top:12px;"><div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800;"><span>GRAND TOTAL:</span><span>₹'+cost.toLocaleString('en-IN')+'</span></div><div style="display:flex; justify-content:space-between; color:#FBBF24; margin-top:8px; font-size:12px;"><span>Total Advance:</span><span>₹'+totalAdv.toLocaleString('en-IN')+'</span></div><div style="display:flex; justify-content:space-between; border-top:2px solid #334155; margin-top:10px; padding-top:10px; font-size:16px; font-weight:900; color:#4ADE80;"><span>BALANCE DUE:</span><span>₹'+(cost-totalAdv).toLocaleString('en-IN')+'</span></div></div>';
-    if(showAdv && adv.length>0){ html+='<div style="border:1.5px solid #E2E8F0; border-radius:14px; padding:14px; margin-top:14px; background:#F8FAFC;"><b style="font-size:12px;">Advance History</b><table style="width:100%; font-size:11px; margin-top:8px; border-collapse:collapse;"><tr style="font-weight:800; color:#64748B; border-bottom:2px solid #E2E8F0;"><td style="padding:6px;">Date</td><td style="padding:6px;">Note</td><td style="padding:6px; text-align:right;">Amount</td></tr>'+adv.map(p=>'<tr><td style="padding:6px; border-bottom:1px solid #F1F5F9;">'+p.date+'</td><td style="padding:6px; border-bottom:1px solid #F1F5F9;">'+p.note+'</td><td style="padding:6px; text-align:right; font-weight:900; border-bottom:1px solid #F1F5F9;">₹'+p.amount.toLocaleString('en-IN')+'</td></tr>').join('')+'</table></div>'; }
-    const area=document.getElementById('billPrintArea'); if(area) area.innerHTML=html;
-  }
+  
 
   function billUpdatePrintScale(val){ const txt=document.getElementById('billScaleTxt'); if(txt) txt.innerText=val+'%'; const area=document.getElementById('billPrintArea'); if(area) area.style.zoom=val+'%'; }
   function billSwitchSite(id){ billCurrentId=id; billSaveLocal(); billRenderAll(); }
@@ -2687,299 +2678,94 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
+
+
+  
+
+
+  
+
+
+  
   function billShareWhatsApp(){ billGenerateAndSharePDF(); }
   
   async function billGenerateAndSharePDF(){
     const site=billGetCurrent(); 
-    if(!site){ alert('Site not loaded'); return; }
-    if(!site.items || site.items.length===0){ alert('Bill me koi item nahi hai, pehle items add karo'); return; }
-    
+    if(!site || !site.items || site.items.length===0){ alert('Bill me item nahi hai'); return; }
     const btn=document.getElementById('billPdfBtn');
     const status=document.getElementById('billPdfStatus');
-    const originalText = '📄 PDF - WhatsApp Share';
-    
     try{
-      if(btn){ btn.innerText='⏳ PDF Bana Rahe Hain...'; btn.disabled=true; btn.style.background='#F59E0B'; }
-      if(status){ status.style.display='block'; status.innerHTML='⏳ PDF bana rahe hain...<br><span style="font-size:10px;">Example jaisa organized PDF</span>'; }
+      if(btn){ btn.innerText='⏳ A4 PDF Bana Rahe Hain...'; btn.disabled=true; btn.style.background='#F59E0B'; }
+      if(status){ status.style.display='block'; status.innerHTML='⏳ A4 size PDF bana rahe hain...<br>UI jaisa hi print hoga'; }
       
-      let total=0; (site.items||[]).forEach(it=> total+=it.qty*(site.rates[it.category]||0));
-      const adv=(site.advancePayments||[]).reduce((s,p)=>s+(parseFloat(p.amount)||0),0);
-      const bal=total-adv;
-      const fileName = (site.name||'Bill').replace(/[^a-zA-Z0-9]/g,'_')+'_Bill.pdf';
+      let total=0; site.items.forEach(it=> total+=it.qty*(site.rates[it.category]||0));
+      const fileName = (site.name||'Bill').replace(/[^a-zA-Z0-9]/g,'_')+'_A4.pdf';
       
-      const doc = getJsPdfInstance('p', 'mm', 'a4');
-      const pageWidth = 210, pageHeight = 297;
-      const margin = 8;
-      let y = margin;
-      let pageNo = 1;
+      // Ensure billRenderPrint has rendered A4 sheet
+      billRenderPrint();
+      await new Promise(r=>setTimeout(r,300));
       
-      // Helper to add footer
-      function addFooter(){
-        const ts = new Date().toLocaleString('en-IN', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true });
-        doc.setFontSize(6);
-        doc.setTextColor(120,120,120);
-        doc.setFont('helvetica','normal');
-        doc.text('https://anubhav1211.github.io/shuklacalc/', margin, pageHeight-4);
-        doc.text(ts, pageWidth/2, pageHeight-4, {align:'center'});
-        doc.text('Page '+pageNo, pageWidth-margin, pageHeight-4, {align:'right'});
-      }
+      const a4Sheet = document.getElementById('a4Sheet');
+      if(!a4Sheet){ alert('Print area not found'); return; }
       
-      function checkPage(need){
-        if(y+need > pageHeight-15){
-          addFooter();
-          doc.addPage();
-          pageNo++;
-          y = margin;
-          // Re-add table header if needed will be handled by caller
-          return true;
-        }
-        return false;
-      }
+      if(status) status.innerHTML='📸 A4 page ka screenshot le rahe hain...';
       
-      // Header on first page
-      doc.setFillColor(255,255,255);
-      doc.rect(0,0,pageWidth,16,'F');
-      doc.setDrawColor(200,200,200);
-      doc.line(0,16,pageWidth,16);
-      doc.setTextColor(30,30,30);
-      doc.setFontSize(11);
-      doc.setFont('helvetica','bold');
-      doc.text('SHUKLA MARBLE CONTRACTOR', margin, 9);
-      doc.setFontSize(7);
-      doc.setFont('helvetica','normal');
-      doc.setTextColor(100,100,100);
-      doc.text('PREMIUM MARBLE, GRANITE & TILE FITTING', margin, 12.5);
-      doc.setFontSize(7);
-      doc.setTextColor(0,0,0);
-      doc.text('Site: '+(site.name||'')+' | Client: '+(site.client||'')+' | Date: '+(site.createdDate||new Date().toISOString().split('T')[0])+' | Total: Rs.'+total.toLocaleString('en-IN'), margin, 15);
-      y = 20;
-      
-      // Group by MAIN SECTION and Sub-Heading
-      const groupedMain = {};
-      (site.items||[]).forEach(it=>{
-        const main = (it.section||'General').trim() || 'General';
-        const sub = (it.subHeading||'Main Work').trim() || 'Main Work';
-        if(!groupedMain[main]) groupedMain[main]={};
-        if(!groupedMain[main][sub]) groupedMain[main][sub]=[];
-        groupedMain[main][sub].push(it);
+      // Use html2canvas to capture A4 sheet exactly as UI
+      const canvas = await window.html2canvas(a4Sheet, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        width: a4Sheet.offsetWidth,
+        height: a4Sheet.offsetHeight,
+        windowWidth: 794, // A4 width in px at 96dpi ~ 794
       });
       
-      // Table column widths: Sub-Sub, Item Description, Dimensions, Qty, Rate, Total
-      const colW = [28, 32, 48, 28, 18, 24]; // total ~178 + margins 8+8=16 -> 194, fits in 210
-      const colX = [margin];
-      for(let i=1;i<colW.length;i++) colX.push(colX[i-1]+colW[i-1]);
-      const tableWidth = colW.reduce((a,b)=>a+b,0);
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const doc = getJsPdfInstance('p','mm','a4');
+      const pdfW = doc.internal.pageSize.getWidth();
+      const pdfH = doc.internal.pageSize.getHeight();
       
-      function drawTableHeader(){
-        checkPage(8);
-        doc.setFillColor(241,245,249);
-        doc.rect(margin, y, tableWidth, 6, 'F');
-        doc.setDrawColor(226,232,240);
-        doc.rect(margin, y, tableWidth, 6, 'S');
-        doc.setFontSize(6);
-        doc.setFont('helvetica','bold');
-        doc.setTextColor(80,80,80);
-        const headers = ['Sub-Sub', 'Item Description', 'Dimensions', 'Qty', 'Rate', 'Total (₹)'];
-        headers.forEach((h,i)=>{
-          let x = colX[i]+1;
-          let align = 'left';
-          if(i>=3) { x = colX[i]+colW[i]-1; align='right'; }
-          doc.text(h, x, y+4, {align: align==='right'?'right':'left'});
-        });
-        y+=6;
+      // Calculate image dimensions to fit A4 with margins 0 (since our HTML already has margins)
+      const imgW = pdfW;
+      const imgH = (canvas.height * pdfW) / canvas.width;
+      
+      let heightLeft = imgH;
+      let position = 0;
+      
+      doc.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+      heightLeft -= pdfH;
+      
+      while(heightLeft > 0){
+        position = heightLeft - imgH;
+        doc.addPage();
+        doc.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+        heightLeft -= pdfH;
       }
       
-      // Iterate MAIN SECTIONS
-      Object.keys(groupedMain).sort().forEach(mainSec=>{
-        const mainSubs = groupedMain[mainSec];
-        const mainTotal = Object.values(mainSubs).flat().reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
-        
-        // MAIN SECTION header - dark blue like example
-        checkPage(10);
-        doc.setFillColor(15,23,42);
-        doc.rect(margin, y, tableWidth, 8, 'F');
-        doc.setTextColor(212,169,78);
-        doc.setFontSize(8);
-        doc.setFont('helvetica','bold');
-        doc.text('MAIN SECTION: '+mainSec.toUpperCase(), margin+2, y+5);
-        doc.setTextColor(255,255,255);
-        doc.text('Section Total: ₹'+mainTotal.toLocaleString('en-IN'), margin+tableWidth-2, y+5, {align:'right'});
-        y+=9;
-        
-        // Iterate Sub-Headings
-        Object.keys(mainSubs).sort().forEach(subHead=>{
-          const items = mainSubs[subHead];
-          const subTotal = items.reduce((s,it)=>s+it.qty*(site.rates[it.category]||0),0);
-          
-          // Sub-Heading header - light gray
-          checkPage(8);
-          doc.setFillColor(241,245,249);
-          doc.setDrawColor(226,232,240);
-          doc.rect(margin, y, tableWidth, 6, 'FD');
-          doc.setTextColor(30,30,30);
-          doc.setFontSize(7);
-          doc.setFont('helvetica','bold');
-          doc.text('Sub-Heading: '+subHead, margin+2, y+4);
-          y+=7;
-          
-          drawTableHeader();
-          
-          // Group by Sub-Sub for merging like example
-          let lastSubSub = '';
-          items.forEach((it, idx)=>{
-            const rate = site.rates[it.category]||0;
-            const itemTotal = it.qty*rate;
-            const rowH = 6;
-            checkPage(rowH+2);
-            
-            // Alternate row background
-            if(idx%2===0){
-              doc.setFillColor(249,250,251);
-              doc.rect(margin, y, tableWidth, rowH, 'F');
-            }
-            doc.setDrawColor(241,245,249);
-            doc.rect(margin, y, tableWidth, rowH, 'S');
-            // vertical lines
-            for(let i=1;i<colX.length;i++){
-              doc.line(colX[i], y, colX[i], y+rowH);
-            }
-            
-            doc.setFontSize(6);
-            doc.setFont('helvetica','normal');
-            doc.setTextColor(0,0,0);
-            
-            // Sub-Sub - show only if different from previous like example
-            const subSub = (it.subSubHeading||'').trim() || it.item.split(' ')[0] || '';
-            let subSubDisplay = subSub;
-            if(subSub === lastSubSub) subSubDisplay = '';
-            else lastSubSub = subSub;
-            
-            // Truncate long texts
-            function fitText(txt, w){
-              if(doc.getTextWidth(txt) <= w-2) return txt;
-              let t=txt;
-              while(t.length>0 && doc.getTextWidth(t+'..') > w-2) t=t.slice(0,-1);
-              return t+'..';
-            }
-            
-            doc.text(fitText(subSubDisplay, colW[0]), colX[0]+1, y+3.5);
-            doc.setFont('helvetica','bold');
-            doc.text(fitText(it.category||it.item, colW[1]), colX[1]+1, y+3.5);
-            doc.setFont('helvetica','normal');
-            doc.text(fitText(it.dimText||'', colW[2]), colX[2]+1, y+3.5);
-            
-            // Qty
-            const qtyStr = it.qty.toFixed(2)+' '+(it.unitType==='sqft'?'Sq Ft':(it.unitType||'RFT'));
-            doc.text(qtyStr, colX[3]+colW[3]-1, y+3.5, {align:'right'});
-            // Rate
-            doc.text('₹'+rate, colX[4]+colW[4]-1, y+3.5, {align:'right'});
-            // Total in green like example
-            doc.setTextColor(16,122,60);
-            doc.setFont('helvetica','bold');
-            doc.text('₹'+itemTotal.toLocaleString('en-IN', {minimumFractionDigits:1}), colX[5]+colW[5]-1, y+3.5, {align:'right'});
-            doc.setTextColor(0,0,0);
-            
-            y+=rowH;
-          });
-          
-          // Sub-Total row
-          checkPage(7);
-          doc.setFillColor(248,250,252);
-          doc.setDrawColor(226,232,240);
-          doc.rect(margin, y, tableWidth, 6, 'FD');
-          doc.setFontSize(6.5);
-          doc.setFont('helvetica','bold');
-          doc.setTextColor(50,50,50);
-          doc.text('Sub-Total for "'+subHead+'":', margin+2, y+4);
-          doc.setTextColor(16,122,60);
-          doc.text('₹'+subTotal.toLocaleString('en-IN'), margin+tableWidth-2, y+4, {align:'right'});
-          y+=8;
-        });
-        
-        // Add some space after main section
-        y+=2;
-      });
-      
-      // Grand Total Summary at end - like example would have
-      checkPage(30);
-      doc.setFillColor(15,23,42);
-      doc.rect(margin, y, tableWidth, 22, 'F');
-      doc.setTextColor(255,255,255);
-      doc.setFontSize(9);
-      doc.setFont('helvetica','bold');
-      doc.text('GRAND TOTAL:', margin+2, y+6);
-      doc.text('₹'+total.toLocaleString('en-IN'), margin+tableWidth-2, y+6, {align:'right'});
-      doc.setFontSize(8);
-      doc.setTextColor(251,191,36);
-      doc.text('Total Advance:', margin+2, y+12);
-      doc.text('₹'+adv.toLocaleString('en-IN'), margin+tableWidth-2, y+12, {align:'right'});
-      doc.setTextColor(74,222,128);
-      doc.setFontSize(10);
-      doc.text('BALANCE DUE: ₹'+bal.toLocaleString('en-IN'), margin+2, y+18);
-      doc.text('₹'+bal.toLocaleString('en-IN'), margin+tableWidth-2, y+18, {align:'right'});
-      y+=26;
-      
-      // Advance history if any
-      if((site.advancePayments||[]).length>0){
-        checkPage(10);
-        doc.setFontSize(7);
-        doc.setTextColor(0,0,0);
-        doc.setFont('helvetica','bold');
-        doc.text('Advance Payment History:', margin, y); y+=4;
-        doc.setFont('helvetica','normal');
-        (site.advancePayments||[]).forEach(p=>{
-          checkPage(5);
-          doc.text(p.date+' - ₹'+p.amount+' ('+p.note+')', margin+2, y);
-          y+=4;
-        });
-      }
-      
-      addFooter();
-      
-      // Generate blob
-      const pdfBlob = doc.output('blob');
-      
-      // Download
-      const url = URL.createObjectURL(pdfBlob);
+      const blob = doc.output('blob');
+      const url=URL.createObjectURL(blob);
       const a=document.createElement('a'); a.href=url; a.download=fileName; document.body.appendChild(a); a.click();
-      setTimeout(()=>{ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); }, 1500);
+      setTimeout(()=>{ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); },1500);
       
-      if(status) status.innerHTML='✅ PDF Ready! Example jaisa organized<br><span style="font-size:10px;">File: '+fileName+'</span><br>📱 WhatsApp pe share kar rahe hain...';
+      if(status) status.innerHTML='✅ A4 PDF Ready!<br>File: '+fileName+'<br>📱 WhatsApp pe share...';
       
-      // Share PDF file directly to WhatsApp via Web Share API
-      setTimeout(async ()=>{
-        if(navigator.share && pdfBlob){
+      setTimeout(async()=>{
+        if(navigator.share && blob){
           try{
-            const file = new File([pdfBlob], fileName, { type:'application/pdf' });
-            if(!navigator.canShare || navigator.canShare({ files:[file] })){
-              await navigator.share({
-                files: [file],
-                title: (site.name||'Bill')+' - Shukla Marble',
-                text: 'Shukla Marble - '+site.name+' Bill\nTotal: Rs.'+total.toLocaleString('en-IN')+' | Balance: Rs.'+bal.toLocaleString('en-IN')
-              });
-              if(status) status.innerHTML='✅ PDF WhatsApp pe share ho gaya!';
-              if(btn){ btn.innerText='✅ Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; }, 3000); }
+            const file=new File([blob], fileName, {type:'application/pdf'});
+            if(!navigator.canShare || navigator.canShare({files:[file]})){
+              await navigator.share({files:[file], title:site.name+' Bill A4', text:'Shukla Marble - '+site.name+' | Total Rs.'+total.toLocaleString('en-IN')});
+              if(status) status.innerHTML='✅ A4 PDF WhatsApp pe share ho gaya!';
+              if(btn){ btn.innerText='✅ Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText='📄 PDF - WhatsApp Share'; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; },3000); }
               return;
             }
-          }catch(e){
-            if(e.name==='AbortError'){
-              if(btn){ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; }
-              return;
-            }
-            console.log('Share failed', e);
-          }
+          }catch(e){ if(e.name==='AbortError'){ btn.innerText='📄 PDF - WhatsApp Share'; btn.disabled=false; btn.style.background='#15171C'; return; } }
         }
-        // Fallback download already done
-        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Shukla Marble Bill - '+site.name+'\nTotal: Rs.'+total.toLocaleString('en-IN')+'\nPDF Downloaded: '+fileName), '_blank');
-        if(btn){ btn.innerText='📱 WhatsApp Opened!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=originalText; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; }, 4000); }
-      }, 800);
+        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('A4 Bill: '+site.name+' Total Rs.'+total.toLocaleString('en-IN')), '_blank');
+        if(btn){ btn.innerText='📱 WhatsApp Opened'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText='📄 PDF - WhatsApp Share'; btn.disabled=false; btn.style.background='#15171C'; status.style.display='none'; },4000); }
+      },700);
       
-    }catch(err){
-      console.error(err);
-      alert('PDF Error: '+err.message);
-      const b=document.getElementById('billPdfBtn'); if(b){ b.innerText='📄 PDF - WhatsApp Share'; b.disabled=false; b.style.background='#15171C'; }
-      const s=document.getElementById('billPdfStatus'); if(s) s.style.display='none';
-    }
+    }catch(e){ console.error(e); alert('PDF Error: '+e.message+'\n\nDirect print try kar rahe hain'); window.print(); const b=document.getElementById('billPdfBtn'); if(b){ b.innerText='📄 PDF - WhatsApp Share'; b.disabled=false; } }
   }
 
 
