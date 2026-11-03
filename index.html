@@ -1238,7 +1238,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body>
+<body class="">
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1258,20 +1258,20 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
     <button class="tab bnav-item" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
     <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
-    <button class="tab bnav-item" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
+    <button class="tab bnav-item active" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
   </div>
 
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d">
+  <div id="t-d" style="display: none;">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -1797,7 +1797,7 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Selected day entries -->
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
-        <span>🧾 मटेरियल - <span id="mDayTxt">02 नव॰ 2026</span></span>
+        <span>🧾 मटेरियल - <span id="mDayTxt">03 नव॰ 2026</span></span>
         <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;">0 एंट्री · ₹0</span>
       </h3>
       <div id="mDayList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">इस तारीख को कोई मटेरियल एंट्री नहीं</div></div>
@@ -2012,7 +2012,7 @@ img, canvas, svg, video { max-width: 100%; }
     <span>🏛️ Work Site: ____</span>
     <span>👤 Client: ____</span>
     <span>📱 Ph: ____</span>
-    <span>📅 Date: 2/11/2026</span>
+    <span>📅 Date: 3/11/2026</span>
   </div><div class="italian-sec-title">ITALIAN MARBLE</div><div class="italian-grid"><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">Italian Grey/Beige</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 60/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 100/sq ft</b></span></div></div><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">White Italian</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 80/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 120/sq ft</b></span></div></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For Italian Grey and Beige)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 100/R ft</b></span></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For White Italian)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 120/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 120/R ft</b></span></div></div><div class="italian-sec-title">GRANITE</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Granite fitting (big size, 16mm)</span><span><b>Rs 50/R ft</b></span></div><div class="italian-item"><span>• Designer granite patti</span><span><b>Rs 25/R ft</b></span></div><div class="italian-item"><span>• Granite molding</span><span><b>Same as italian</b></span></div></div><div class="italian-sec-title">TILE WORK (Separate Section)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Tile fitting (on-site)</span><span><b>As per tile size</b></span></div><div class="italian-item"><span>• Tile fitting All Sizes</span><span><b>Rs 50/sq ft</b></span></div><div class="italian-item"><span>• Tile patti</span><span><b>Rs 50/R ft</b></span></div></div><div class="italian-sec-title">EXTRA WORK</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Manhole steel fitting</span><span><b>Rs 800/pc</b></span></div><div class="italian-item"><span>• Epoxy grouting</span><span><b>Rs 100/sq ft</b></span></div><div class="italian-item"><span>• Counter washbasin (simple)</span><span><b>Rs 1500/pc</b></span></div><div class="italian-item"><span>• Sink fitting</span><span><b>Rs 500/pc</b></span></div><div class="italian-item"><span>• Fibermesh grinding (50% area)</span><span><b>Rs 10/sq ft</b></span></div></div></div>
             <div style="background: #0F172A; color: #F59E0B; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1px;">Professional | Reliable | Quality Work</div>
           </div></div>
@@ -2140,7 +2140,7 @@ img, canvas, svg, video { max-width: 100%; }
       <h2>SHUKLA MARBLE CONTRACTOR</h2>
       <div style="font-size:13px;color:#1E293B;font-weight:600">Krishan Gopal Shukla • Tile &amp; Marble Specialist</div>
       <div style="font-size:11px;color:#64748B">Mob: ____</div>
-      <div class="tile-badge">Labour Rate List • 2/11/2026</div>
+      <div class="tile-badge">Labour Rate List • 3/11/2026</div>
       <div style="color:#8C5E2F;font-weight:700;font-size:12px;margin-top:4px">📍 Work Site: ____</div>
     </div>
   
@@ -2192,7 +2192,7 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
-  <div id="t-bill" style="display: none; padding-bottom: 150px;">
+  <div id="t-bill" style="display: block; padding-bottom: 150px;" class="sm-page-in">
     <style>
       #t-bill .bill-card { background:#fff; margin:10px 12px; padding:14px; border-radius:18px; border:1.5px solid #E2E8F0; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
       #t-bill .bill-input { width:100%; min-width:0; padding:11px 12px; border:1.8px solid #E2E8F0; border-radius:12px; font-size:13px; font-weight:600; background:white; box-sizing:border-box; }
@@ -2226,7 +2226,7 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Site selector - NO Backup/Restore buttons now, synced with main backup -->
     <div class="bill-card">
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <select id="billSiteSelect" class="bill-input" style="flex:1; min-width:180px; font-weight:800;" onchange="billSwitchSite(this.value)"><option value="bill_1793637760243" selected="">96/97 (Pankaj Gupta)</option></select>
+        <select id="billSiteSelect" class="bill-input" style="flex:1; min-width:180px; font-weight:800;" onchange="billSwitchSite(this.value)"><option>Loading...</option></select>
         <button class="bill-btn-sm" style="background:#D4A94E; color:#1a1405; padding:11px 16px; border-radius:12px;" onclick="billOpenNewSite()">+ New Site</button>
       </div>
       <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
@@ -2248,8 +2248,8 @@ img, canvas, svg, video { max-width: 100%; }
       <div class="bill-stat">
         <div class="bill-stat-box" style="background:#EEF2FF; border-color:#C7D2FE; color:#4338CA;"><div style="font-size:11px; font-weight:800;">Total Area</div><div id="billTotSqft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 Sqft</div></div>
         <div class="bill-stat-box" style="background:#F5F3FF; border-color:#DDD6FE; color:#6D28D9;"><div style="font-size:11px; font-weight:800;">Running Ft</div><div id="billTotRft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 RFT</div></div>
-        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
-        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
+        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
+        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
       </div>
     </div>
 
@@ -2262,7 +2262,7 @@ img, canvas, svg, video { max-width: 100%; }
       </div></div>
     </div>
 
-    <div id="billSubTab-meas">
+    <div id="billSubTab-meas" style="display: block;">
       <div class="bill-card">
         <h3 style="margin:0 0 12px 0; font-size:15px; font-weight:900;">+ New Entry with Headings</h3>
         <div class="head-grid" style="background:#FFFBEB; border:2px solid #FDE68A; padding:12px; border-radius:14px; margin-bottom:12px;">
@@ -2272,7 +2272,7 @@ img, canvas, svg, video { max-width: 100%; }
         </div>
         <div class="unit-row">
           <div><label style="font-size:11px; font-weight:800;">Item Name</label><input id="billItemName" class="bill-input" placeholder="Italian Floor" style="margin-top:4px; font-weight:700;" list="billItemList"><datalist id="billItemList"></datalist></div>
-          <div><label style="font-size:11px; font-weight:800;">Category + Rate</label><select id="billCategory" class="bill-input" style="margin-top:4px; font-weight:700;"><option value="Floor Tile">Floor Tile (₹65)</option><option value="General">General (₹50)</option><option value="Granite">Granite (₹140)</option><option value="Italian Floor">Italian Floor (₹180)</option><option value="Wall Tile">Wall Tile (₹75)</option></select></div>
+          <div><label style="font-size:11px; font-weight:800;">Category + Rate</label><select id="billCategory" class="bill-input" style="margin-top:4px; font-weight:700;"><option>Italian Floor (₹180)</option></select></div>
         </div>
         <div class="unit-row">
           <div><label style="font-size:11px; font-weight:800;">Unit Type</label><select id="billUnit" class="bill-input" style="margin-top:4px; font-weight:800;" onchange="billOnUnitChange()"><option value="sqft">Sq Ft - L x W (Area)</option><option value="rft">RFT - Only Length</option></select></div>
@@ -2285,28 +2285,40 @@ img, canvas, svg, video { max-width: 100%; }
           <label style="font-size:12px; font-weight:900;">📐 Dimensions</label>
           <button type="button" class="bill-btn-sm" style="background:#15171C; color:#FDE68A; padding:10px 16px; border-radius:10px;" onclick="billAddDimRow()">+ Add Dimension Row</button>
         </div>
-        <div id="billDimRows"><div class="dim-block"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><span style="background:#15171C; color:#FDE68A; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:900;">Row 1 - L x W = Area</span><span style="font-size:10px; color:#94A3B8;">First row</span></div><div class="dim-grid"><div><label style="font-size:11px; font-weight:800; display:block; margin-bottom:4px;">📏 LENGTH - Feet + Inch</label><div class="dim-field"><input type="number" step="any" inputmode="decimal" placeholder="Feet e.g. 10" value="" oninput="billDimChange(0, 'lFt', this.value)" class="bill-input" style="margin:0;"><input type="number" step="any" inputmode="decimal" placeholder="Inch" value="" oninput="billDimChange(0, 'lIn', this.value)" class="bill-input" style="margin:0;"></div></div><div><label style="font-size:11px; font-weight:800; display:block; margin-bottom:4px;">📐 WIDTH - Feet + Inch</label><div class="dim-field"><input type="number" step="any" inputmode="decimal" placeholder="Feet e.g. 12" value="" oninput="billDimChange(0, 'wFt', this.value)" class="bill-input" style="margin:0;"><input type="number" step="any" inputmode="decimal" placeholder="Inch" value="" oninput="billDimChange(0, 'wIn', this.value)" class="bill-input" style="margin:0;"></div></div></div></div></div>
+        <div id="billDimRows">
+          <div class="dim-block" data-static="1">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <span style="background:#15171C; color:#FDE68A; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:900;">Row 1 - L x W</span>
+              <span style="font-size:10px; color:#94A3B8;">First row</span>
+            </div>
+            <div class="dim-grid">
+              <div><label style="font-size:11px; font-weight:800; display:block; margin-bottom:4px;">📏 LENGTH</label><div class="dim-field"><input type="number" step="any" placeholder="Feet" class="bill-input bill-lft" style="margin:0;" oninput="billStaticCalc()"><input type="number" step="any" placeholder="Inch" class="bill-input bill-lin" style="margin:0;" oninput="billStaticCalc()"></div></div>
+              <div id="billStaticWidth"><label style="font-size:11px; font-weight:800; display:block; margin-bottom:4px;">📐 WIDTH</label><div class="dim-field"><input type="number" step="any" placeholder="Feet" class="bill-input bill-wft" style="margin:0;" oninput="billStaticCalc()"><input type="number" step="any" placeholder="Inch" class="bill-input bill-win" style="margin:0;" oninput="billStaticCalc()"></div></div>
+            </div>
+          </div>
+        </div>
         <div style="background:#0F172A; color:white; padding:12px 14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; margin-top:12px; flex-wrap:wrap; gap:8px;">
-          <div><div style="font-size:10px; color:#94A3B8; font-weight:700;">CALCULATION</div><div id="billCalcPreview" style="font-size:11px; color:#CBD5E1; margin-top:2px; font-family:monospace; word-break:break-all;">0 = 0.00 Sqft</div></div>
+          <div><div style="font-size:10px; color:#94A3B8; font-weight:700;">CALCULATION</div><div id="billCalcPreview" style="font-size:11px; color:#CBD5E1; margin-top:2px; font-family:monospace; word-break:break-all;">0 = 0.00</div></div>
           <div style="text-align:right;"><div style="font-size:10px; color:#94A3B8;">TOTAL QTY</div><div id="billQtyPreview" style="color:#FBBF24; font-size:16px; font-weight:900;">0.00 Sqft</div></div>
         </div>
         <button type="button" class="bill-btn bill-btn-gold" style="margin-top:14px; font-size:14px; padding:14px;" onclick="billAddEntry()">✓ Add to Bill - Firebase Save</button>
         <div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">
           <input id="billSearch" class="bill-input" placeholder="🔍 Search Item / Section..." style="flex:1; min-width:140px;" oninput="billRenderList()">
-          <select id="billFilterCat" class="bill-input" style="width:140px;" onchange="billRenderList()"><option value="All">All Categories</option><option value="Floor Tile">Floor Tile</option><option value="General">General</option><option value="Granite">Granite</option><option value="Italian Floor">Italian Floor</option><option value="Wall Tile">Wall Tile</option></select>
+          <select id="billFilterCat" class="bill-input" style="width:140px;" onchange="billRenderList()"><option value="All">All Categories</option></select>
         </div>
       </div>
-      <div id="billGroupedList" style="margin:0 12px;"><div class="bill-card" style="text-align:center; color:#94A3B8; padding:24px;">No entries yet. Upar se add karo.</div></div>
+      <div id="billGroupedList" style="margin:0 12px;"></div>
     </div>
 
-    <div id="billSubTab-rates" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName">96/97</b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"><div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:14px; border-radius:14px; border:1.5px solid #E2E8F0;"><div><b style="font-size:13px;">Floor Tile</b><div style="font-size:11px; color:#64748B;">₹65/unit</div></div><div style="display:flex; gap:8px; align-items:center;"><input type="number" value="65" onchange="billUpdateRate('Floor Tile', this.value)" style="width:90px; padding:10px; border-radius:10px; border:1.8px solid #E2E8F0; font-weight:900; text-align:center;"><button onclick="billDeleteCat('Floor Tile')" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FECACA; padding:8px 12px; border-radius:10px; font-weight:800;">🗑️</button></div></div><div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:14px; border-radius:14px; border:1.5px solid #E2E8F0;"><div><b style="font-size:13px;">General</b><div style="font-size:11px; color:#64748B;">₹50/unit</div></div><div style="display:flex; gap:8px; align-items:center;"><input type="number" value="50" onchange="billUpdateRate('General', this.value)" style="width:90px; padding:10px; border-radius:10px; border:1.8px solid #E2E8F0; font-weight:900; text-align:center;"><button onclick="billDeleteCat('General')" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FECACA; padding:8px 12px; border-radius:10px; font-weight:800;">🗑️</button></div></div><div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:14px; border-radius:14px; border:1.5px solid #E2E8F0;"><div><b style="font-size:13px;">Granite</b><div style="font-size:11px; color:#64748B;">₹140/unit</div></div><div style="display:flex; gap:8px; align-items:center;"><input type="number" value="140" onchange="billUpdateRate('Granite', this.value)" style="width:90px; padding:10px; border-radius:10px; border:1.8px solid #E2E8F0; font-weight:900; text-align:center;"><button onclick="billDeleteCat('Granite')" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FECACA; padding:8px 12px; border-radius:10px; font-weight:800;">🗑️</button></div></div><div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:14px; border-radius:14px; border:1.5px solid #E2E8F0;"><div><b style="font-size:13px;">Italian Floor</b><div style="font-size:11px; color:#64748B;">₹180/unit</div></div><div style="display:flex; gap:8px; align-items:center;"><input type="number" value="180" onchange="billUpdateRate('Italian Floor', this.value)" style="width:90px; padding:10px; border-radius:10px; border:1.8px solid #E2E8F0; font-weight:900; text-align:center;"><button onclick="billDeleteCat('Italian Floor')" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FECACA; padding:8px 12px; border-radius:10px; font-weight:800;">🗑️</button></div></div><div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; padding:14px; border-radius:14px; border:1.5px solid #E2E8F0;"><div><b style="font-size:13px;">Wall Tile</b><div style="font-size:11px; color:#64748B;">₹75/unit</div></div><div style="display:flex; gap:8px; align-items:center;"><input type="number" value="75" onchange="billUpdateRate('Wall Tile', this.value)" style="width:90px; padding:10px; border-radius:10px; border:1.8px solid #E2E8F0; font-weight:900; text-align:center;"><button onclick="billDeleteCat('Wall Tile')" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FECACA; padding:8px 12px; border-radius:10px; font-weight:800;">🗑️</button></div></div></div></div></div>
-    <div id="billSubTab-adv" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"><div style="text-align:center; color:#94A3B8; padding:20px; background:#F8FAFC; border-radius:12px; border:1.5px dashed #E2E8F0;">No advance payments</div></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color:#FBBF24; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color:#F87171; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div></div></div></div>
-    <div id="billSubTab-print" style="display:none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><button class="bill-btn-sm" style="background:#25D366; color:white; padding:14px;" onclick="billShareWhatsApp()">📱 WhatsApp</button><button class="bill-btn-sm" style="background:#15171C; color:white; padding:14px;" onclick="window.print()">🖨️ Print / PDF</button></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight:900; font-size:12px;">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"><div style="border-bottom:3px solid #15171C; padding-bottom:12px; margin-bottom:14px;"><div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;"><div><h1 style="margin:0; font-size:18px; font-weight:900;">SHUKLA MARBLE CONTRACTOR</h1><p style="margin:4px 0 0 0; font-size:10px; font-weight:800; color:#AD832E;">PREMIUM MARBLE, GRANITE &amp; TILE FITTING</p></div><div style="background:#15171C; color:#D4A94E; padding:6px 14px; border-radius:20px; font-size:11px; font-weight:900;">ESTIMATE / BILL</div></div><div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; font-size:12px; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div>Client: <b>Pankaj Gupta</b><br>Site: <b>96/97</b></div><div style="text-align:right;">Date: <b>2026-11-02</b><br>Total: <b style="color:#16A34A;">₹0</b></div></div></div><div style="background:#15171C; color:white; padding:16px; border-radius:14px; margin-top:12px;"><div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800;"><span>GRAND TOTAL:</span><span>₹0</span></div><div style="display:flex; justify-content:space-between; color:#FBBF24; margin-top:8px; font-size:12px;"><span>Total Advance:</span><span>₹0</span></div><div style="display:flex; justify-content:space-between; border-top:2px solid #334155; margin-top:10px; padding-top:10px; font-size:16px; font-weight:900; color:#4ADE80;"><span>BALANCE DUE:</span><span>₹0</span></div></div></div></div>
+    <div id="billSubTab-rates" style="display: none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName"></b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"></div></div></div>
+    <div id="billSubTab-adv" style="display: none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color: rgb(251, 191, 36); font-size: 18px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="18" data-smk="₹0|148">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color: rgb(248, 113, 113); font-size: 18px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="18" data-smk="₹0|148">₹0</div></div></div></div></div>
+    <div id="billSubTab-print" style="display: none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share</button></div>
+    <div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight: 900; font-size: 12px; white-space: nowrap; flex-shrink: 0;" data-sm-base="12" data-smk="90%|175">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
 
     <div id="billNewSiteModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
       <div style="background:white; border-radius:22px; padding:22px; width:100%; max-width:380px;">
         <h3 style="margin:0 0 14px 0; font-weight:900; font-size:18px;">🏗️ New Site</h3>
-        <input id="billNewSiteName" class="bill-input" placeholder="Site Name e.g. 96/97" style="margin-bottom:10px;">
+        <input id="billNewSiteName" class="bill-input" placeholder="Site Name e.g. House No, Project" style="margin-bottom:10px;">
         <input id="billNewSiteClient" class="bill-input" placeholder="Client Name" style="margin-bottom:10px;">
         <input id="billNewSiteAddr" class="bill-input" placeholder="Address (Optional)" style="margin-bottom:10px;">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
@@ -2318,7 +2330,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <script>
-  const BILL_DEFAULT_RATES = { "Italian Floor": 180, "Granite": 140, "Wall Tile": 75, "Floor Tile": 65, "General": 50 };
+  const BILL_DEFAULT_RATES = {}; // No hardcoded rates - user will add via Rate Card
+  let billEditingItemId = null;
   let billSites = {};
   let billCurrentId = null;
   let billDimRows = [{ lFt:'', lIn:'', wFt:'', wIn:'' }];
@@ -2340,10 +2353,13 @@ img, canvas, svg, video { max-width: 100%; }
       }
     }catch(e){}
     if(!billCurrentId || !billSites[billCurrentId]){
-      const id='bill_'+Date.now();
-      billSites[id]={ id, name:'96/97', client:'Pankaj Gupta', address:'', createdDate:new Date().toISOString().split('T')[0], rates:{...BILL_DEFAULT_RATES}, advancePayments:[], items:[] };
-      billCurrentId=id;
-      billSaveLocal();
+      // No default site - user must create new site
+      if(Object.keys(billSites).length===0){
+        billCurrentId=null;
+        // Don't auto-create 96/97 site anymore
+      } else {
+        billCurrentId=Object.keys(billSites)[0];
+      }
     }
     billEnsureRates();
     billListenFirebase();
@@ -2353,7 +2369,7 @@ img, canvas, svg, video { max-width: 100%; }
 
   function billEnsureRates(){
     const site=billGetCurrent(); if(!site) return;
-    if(!site.rates || Object.keys(site.rates).length===0){ site.rates={...BILL_DEFAULT_RATES}; billSaveLocal(); }
+    if(!site.rates) { site.rates={}; billSaveLocal(); } // Don't auto-fill hardcoded rates
   }
 
   function billListenFirebase(){
@@ -2541,7 +2557,27 @@ img, canvas, svg, video { max-width: 100%; }
     let dimText=dimTexts.join(' + ');
     if(dimTexts.length>1 && mult!==1) dimText='('+dimText+') X '+mult+' Nos';
     else if(mult!==1) dimText=dimText+' X '+mult+' Nos';
-    const newItem={ id:'item_'+Date.now(), section, subHeading:subHead, subSubHeading:subSub, item:itemName, category, unitType:unit, dimText, qty:parseFloat(finalQty.toFixed(2)) };
+    // If editing, update existing item
+    if(billEditingItemId){
+      const existing = site.items.find(i=>i.id===billEditingItemId);
+      if(existing){
+        existing.section=section;
+        existing.subHeading=subHead;
+        existing.subSubHeading=subSub;
+        existing.item=itemName;
+        existing.category=category;
+        existing.unitType=unit;
+        existing.dimText=dimText;
+        existing.qty=parseFloat(finalQty.toFixed(2));
+        existing.dimRows=JSON.parse(JSON.stringify(billDimRows));
+        existing.multiplier=mult;
+        billSaveLocal(); billSaveToFirebase(site);
+        billCancelEdit();
+        billRenderAll();
+        return;
+      }
+    }
+    const newItem={ id:'item_'+Date.now(), section, subHeading:subHead, subSubHeading:subSub, item:itemName, category, unitType:unit, dimText, qty:parseFloat(finalQty.toFixed(2)), dimRows:JSON.parse(JSON.stringify(billDimRows)), multiplier:mult };
     site.items=site.items||[]; site.items.push(newItem);
     billSaveLocal(); billSaveToFirebase(site);
     document.getElementById('billItemName').value=''; billDimRows=[{lFt:'',lIn:'',wFt:'',wIn:''}]; const multEl=document.getElementById('billMultiplier'); if(multEl) multEl.value='1';
@@ -2575,7 +2611,49 @@ img, canvas, svg, video { max-width: 100%; }
   function billQuickAdd(sec,sub){ const secEl=document.getElementById('billSec'); const subEl=document.getElementById('billSubHead'); if(secEl) secEl.value=sec; if(subEl) subEl.value=sub; billShowSubTab('meas'); window.scrollTo({top:0, behavior:'smooth'}); }
   function billDelSection(sec){ if(!confirm('Delete section '+sec+'?')) return; const site=billGetCurrent(); site.items=site.items.filter(i=>i.section!==sec); billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billDeleteItem(id){ if(!confirm('Delete entry?')) return; const site=billGetCurrent(); site.items=site.items.filter(i=>i.id!==id); billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
-  function billEditItem(id){ const site=billGetCurrent(); const it=site.items.find(i=>i.id===id); if(!it) return; const newName=prompt('Item Name:', it.item); if(newName===null) return; const newQty=prompt('Qty:', it.qty); if(newQty===null) return; if(newName) it.item=newName; it.qty=parseFloat(newQty)||it.qty; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
+  function billEditItem(id){
+    const site=billGetCurrent(); if(!site) return;
+    const it=site.items.find(i=>i.id===id); if(!it) return;
+    // Load into edit mode
+    billEditingItemId = id;
+    // Populate form fields
+    const secEl=document.getElementById('billSec'); if(secEl) secEl.value=it.section||'General';
+    const subEl=document.getElementById('billSubHead'); if(subEl) subEl.value=it.subHeading||'Main Work';
+    const subSubEl=document.getElementById('billSubSub'); if(subSubEl) subSubEl.value=it.subSubHeading||'';
+    const nameEl=document.getElementById('billItemName'); if(nameEl) nameEl.value=it.item||'';
+    const catEl=document.getElementById('billCategory'); if(catEl) catEl.value=it.category||'General';
+    const unitEl=document.getElementById('billUnit'); if(unitEl) { unitEl.value=it.unitType||'sqft'; }
+    const multEl=document.getElementById('billMultiplier'); if(multEl) multEl.value=it.multiplier||'1';
+    // Restore dimension rows - use stored dimRows if available, else try to parse
+    if(it.dimRows && Array.isArray(it.dimRows) && it.dimRows.length>0){
+      billDimRows = JSON.parse(JSON.stringify(it.dimRows));
+    } else {
+      // Fallback: create one row from qty if possible
+      billDimRows = [{ lFt:'', lIn:'', wFt:'', wIn:'' }];
+      // Try to keep qty visible
+    }
+    billRenderDimRows();
+    // Change button text
+    const addBtn = document.querySelector('[onclick="billAddEntry()"]');
+    if(addBtn) { addBtn.innerText='✏️ Update Entry'; addBtn.style.background='#4338CA'; }
+    // Show measurement tab
+    billShowSubTab('meas');
+    window.scrollTo({top:0, behavior:'smooth'});
+    // Highlight editing
+    const msg = document.getElementById('billCalcPreview');
+    if(msg) msg.innerText = '✏️ Editing: ' + it.item + ' - Change dimensions and click Update';
+  }
+  
+  function billCancelEdit(){
+    billEditingItemId = null;
+    billDimRows=[{lFt:'',lIn:'',wFt:'',wIn:''}];
+    const nameEl=document.getElementById('billItemName'); if(nameEl) nameEl.value='';
+    const multEl=document.getElementById('billMultiplier'); if(multEl) multEl.value='1';
+    billRenderDimRows();
+    const addBtn = document.querySelector('[onclick="billAddEntry()"]');
+    if(addBtn) { addBtn.innerText='➕ Add Entry'; addBtn.style.background='#15171C'; }
+  }
+
   function billShowSubTab(tab){ ['meas','rates','adv','print'].forEach(t=>{ const el=document.getElementById('billSubTab-'+t); const btn=document.getElementById('billTabBtn-'+t); if(el) el.style.display=t===tab?'block':'none'; if(btn) btn.classList.toggle('active', t===tab); }); if(tab==='print') billRenderPrint(); }
   function billAddCategory(){ const name=document.getElementById('billNewCatName')?.value.trim()||''; const rate=parseFloat(document.getElementById('billNewCatRate')?.value)||0; if(!name){ alert('Category name dalo'); return; } const site=billGetCurrent(); site.rates[name]=rate; const n1=document.getElementById('billNewCatName'); const n2=document.getElementById('billNewCatRate'); if(n1) n1.value=''; if(n2) n2.value=''; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billUpdateRate(cat,val){ const site=billGetCurrent(); site.rates[cat]=parseFloat(val)||0; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
@@ -2598,7 +2676,7 @@ img, canvas, svg, video { max-width: 100%; }
   function billUpdatePrintScale(val){ const txt=document.getElementById('billScaleTxt'); if(txt) txt.innerText=val+'%'; const area=document.getElementById('billPrintArea'); if(area) area.style.zoom=val+'%'; }
   function billSwitchSite(id){ billCurrentId=id; billSaveLocal(); billRenderAll(); }
   function billOpenNewSite(){ const m=document.getElementById('billNewSiteModal'); if(m) m.style.display='flex'; }
-  function billCreateSite(){ const name=document.getElementById('billNewSiteName')?.value.trim()||''; const client=document.getElementById('billNewSiteClient')?.value.trim()||'Client'; const addr=document.getElementById('billNewSiteAddr')?.value.trim()||''; if(!name){ alert('Site name dalo'); return; } const id='bill_'+Date.now(); const site={ id, name, client, address:addr, createdDate:new Date().toISOString().split('T')[0], rates:{...BILL_DEFAULT_RATES}, advancePayments:[], items:[] }; billSites[id]=site; billCurrentId=id; const modal=document.getElementById('billNewSiteModal'); if(modal) modal.style.display='none'; const n1=document.getElementById('billNewSiteName'); const n2=document.getElementById('billNewSiteClient'); const n3=document.getElementById('billNewSiteAddr'); if(n1) n1.value=''; if(n2) n2.value=''; if(n3) n3.value=''; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
+  function billCreateSite(){ const name=document.getElementById('billNewSiteName')?.value.trim()||''; const client=document.getElementById('billNewSiteClient')?.value.trim()||''; const addr=document.getElementById('billNewSiteAddr')?.value.trim()||''; if(!name){ alert('Site name dalo'); return; } const id='bill_'+Date.now(); const site={ id, name, client, address:addr, createdDate:new Date().toISOString().split('T')[0], rates:{}, advancePayments:[], items:[] }; billSites[id]=site; billCurrentId=id; const modal=document.getElementById('billNewSiteModal'); if(modal) modal.style.display='none'; const n1=document.getElementById('billNewSiteName'); const n2=document.getElementById('billNewSiteClient'); const n3=document.getElementById('billNewSiteAddr'); if(n1) n1.value=''; if(n2) n2.value=''; if(n3) n3.value=''; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billDeleteSite(){ if(Object.keys(billSites).length<=1){ alert('Last site delete nahi kar sakte'); return; } const cur=billGetCurrent(); if(!cur) return; if(!confirm('Delete site '+cur.name+'?')) return; const id=billCurrentId; delete billSites[id]; billDeleteFromFirebase(id); billCurrentId=Object.keys(billSites)[0]; billSaveLocal(); billRenderAll(); }
   function billUpdateClient(){ const site=billGetCurrent(); if(!site) return; const el=document.getElementById('billClientName'); if(el) site.client=el.value; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billUpdateSiteName(){ const site=billGetCurrent(); if(!site) return; const el=document.getElementById('billSiteNameInput'); if(el) site.name=el.value; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
