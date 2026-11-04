@@ -2270,6 +2270,7 @@ img, canvas, svg, video { max-width: 100%; }
     <div class="bill-card" style="padding:10px;">
       <div class="bill-tabs-wrap"><div class="bill-tabs">
         <button class="bill-tab active" id="billTabBtn-meas" onclick="billShowSubTab('meas')">📐 Measurement</button>
+        <button class="bill-tab" id="billTabBtn-premise" onclick="billShowSubTab('premise')">📝 Premise Bill</button>
         <button class="bill-tab" id="billTabBtn-rates" onclick="billShowSubTab('rates')">💰 Rate Card</button>
         <button class="bill-tab" id="billTabBtn-adv" onclick="billShowSubTab('adv')">💵 Advance</button>
         <button class="bill-tab" id="billTabBtn-print" onclick="billShowSubTab('print')">📄 Print Bill</button>
@@ -2324,6 +2325,35 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="billGroupedList" style="margin:0 12px;"></div>
     </div>
 
+    <div id="billSubTab-premise" style="display:none;">
+      <div class="bill-card" style="border:2px solid #F59E0B; background:linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);">
+        <h3 style="margin:0 0 8px 0; font-size:14px; font-weight:900;">📝 Premise Bill - Pura Text Likho</h3>
+        <p style="margin:0 0 12px 0; font-size:11px; color:#92400E;">Aap apna pura bill ka premise yahan likh sakte ho jaise: <br><i>Amaan Ji - Final Bill, Area Calculation, Grand Total etc.</i> Wahi A4 premium header ke saath PDF ban jayegi.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+          <input id="billPremiseClient" class="bill-input" placeholder="Client Name - e.g. Amaan Ji" style="margin:0;">
+          <input id="billPremiseSite" class="bill-input" placeholder="Site Name - e.g. Panipat" style="margin:0;">
+        </div>
+        <textarea id="billPremiseText" class="bill-input" placeholder="*Amaan Ji - Final Bill*
+*1. Panipat Marble wale ko* = 6,400/-
+*2. Area Calculation:*
+- Ramp: 50'6'' x 9'0'' = 454.50
+- *Top:* 32.5 x 2 = 64.82
+- *Total = 528.32 sq ft @ 50/- = 26,416/-*
+*3. Granite Cutting:* 47 x 12 = 564 @ 50/- = *28,200/-*
+Grand Total = 98,941/-" style="margin:0; min-height:280px; font-family:monospace; font-size:12px; line-height:1.5; white-space:pre-wrap;"></textarea>
+        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+          <button class="bill-btn" style="flex:1; background:#0F172A; color:white; padding:14px; font-weight:900; border-radius:12px;" onclick="billSavePremise()">💾 Save &amp; Preview Bill</button>
+          <button class="bill-btn" style="flex:1; background:#25D366; color:white; padding:14px; font-weight:900; border-radius:12px;" onclick="billGeneratePremisePDF()">📄 PDF - WhatsApp Share</button>
+        </div>
+        <div style="margin-top:10px; background:white; border:1px solid #FCD34D; border-radius:8px; padding:8px; font-size:10px; color:#92400E;">
+          <b>Tips:</b> • *text* ko bold banane ke liye * ke beech likho - jaise *Grand Total* • Har line alag rahegi jaise aap likhoge • Calculation aap khud likh do, PDF me waisa hi aayega
+        </div>
+      </div>
+      <div class="bill-card">
+        <h4 style="margin:0 0 8px 0; font-size:12px; font-weight:900;">📋 Saved Premise Bills</h4>
+        <div id="billPremiseList"></div>
+      </div>
+    </div>
     <div id="billSubTab-rates" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 6px 0; font-size:16px; font-weight:900;">💰 Rate Card</h3><p style="margin:0 0 14px 0; font-size:12px; color:#64748B;">Site: <b id="billRateSiteName"></b> - Rate main backup me save hoga</p><div style="background:#F8FAFC; border:2px dashed #CBD5E1; padding:14px; border-radius:14px; margin-bottom:16px;"><div style="font-size:12px; font-weight:800; margin-bottom:8px;">+ Add New Category</div><div style="display:grid; grid-template-columns:1fr 100px auto; gap:8px;"><input id="billNewCatName" class="bill-input" placeholder="e.g. Step Riser" style="margin:0;"><input id="billNewCatRate" class="bill-input" type="number" placeholder="₹ Rate" style="margin:0;"><button class="bill-btn-sm" style="background:#15171C; color:white; padding:12px 18px;" onclick="billAddCategory()">Add</button></div></div><div id="billRatesList" style="display:grid; gap:10px;"></div></div></div>
     <div id="billSubTab-adv" style="display:none;"><div class="bill-card"><h3 style="margin:0 0 12px 0; font-size:16px; font-weight:900;">💵 Advance Payments</h3><div style="background:#F0FDF4; border:2px solid #BBF7D0; padding:14px; border-radius:14px; display:grid; gap:10px;"><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><label style="font-size:11px; font-weight:800;">Date</label><input id="billAdvDate" type="date" class="bill-input" style="margin-top:4px;"></div><div><label style="font-size:11px; font-weight:800;">Amount ₹</label><input id="billAdvAmt" type="number" class="bill-input" placeholder="10000" style="margin-top:4px; font-weight:900;"></div></div><div style="display:flex; gap:8px;"><input id="billAdvNote" class="bill-input" placeholder="Cash / UPI / Online" style="margin:0; flex:1;"><button class="bill-btn-sm" style="background:#16A34A; color:white; padding:12px 20px;" onclick="billAddAdvance()">Add</button></div></div><div id="billAdvList" style="margin-top:16px;"></div><div style="background:#15171C; color:white; padding:14px; border-radius:14px; margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;"><div style="background:rgba(255,255,255,0.08); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#94A3B8;">Total Advance</div><div id="billAdvTotal" style="color:#FBBF24; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div><div style="background:rgba(248,113,113,0.15); padding:10px; border-radius:10px;"><div style="font-size:11px; color:#FCA5A5;">Balance Due</div><div id="billAdvBal" style="color:#F87171; font-size:18px; font-weight:900; margin-top:4px;">₹0</div></div></div></div></div>
     <div id="billSubTab-print" style="display:none;"><div class="bill-card no-print"><div style="display:grid; grid-template-columns:1fr; gap:10px;"><button id="billPdfBtn" class="bill-btn-sm" style="background:#15171C; color:white; padding:16px; font-size:14px; font-weight:900; border-radius:12px;" onclick="billGenerateAndSharePDF()">📄 PDF - Download &amp; WhatsApp Share (A4 Print)</button></div><div id="billPdfStatus" style="display:none; background:#FEF3C7; border:1.5px solid #FCD34D; padding:10px; border-radius:10px; margin-top:10px; font-size:11px; font-weight:800; color:#92400E; text-align:center;"></div><div style="display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; background:#F8FAFC; padding:12px; border-radius:12px; border:1.5px solid #E2E8F0;"><div style="display:flex; align-items:center; gap:8px; flex:1; min-width:160px;"><span style="font-size:11px; font-weight:800;">Size:</span><input type="range" id="billPrintScale" min="60" max="100" value="90" style="flex:1;" oninput="billUpdatePrintScale(this.value)"><span id="billScaleTxt" style="font-weight:900; font-size:12px;">90%</span></div><label style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="billShowAdv" checked="" onchange="billRenderPrint()"> Advance History</label></div></div><div class="bill-card print-area" id="billPrintArea"></div></div>
@@ -2653,7 +2683,153 @@ img, canvas, svg, video { max-width: 100%; }
     if(addBtn) { addBtn.innerText='➕ Add Entry'; addBtn.style.background='#15171C'; }
   }
 
-  function billShowSubTab(tab){ ['meas','rates','adv','print'].forEach(t=>{ const el=document.getElementById('billSubTab-'+t); const btn=document.getElementById('billTabBtn-'+t); if(el) el.style.display=t===tab?'block':'none'; if(btn) btn.classList.toggle('active', t===tab); }); if(tab==='print') billRenderPrint(); }
+  function billShowSubTab(tab){ ['meas','premise','rates','adv','print'].forEach(t=>{ const el=document.getElementById('billSubTab-'+t); const btn=document.getElementById('billTabBtn-'+t); if(el) el.style.display=t===tab?'block':'none'; if(btn) btn.classList.toggle('active', t===tab); }); if(tab==='print') billRenderPrint(); if(tab==='premise') billRenderPremiseList(); }
+  
+  function billSavePremise(){
+    const text = document.getElementById('billPremiseText')?.value?.trim();
+    const client = document.getElementById('billPremiseClient')?.value?.trim() || 'Client';
+    const siteName = document.getElementById('billPremiseSite')?.value?.trim() || 'Site-'+Date.now();
+    if(!text){ alert('Premise text likho pehle'); return; }
+    let grandTotal = 0;
+    const gtMatch = text.match(/Grand Total\s*=\s*([\d,]+)/i) || text.match(/Total\s*=\s*([\d,]+)/i);
+    if(gtMatch){ grandTotal = parseFloat(gtMatch[1].replace(/,/g,''))||0; }
+    let site = billGetCurrent();
+    const isNew = !site || document.getElementById('billPremiseSite')?.value?.trim();
+    if(isNew || !site){
+      const id='bill_'+Date.now();
+      site={ id, name:siteName, client:client, address:'', createdDate:new Date().toISOString().split('T')[0], rates:{}, advancePayments:[], items:[], premiseText:text, isPremise:true, premiseTotal:grandTotal };
+      billSites[id]=site; billCurrentId=id;
+    } else {
+      site.premiseText = text; site.isPremise = true; site.premiseTotal = grandTotal; site.client = client; if(siteName) site.name = siteName;
+    }
+    billSaveLocal(); billSaveToFirebase(site); billRenderAll(); billRenderPrint();
+    alert('✅ Premise Bill Save ho gaya! Print tab me dekho'); billShowSubTab('print');
+  }
+  function billRenderPremiseList(){
+    const listEl=document.getElementById('billPremiseList'); if(!listEl) return;
+    const premiseSites = Object.values(billSites).filter(s=>s.isPremise);
+    if(premiseSites.length===0){
+      listEl.innerHTML='<div style="text-align:center; color:#94A3B8; padding:16px; background:#F8FAFC; border-radius:10px; border:1.5px dashed #E2E8F0;">No premise bills yet</div>';
+      return;
+    }
+    listEl.innerHTML = premiseSites.map(s=>`
+      <div style="background:white; border:1.5px solid #E2E8F0; border-radius:12px; padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+        <div><b style="font-size:13px;">${s.name}</b><br><span style="font-size:11px; color:#64748B;">${s.client} | ${s.createdDate}</span><br><span style="font-size:10px; background:#FEF3C7; padding:2px 6px; border-radius:8px;">Premise Bill</span></div>
+        <div style="display:flex; gap:6px;">
+          <button onclick="billLoadPremise('${s.id}')" style="background:#EEF2FF; color:#4338CA; border:1.5px solid #C7D2FE; padding:6px 12px; border-radius:10px; font-weight:800; font-size:11px;">Load</button>
+          <button onclick="billCurrentId='${s.id}'; billRenderPrint(); billShowSubTab('print');" style="background:#0F172A; color:white; padding:6px 12px; border-radius:10px; font-weight:800; font-size:11px;">View</button>
+        </div>
+      </div>
+    `).join('');
+  }
+  function billLoadPremise(id){
+    const site=billSites[id]; if(!site) return;
+    billCurrentId=id;
+    document.getElementById('billPremiseText').value = site.premiseText||'';
+    document.getElementById('billPremiseClient').value = site.client||'';
+    document.getElementById('billPremiseSite').value = site.name||'';
+    billRenderAll(); billShowSubTab('premise');
+  }
+  function formatPremiseForHTML(text){
+    if(!text) return '';
+    let html = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    html = html.replace(/\*([^\*]+)\*/g, '<b>$1</b>');
+    html = html.replace(/\n/g, '<br>');
+    return html;
+  }
+  function formatPremiseForPDF(doc, text, startY, M, W){
+    const lines = text.split('\n');
+    let y = startY;
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(15,23,42);
+    lines.forEach(line=>{
+      let clean = line.replace(/\*/g,'').trim();
+      if(!clean) { y+=3; return; }
+      if(line.trim().startsWith('*') && line.trim().endsWith('*')){
+        doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(15,23,42);
+        if(y>270){ doc.addPage(); y=20; }
+        doc.text(clean, M, y); y+=6;
+        doc.setFont('helvetica','normal'); doc.setFontSize(7);
+      } else if(clean.toLowerCase().includes('grand total') || clean.toLowerCase().includes('subtotal')){
+        doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(16,122,60);
+        if(y>270){ doc.addPage(); y=20; }
+        doc.text(clean, M, y); y+=6;
+        doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(15,23,42);
+      } else {
+        if(y>280){ doc.addPage(); y=20; }
+        const parts = line.split('*');
+        let x = M;
+        parts.forEach((part, idx)=>{
+          const bold = idx%2===1;
+          if(bold) doc.setFont('helvetica','bold'); else doc.setFont('helvetica','normal');
+          if(part){ doc.text(part, x, y); x += doc.getTextWidth(part); }
+        });
+        y+=5;
+      }
+    });
+    return y;
+  }
+  async function billGeneratePremisePDF(){
+    const text = document.getElementById('billPremiseText')?.value?.trim();
+    const client = document.getElementById('billPremiseClient')?.value?.trim() || 'Client';
+    const siteName = document.getElementById('billPremiseSite')?.value?.trim() || 'Premise Bill';
+    if(!text){ alert('Pehle premise text likho'); return; }
+    const btn = document.querySelector('[onclick="billGeneratePremisePDF()"]');
+    const orig = btn?btn.innerText:'';
+    try{
+      if(btn){ btn.innerText='⏳ PDF Bana Rahe...'; btn.disabled=true; }
+      const doc = getJsPdfInstance('p','mm','a4');
+      const W=210, H=297, M=10; let y=M, pg=1;
+      function footer(){
+        doc.setFontSize(6); doc.setTextColor(130,130,130); doc.setFont('helvetica','normal');
+        const dt = new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
+        doc.text('https://anubhav1211.github.io/shuklacalc/', M, H-5);
+        doc.text(dt, W/2, H-5, {align:'center'});
+        doc.text('Page '+pg, W-M, H-5, {align:'right'});
+      }
+      doc.setFillColor(173,131,46); doc.rect(0,0,W,1.2,'F'); y+=4;
+      doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(15,23,42);
+      doc.text('SHUKLA MARBLE CONTRACTOR', W/2, y, {align:'center'}); y+=7;
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(173,131,46);
+      doc.text('PREMIUM MARBLE, GRANITE & TILE FITTING WORK', W/2, y, {align:'center'}); y+=4;
+      doc.setDrawColor(173,131,46); doc.setLineWidth(0.3); doc.line(W/2-25, y, W/2+25, y); y+=5;
+      const boxH=14;
+      doc.setFillColor(248,250,252); doc.setDrawColor(226,232,240); doc.setLineWidth(0.2);
+      doc.rect(M, y, W-2*M, boxH, 'FD');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(100,100,100);
+      doc.text('SITE:', M+3, y+5); doc.text('CLIENT:', M+3, y+11);
+      doc.setFont('helvetica','normal'); doc.setTextColor(15,23,42); doc.setFontSize(7);
+      doc.text(siteName, M+16, y+5); doc.text(client, M+16, y+11);
+      const midX=W/2; doc.line(midX, y+2, midX, y+boxH-2);
+      doc.setFont('helvetica','bold'); doc.setTextColor(100,100,100); doc.text('DATE:', midX+4, y+5); doc.text('TYPE:', midX+4, y+11);
+      doc.setFont('helvetica','normal'); doc.setTextColor(15,23,42); doc.text(new Date().toISOString().split('T')[0], midX+18, y+5); doc.setFont('helvetica','bold'); doc.setTextColor(173,131,46); doc.text('PREMISE BILL', midX+18, y+11);
+      y+=boxH+8;
+      doc.setDrawColor(226,232,240); doc.line(M, y, W-M, y); y+=6;
+      y = formatPremiseForPDF(doc, text, y, M, W);
+      y+=8;
+      doc.setFont('helvetica','italic'); doc.setFontSize(6); doc.setTextColor(100,100,100); doc.text('Thank you for your business! | Shukla Marble Contractor', W/2, y, {align:'center'});
+      footer();
+      const fileName = siteName.replace(/[^a-zA-Z0-9]/g,'_')+'_Premise_Bill.pdf';
+      const blob=doc.output('blob');
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=fileName; document.body.appendChild(a); a.click();
+      setTimeout(()=>{ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); },1500);
+      setTimeout(async()=>{
+        if(navigator.share && blob){
+          try{
+            const file=new File([blob], fileName, {type:'application/pdf'});
+            if(!navigator.canShare || navigator.canShare({files:[file]})){
+              await navigator.share({files:[file], title:siteName+' Premise Bill', text:text.slice(0,200)});
+              if(btn){ btn.innerText='✅ Shared!'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=orig; btn.disabled=false; btn.style.background='#25D366'; },3000); }
+              return;
+            }
+          }catch(e){ if(e.name==='AbortError'){ if(btn){ btn.innerText=orig; btn.disabled=false; } return; } }
+        }
+        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Premise Bill: '+siteName+'\n\n'+text.slice(0,1000)), '_blank');
+        if(btn){ btn.innerText='📱 WhatsApp Opened'; btn.style.background='#25D366'; setTimeout(()=>{ btn.innerText=orig; btn.disabled=false; btn.style.background='#25D366'; },4000); }
+      },600);
+    }catch(e){ console.error(e); alert('PDF Error: '+e.message); if(btn){ btn.innerText=orig; btn.disabled=false; } }
+  }
+
   function billAddCategory(){ const name=document.getElementById('billNewCatName')?.value.trim()||''; const rate=parseFloat(document.getElementById('billNewCatRate')?.value)||0; if(!name){ alert('Category name dalo'); return; } const site=billGetCurrent(); site.rates[name]=rate; const n1=document.getElementById('billNewCatName'); const n2=document.getElementById('billNewCatRate'); if(n1) n1.value=''; if(n2) n2.value=''; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billUpdateRate(cat,val){ const site=billGetCurrent(); site.rates[cat]=parseFloat(val)||0; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
   function billDeleteCat(cat){ if(!confirm('Delete '+cat+'?')) return; const site=billGetCurrent(); delete site.rates[cat]; billSaveLocal(); billSaveToFirebase(site); billRenderAll(); }
@@ -2665,18 +2841,15 @@ img, canvas, svg, video { max-width: 100%; }
   function billRenderPrint(){
     const site=billGetCurrent(); 
     if(!site){
-
       const area=document.getElementById('billPrintArea'); 
       if(area) area.innerHTML='<div style="text-align:center; padding:40px; color:#94A3B8;">No site selected. Create new site.</div>';
       return;
     }
     const showAdv=document.getElementById('billShowAdv')?.checked;
-    // Check if premise bill
+    // Premise bill check
     if(site.isPremise && site.premiseText){
       const premiseHtml = formatPremiseForHTML(site.premiseText);
-      const cost = site.premiseTotal || 0;
       const adv=(site.advancePayments||[]).reduce((s,p)=>s+(parseFloat(p.amount)||0),0);
-      const billNo = 'SM-'+(site.createdDate||'').replace(/-/g,'')+'-'+String(Date.now()).slice(-4);
       const dt = new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
       let html = `
     <style>
@@ -2716,7 +2889,7 @@ img, canvas, svg, video { max-width: 100%; }
         </div>
       </div>
       <div class="a4-premise">`+premiseHtml+`</div>
-      <div class="a4-grand"><div class="row green"><span>BALANCE / GRAND TOTAL:</span><span>Rs.`+(site.premiseTotal||0).toLocaleString('en-IN')+`</span></div></div>
+      <div class="a4-grand"><div class="row green"><span>GRAND TOTAL:</span><span>Rs.`+(site.premiseTotal||0).toLocaleString('en-IN')+`</span></div></div>
       <div style="display:flex; justify-content:space-between; font-size:9px; color:#94A3B8; margin-top:12px; border-top:1px solid #E2E8F0; padding-top:8px;"><span>https://anubhav1211.github.io/shuklacalc/</span><span>`+dt+`</span><span>Thank you!</span></div>
     </div>`;
       const area=document.getElementById('billPrintArea'); if(area) area.innerHTML=html;
