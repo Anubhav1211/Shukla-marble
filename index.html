@@ -1238,7 +1238,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body>
+<body class="">
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1258,20 +1258,20 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
     <button class="tab bnav-item" id="bt-m" onclick="showTab('m')"><span class="ti">🧱</span><span class="tl">मटेरियल</span></button>
     <button class="tab bnav-item" id="bt-a" onclick="showTab('a')"><span class="ti">📄</span><span class="tl">एग्रीमेंट</span></button>
-    <button class="tab bnav-item" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
+    <button class="tab bnav-item active" id="bt-bill" onclick="showTab('bill')"><span class="ti">🧮</span><span class="tl">बिल</span></button>
   </div>
 
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d">
+  <div id="t-d" style="display: none;">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -2206,7 +2206,7 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
-  <div id="t-bill" style="display: none; padding-bottom: 150px;">
+  <div id="t-bill" style="display: block; padding-bottom: 150px;" class="sm-page-in">
     <style>
       #t-bill .bill-card { background:#fff; margin:10px 12px; padding:14px; border-radius:18px; border:1.5px solid #E2E8F0; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
       #t-bill .bill-input { width:100%; min-width:0; padding:11px 12px; border:1.8px solid #E2E8F0; border-radius:12px; font-size:13px; font-weight:600; background:white; box-sizing:border-box; }
@@ -2262,8 +2262,8 @@ img, canvas, svg, video { max-width: 100%; }
       <div class="bill-stat">
         <div class="bill-stat-box" style="background:#EEF2FF; border-color:#C7D2FE; color:#4338CA;"><div style="font-size:11px; font-weight:800;">Total Area</div><div id="billTotSqft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 Sqft</div></div>
         <div class="bill-stat-box" style="background:#F5F3FF; border-color:#DDD6FE; color:#6D28D9;"><div style="font-size:11px; font-weight:800;">Running Ft</div><div id="billTotRft" style="font-size:15px; font-weight:900; margin-top:4px;">0.00 RFT</div></div>
-        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
-        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size:15px; font-weight:900; margin-top:4px;">₹0</div></div>
+        <div class="bill-stat-box" style="background:#DCFCE7; border-color:#BBF7D0; color:#166534;"><div style="font-size:11px; font-weight:800;">Total Cost</div><div id="billTotCost" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
+        <div class="bill-stat-box" style="background:#FEF3C7; border-color:#FDE68A; color:#92400E;"><div style="font-size:11px; font-weight:800;">Balance Due</div><div id="billBalDue" style="font-size: 15px; font-weight: 900; margin-top: 4px; white-space: nowrap; flex-shrink: 0;" data-sm-base="15" data-smk="₹0|161">₹0</div></div>
       </div>
     </div>
 
