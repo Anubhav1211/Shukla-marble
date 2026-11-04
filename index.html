@@ -1468,8 +1468,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
-  <div id="t-e" style="display: none;" class="sm-page-in">
-    <div class="card sm-stagger" id="hzTopCard" style="animation-delay: 0ms;">
+  <div id="t-e" style="display: none;">
+    <div class="card" id="hzTopCard">
       <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
@@ -1530,7 +1530,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card sm-stagger" id="whHolderCard" style="display: none; animation-delay: 30ms;">
+    <div class="card" id="whHolderCard" style="display: none;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -1554,7 +1554,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card sm-stagger" id="hzListCard" style="display: none; animation-delay: 60ms;">
+    <div class="card" id="hzListCard" style="display: none;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -1568,7 +1568,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card sm-stagger" id="hzCalCard" style="display: none; animation-delay: 90ms;">
+    <div class="card" id="hzCalCard" style="display: none;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
@@ -4882,6 +4882,9 @@ function renderDashSites() {
   let html = "";
   ids.forEach((id) => {
     const s = sites[id];
+    if(!s) return;
+    const house = (s.house||'').trim();
+    if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)) return; // hide 13-digit fake sites
     const closed = isClosedSite(s);
     if (dsFilter === "ongoing" && closed) return;
     if (dsFilter === "closed" && !closed) return;
@@ -10322,10 +10325,11 @@ if (document.readyState === "loading") {
     <div id="allSitesPaySummary" style="padding:12px 16px; background:#FEF3C7; border-bottom:1px solid #FCD34D; display:flex; justify-content:space-between; font-size:11px; font-weight:800; color:#92400E;">
       <span id="paySumCount">0 entries | Sab sites</span><span id="paySumTotal">Rs.0</span>
     </div>
-    <div id="allSitesPayList" style="flex:1; overflow:auto; padding:12px; background:#F8FAFC;"><div style="text-align:center; padding:40px 20px; color:#94A3B8;"><div style="font-size:32px;">📭</div><div style="font-weight:800; margin-top:8px;">Koi payment nahi mila</div></div></div>
-    <div style="padding:12px; background:white; border-top:1px solid #E2E8F0; display:flex; gap:8px;">
-      <button onclick="closeAllSitesPaymentList()" style="flex:1; background:#F1F5F9; color:#64748B; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">Close</button>
-      <button onclick="exportAllSitesPayList()" style="flex:1; background:#25D366; color:white; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">📤 WhatsApp Share</button>
+    <div id="allSitesPayList" style="flex:1; overflow:auto; padding:12px; background:#F8FAFC;"><div style="text-align:center; padding:40px 20px; color:#94A3B8;"><div style="font-size:32px;">📭</div><div style="font-weight:800; margin-top:8px;">Koi payment nahi mila</div><div style="font-size:11px; margin-top:4px;">13-digit fake entries hide kar diye</div></div></div>
+    <div style="padding:12px; background:white; border-top:1px solid #E2E8F0; display:flex; gap:8px; flex-wrap:wrap;">
+      <button onclick="closeAllSitesPaymentList()" style="flex:1; min-width:80px; background:#F1F5F9; color:#64748B; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">Close</button>
+      <button onclick="cleanupFakeEntries()" style="background:#DC2626; color:white; border:none; padding:12px 16px; border-radius:12px; font-weight:800; font-size:11px;">🗑️ Delete 13-Digit Fake</button>
+      <button onclick="exportAllSitesPayList()" style="flex:1; min-width:100px; background:#25D366; color:white; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">📤 WhatsApp Share</button>
     </div>
   </div>
 </div>
@@ -10349,6 +10353,9 @@ function populatePayFilters(){
     var opts='<option value="all">🏗️ Sab Sites</option>';
     try{
       Object.keys(sites||{}).forEach(function(id){
+        var house=(sites[id].house||'').trim();
+        // Skip 13-digit fake houses in dropdown
+        if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)) return;
         opts+='<option value="'+id+'">'+(sites[id].house||id)+'</option>';
       });
     }catch(e){}
@@ -10381,6 +10388,23 @@ function renderAllSitesPayList(){
   try{
     pays=Object.entries(sitePays||{}).map(function(entry){ return {id:entry[0], siteId:entry[1].siteId, date:entry[1].date, amount:entry[1].amount, note:entry[1].note}; });
   }catch(e){}
+  // FILTER OUT 13-digit fake entries - ye sites mai nahi hai
+  function isFakeEntry(p){
+    var sid = p.siteId||'';
+    var s = sites[sid];
+    // If site doesn't exist, it's orphaned fake entry
+    if(!s) return true;
+    var house = (s.house||'').trim();
+    // If house is 13 digit number (like 1793026339677), hide it
+    if(/^\d{12,13}$/.test(house)) return true;
+    // If house is pure number with 10+ digits, hide
+    if(/^\d{10,}$/.test(house) && house.length>=10) return true;
+    // If siteId itself is 13 digit but house also 13 digit, hide
+    if(/^\d{12,13}$/.test(sid) && /^\d{12,13}$/.test(house)) return true;
+    return false;
+  }
+  pays = pays.filter(function(p){ return !isFakeEntry(p); });
+  
   if(siteFilter!=='all') pays=pays.filter(function(p){ return p.siteId===siteFilter; });
   if(monthFilter!=='all') pays=pays.filter(function(p){ return p.date && p.date.indexOf(monthFilter)===0; });
   pays=pays.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
@@ -10404,7 +10428,8 @@ function renderAllSitesPayList(){
     html+='<div style="background:white; border:1.5px solid #E2E8F0; border-top:none; border-radius:0 0 10px 10px; overflow:hidden;">';
     dayPays.forEach(function(p){
       var s=sites[p.siteId];
-      var house=s? s.house : p.siteId;
+      var house=s? s.house : '';
+      if(!house) return; // skip if no house
       var client=s? s.client||'' : '';
       html+='<div style="padding:10px 12px; border-bottom:1px solid #F1F5F9; display:flex; justify-content:space-between; align-items:center;">';
       html+='<div><div style="font-weight:800; font-size:12px;">🏠 '+house+' <span style="font-weight:400; color:#64748B; font-size:10px;">| '+client+'</span></div><div style="font-size:10px; color:#64748B; margin-top:2px;">'+(p.note? '📝 '+p.note : '')+'</div></div>';
@@ -10414,10 +10439,60 @@ function renderAllSitesPayList(){
     html+='</div></div>';
   });
   if(pays.length===0){
-    html='<div style="text-align:center; padding:40px 20px; color:#94A3B8;"><div style="font-size:32px;">📭</div><div style="font-weight:800; margin-top:8px;">Koi payment nahi mila</div></div>';
+    html='<div style="text-align:center; padding:40px 20px; color:#94A3B8;"><div style="font-size:32px;">📭</div><div style="font-weight:800; margin-top:8px;">Koi payment nahi mila</div><div style="font-size:11px; margin-top:4px;">13-digit fake entries hide kar diye</div></div>';
   }
   listEl.innerHTML=html;
 }
+
+// Cleanup function to delete 13-digit fake sites and payments from Firebase
+function cleanupFakeEntries(){
+  if(!confirm('Kya aap 13-digit wali fake entries ko Firebase se delete karna chahte ho?\n\nYe sites mai nahi hai, sirf payment list mai dikh rahi hai.\n\nDelete kar du?')) return;
+  var fakeSiteIds=[];
+  var fakePayIds=[];
+  try{
+    Object.keys(sites||{}).forEach(function(id){
+      var house=(sites[id].house||'').trim();
+      if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)){
+        fakeSiteIds.push(id);
+      }
+    });
+    Object.entries(sitePays||{}).forEach(function(entry){
+      var pid=entry[0];
+      var p=entry[1];
+      var s=sites[p.siteId];
+      if(!s){
+        fakePayIds.push(pid);
+      } else {
+        var house=(s.house||'').trim();
+        if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)){
+          fakePayIds.push(pid);
+        }
+      }
+    });
+  }catch(e){}
+  if(fakeSiteIds.length===0 && fakePayIds.length===0){
+    alert('Koi fake 13-digit entry nahi mili, sab clean hai!');
+    return;
+  }
+  var msg='Mil gayi:\n• Fake Sites: '+fakeSiteIds.length+'\n• Fake Payments: '+fakePayIds.length+'\n\nDelete kar raha hu...';
+  alert(msg);
+  try{
+    fakeSiteIds.forEach(function(id){
+      db.ref('companies/'+company+'/sites/'+id).remove();
+    });
+    fakePayIds.forEach(function(pid){
+      db.ref('companies/'+company+'/sitePayments/'+pid).remove();
+    });
+    setTimeout(function(){
+      alert('✅ Clean ho gaya! '+ (fakeSiteIds.length+fakePayIds.length) +' fake entries delete ho gayi. Page reload kar raha hu.');
+      location.reload();
+    }, 1000);
+  }catch(e){
+    alert('Error: '+e.message);
+  }
+}
+window.cleanupFakeEntries = cleanupFakeEntries;
+
 function exportAllSitesPayList(){
   var siteFilter=document.getElementById('payFilterSite')?.value||'all';
   var monthFilter=document.getElementById('payFilterMonth')?.value||'all';
