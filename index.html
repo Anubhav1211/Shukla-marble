@@ -19,6 +19,27 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -1229,6 +1250,15 @@ img, canvas, svg, video { max-width: 100%; }
 .bk-row:active { background: #F8FAFC; }
 </style>
 <style>.sm-edit-ov{display:none;position:fixed;inset:0;z-index:990;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);align-items:flex-start;justify-content:center;padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sm-edit-ov.show{display:flex}
+.sm-edit-box{width:100%;max-width:560px;margin:auto 0;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden;animation:smEditPop .22s cubic-bezier(.2,.9,.25,1)}
+.sm-edit-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(145deg,#21242C,#15171C);color:#fff;border-bottom:2px solid #AD832E}
+.sm-edit-head b{font-size:15px;font-weight:800}
+.sm-edit-head button{flex:0 0 auto;width:34px;height:34px;padding:0;border:0;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer}
+.sm-edit-body{padding:14px 16px 18px}
+.sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
+.sm-edit-body > .sm-in-edit{margin-top:0 !important}
+@keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style><style>.sm-edit-ov{display:none;position:fixed;inset:0;z-index:990;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);align-items:flex-start;justify-content:center;padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sm-edit-ov.show{display:flex}
 .sm-edit-box{width:100%;max-width:560px;margin:auto 0;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden;animation:smEditPop .22s cubic-bezier(.2,.9,.25,1)}
 .sm-edit-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(145deg,#21242C,#15171C);color:#fff;border-bottom:2px solid #AD832E}
@@ -3210,6 +3240,18 @@ Grand Total = 98,941/-" style="margin:0; min-height:280px; font-family:monospace
   </div>
 
   <!-- PDF Backup Modal -->
+  
+  <!-- Month Wise Dihadi Overlay - NEW -->
+  <div id="monthDihadiOverlay" class="site-detail-modal" onclick="if(event.target===this)closeMonthDihadi()">
+    <div class="site-detail-box" style="max-width:520px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 id="mdTitle" style="margin:0;font-size:15px;font-weight:800">📅 महीने वार दिहाड़ी</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B" onclick="closeMonthDihadi()">✕ बंद करें</button>
+      </div>
+      <div id="mdBody"></div>
+    </div>
+  </div>
+
   <div id="pdfBackupModal" class="site-detail-modal">
     <div class="site-detail-box" style="max-width: 650px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -3373,6 +3415,7 @@ let editingSiteId = null;
 let efLabourId = null;
 let efField = null;
 let editingPayId = null;
+let editingCostId = null;
 function smFixNums(obj, spec) {
   const out = obj || {};
   Object.values(out).forEach((r) => {
@@ -4125,11 +4168,35 @@ function showSiteDetail(siteId) {
         <td>${mTxt}</td>
         <td style="color:#B45309;font-weight:800">₹${Number(c.amount || 0).toLocaleString("en-IN")}</td>
         <td style="font-size:11px;text-align:left">${mEsc(c.note || "-")}</td>
-        <td><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="event.stopPropagation();deleteSiteCost('${cid}')">X</button></td>
+        <td style="display:flex;gap:4px;justify-content:center"><button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 8px" onclick="event.stopPropagation();editSiteCost('${cid}')">✏️</button><button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 8px" onclick="event.stopPropagation();deleteSiteCost('${cid}')">X</button></td>
       </tr>`;
     });
     costHtml += "</table>";
   }
+  // Month wise dihadi breakdown
+  const monthWise = getSiteMonthWiseDihadi(siteId);
+  let monthDihadiHtml = "";
+  if(monthWise.length===0){
+    monthDihadiHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">कोई हाज़री नहीं - दिहाड़ी 0</div>';
+  } else {
+    let mTotalDays=0,mTotalCost=0;
+    monthWise.forEach(m=>{ mTotalDays+=m.days; mTotalCost+=m.cost; });
+    monthDihadiHtml = `<div style="display:flex;justify-content:space-between;font-weight:800;font-size:12px;margin-bottom:8px"><span>कुल ${monthWise.length} महीना • ${mTotalDays.toFixed(1)} दिन</span><span style="color:#B45309">₹${Math.round(mTotalCost).toLocaleString('en-IN')}</span></div>`;
+    monthDihadiHtml += '<table style="margin-top:4px"><tr><th>महीना</th><th>दिन</th><th>दिहाड़ी</th></tr>';
+    monthWise.forEach(m=>{
+      const mt = m.month ? new Date(m.month+"-01").toLocaleDateString("hi-IN",{month:"short",year:"numeric"}) : "-";
+      monthDihadiHtml += `<tr><td style="text-align:left;font-weight:700">${mt}</td><td>${m.days.toFixed(1)}</td><td style="color:#B45309;font-weight:800">₹${Math.round(m.cost).toLocaleString('en-IN')}</td></tr>`;
+    });
+    monthDihadiHtml += '</table>';
+  }
+  sumHtml += `
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><b>📅 महीने वार दिहाड़ी (Site)</b><button class="btn-sm" style="background:#0F172A;color:#FDE68A;padding:6px 10px" onclick="showSiteMonthDihadi('${siteId}')">📊 पूरा देखें</button></div>
+      <div style="background:#F0F9FF;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #BAE6FD">
+        ${monthDihadiHtml}
+      </div>
+    </div>
+  `;
   sumHtml += `
     <div style="margin-top:14px">
       <b>🧾 पिछली लागत (Month Wise)</b>
@@ -4821,6 +4888,58 @@ function siteMonthDihadi(id, mon) {
   const si = smSiteEntIdx()[id];
   return si && si.byMonth ? (si.byMonth[mon] || 0) : 0;
 }
+function getSiteMonthWiseDihadi(siteId){
+  const map = {}; // month -> {days, cost, labourSet, entries}
+  Object.values(ents||{}).forEach(e=>{
+    if(!e || e.siteId!==siteId) return;
+    const days = parseFloat(e.days||0);
+    if(days<=0) return;
+    const mon = (e.date||"").slice(0,7);
+    if(!mon) return;
+    const lab = labs[e.labourId];
+    const rate = entryRate ? entryRate(e, lab) : (lab? parseFloat(lab.wage||0):0);
+    const cost = days * rate;
+    if(!map[mon]) map[mon] = {month:mon, days:0, cost:0, count:0, labour:{}};
+    map[mon].days += days;
+    map[mon].cost += cost;
+    map[mon].count += 1;
+    if(lab && lab.name) map[mon].labour[lab.name] = (map[mon].labour[lab.name]||0)+days;
+  });
+  // sort by month desc
+  return Object.values(map).sort((a,b)=> b.month.localeCompare(a.month));
+}
+function showSiteMonthDihadi(siteId){
+  const s = sites[siteId];
+  if(!s) return;
+  const data = getSiteMonthWiseDihadi(siteId);
+  const overlay = document.getElementById("monthDihadiOverlay");
+  const title = document.getElementById("mdTitle");
+  const body = document.getElementById("mdBody");
+  if(!overlay || !body) return;
+  if(title) title.innerText = "📅 "+(s.house||"साइट")+" - महीने वार दिहाड़ी";
+  let totalDays=0,totalCost=0;
+  data.forEach(d=>{ totalDays+=d.days; totalCost+=d.cost; });
+  let html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div style="background:#EEF2FF;padding:10px;border-radius:12px;text-align:center"><small style="color:#4338CA;font-weight:700">कुल दिन</small><br><b style="font-size:16px;color:#1E40AF">${totalDays.toFixed(1)}</b></div>
+    <div style="background:#DCFCE7;padding:10px;border-radius:12px;text-align:center"><small style="color:#166534;font-weight:700">कुल दिहाड़ी</small><br><b style="font-size:16px;color:#15803D">₹${Math.round(totalCost).toLocaleString('en-IN')}</b></div>
+  </div>`;
+  if(data.length===0){
+    html += '<div style="text-align:center;padding:20px;color:#94A3B8">इस साइट पर कोई हाज़री नहीं</div>';
+  } else {
+    html += '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#0F172A;color:#FDE68A"><th style="padding:8px;text-align:left">महीना</th><th>दिन</th><th>दिहाड़ी</th><th>एंट्री</th></tr>';
+    data.forEach(d=>{
+      const mTxt = new Date(d.month+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+      html += `<tr style="border-bottom:1px solid #F1F5F9"><td style="padding:8px;text-align:left;font-weight:700">${mTxt}<div style="font-size:10px;color:#64748B">${d.month}</div></td><td style="text-align:center;font-weight:700">${d.days.toFixed(1)}</td><td style="text-align:center;color:#B45309;font-weight:800">₹${Math.round(d.cost).toLocaleString('en-IN')}</td><td style="text-align:center">${d.count}</td></tr>`;
+      const labList = Object.entries(d.labour).map(([n,dy])=> `${n} (${dy} दिन)`).join(", ");
+      if(labList) html += `<tr><td colspan="4" style="padding:4px 8px 8px 8px;font-size:10.5px;color:#64748B;background:#F8FAFC">👷 ${labList}</td></tr>`;
+    });
+    html += '</table>';
+  }
+  body.innerHTML = html;
+  overlay.style.display = "flex";
+}
+function closeMonthDihadi(){ const ov=document.getElementById("monthDihadiOverlay"); if(ov) ov.style.display="none"; }
+
 function siteCardHtml(id) {
   const s = sites[id];
   const sc = calcSite(id);
@@ -4831,7 +4950,7 @@ function siteCardHtml(id) {
   const _selMon = document.getElementById("dMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
   const _isNow = _selMon === fmtLocalDate(new Date()).slice(0, 7);
   const _monName = new Date(_selMon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long" });
-  const dihadiLine = (_isNow ? "\u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940" : _monName + " \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940") + " <b>\u20B9" + Math.round(siteMonthDihadi(id, _selMon)).toLocaleString("en-IN") + "</b>";
+  const dihadiLine = `<span style="cursor:pointer" onclick="event.stopPropagation();showSiteMonthDihadi(\'${id}\')">${(_isNow ? "\u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940" : _monName + " \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940")} <b>\u20B9" + Math.round(siteMonthDihadi(id, _selMon)).toLocaleString("en-IN") + "</b> <span style=\"font-size:10px;color:#6366F1\">📊</span></span>`;
   return `
       <div class="site-card">
         <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-dihadi">${dihadiLine}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
@@ -5476,6 +5595,37 @@ function addSiteCost() {
     alert("साइट, महीना और सही रकम तीनों भरें");
     return;
   }
+  // Edit mode
+  if (editingCostId) {
+    db.ref("companies/" + company + "/siteCosts/" + editingCostId).update({
+      siteId: sid,
+      month,
+      amount: amt,
+      note,
+      ts: Date.now()
+    }).then(() => {
+      editingCostId = null;
+      const amtEl = document.getElementById("scAmt");
+      const noteEl = document.getElementById("scNote");
+      const monthEl = document.getElementById("scMonth");
+      const siteEl = document.getElementById("scSite");
+      if (amtEl) amtEl.value = "";
+      if (noteEl) noteEl.value = "";
+      if (monthEl) monthEl.value = "";
+      if (siteEl) siteEl.value = "";
+      const msg = document.getElementById("scMsg");
+      const btn = document.querySelector("#addCostBox2 .btn-gold");
+      if (btn) btn.innerText = "सेव करो";
+      if (msg) {
+        msg.innerText = "✅ लागत अपडेट हो गई!";
+        setTimeout(() => { msg.innerText = ""; }, 2000);
+      }
+      closeAllPopups();
+      renderAll();
+    });
+    return;
+  }
+  // Add new
   const id = Date.now().toString();
   db.ref("companies/" + company + "/siteCosts/" + id).set({
     siteId: sid,
@@ -5495,10 +5645,49 @@ function addSiteCost() {
     }
   });
 }
+function editSiteCost(cid){
+  const c = siteCosts[cid];
+  if(!c) return;
+  editingCostId = cid;
+  // open popup
+  try{ openCostAdd(); }catch(e){}
+  setTimeout(()=>{
+    const siteEl = document.getElementById("scSite");
+    const monthEl = document.getElementById("scMonth");
+    const amtEl = document.getElementById("scAmt");
+    const noteEl = document.getElementById("scNote");
+    const btn = document.querySelector("#addCostBox2 .btn-gold");
+    if(siteEl) siteEl.value = c.siteId||"";
+    if(monthEl) monthEl.value = c.month||"";
+    if(amtEl) amtEl.value = c.amount||"";
+    if(noteEl) noteEl.value = c.note||"";
+    if(btn) btn.innerText = "✏️ अपडेट करो";
+    const msg = document.getElementById("scMsg");
+    if(msg) msg.innerText = "✏️ एडिट मोड - "+(sites[c.siteId]?.house||"साइट");
+  },150);
+}
+function cancelSiteCostEdit(){
+  editingCostId = null;
+  const amtEl = document.getElementById("scAmt");
+  const noteEl = document.getElementById("scNote");
+  const monthEl = document.getElementById("scMonth");
+  const siteEl = document.getElementById("scSite");
+  if (amtEl) amtEl.value = "";
+  if (noteEl) noteEl.value = "";
+  if (monthEl) monthEl.value = "";
+  if (siteEl) siteEl.value = "";
+  const btn = document.querySelector("#addCostBox2 .btn-gold");
+  if (btn) btn.innerText = "सेव करो";
+  const msg = document.getElementById("scMsg");
+  if (msg) msg.innerText = "";
+}
+
 function deleteSiteCost(cid) {
   if (!confirm("ये लागत / खर्च डिलीट करना है?")) return;
+  if(editingCostId===cid) cancelSiteCostEdit();
   db.ref("companies/" + company + "/siteCosts/" + cid).remove();
 }
+
 function showHazriPopup(labName, days, siteName, dateStr, withdraw, isDup = false) {
   const det = document.getElementById("popupDetails");
   const overlay = document.getElementById("customPopup");
@@ -9402,10 +9591,16 @@ if (document.readyState === "loading") {
   };
   window.openCostAdd = function (siteId) {
     if (cur) userClose();
+    // If not in edit mode, clear previous edit state
+    if(!editingCostId){
+      try{ cancelSiteCostEdit(); }catch(e){}
+    }
     let name = '';
     try { name = siteId && sites[siteId] ? sites[siteId].house : ''; } catch (e) {}
     const sel = $('scSite'); if (sel && siteId) sel.value = siteId;
-    openMove({ title: '🧾 पिछली लागत जोड़ो' + (name ? ' — ' + name : ''), box: true, region: () => [$('addCostBox2')] }, []);
+    const btn = document.querySelector("#addCostBox2 .btn-gold");
+    if(btn && !editingCostId) btn.innerText = "सेव करो";
+    openMove({ title: (editingCostId ? '✏️ लागत एडिट' : '🧾 पिछली लागत जोड़ो') + (name ? ' — ' + name : ''), box: true, region: () => [$('addCostBox2')] }, []);
   };
 
   window.openExpMenu = function (id) {
@@ -10071,7 +10266,7 @@ if (document.readyState === "loading") {
     show();
   };
 })();
-</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕<i class="sm-ripple" style="height: 0px; width: 0px; left: 339px; top: 154px;"></i></button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
+</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕<i class="sm-ripple" style="height: 0px; width: 0px; left: 339px; top: 154px;"></i></button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
 
 <script>
 /* ===== AUTO-FIT PACK: har phone ki screen ke hisab se numbers apne aap fit ho jayein ===== */
@@ -10531,4 +10726,4 @@ function exportAllSitesPayList(){
 </script>
 
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
-</body></html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
