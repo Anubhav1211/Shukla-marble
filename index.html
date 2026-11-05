@@ -1257,7 +1257,7 @@ img, canvas, svg, video { max-width: 100%; }
   </header>
 
   <!-- Bottom Navigation -->
-  <div class="bottom-nav" data-swipe-ready="1">
+  <div class="bottom-nav">
     <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
@@ -1278,7 +1278,7 @@ img, canvas, svg, video { max-width: 100%; }
         <input id="dMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('dMonth')">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(1)">▶</button>
       </div>
-      <span id="monTxt" style="display: none;">नवंबर 2026</span><span id="msMonTxt" style="display: none;"></span>
+      <span id="monTxt" style="display: none;"></span><span id="msMonTxt" style="display: none;"></span>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
         <div onclick="unlockProfit('total')" style="position: relative; cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">••••</b><br><span style="display: inline-flex; align-items: center; gap: 6px; margin-top: 2px;"><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><button type="button" class="eye-mini eye-sync" onclick="toggleProfitEye(event)" aria-label="रकम दिखाओ / छुपाओ">👁️</button></span><br><small id="kTotHint" style="color: #64748B; font-size: 9px;">दबाकर देखें</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
@@ -1677,7 +1677,7 @@ img, canvas, svg, video { max-width: 100%; }
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
         <h3 style="margin: 0; font-size: 16px; font-weight: 800;">🧱 मटेरियल हिसाब <span id="mNSLabel" style="font-size:11px;background:#4F46E5;color:white;padding:3px 9px;border-radius:20px;vertical-align:middle;">NOVA</span></h3>
-        <span id="mPeriodTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;">नवंबर 2026</span>
+        <span id="mPeriodTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
         <div style="background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 12px 4px; border-radius: 16px; text-align: center;">
@@ -1709,7 +1709,7 @@ img, canvas, svg, video { max-width: 100%; }
         </div>
         <div style="background: #FEE2E2; padding: 10px 4px; border-radius: 14px; text-align: center;">
           <small style="color: #991B1B; font-weight: 700; font-size: 9.5px;">बकाया</small><br>
-          <b id="mpPending" style="font-size: 13px; color: rgb(22, 101, 52); white-space: nowrap;">₹0</b>
+          <b id="mpPending" style="font-size: 13px; color: #991B1B; white-space: nowrap;">₹0</b>
         </div>
       </div>
       <button class="btn btn-gold" onclick="toggleBox('mpBox')" style="display: flex; justify-content: space-between; align-items: center;">
@@ -1726,7 +1726,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="mpListWrap" style="margin-top: 14px;">
         <h4 style="margin: 0 0 8px 0; font-size: 13px;">🧾 पेमेंट हिस्ट्री</h4>
         <div id="mpList"></div>
-        <div id="mpEmpty" style="display: block; text-align: center; color: rgb(148, 163, 184); font-size: 12.5px; padding: 12px 0px;">अभी कोई पेमेंट दर्ज नहीं</div>
+        <div id="mpEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 12px 0;">अभी कोई पेमेंट दर्ज नहीं</div>
       </div>
       <button class="btn-sm" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="matPaymentShareWhatsapp()">📤 WhatsApp पर हिसाब भेजो</button>
     </div>
@@ -1734,7 +1734,7 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Item Master -->
     <div class="card tg-card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('mItemBox')">
-        <span>📦 मटेरियल आइटम व रेट (एक बार सेव करें)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0 आइटम</span>
+        <span>📦 मटेरियल आइटम व रेट (एक बार सेव करें)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0</span>
       </button>
       <div id="mItemBox" style="display: none; margin-top: 12px;">
         <input id="miName" class="input" placeholder="आइटम का नाम (जैसे: Chemical, Epoxy, Cement)">
@@ -1750,7 +1750,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-gold" id="miSaveBtn" onclick="saveMatItem()">+ आइटम सेव करें</button>
         <button class="btn" id="miCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelMatItemEdit()">Cancel</button>
         <div id="miMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
-        <div id="mItemList" style="margin-top: 10px;"><div style="color:#94A3B8;padding:10px;text-align:center;font-size:12px;">अभी कोई आइटम नहीं। ऊपर नाम, यूनिट और रेट डालकर सेव करें।</div></div>
+        <div id="mItemList" style="margin-top: 10px;"></div>
       </div>
     </div>
 
@@ -1767,7 +1767,7 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
       <div id="meFormBox" style="display: none; margin-top: 12px;">
       <div id="meEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ मटेरियल एंट्री एडिट हो रही है</div>
-      <select id="meItem" class="input" onchange="onMatItemPick()"><option value="">📦 आइटम चुनें</option></select>
+      <select id="meItem" class="input" onchange="onMatItemPick()"></select>
       <div style="display: flex; gap: 8px;">
         <input id="meQty" type="number" step="any" class="input" placeholder="मात्रा (Qty)" oninput="updateMatTotal()" style="flex: 1;">
         <input id="meRate" type="number" step="any" class="input" placeholder="रेट ₹" oninput="updateMatTotal()" style="flex: 1;">
@@ -1776,7 +1776,7 @@ img, canvas, svg, video { max-width: 100%; }
         <span id="meCalcTxt" style="font-size: 12px; color: #CBD5E1; font-weight: 600;">0 × ₹0</span>
         <b id="meTotalTxt" style="font-size: 18px; color: #FBBF24;">₹0</b>
       </div>
-      <select id="meSite" class="input"><option value="">🏠 साइट / ग्राहक चुनें (Optional)</option></select>
+      <select id="meSite" class="input"></select>
       <input id="meCustomer" class="input" placeholder="या ग्राहक का नाम लिखें (अगर साइट लिस्ट में नहीं है)">
       <input id="meNote" class="input" placeholder="Note / टिप्पणी (जैसे: दुकान का नाम, बिल नं.)">
       <button class="btn btn-save" id="meSaveBtn" onclick="saveMatEntry()">💾 मटेरियल एंट्री सेव</button>
@@ -1814,10 +1814,10 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Selected day entries -->
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
-        <span>🧾 मटेरियल - <span id="mDayTxt">04 नव॰ 2026</span></span>
-        <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;">0 एंट्री · ₹0</span>
+        <span>🧾 मटेरियल - <span id="mDayTxt"></span></span>
+        <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;"></span>
       </h3>
-      <div id="mDayList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">इस तारीख को कोई मटेरियल एंट्री नहीं</div></div>
+      <div id="mDayList"></div>
     </div>
 
     <!-- Reports -->
@@ -1831,16 +1831,12 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
       <input id="mrDay" type="date" class="input" style="display: none;" onchange="renderMaterial()">
       <input id="mrMonth" type="month" class="input" onchange="renderMaterial()">
-      <select id="mrYear" class="input" style="display: none;" onchange="renderMaterial()"><option value="2026">2026</option></select>
+      <select id="mrYear" class="input" style="display: none;" onchange="renderMaterial()"></select>
       <div style="display: flex; gap: 8px;">
-        <select id="mrCust" class="input" style="flex: 1;" onchange="renderMaterial()"><option value="">👤 सभी ग्राहक</option></select>
-        <select id="mrItem" class="input" style="flex: 1;" onchange="renderMaterial()"><option value="">📦 सभी आइटम</option></select>
+        <select id="mrCust" class="input" style="flex: 1;" onchange="renderMaterial()"></select>
+        <select id="mrItem" class="input" style="flex: 1;" onchange="renderMaterial()"></select>
       </div>
-      <div id="mReportBox">
-    <div style="background:#0F172A;color:white;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
-      <div><small style="color:#94A3B8;font-weight:700;">नवंबर 2026 · कुल मटेरियल</small><br><small style="color:#CBD5E1;">0 एंट्री</small></div>
-      <b style="font-size:20px;color:#FBBF24;">₹0</b>
-    </div><div style="color:#94A3B8;padding:14px;text-align:center;font-size:12px;">इस अवधि में कोई मटेरियल एंट्री नहीं</div></div>
+      <div id="mReportBox"></div>
       <button class="btn" style="background: #16A34A; margin-top: 10px;" onclick="downloadMatExcel()">📊 पूरी Excel शीट डाउनलोड (तारीख व मटेरियल वाइज)</button>
       <button id="matShareBtn" class="btn" style="background: #25D366; margin-top: 10px;" onclick="shareMatReport()">📤 PDF रिपोर्ट WhatsApp पर भेजें</button>
     </div>
@@ -1868,151 +1864,7 @@ img, canvas, svg, video { max-width: 100%; }
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="addSecItalian()">+ Section</button>
           <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px;" onclick="saveAgreement('italian')">💾 Website Par Save</button>
         </div>
-        <div id="editorItalian" style="margin-top: 12px;"><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 0, this)"><b>ITALIAN MARBLE</b><small>4 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="ITALIAN MARBLE" oninput="italianData[0].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(0)">❌ Delete</button><div style="border:1.5px solid #EEF2FF;margin:8px 0;padding:8px;border-radius:12px">
-          <b>LEFT: Italian Grey/Beige</b>
-          <input class="input" value="Italian Grey/Beige" oninput="italianData[0]['left'].sub=this.value;renderItalian()"><div class="ag-item-row">
-            <input class="input" value="Floor fitting" oninput="italianData[0]['left'].items[0].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 60/sq ft" oninput="italianData[0]['left'].items[0].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'left',0)">X</button>
-          </div><div class="ag-item-row">
-            <input class="input" value="Wall cladding" oninput="italianData[0]['left'].items[1].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 100/sq ft" oninput="italianData[0]['left'].items[1].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'left',1)">X</button>
-          </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(0,'left')">+ Line</button></div><div style="border:1.5px solid #EEF2FF;margin:8px 0;padding:8px;border-radius:12px">
-          <b>RIGHT: White Italian</b>
-          <input class="input" value="White Italian" oninput="italianData[0]['right'].sub=this.value;renderItalian()"><div class="ag-item-row">
-            <input class="input" value="Floor fitting" oninput="italianData[0]['right'].items[0].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 80/sq ft" oninput="italianData[0]['right'].items[0].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'right',0)">X</button>
-          </div><div class="ag-item-row">
-            <input class="input" value="Wall cladding" oninput="italianData[0]['right'].items[1].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 120/sq ft" oninput="italianData[0]['right'].items[1].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'right',1)">X</button>
-          </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(0,'right')">+ Line</button></div></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 1, this)"><b>CUTTING &amp; MOLDING (For Italian Grey and Beige)</b><small>7 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="CUTTING &amp; MOLDING (For Italian Grey and Beige)" oninput="italianData[1].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(1)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Skirting patti (below 12 inch)" oninput="italianData[1].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Molding - tapar/half round/taccar" oninput="italianData[1].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/R ft" oninput="italianData[1].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="45° degree cutting" oninput="italianData[1].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',2)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Classic molding (as per design)" oninput="italianData[1].items[3].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="As per design" oninput="italianData[1].items[3].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',3)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="6mm groove" oninput="italianData[1].items[4].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[4].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',4)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="8mm groove" oninput="italianData[1].items[5].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[5].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',5)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="12mm groove" oninput="italianData[1].items[6].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/R ft" oninput="italianData[1].items[6].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',6)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(1,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 2, this)"><b>CUTTING &amp; MOLDING (For White Italian)</b><small>7 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="CUTTING &amp; MOLDING (For White Italian)" oninput="italianData[2].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(2)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Skirting patti (below 12 inch)" oninput="italianData[2].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 80/R ft" oninput="italianData[2].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Molding - tapar/half round/taccar" oninput="italianData[2].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 120/R ft" oninput="italianData[2].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="45° degree cutting" oninput="italianData[2].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/R ft" oninput="italianData[2].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',2)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Classic molding (as per design)" oninput="italianData[2].items[3].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="As per design" oninput="italianData[2].items[3].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',3)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="6mm groove" oninput="italianData[2].items[4].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 80/R ft" oninput="italianData[2].items[4].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',4)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="8mm groove" oninput="italianData[2].items[5].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 80/R ft" oninput="italianData[2].items[5].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',5)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="12mm groove" oninput="italianData[2].items[6].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 120/R ft" oninput="italianData[2].items[6].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',6)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(2,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 3, this)"><b>GRANITE</b><small>3 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="GRANITE" oninput="italianData[3].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(3)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Granite fitting (big size, 16mm)" oninput="italianData[3].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 50/R ft" oninput="italianData[3].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(3,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Designer granite patti" oninput="italianData[3].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 25/R ft" oninput="italianData[3].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(3,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Granite molding" oninput="italianData[3].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Same as italian" oninput="italianData[3].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(3,'single',2)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(3,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 4, this)"><b>TILE WORK (Separate Section)</b><small>3 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="TILE WORK (Separate Section)" oninput="italianData[4].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(4)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Tile fitting (on-site)" oninput="italianData[4].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="As per tile size" oninput="italianData[4].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(4,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Tile fitting All Sizes" oninput="italianData[4].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 50/sq ft" oninput="italianData[4].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(4,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Tile patti" oninput="italianData[4].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 50/R ft" oninput="italianData[4].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(4,'single',2)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(4,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 5, this)"><b>EXTRA WORK</b><small>5 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="EXTRA WORK" oninput="italianData[5].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(5)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Manhole steel fitting" oninput="italianData[5].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 800/pc" oninput="italianData[5].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Epoxy grouting" oninput="italianData[5].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/sq ft" oninput="italianData[5].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Counter washbasin (simple)" oninput="italianData[5].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 1500/pc" oninput="italianData[5].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',2)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Sink fitting" oninput="italianData[5].items[3].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 500/pc" oninput="italianData[5].items[3].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',3)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Fibermesh grinding (50% area)" oninput="italianData[5].items[4].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 10/sq ft" oninput="italianData[5].items[4].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',4)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(5,'single')">+ Line</button></div></div></div>
+        <div id="editorItalian" style="margin-top: 12px;"></div>
 
         <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
@@ -2025,12 +1877,7 @@ img, canvas, svg, video { max-width: 100%; }
           </div>
           <div id="agPrevBodyIt" style="display: none;"><div id="italianCard" class="italian-preview">
             <div class="italian-head">SHUKLA MARBLE CONTRACTOR</div>
-            <div id="italianPreviewBody"><div style="display:flex;flex-wrap:wrap;gap:12px;background:#0F172A;color:#FFFFFF;padding:10px 14px;font-size:11.5px;font-weight:700;border-bottom:2px solid #F59E0B">
-    <span>🏛️ Work Site: ____</span>
-    <span>👤 Client: ____</span>
-    <span>📱 Ph: ____</span>
-    <span>📅 Date: 4/11/2026</span>
-  </div><div class="italian-sec-title">ITALIAN MARBLE</div><div class="italian-grid"><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">Italian Grey/Beige</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 60/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 100/sq ft</b></span></div></div><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">White Italian</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 80/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 120/sq ft</b></span></div></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For Italian Grey and Beige)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 100/R ft</b></span></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For White Italian)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 120/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 120/R ft</b></span></div></div><div class="italian-sec-title">GRANITE</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Granite fitting (big size, 16mm)</span><span><b>Rs 50/R ft</b></span></div><div class="italian-item"><span>• Designer granite patti</span><span><b>Rs 25/R ft</b></span></div><div class="italian-item"><span>• Granite molding</span><span><b>Same as italian</b></span></div></div><div class="italian-sec-title">TILE WORK (Separate Section)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Tile fitting (on-site)</span><span><b>As per tile size</b></span></div><div class="italian-item"><span>• Tile fitting All Sizes</span><span><b>Rs 50/sq ft</b></span></div><div class="italian-item"><span>• Tile patti</span><span><b>Rs 50/R ft</b></span></div></div><div class="italian-sec-title">EXTRA WORK</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Manhole steel fitting</span><span><b>Rs 800/pc</b></span></div><div class="italian-item"><span>• Epoxy grouting</span><span><b>Rs 100/sq ft</b></span></div><div class="italian-item"><span>• Counter washbasin (simple)</span><span><b>Rs 1500/pc</b></span></div><div class="italian-item"><span>• Sink fitting</span><span><b>Rs 500/pc</b></span></div><div class="italian-item"><span>• Fibermesh grinding (50% area)</span><span><b>Rs 10/sq ft</b></span></div></div></div>
+            <div id="italianPreviewBody"></div>
             <div style="background: #0F172A; color: #F59E0B; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1px;">Professional | Reliable | Quality Work</div>
           </div></div>
         </div>
@@ -2048,99 +1895,7 @@ img, canvas, svg, video { max-width: 100%; }
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="addSecTile()">+ Section</button>
           <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px; background: linear-gradient(135deg, #B68A4C, #8C5E2F);" onclick="saveAgreement('tile')">💾 Website Par Save</button>
         </div>
-        <div id="editorTile" style="margin-top: 12px;"><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 0, this)"><b>SECTION 1 • BATHROOM WORK</b><small>3 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 1 • BATHROOM WORK" oninput="tileData[0].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(0)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="Wall &amp; Floor Tile (6x4)" oninput="tileData[0].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 58/sq ft" oninput="tileData[0].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(0,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Patti" oninput="tileData[0].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 58/R ft" oninput="tileData[0].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(0,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Epoxy" oninput="tileData[0].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 10/R ft" oninput="tileData[0].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(0,2)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(0)">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 1, this)"><b>SECTION 2 • FLOORING (Without PCC)</b><small>4 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 2 • FLOORING (Without PCC)" oninput="tileData[1].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(1)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="Floor Tile (6x4)" oninput="tileData[1].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 48/sq ft" oninput="tileData[1].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Skirting" oninput="tileData[1].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 48/R ft" oninput="tileData[1].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Floor Tile (2x2) 9mm" oninput="tileData[1].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 40/sq ft" oninput="tileData[1].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,2)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Floor Tile (2x2) 15mm" oninput="tileData[1].items[3].n=this.value;renderTile()">
-        <input class="input" value="Rs 50/sq ft" oninput="tileData[1].items[3].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,3)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(1)">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 2, this)"><b>SECTION 3 • GRANITE WORK</b><small>7 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 3 • GRANITE WORK" oninput="tileData[2].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(2)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="Granite Floor &amp; Stair" oninput="tileData[2].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 50/ft" oninput="tileData[2].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Wall Cladding / Window Frame" oninput="tileData[2].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/ft" oninput="tileData[2].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Granite Moulding Without Polish" oninput="tileData[2].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 30/R ft" oninput="tileData[2].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,2)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Granite Moulding With Polish" oninput="tileData[2].items[3].n=this.value;renderTile()">
-        <input class="input" value="Rs 50/R ft" oninput="tileData[2].items[3].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,3)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Kitchen Slab Composite" oninput="tileData[2].items[4].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/ft" oninput="tileData[2].items[4].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,4)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Patti (design based)" oninput="tileData[2].items[5].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/R ft" oninput="tileData[2].items[5].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,5)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Elevation Tile/Marble" oninput="tileData[2].items[6].n=this.value;renderTile()">
-        <input class="input" value="Rs 100+ onwards" oninput="tileData[2].items[6].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,6)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(2)">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 3, this)"><b>SECTION 4 • EXTRA CHARGES</b><small>5 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 4 • EXTRA CHARGES" oninput="tileData[3].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(3)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="L Corner Cutting" oninput="tileData[3].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 45/R ft" oninput="tileData[3].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="45° Degree Cutting" oninput="tileData[3].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/R ft" oninput="tileData[3].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Counter Washbasin Cutting" oninput="tileData[3].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 800/pc extra" oninput="tileData[3].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,2)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Manhole Steel Fitting" oninput="tileData[3].items[3].n=this.value;renderTile()">
-        <input class="input" value="Rs 1000 extra" oninput="tileData[3].items[3].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,3)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Wall Grinding (painted wall)" oninput="tileData[3].items[4].n=this.value;renderTile()">
-        <input class="input" value="Rs 10/ft" oninput="tileData[3].items[4].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,4)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(3)">+ Line</button></div></div></div>
+        <div id="editorTile" style="margin-top: 12px;"></div>
 
         <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
@@ -2152,46 +1907,7 @@ img, canvas, svg, video { max-width: 100%; }
             </div>
           </div>
           <div id="agPrevBodyTile" style="display: none;"><div id="tileCard" class="tile-preview">
-            <div id="tilePreviewBody">
-    <div class="tile-head">
-      <h2>SHUKLA MARBLE CONTRACTOR</h2>
-      <div style="font-size:13px;color:#1E293B;font-weight:600">Krishan Gopal Shukla • Tile &amp; Marble Specialist</div>
-      <div style="font-size:11px;color:#64748B">Mob: ____</div>
-      <div class="tile-badge">Labour Rate List • 4/11/2026</div>
-      <div style="color:#8C5E2F;font-weight:700;font-size:12px;margin-top:4px">📍 Work Site: ____</div>
-    </div>
-  
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>🛁</i> SECTION 1 • BATHROOM WORK
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• Wall &amp; Floor Tile (6x4)</span><span><b>Rs 58/sq ft</b></span></div><div class="tile-row"><span>• Patti</span><span><b>Rs 58/R ft</b></span></div><div class="tile-row"><span>• Epoxy</span><span><b>Rs 10/R ft</b></span></div></div></div>
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>🧱</i> SECTION 2 • FLOORING (Without PCC)
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• Floor Tile (6x4)</span><span><b>Rs 48/sq ft</b></span></div><div class="tile-row"><span>• Skirting</span><span><b>Rs 48/R ft</b></span></div><div class="tile-row"><span>• Floor Tile (2x2) 9mm</span><span><b>Rs 40/sq ft</b></span></div><div class="tile-row"><span>• Floor Tile (2x2) 15mm</span><span><b>Rs 50/sq ft</b></span></div></div></div>
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>🪨</i> SECTION 3 • GRANITE WORK
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• Granite Floor &amp; Stair</span><span><b>Rs 50/ft</b></span></div><div class="tile-row"><span>• Wall Cladding / Window Frame</span><span><b>Rs 100/ft</b></span></div><div class="tile-row"><span>• Granite Moulding Without Polish</span><span><b>Rs 30/R ft</b></span></div><div class="tile-row"><span>• Granite Moulding With Polish</span><span><b>Rs 50/R ft</b></span></div><div class="tile-row"><span>• Kitchen Slab Composite</span><span><b>Rs 100/ft</b></span></div><div class="tile-row"><span>• Patti (design based)</span><span><b>Rs 100/R ft</b></span></div><div class="tile-row"><span>• Elevation Tile/Marble</span><span><b>Rs 100+ onwards</b></span></div></div></div>
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>⚙️</i> SECTION 4 • EXTRA CHARGES
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• L Corner Cutting</span><span><b>Rs 45/R ft</b></span></div><div class="tile-row"><span>• 45° Degree Cutting</span><span><b>Rs 100/R ft</b></span></div><div class="tile-row"><span>• Counter Washbasin Cutting</span><span><b>Rs 800/pc extra</b></span></div><div class="tile-row"><span>• Manhole Steel Fitting</span><span><b>Rs 1000 extra</b></span></div><div class="tile-row"><span>• Wall Grinding (painted wall)</span><span><b>Rs 10/ft</b></span></div></div></div>
-    <div style="margin:12px 14px;background:#FFF9EB;padding:10px 14px;border-radius:10px;font-size:11px;border:1px dashed #D4AF37;color:#92400E">
-      💡 <b>NOTE:</b> Patti less than 12 inch will be calculated in running feet.
-    </div>
-    <div style="background:#0F1E3D;color:#E8D5B5;text-align:center;padding:10px;font-size:11.5px;letter-spacing:1.5px;font-weight:700">
-      Professional • Reliable • Quality Work
-    </div>
-  </div>
+            <div id="tilePreviewBody"></div>
           </div></div>
         </div>
       </div>
@@ -3304,7 +3020,7 @@ Grand Total = 98,941/-" style="margin:0; min-height:280px; font-family:monospace
 
 
   <!-- PIN Lock Floating Button -->
-  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: rgb(15, 23, 42); border: 1.5px solid rgb(173, 131, 46); color: rgb(212, 169, 78); font-size: 22px; box-shadow: rgba(0, 0, 0, 0.35) 0px 6px 16px; z-index: 90; cursor: pointer;" title="Locked - टैप करें unlock करने के लिए">🔒</button>
+  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(145deg, #21242C, #15171C); border: 1.5px solid #AD832E; color: #D4A94E; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.35); z-index: 90; cursor: pointer;">🔒</button>
 
   <!-- PIN Entry Modal -->
   <div id="pinOverlay" class="popup-overlay">
@@ -3392,11 +3108,21 @@ function smFixNums(obj, spec) {
   return out;
 }
 function initFirebase() {
+  // FORCE RAW FIREBASE - NO OFFLINE CACHE TO AVOID DOUBLE CALCULATION
+  try{
+    // Auto clear all offline caches that cause inflation
+    for(let i=localStorage.length-1; i>=0; i--){
+      const k=localStorage.key(i);
+      if(k && (k.indexOf('sm_cache_')===0 || k.indexOf('sm_outbox_')===0 || k.indexOf('shukla_marble_billing')===0 || k.indexOf('billSites_')===0)){
+        try{ localStorage.removeItem(k); console.log('Auto-removed cache', k); }catch(e){}
+      }
+    }
+  }catch(e){}
   if (window.firebase && !window.firebase.apps.length) {
     window.firebase.initializeApp(firebaseConfig);
   }
   if (window.firebase) {
-    db = makeOfflineDb(window.firebase.database());
+    db = window.firebase.database(); // RAW - NO WRAPPER
     updateSyncBadge();
     startListen();
   } else {
@@ -4550,9 +4276,45 @@ function renderDailyAbsentList() {
 }
 
 function renderAll() {
-  // Safety: Clear index caches if they grow too big or data changes unexpectedly
-  if (typeof _smIdx !== 'undefined' && _smIdx && _smIdx.k0 !== ents) _smIdx = null;
-  if (typeof _smSiteIdx !== 'undefined' && _smSiteIdx && _smSiteIdx.k0 !== ents) _smSiteIdx = null;
+  // CRITICAL FIX: Prevent double counting from cache
+  try{
+    if(typeof _smIdx !== 'undefined' && _smIdx){
+      // If cache has different reference or size mismatch, clear it
+      if(_smIdx.k0 !== ents || (ents && Object.keys(ents).length < 10 && _smIdx.v && Object.keys(_smIdx.v).length > 50)){
+        _smIdx = null;
+        console.log('Cleared inflated _smIdx');
+      }
+    }
+    if(typeof _smSiteIdx !== 'undefined' && _smSiteIdx && _smSiteIdx.k0 !== ents) _smSiteIdx = null;
+  }catch(e){}
+  // Remove duplicate entries check
+  try{
+    if(typeof ents !== 'undefined' && ents){
+      const seen={};
+      const dups=[];
+      Object.keys(ents).forEach(function(id){
+        const e=ents[id];
+        if(!e) return;
+        const key=(e.labourId||'')+'_'+(e.date||'')+'_'+(e.days||'')+'_'+(e.siteId||'');
+        if(seen[key]){
+          // Duplicate found - mark for removal
+          if(e.ts && seen[key].ts && e.ts > seen[key].ts){
+            dups.push(id);
+          } else if(!e.ts){
+            dups.push(id);
+          }
+        } else {
+          seen[key]=e;
+          seen[key]._id=id;
+        }
+      });
+      if(dups.length>0){
+        console.log('Found duplicate entries:', dups.length);
+        // Don't auto-delete, just log
+      }
+    }
+  }catch(e){}
+
 
   const eSel = document.getElementById("eLabour");
   const rSel = document.getElementById("rLabour");
@@ -8546,81 +8308,7 @@ function smSend(rawDb, o) {
     alert("⚠️ डेटा सेव नहीं हो पाया: " + (err && err.message ? err.message : err));
   });
 }
-function makeOfflineDb(rawDb) {
-  // CLEAR OLD V1 CACHE THAT CAUSES HUGE CALCULATIONS
-  try {
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-      const k = localStorage.key(i);
-      if (k && k.indexOf("sm_cache_v1:") === 0) localStorage.removeItem(k);
-    }
-    if (localStorage.getItem("sm_outbox_v1")) localStorage.removeItem("sm_outbox_v1");
-  } catch(e){}
-  // replay anything left from last session (idempotent operations)
-  smOutbox.slice().forEach((o) => smSend(rawDb, o));
-  rawDb.ref(".info/connected").on("value", (s) => { smOnline = !!s.val(); updateSyncBadge(); });
-  function write(path, op, val) {
-    const o = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7), path, op, val: val === undefined ? null : smClone(val) };
-    smOutbox.push(o);
-    smSaveOutbox();
-    Object.keys(smListeners).forEach((root) => {
-      const rel = smRelPath(root, path);
-      if (!rel) return;
-      smData[root] = smApplyOp(smData[root], rel, op, o.val);
-      smSaveCache(root, smData[root]);
-      smEmit(root);
-    });
-    smSend(rawDb, o);
-    return Promise.resolve();
-  }
-  // Generate Firebase-like push ID
-  function genPushId() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 9);
-  }
-  return {
-    raw: rawDb,
-    ref(path) {
-      return {
-        on(evt, cb) {
-          if (evt !== "value") return rawDb.ref(path).on(evt, cb);
-          if (!smListeners[path]) smListeners[path] = [];
-          // Prevent duplicate listeners for same path+callback
-          if (!smListeners[path].includes(cb)) smListeners[path].push(cb);
-          const cached = smLoadCache(path);
-          if (cached !== undefined) {
-            smData[path] = smMergeOutbox(path, cached);
-            try { cb({ val: () => smClone(smData[path]) }); } catch (e) { console.error(e); }
-          }
-          // Store raw listener to allow off() later
-          if (!rawDb._smRawListeners) rawDb._smRawListeners = {};
-          if (rawDb._smRawListeners[path]) {
-            try { rawDb.ref(path).off("value", rawDb._smRawListeners[path]); } catch(e){}
-          }
-          const rawCb = (s) => {
-            const serverVal = s.val();
-            smSaveCache(path, serverVal);
-            smData[path] = smMergeOutbox(path, serverVal);
-            smEmit(path);
-          };
-          rawDb._smRawListeners[path] = rawCb;
-          rawDb.ref(path).on("value", rawCb);
-        },
-        off(evt, cb) {
-          if (smListeners[path]) {
-            smListeners[path] = smListeners[path].filter(fn => fn !== cb);
-          }
-          try { rawDb.ref(path).off(evt, cb); } catch(e){}
-        },
-        set(v) { return write(path, "set", v); },
-        update(v) { return write(path, "update", v); },
-        remove() { return write(path, "remove", null); },
-        push(v) {
-          const newId = genPushId();
-          const fullPath = path + "/" + newId;
-          if (v !== undefined) {
-            return write(fullPath, "set", v).then(() => ({ key: newId, ref: rawDb.ref(fullPath) }));
-          }
-          return { key: newId, set: (val) => write(fullPath, "set", val), ref: rawDb.ref(fullPath) };
-        }
+function makeOfflineDb(rawDb){ return rawDb; }
       };
     }
   };
@@ -9776,41 +9464,68 @@ if (document.readyState === "loading") {
   }
   
 
+  
   window.clearOfflineCacheAndFix = function() {
-    console.log("Clear cache clicked");
+    console.log("Clear cache clicked - AGGRESSIVE CLEAN");
     if (!confirm("⚠️ Phone ka purana cache clear karna hai?\n\nFirebase ka asli data SAFE rahega, sirf local cache clear hoga jo calculation ko bada kar raha hai.\n\nContinue?")) return;
     try {
-      // Remove ALL sm cache versions
+      const toRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k) continue;
+        if (k.indexOf('sm_cache_') === 0 || k.indexOf('sm_outbox_') === 0 || k.indexOf('billSites_') === 0 || k.indexOf('shukla_') === 0 || k.indexOf('labour') === 0 || k.indexOf('site') === 0) toRemove.push(k);
+      }
+      toRemove.forEach(k => {
+        try { localStorage.removeItem(k); console.log("Removed", k); } catch(e){}
+      });
+      // Clear session storage too
+      try{ sessionStorage.clear(); }catch(e){}
+      // Clear in-memory caches
+      try { 
+        if(typeof _smIdx !== 'undefined') _smIdx = null; 
+        if(typeof _smSiteIdx !== 'undefined') _smSiteIdx = null;
+        if(typeof smData !== 'undefined') {
+          Object.keys(smData).forEach(k=>{ delete smData[k]; });
+        }
+        // Clear all global data objects to force reload from Firebase
+        if(typeof ents !== 'undefined') {
+          Object.keys(ents).forEach(k=> delete ents[k]);
+        }
+        if(typeof sitePays !== 'undefined') {
+          Object.keys(sitePays).forEach(k=> delete sitePays[k]);
+        }
+      } catch(e){ console.error(e); }
+      alert("✅ Cache clear ho gaya! Ab app reload hoga aur calculation sahi dikhegi.\n\nFirebase ka data safe hai.");
+      setTimeout(() => location.reload(true), 800);
+    } catch(e) { alert("Error: " + e.message); console.error(e); }
+  };
+  window.forceRecalculate = function() {
+    console.log("Force recalc clicked - FULL RESET");
+    try {
+      // Same as clear but without confirm, plus force re-render
       const toRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
         if (!k) continue;
         if (k.indexOf('sm_cache_') === 0 || k.indexOf('sm_outbox_') === 0) toRemove.push(k);
       }
-      toRemove.forEach(k => {
-        try { localStorage.removeItem(k); console.log("Removed", k); } catch(e){}
-      });
-      _smIdx = null; 
-      try { _smSiteIdx = null; } catch(e){}
-      localStorage.removeItem('shukla_marble_billing');
-      alert("✅ Cache clear ho gaya! Ab app reload hoga aur calculation sahi dikhegi.");
-      setTimeout(() => location.reload(), 500);
-    } catch(e) { alert("Error: " + e.message); console.error(e); }
-  };
-  window.forceRecalculate = function() {
-    console.log("Force recalc clicked");
-    try {
-      _smIdx = null;
-      try { _smSiteIdx = null; } catch(e){}
-      // Force reload data from Firebase by clearing in-memory caches
-      if (typeof renderAll === 'function') renderAll();
-      if (typeof renderDash === 'function') {
-        // Trigger re-render via smRenderSoon if exists
-        try { _smRT = null; } catch(e){}
+      toRemove.forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
+      if(typeof _smIdx !== 'undefined') _smIdx = null;
+      if(typeof _smSiteIdx !== 'undefined') _smSiteIdx = null;
+      if(typeof smData !== 'undefined') {
+        Object.keys(smData).forEach(k=>{ delete smData[k]; });
       }
-      alert("✅ Recalculate ho gaya! Dashboard check karo - ab sahi amount dikhna chahiye.\n\nAgar fir bhi bada dikhe to Cache Clear wala button dabao.");
-    } catch(e) { alert("Error: "+e.message); }
+      // Force Firebase reload
+      if(window.db && typeof startListen === 'function'){
+        try{ window.db.ref().off(); }catch(e){}
+        setTimeout(()=>{ startListen(); renderAll(); }, 500);
+      } else {
+        if (typeof renderAll === 'function') renderAll();
+      }
+      alert("✅ Recalculate ho gaya! Agar abhi bhi bada dikhe to Clear Cache dabao.");
+    } catch(e){ alert("Error: "+e.message); }
   };
+
 
   window.bindFixButtons = function() {
     setTimeout(() => {
@@ -10312,20 +10027,24 @@ if (document.readyState === "loading") {
 
 
 <!-- All Sites Date Wise Payment List Popup - v29 -->
-<div id="allSitesPayModal" class="site-detail-modal" style="display: none; position: fixed; inset: 0px; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); z-index: 2000; align-items: center; justify-content: center; padding: 16px;">
+<div id="allSitesPayModal" class="site-detail-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(6px); z-index:2000; align-items:center; justify-content:center; padding:16px;">
   <div style="background:white; border-radius:24px; width:100%; max-width:520px; max-height:85vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
     <div style="background:#0F172A; color:#FDE68A; padding:16px 20px; display:flex; justify-content:space-between; align-items:center;">
       <div><div style="font-size:16px; font-weight:900;">📅 Date Wise Paise Liya</div><div style="font-size:11px; color:#94A3B8; margin-top:2px;">Har date pe kitna paisa liya, kaunsi site se</div></div>
       <button onclick="closeAllSitesPaymentList()" style="background:#1E293B; color:white; border:none; width:32px; height:32px; border-radius:10px; font-size:18px; cursor:pointer;">✕</button>
     </div>
     <div style="padding:12px; background:#F8FAFC; border-bottom:1px solid #E2E8F0; display:flex; gap:8px; flex-wrap:wrap;">
-      <select id="payFilterSite" onchange="renderAllSitesPayList()" style="flex:1; min-width:120px; padding:8px 10px; border-radius:10px; border:1.5px solid #E2E8F0; font-size:11px; font-weight:700;"><option value="all">🏗️ Sab Sites</option></select>
-      <select id="payFilterMonth" onchange="renderAllSitesPayList()" style="flex:1; min-width:120px; padding:8px 10px; border-radius:10px; border:1.5px solid #E2E8F0; font-size:11px; font-weight:700;"><option value="all">📅 Sab Months</option></select>
+      <select id="payFilterSite" onchange="renderAllSitesPayList()" style="flex:1; min-width:120px; padding:8px 10px; border-radius:10px; border:1.5px solid #E2E8F0; font-size:11px; font-weight:700;">
+        <option value="all">🏗️ Sab Sites</option>
+      </select>
+      <select id="payFilterMonth" onchange="renderAllSitesPayList()" style="flex:1; min-width:120px; padding:8px 10px; border-radius:10px; border:1.5px solid #E2E8F0; font-size:11px; font-weight:700;">
+        <option value="all">📅 Sab Months</option>
+      </select>
     </div>
     <div id="allSitesPaySummary" style="padding:12px 16px; background:#FEF3C7; border-bottom:1px solid #FCD34D; display:flex; justify-content:space-between; font-size:11px; font-weight:800; color:#92400E;">
-      <span id="paySumCount">0 entries | Sab sites</span><span id="paySumTotal">Rs.0</span>
+      <span id="paySumCount">0 entries</span><span id="paySumTotal">Rs.0</span>
     </div>
-    <div id="allSitesPayList" style="flex:1; overflow:auto; padding:12px; background:#F8FAFC;"><div style="text-align:center; padding:40px 20px; color:#94A3B8;"><div style="font-size:32px;">📭</div><div style="font-weight:800; margin-top:8px;">Koi payment nahi mila</div><div style="font-size:11px; margin-top:4px;">13-digit fake entries hide kar diye</div></div></div>
+    <div id="allSitesPayList" style="flex:1; overflow:auto; padding:12px; background:#F8FAFC;"></div>
     <div style="padding:12px; background:white; border-top:1px solid #E2E8F0; display:flex; gap:8px; flex-wrap:wrap;">
       <button onclick="closeAllSitesPaymentList()" style="flex:1; min-width:80px; background:#F1F5F9; color:#64748B; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">Close</button>
       <button onclick="cleanupFakeEntries()" style="background:#DC2626; color:white; border:none; padding:12px 16px; border-radius:12px; font-weight:800; font-size:11px;">🗑️ Delete 13-Digit Fake</button>
