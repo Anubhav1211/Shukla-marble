@@ -4129,17 +4129,80 @@ function showSiteDetail(siteId) {
       </div>`}
     </div>
   `;
-  const labourSummary = Object.values(sc.labourMap).map(
-    (v) => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F1F5F9;font-size:13px">
-      <span>${mEsc(v.name)}</span><span><b>${v.days} \u0926\u093F\u0928</b></span>
-    </div>`
-  ).join("") || '<div style="color:#94A3B8;font-size:12px">\u0915\u094B\u0908 \u0928\u0939\u0940\u0902</div>';
+  // NEW: Month wise labour detail with rate calculation
+  const allSiteMonths = (()=>{ const s=new Set(); Object.values(ents||{}).forEach(e=>{ if(e && e.siteId===siteId && e.date) s.add(e.date.slice(0,7)); }); return Array.from(s).sort().reverse(); })();
+  const currentMonthForLab = window._siteDetailMonth || "all";
+  function getLabourDetailHTML(filterMon){
+    const labMap = {};
+    Object.values(ents||{}).forEach(e=>{
+      if(!e || e.siteId!==siteId) return;
+      if(filterMon!=="all" && (e.date||"").slice(0,7)!==filterMon) return;
+      const days = parseFloat(e.days||0);
+      if(days<=0) return;
+      const labId = e.labourId;
+      const lab = labs[labId];
+      if(!lab) return;
+      if(!labMap[labId]) labMap[labId] = {labId, name: lab.name||"?", wage: parseFloat(lab.wage||0), days:0, cost:0, entries:[]};
+      const rate = entryRate ? entryRate(e, lab) : (parseFloat(lab.wage||0));
+      const c = days * rate;
+      labMap[labId].days += days;
+      labMap[labId].cost += c;
+      labMap[labId].entries.push({date:e.date, days, rate, cost:c, note:e.note||""});
+    });
+    const list = Object.values(labMap).sort((a,b)=> b.days - a.days);
+    if(list.length===0) return '<div style="padding:16px;text-align:center;color:#94A3B8;font-size:12px">इस महीने कोई हाज़री नहीं</div>';
+    let html = "";
+    let tDays=0,tCost=0;
+    list.forEach(l=>{ tDays+=l.days; tCost+=l.cost; });
+    html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px"><div style="background:#EEF2FF;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#4338CA">कुल मजदूर</small><br><b>${list.length}</b></div><div style="background:#DCFCE7;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#166534">कुल दिन / दिहाड़ी</small><br><b>${tDays.toFixed(1)} दिन • ₹${Math.round(tCost).toLocaleString('en-IN')}</b></div></div>`;
+    list.forEach(l=>{
+      const initials = (l.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+      html += `<div style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:12px;margin-bottom:10px">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:38px;height:38px;border-radius:11px;background:#0F172A;color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0">${initials}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:800;font-size:14px">${mEsc(l.name)} <span style="font-size:10px;color:#64748B">₹${l.wage}/दिन</span></div>
+            <div style="font-size:12px;color:#334155;margin-top:2px"><b>${l.days.toFixed(1)} दिन</b> × ₹${l.wage} = <b style="color:#B45309">₹${Math.round(l.cost).toLocaleString('en-IN')}</b></div>
+            <div style="font-size:10px;color:#64748B;margin-top:2px">${l.entries.length} एंट्री • Avg ₹${l.days>0? Math.round(l.cost/l.days) : l.wage}/दिन</div>
+          </div>
+          <button class="btn-sm" style="background:#F1F5F9;color:#334155;padding:6px 10px;font-size:11px;flex-shrink:0" onclick="let el=this.parentElement.nextElementSibling; el.style.display = el.style.display==='none' ? 'block' : 'none';">📋</button>
+        </div>
+        <div style="display:none;margin-top:10px;background:#F8FAFC;border-radius:10px;padding:8px">
+          <table style="width:100%;font-size:11px;border-collapse:collapse"><tr style="color:#64748B;font-size:10px"><th style="text-align:left;padding:4px">तारीख</th><th>दिन</th><th>रेट</th><th>कुल</th></tr>
+          ${l.entries.sort((a,b)=> b.date.localeCompare(a.date)).map(en=>{
+            const dTxt = new Date(en.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"});
+            return `<tr style="border-top:1px solid #F1F5F9"><td style="padding:6px 4px;text-align:left">${dTxt}<div style="font-size:9px;color:#94A3B8">${en.date}</div></td><td style="text-align:center">${en.days}</td><td style="text-align:center">₹${en.rate}</td><td style="text-align:center;color:#B45309;font-weight:800">₹${Math.round(en.cost).toLocaleString('en-IN')}</td></tr>`;
+          }).join('')}
+          </table>
+        </div>
+      </div>`;
+    });
+    return html;
+  }
+  window._renderSiteLabourDetail = function(mon){
+    window._siteDetailMonth = mon;
+    const container = document.getElementById("siteLabourDetailBox");
+    if(container) container.innerHTML = getLabourDetailHTML(mon);
+    const titleMon = document.getElementById("siteLabourMonthTitle");
+    if(titleMon){
+      if(mon==="all") titleMon.innerText = "सभी महीने";
+      else titleMon.innerText = new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+    }
+  };
+  const monthOpts = '<option value="all">📅 सभी महीने (कुल)</option>' + allSiteMonths.map(m=>{ const tt=new Date(m+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"}); return `<option value="${m}" ${m===currentMonthForLab?'selected':''}>${tt}</option>`; }).join('');
   sumHtml += `
-    <div style="margin-top:12px">
-      <b>\u{1F477} \u092E\u091C\u0926\u0942\u0930 \u0935\u093E\u0907\u091C \u0915\u0941\u0932 \u0926\u093F\u0928</b>
-      <div style="background:#F8FAFF;padding:10px;border-radius:12px;margin-top:6px">${labourSummary}</div>
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <b>\u{1F477} मजदूर वाइज कुल दिन</b>
+        <div style="display:flex;gap:6px;align-items:center;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:6px 8px">
+          <select id="siteLabourMonthPicker" class="input" style="margin:0;padding:6px 8px;font-size:12px;min-width:140px" onchange="_renderSiteLabourDetail(this.value)">${monthOpts}</select>
+          <span id="siteLabourMonthTitle" style="font-size:11px;font-weight:800;color:#475569;white-space:nowrap">${currentMonthForLab==="all"?"सभी महीने":currentMonthForLab}</span>
+        </div>
+      </div>
+      <div id="siteLabourDetailBox" style="background:#F8FAFF;padding:10px;border-radius:12px;margin-top:8px;border:1px solid #E2E8F0">${getLabourDetailHTML(currentMonthForLab)}</div>
     </div>
   `;
+
   let payHtml = "";
   if (pays.length === 0) {
     payHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">\u0915\u094B\u0908 \u092A\u0948\u0938\u093E \u0928\u0939\u0940\u0902 \u0932\u093F\u092F\u093E \u0905\u092D\u0940</div>';
