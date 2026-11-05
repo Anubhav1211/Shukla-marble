@@ -1490,6 +1490,10 @@ img, canvas, svg, video { max-width: 100%; }
         <input id="kMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('kMonth')">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(1)">▶</button>
       </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button type="button" class="btn btn-gold" style="flex:1;padding:10px 12px;font-size:12px;font-weight:800" onclick="showAllLaboursMonthWise()">📅 महीने वार पूरी लिस्ट</button>
+        <button type="button" class="btn" style="flex:0 0 auto;background:#0F172A;color:#FDE68A;padding:10px 14px;font-size:12px;font-weight:800" onclick="showAllLaboursMonthWise()">👷 कुल</button>
+      </div>
       <input id="labSearch" class="input" placeholder="🔍 नाम से खोजो..." oninput="renderAll()">
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
@@ -3242,6 +3246,29 @@ Grand Total = 98,941/-" style="margin:0; min-height:280px; font-family:monospace
   <!-- PDF Backup Modal -->
   
   <!-- Month Wise Dihadi Overlay - NEW -->
+  
+  <!-- Labour Month Wise Overlay - NEW -->
+  <div id="labourMonthOverlay" class="site-detail-modal" onclick="if(event.target===this)closeLabourMonth()">
+    <div class="site-detail-box" style="max-width:520px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 id="lmTitle" style="margin:0;font-size:15px;font-weight:800">📅 महीने वार हिसाब</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B" onclick="closeLabourMonth()">✕ बंद करें</button>
+      </div>
+      <div id="lmBody"></div>
+    </div>
+  </div>
+
+  <!-- All Labours Month Wise Overlay - NEW -->
+  <div id="allLabourMonthOverlay" class="site-detail-modal" onclick="if(event.target===this)closeAllLabourMonth()">
+    <div class="site-detail-box" style="max-width:580px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0">
+        <h3 id="almTitle" style="margin:0;font-size:15px;font-weight:800">👷 महीने वार मजदूर लिस्ट</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B" onclick="closeAllLabourMonth()">✕ बंद करें</button>
+      </div>
+      <div id="almBody" style="overflow-y:auto;flex:1;padding-right:4px"></div>
+    </div>
+  </div>
+
   <div id="monthDihadiOverlay" class="site-detail-modal" onclick="if(event.target===this)closeMonthDihadi()">
     <div class="site-detail-box" style="max-width:520px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -4746,10 +4773,11 @@ function renderAll() {
           <div style="background:#FFF9EA;border-radius:12px;padding:8px;text-align:center;"><small style="font-size:9px;color:#64748B;">भुगतान</small><br><b style="font-size:13px;color:#92400E;">₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:7px;margin-top:9px;">
-          <button class="btn-sm" style="background:#0F172A;color:white;padding:9px;border-radius:11px;font-weight:800;" onclick="openKarigarProfile('${id}')">👤 प्रोफाइल देखें</button>
-          <button class="btn-sm" style="background:#EEF2FF;color:#3730A3;padding:9px;border-radius:11px;font-weight:800;" onclick="makeLabourReport('${id}')">📄 हिसाब देखें</button>
+          <button class="btn-sm" style="background:#0F172A;color:white;padding:9px;border-radius:11px;font-weight:800;" onclick="openKarigarProfile('${id}')">👤 प्रोफाइल</button>
+          <button class="btn-sm" style="background:#FEF3C7;color:#92400E;padding:9px;border-radius:11px;font-weight:800;" onclick="showSingleLabourMonthWise('${id}')">📅 महीने वार</button>
           <button class="btn-sm" style="background:#F1F5F9;color:#334155;padding:9px 14px;border-radius:11px;font-weight:800;" onclick="openLabMenu('${id}')">⋯</button>
         </div>
+        <div style="margin-top:6px"><button class="btn-sm" style="width:100%;background:#EEF2FF;color:#3730A3;padding:8px;border-radius:10px;font-weight:800;font-size:11px" onclick="makeLabourReport('${id}')">📄 पूरा हिसाब देखें</button></div>
       </div>
     `;
   });
@@ -4939,6 +4967,131 @@ function showSiteMonthDihadi(siteId){
   overlay.style.display = "flex";
 }
 function closeMonthDihadi(){ const ov=document.getElementById("monthDihadiOverlay"); if(ov) ov.style.display="none"; }
+
+// ===== Labour Month Wise Functions - NEW =====
+function getLabourAllMonths(labId){
+  const monthsSet = new Set();
+  Object.values(ents||{}).forEach(e=>{
+    if(e && e.labourId===labId && e.date) monthsSet.add(e.date.slice(0,7));
+  });
+  Object.keys(labourMonthly[labId]||{}).forEach(m=> monthsSet.add(m));
+  // also include from index if available
+  try{
+    const I = smIndex();
+    if(I && I.months && I.months[labId]) I.months[labId].forEach(m=> monthsSet.add(m));
+  }catch(e){}
+  return Array.from(monthsSet).sort().reverse();
+}
+function showSingleLabourMonthWise(labId){
+  const l = labs[labId];
+  if(!l) return;
+  const overlay = document.getElementById("labourMonthOverlay");
+  const title = document.getElementById("lmTitle");
+  const body = document.getElementById("lmBody");
+  if(!overlay || !body) return;
+  if(title) title.innerText = "📅 "+(l.name||"कारीगर")+" - महीने वार हिसाब";
+  const months = getLabourAllMonths(labId);
+  let html = "";
+  let tDays=0,tEarn=0,tWith=0;
+  if(months.length===0){
+    html = '<div style="text-align:center;padding:20px;color:#94A3B8">कोई हाज़री नहीं</div>';
+  } else {
+    html += '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#0F172A;color:#FDE68A"><th style="padding:8px;text-align:left">महीना</th><th>दिन</th><th>कमाई</th><th>निकासी</th><th>बकाया</th></tr>';
+    months.forEach(mon=>{
+      const c = calcLabour(labId, mon);
+      const mTxt = new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"short",year:"numeric"});
+      tDays += c.days; tEarn += c.earn; tWith += c.with;
+      const netClr = c.net>=0 ? "#166534" : "#B91C1C";
+      const netTxt = c.net>=0 ? "देना ₹"+Math.round(c.net).toLocaleString('en-IN') : "लेना ₹"+Math.round(Math.abs(c.net)).toLocaleString('en-IN');
+      html += `<tr style="border-bottom:1px solid #F1F5F9"><td style="padding:8px;text-align:left;font-weight:700">${mTxt}<div style="font-size:10px;color:#64748B">${mon}</div></td><td style="text-align:center">${c.days.toFixed(1)}</td><td style="text-align:center;color:#1D4ED8">₹${Math.round(c.earn).toLocaleString('en-IN')}</td><td style="text-align:center;color:#92400E">₹${Math.round(c.with).toLocaleString('en-IN')}</td><td style="text-align:center;color:${netClr};font-weight:800;font-size:11px">${netTxt}</td></tr>`;
+    });
+    html += '</table>';
+    html = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div style="background:#F0FDF4;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#166534">कुल दिन</small><br><b>${tDays.toFixed(1)}</b></div><div style="background:#EEF2FF;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#4338CA">कुल कमाई</small><br><b>₹${Math.round(tEarn).toLocaleString('en-IN')}</b></div><div style="background:#FEF3C7;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#92400E">कुल निकासी</small><br><b>₹${Math.round(tWith).toLocaleString('en-IN')}</b></div></div>` + html;
+  }
+  body.innerHTML = html;
+  overlay.style.display = "flex";
+}
+function closeLabourMonth(){ const ov=document.getElementById("labourMonthOverlay"); if(ov) ov.style.display="none"; }
+
+function showAllLaboursMonthWise(){
+  const monInput = document.getElementById("kMonth") || document.getElementById("dMonth");
+  const mon = monInput ? monInput.value : fmtLocalDate(new Date()).slice(0,7);
+  const overlay = document.getElementById("allLabourMonthOverlay");
+  const title = document.getElementById("almTitle");
+  const body = document.getElementById("almBody");
+  if(!overlay || !body) return;
+  if(title) title.innerText = "👷 महीने वार मजदूर लिस्ट - "+ new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+  const activeIds = Object.keys(labs||{}).filter(id=> !labs[id].archived).sort((a,b)=> (labs[a].name||"").localeCompare(labs[b].name||""));
+  let html = "";
+  let totDays=0, totEarn=0, totWith=0, totNet=0;
+  const rows=[];
+  activeIds.forEach(id=>{
+    const c = calcLabour(id, mon);
+    if(c.days===0 && c.earn===0 && c.with===0 && c.bal===0) return; // skip empty
+    rows.push({id, name: labs[id].name||"?", wage: labs[id].wage||0, ...c});
+    totDays+=c.days; totEarn+=c.earn; totWith+=c.with; totNet+=c.net;
+  });
+  rows.sort((a,b)=> b.days - a.days);
+  html += `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px">
+    <div style="background:#0F172A;color:#FDE68A;padding:10px;border-radius:12px;text-align:center"><small style="font-size:9px;opacity:0.8">कुल मजदूर</small><br><b style="font-size:16px">${rows.length}</b></div>
+    <div style="background:#EEF2FF;padding:10px;border-radius:12px;text-align:center"><small style="font-size:9px;color:#4338CA">कुल दिन</small><br><b style="font-size:16px;color:#1E40AF">${totDays.toFixed(1)}</b></div>
+    <div style="background:#DCFCE7;padding:10px;border-radius:12px;text-align:center"><small style="font-size:9px;color:#166534">कुल कमाई</small><br><b style="font-size:14px;color:#15803D">₹${Math.round(totEarn).toLocaleString('en-IN')}</b></div>
+    <div style="background:#FEF3C7;padding:10px;border-radius:12px;text-align:center"><small style="font-size:9px;color:#92400E">देना/लेना</small><br><b style="font-size:14px;color:${totNet>=0?'#166534':'#B91C1C'}">${totNet>=0?'देना ':'लेना '}₹${Math.round(Math.abs(totNet)).toLocaleString('en-IN')}</b></div>
+  </div>`;
+  html += `<div style="display:flex;gap:6px;margin-bottom:10px"><input id="almSearch" class="input" placeholder="🔍 मजदूर खोजो" style="margin:0;flex:1" oninput="filterAllLabourMonthList()"><button class="btn-sm" style="background:#0F172A;color:#FDE68A;padding:10px 14px" onclick="shareAllLabourMonthWise()">📤 Share</button></div>`;
+  html += '<div id="almList">';
+  if(rows.length===0){
+    html += '<div style="text-align:center;padding:20px;color:#94A3B8">इस महीने कोई हाज़री नहीं</div>';
+  } else {
+    rows.forEach(r=>{
+      const netClr = r.net>=0 ? "#166534" : "#B91C1C";
+      const netBg = r.net>=0 ? "#F0FDF4" : "#FEF2F2";
+      const initials = (r.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+      html += `<div class="alm-row" data-name="${(r.name||'').toLowerCase()}" style="background:white;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
+        <div style="width:38px;height:38px;border-radius:11px;background:#0F172A;color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">${initials}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.name} <span style="font-size:10px;color:#64748B">₹${r.wage}/दिन</span></div>
+          <div style="font-size:11px;color:#475569;display:flex;gap:8px;margin-top:2px"><span>📅 ${r.days.toFixed(1)} दिन</span><span style="color:#1D4ED8">₹${Math.round(r.earn).toLocaleString('en-IN')}</span><span style="color:#92400E">निकासी ₹${Math.round(r.with).toLocaleString('en-IN')}</span></div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="background:${netBg};padding:4px 8px;border-radius:8px;font-size:11px;font-weight:800;color:${netClr}">${r.net>=0?'देना':'लेना'} ₹${Math.round(Math.abs(r.net)).toLocaleString('en-IN')}</div>
+          <button class="btn-sm" style="margin-top:4px;background:#EEF2FF;color:#4338CA;padding:4px 8px;font-size:10px" onclick="showSingleLabourMonthWise('${r.id}')">📅 सभी महीने</button>
+        </div>
+      </div>`;
+    });
+  }
+  html += '</div>';
+  // store for share
+  window._almRows = rows;
+  window._almMonth = mon;
+  body.innerHTML = html;
+  overlay.style.display = "flex";
+}
+function filterAllLabourMonthList(){
+  const q = (document.getElementById("almSearch")?.value||"").toLowerCase();
+  document.querySelectorAll(".alm-row").forEach(row=>{
+    const name = row.getAttribute("data-name")||"";
+    row.style.display = name.includes(q) ? "" : "none";
+  });
+}
+function closeAllLabourMonth(){ const ov=document.getElementById("allLabourMonthOverlay"); if(ov) ov.style.display="none"; }
+function shareAllLabourMonthWise(){
+  const mon = window._almMonth || "";
+  const rows = window._almRows || [];
+  if(rows.length===0){ alert("Share करने के लिए कोई डेटा नहीं"); return; }
+  const mTxt = new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
+  let text = `*👷 महीने वार मजदूर लिस्ट - ${mTxt}*\n\n`;
+  rows.forEach(r=>{
+    const netTxt = r.net>=0 ? `देना ₹${Math.round(r.net).toLocaleString('en-IN')}` : `लेना ₹${Math.round(Math.abs(r.net)).toLocaleString('en-IN')}`;
+    text += `• ${r.name} - ${r.days.toFixed(1)} दिन, कमाई ₹${Math.round(r.earn).toLocaleString('en-IN')}, ${netTxt}\n`;
+  });
+  let tD=0,tE=0,tN=0;
+  rows.forEach(r=>{ tD+=r.days; tE+=r.earn; tN+=r.net; });
+  text += `\n*कुल: ${tD.toFixed(1)} दिन, ₹${Math.round(tE).toLocaleString('en-IN')}, ${tN>=0?'देना':'लेना'} ₹${Math.round(Math.abs(tN)).toLocaleString('en-IN')}*`;
+  if(navigator.share){ navigator.share({text}).catch(()=>{}); return; }
+  window.open("https://api.whatsapp.com/send?text="+encodeURIComponent(text), "_blank");
+}
+
 
 function siteCardHtml(id) {
   const s = sites[id];
