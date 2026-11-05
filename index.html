@@ -1,4 +1,4 @@
-<html lang="hi" style=""><head><style>
+<html lang="hi"><head><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -1238,7 +1238,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body class="">
+<body>
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1257,7 +1257,7 @@ img, canvas, svg, video { max-width: 100%; }
   </header>
 
   <!-- Bottom Navigation -->
-  <div class="bottom-nav" data-swipe-ready="1">
+  <div class="bottom-nav">
     <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
     <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
@@ -1271,14 +1271,14 @@ img, canvas, svg, video { max-width: 100%; }
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d" class="sm-page-in" style="display: block;">
+  <div id="t-d">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
         <input id="dMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('dMonth')">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(1)">▶</button>
       </div>
-      <span id="monTxt" style="display: none;">नवंबर 2026</span><span id="msMonTxt" style="display: none;"></span>
+      <span id="monTxt" style="display: none;"></span><span id="msMonTxt" style="display: none;"></span>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
         <div onclick="unlockProfit('total')" style="position: relative; cursor: pointer; background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 10px 4px; border-radius: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <b id="kTot" style="font-size: 15px; white-space: nowrap; overflow-wrap: normal; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis;">••••</b><br><span style="display: inline-flex; align-items: center; gap: 6px; margin-top: 2px;"><small id="kTotLabel" style="color: #94A3B8; font-weight: 600;">कुल मुनाफ़ा</small><button type="button" class="eye-mini eye-sync" onclick="toggleProfitEye(event)" aria-label="रकम दिखाओ / छुपाओ">👁️</button></span><br><small id="kTotHint" style="color: #64748B; font-size: 9px;">दबाकर देखें</small><div style="display:flex;gap:4px;margin-top:8px;justify-content:center;"><button id="profitTotalBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#FFFFFF;color:#0F172A;" onclick="event.stopPropagation();setProfitView('total')">कुल</button><button id="profitMonthBtn" class="btn-sm" style="padding:5px 8px;font-size:10px;background:#475569;color:#CBD5E1;" onclick="event.stopPropagation();setProfitView('month')">महीना</button></div>
@@ -1317,14 +1317,14 @@ img, canvas, svg, video { max-width: 100%; }
         <button id="dashRecalc" type="button" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 Fix</button>
       </div>
     </div>
-    <div class="card ds-card sm-stagger" <!--="" recovery="" mode="" --="" style="animation-delay: 30ms;">
-<div id="recoveryBar" style="background:#DC2626; border:2px solid #991B1B; border-radius:12px; padding:12px; margin:10px 0; display:none;">
-  <div style="font-size:13px; font-weight:900; color:white; margin-bottom:8px;">🚨 Data Recovery Mode</div>
-  <div id="recoveryInfo" style="background:white; border-radius:8px; padding:10px; font-size:11px; color:#0F172A; margin-bottom:8px; max-height:150px; overflow:auto;"></div>
+    
+<div id="recoveryBar" style="background:#DC2626; border:2px solid #991B1B; border-radius:12px; padding:12px; margin:10px 0; display:block;">
+  <div style="font-size:14px; font-weight:900; color:white; margin-bottom:8px;">🚨 Data Recovery - Agar data ud gaya hai to</div>
+  <div id="recoveryInfo" style="background:white; border-radius:8px; padding:10px; font-size:11px; color:#0F172A; margin-bottom:8px; max-height:200px; overflow:auto;">Error: Can't find variable: sites</div>
   <div style="display:flex; gap:6px; flex-wrap:wrap;">
-    <button onclick="checkFirebaseData()" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800;">🔍 Check Firebase Data</button>
-    <button onclick="restoreFromBackup()" style="background:#059669; color:white; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800;">♻️ Restore Last Backup</button>
-    <button onclick="document.getElementById('recoveryBar').style.display='none'" style="background:#F1F5F9; color:#64748B; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800;">Close</button>
+    <button onclick="checkFirebaseData()" style="background:#0F172A; color:#FDE68A; border:none; padding:10px 14px; border-radius:10px; font-size:12px; font-weight:800;">🔍 Check Data</button>
+    <button onclick="openBackupCenter()" style="background:#059669; color:white; border:none; padding:10px 14px; border-radius:10px; font-size:12px; font-weight:800;">💾 Backup Center</button>
+    <button onclick="location.reload()" style="background:#F1F5F9; color:#0F172A; border:none; padding:10px 14px; border-radius:10px; font-size:12px; font-weight:800;">🔄 Reload</button>
   </div>
 </div>
 
@@ -1332,82 +1332,30 @@ img, canvas, svg, video { max-width: 100%; }
 window.checkFirebaseData = function(){
   const info=document.getElementById('recoveryInfo');
   if(!info) return;
-  let html='<b>Firebase Check:</b><br>';
   try{
-    html+='• Sites: '+(Object.keys(sites||{}).length)+' entries<br>';
-    html+='• Entries (Hazri): '+(Object.keys(ents||{}).length)+' entries<br>';
-    html+='• Site Payments: '+(Object.keys(sitePays||{}).length)+' entries<br>';
-    html+='• Site Costs: '+(Object.keys(siteCosts||{}).length)+' entries<br>';
-    html+='• Labs: '+(Object.keys(labs||{}).length)+' entries<br>';
-    html+='• Expenses: '+(Object.keys(expenses||{}).length)+' entries<br>';
-    html+='• Bill Sites: '+(Object.keys(billSites||{}).length)+' entries<br>';
-    html+='<br><b>LocalStorage:</b><br>';
-    let lsCount=0;
-    for(let i=0;i<localStorage.length;i++){
-      const k=localStorage.key(i);
-      if(k && (k.indexOf('sm_')===0 || k.indexOf('bill')===0 || k.indexOf('shukla')===0)){
-        html+='• '+k+'<br>';
-        lsCount++;
-      }
-    }
-    if(lsCount===0) html+='No cache keys<br>';
-    html+='<br><b>Last Backup:</b> Check Backup Center > बैकअप';
-  }catch(e){ html+='Error: '+e.message; }
-  info.innerHTML=html;
-  document.getElementById('recoveryBar').style.display='block';
+    let html='<b>Firebase Live Data:</b><br>';
+    html+='• Sites: '+(Object.keys(sites||{}).length)+'<br>';
+    html+='• Entries (Hazri): '+(Object.keys(ents||{}).length)+'<br>';
+    html+='• Payments: '+(Object.keys(sitePays||{}).length)+'<br>';
+    html+='• Costs: '+(Object.keys(siteCosts||{}).length)+'<br>';
+    html+='• Labs: '+(Object.keys(labs||{}).length)+'<br>';
+    html+='• Expenses: '+(Object.keys(expenses||{}).length)+'<br>';
+    html+='<br><b>Agar 0 dikhe to Firebase khali hai, Backup se restore karo:</b><br>';
+    html+='Backup Center me jao -> Last backup pe Restore dabao';
+    info.innerHTML=html;
+  }catch(e){ info.innerHTML='Error: '+e.message; }
 };
-
-window.restoreFromBackup = async function(){
-  if(!confirm('Kya aap last backup se data restore karna chahte ho?\n\nYe Firebase me jo backup save hai usse data wapas layega.')) return;
-  try{
-    // Try to get backups from Firebase
-    const snap = await db.ref('companies/'+company+'/backups').once('value');
-    const backups = snap.val();
-    if(!backups || Object.keys(backups).length===0){
-      alert('❌ Firebase me koi backup nahi mila!\n\nBackup Center me dekho ya main backup se restore karo.');
-      return;
-    }
-    const latestKey = Object.keys(backups).sort().reverse()[0];
-    const latest = backups[latestKey];
-    if(!latest || !latest.data){
-      alert('❌ Backup data khali hai!');
-      return;
-    }
-    if(!confirm('Latest backup: '+latestKey+'\nDate: '+(latest.date||'')+'\n\nIsse restore kar du?')) return;
-    
-    const data = latest.data;
-    // Restore each collection
-    if(data.sites) await db.ref('companies/'+company+'/sites').set(data.sites);
-    if(data.entries) await db.ref('companies/'+company+'/entries').set(data.entries);
-    if(data.sitePayments) await db.ref('companies/'+company+'/sitePayments').set(data.sitePayments);
-    if(data.siteCosts) await db.ref('companies/'+company+'/siteCosts').set(data.siteCosts);
-    if(data.labs) await db.ref('companies/'+company+'/labs').set(data.labs);
-    if(data.expenses) await db.ref('companies/'+company+'/expenses').set(data.expenses);
-    if(data.billingSites) await db.ref('companies/'+company+'/billingSites').set(data.billingSites);
-    
-    alert('✅ Backup restore ho gaya! 2 sec me reload hoga.');
-    setTimeout(()=>location.reload(true), 2000);
-  }catch(e){
-    alert('Restore Error: '+e.message);
-  }
-};
-
-window.showRecoveryBar = function(){
-  document.getElementById('recoveryBar').style.display='block';
-  checkFirebaseData();
-};
+// Auto check on load
+setTimeout(checkFirebaseData, 2000);
 </script>
 
-id="dsCard"&gt;
+<div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 45ms;">
       <div class="ds-head">
         <div>
           <div class="ds-title">🏗️ साइट्स</div>
           <div class="ds-sub" id="dsSub"></div>
         </div>
-        <div style="display:flex; gap:6px; align-items:center;">
-          <button type="button" onclick="openAllSitesPaymentList()" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 10px; border-radius:12px; font-size:11px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:4px; white-space:nowrap;">📅💰 List</button>
-          <button type="button" class="eye-btn eye-sync" onclick="toggleProfitEye(event)" aria-label="रकम दिखाओ / छुपाओ">👁️</button>
-        </div>
+        <button type="button" class="eye-btn eye-sync" onclick="toggleProfitEye(event)" aria-label="रकम दिखाओ / छुपाओ">👁️</button>
       </div>
       <div class="tg-row c2" style="margin-bottom: 12px;">
         <button type="button" class="tg-btn dark" onclick="openSiteAdd()">➕ नई साइट जोड़ो</button>
@@ -1459,7 +1407,7 @@ id="dsCard"&gt;
         <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
         <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
-      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 60ms;">
+      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 90ms;">
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
@@ -1758,7 +1706,7 @@ id="dsCard"&gt;
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
         <h3 style="margin: 0; font-size: 16px; font-weight: 800;">🧱 मटेरियल हिसाब <span id="mNSLabel" style="font-size:11px;background:#4F46E5;color:white;padding:3px 9px;border-radius:20px;vertical-align:middle;">NOVA</span></h3>
-        <span id="mPeriodTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;">नवंबर 2026</span>
+        <span id="mPeriodTxt" style="background: #EEF2FF; color: #4F46E5; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;"></span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;">
         <div style="background: linear-gradient(145deg, #21242C, #15171C); color: white; padding: 12px 4px; border-radius: 16px; text-align: center;">
@@ -1790,7 +1738,7 @@ id="dsCard"&gt;
         </div>
         <div style="background: #FEE2E2; padding: 10px 4px; border-radius: 14px; text-align: center;">
           <small style="color: #991B1B; font-weight: 700; font-size: 9.5px;">बकाया</small><br>
-          <b id="mpPending" style="font-size: 13px; color: rgb(22, 101, 52); white-space: nowrap;">₹0</b>
+          <b id="mpPending" style="font-size: 13px; color: #991B1B; white-space: nowrap;">₹0</b>
         </div>
       </div>
       <button class="btn btn-gold" onclick="toggleBox('mpBox')" style="display: flex; justify-content: space-between; align-items: center;">
@@ -1807,7 +1755,7 @@ id="dsCard"&gt;
       <div id="mpListWrap" style="margin-top: 14px;">
         <h4 style="margin: 0 0 8px 0; font-size: 13px;">🧾 पेमेंट हिस्ट्री</h4>
         <div id="mpList"></div>
-        <div id="mpEmpty" style="display: block; text-align: center; color: rgb(148, 163, 184); font-size: 12.5px; padding: 12px 0px;">अभी कोई पेमेंट दर्ज नहीं</div>
+        <div id="mpEmpty" style="display: none; text-align: center; color: #94A3B8; font-size: 12.5px; padding: 12px 0;">अभी कोई पेमेंट दर्ज नहीं</div>
       </div>
       <button class="btn-sm" style="background: #DCFCE7; color: #166534; width: 100%; padding: 10px; margin-top: 10px; font-size: 13px;" onclick="matPaymentShareWhatsapp()">📤 WhatsApp पर हिसाब भेजो</button>
     </div>
@@ -1815,7 +1763,7 @@ id="dsCard"&gt;
     <!-- Item Master -->
     <div class="card tg-card">
       <button class="btn" style="background: #0F172A; display: flex; justify-content: space-between; align-items: center;" onclick="toggleBox('mItemBox')">
-        <span>📦 मटेरियल आइटम व रेट (एक बार सेव करें)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0 आइटम</span>
+        <span>📦 मटेरियल आइटम व रेट (एक बार सेव करें)</span><span id="mItemCount" style="background:#334155;padding:2px 10px;border-radius:20px;font-size:11px;">0</span>
       </button>
       <div id="mItemBox" style="display: none; margin-top: 12px;">
         <input id="miName" class="input" placeholder="आइटम का नाम (जैसे: Chemical, Epoxy, Cement)">
@@ -1831,7 +1779,7 @@ id="dsCard"&gt;
         <button class="btn btn-gold" id="miSaveBtn" onclick="saveMatItem()">+ आइटम सेव करें</button>
         <button class="btn" id="miCancelBtn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" onclick="cancelMatItemEdit()">Cancel</button>
         <div id="miMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
-        <div id="mItemList" style="margin-top: 10px;"><div style="color:#94A3B8;padding:10px;text-align:center;font-size:12px;">अभी कोई आइटम नहीं। ऊपर नाम, यूनिट और रेट डालकर सेव करें।</div></div>
+        <div id="mItemList" style="margin-top: 10px;"></div>
       </div>
     </div>
 
@@ -1848,7 +1796,7 @@ id="dsCard"&gt;
       </div>
       <div id="meFormBox" style="display: none; margin-top: 12px;">
       <div id="meEditTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ मटेरियल एंट्री एडिट हो रही है</div>
-      <select id="meItem" class="input" onchange="onMatItemPick()"><option value="">📦 आइटम चुनें</option></select>
+      <select id="meItem" class="input" onchange="onMatItemPick()"></select>
       <div style="display: flex; gap: 8px;">
         <input id="meQty" type="number" step="any" class="input" placeholder="मात्रा (Qty)" oninput="updateMatTotal()" style="flex: 1;">
         <input id="meRate" type="number" step="any" class="input" placeholder="रेट ₹" oninput="updateMatTotal()" style="flex: 1;">
@@ -1857,7 +1805,7 @@ id="dsCard"&gt;
         <span id="meCalcTxt" style="font-size: 12px; color: #CBD5E1; font-weight: 600;">0 × ₹0</span>
         <b id="meTotalTxt" style="font-size: 18px; color: #FBBF24;">₹0</b>
       </div>
-      <select id="meSite" class="input"><option value="">🏠 साइट / ग्राहक चुनें (Optional)</option></select>
+      <select id="meSite" class="input"></select>
       <input id="meCustomer" class="input" placeholder="या ग्राहक का नाम लिखें (अगर साइट लिस्ट में नहीं है)">
       <input id="meNote" class="input" placeholder="Note / टिप्पणी (जैसे: दुकान का नाम, बिल नं.)">
       <button class="btn btn-save" id="meSaveBtn" onclick="saveMatEntry()">💾 मटेरियल एंट्री सेव</button>
@@ -1895,10 +1843,10 @@ id="dsCard"&gt;
     <!-- Selected day entries -->
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
-        <span>🧾 मटेरियल - <span id="mDayTxt">05 नव॰ 2026</span></span>
-        <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;">0 एंट्री · ₹0</span>
+        <span>🧾 मटेरियल - <span id="mDayTxt"></span></span>
+        <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;"></span>
       </h3>
-      <div id="mDayList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">इस तारीख को कोई मटेरियल एंट्री नहीं</div></div>
+      <div id="mDayList"></div>
     </div>
 
     <!-- Reports -->
@@ -1912,16 +1860,12 @@ id="dsCard"&gt;
       </div>
       <input id="mrDay" type="date" class="input" style="display: none;" onchange="renderMaterial()">
       <input id="mrMonth" type="month" class="input" onchange="renderMaterial()">
-      <select id="mrYear" class="input" style="display: none;" onchange="renderMaterial()"><option value="2026">2026</option></select>
+      <select id="mrYear" class="input" style="display: none;" onchange="renderMaterial()"></select>
       <div style="display: flex; gap: 8px;">
-        <select id="mrCust" class="input" style="flex: 1;" onchange="renderMaterial()"><option value="">👤 सभी ग्राहक</option></select>
-        <select id="mrItem" class="input" style="flex: 1;" onchange="renderMaterial()"><option value="">📦 सभी आइटम</option></select>
+        <select id="mrCust" class="input" style="flex: 1;" onchange="renderMaterial()"></select>
+        <select id="mrItem" class="input" style="flex: 1;" onchange="renderMaterial()"></select>
       </div>
-      <div id="mReportBox">
-    <div style="background:#0F172A;color:white;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
-      <div><small style="color:#94A3B8;font-weight:700;">नवंबर 2026 · कुल मटेरियल</small><br><small style="color:#CBD5E1;">0 एंट्री</small></div>
-      <b style="font-size:20px;color:#FBBF24;">₹0</b>
-    </div><div style="color:#94A3B8;padding:14px;text-align:center;font-size:12px;">इस अवधि में कोई मटेरियल एंट्री नहीं</div></div>
+      <div id="mReportBox"></div>
       <button class="btn" style="background: #16A34A; margin-top: 10px;" onclick="downloadMatExcel()">📊 पूरी Excel शीट डाउनलोड (तारीख व मटेरियल वाइज)</button>
       <button id="matShareBtn" class="btn" style="background: #25D366; margin-top: 10px;" onclick="shareMatReport()">📤 PDF रिपोर्ट WhatsApp पर भेजें</button>
     </div>
@@ -1949,151 +1893,7 @@ id="dsCard"&gt;
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="addSecItalian()">+ Section</button>
           <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px;" onclick="saveAgreement('italian')">💾 Website Par Save</button>
         </div>
-        <div id="editorItalian" style="margin-top: 12px;"><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 0, this)"><b>ITALIAN MARBLE</b><small>4 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="ITALIAN MARBLE" oninput="italianData[0].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(0)">❌ Delete</button><div style="border:1.5px solid #EEF2FF;margin:8px 0;padding:8px;border-radius:12px">
-          <b>LEFT: Italian Grey/Beige</b>
-          <input class="input" value="Italian Grey/Beige" oninput="italianData[0]['left'].sub=this.value;renderItalian()"><div class="ag-item-row">
-            <input class="input" value="Floor fitting" oninput="italianData[0]['left'].items[0].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 60/sq ft" oninput="italianData[0]['left'].items[0].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'left',0)">X</button>
-          </div><div class="ag-item-row">
-            <input class="input" value="Wall cladding" oninput="italianData[0]['left'].items[1].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 100/sq ft" oninput="italianData[0]['left'].items[1].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'left',1)">X</button>
-          </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(0,'left')">+ Line</button></div><div style="border:1.5px solid #EEF2FF;margin:8px 0;padding:8px;border-radius:12px">
-          <b>RIGHT: White Italian</b>
-          <input class="input" value="White Italian" oninput="italianData[0]['right'].sub=this.value;renderItalian()"><div class="ag-item-row">
-            <input class="input" value="Floor fitting" oninput="italianData[0]['right'].items[0].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 80/sq ft" oninput="italianData[0]['right'].items[0].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'right',0)">X</button>
-          </div><div class="ag-item-row">
-            <input class="input" value="Wall cladding" oninput="italianData[0]['right'].items[1].n=this.value;renderItalian()" placeholder="Work">
-            <input class="input" value="Rs 120/sq ft" oninput="italianData[0]['right'].items[1].r=this.value;renderItalian()" placeholder="Rate">
-            <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(0,'right',1)">X</button>
-          </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(0,'right')">+ Line</button></div></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 1, this)"><b>CUTTING &amp; MOLDING (For Italian Grey and Beige)</b><small>7 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="CUTTING &amp; MOLDING (For Italian Grey and Beige)" oninput="italianData[1].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(1)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Skirting patti (below 12 inch)" oninput="italianData[1].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Molding - tapar/half round/taccar" oninput="italianData[1].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/R ft" oninput="italianData[1].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="45° degree cutting" oninput="italianData[1].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',2)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Classic molding (as per design)" oninput="italianData[1].items[3].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="As per design" oninput="italianData[1].items[3].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',3)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="6mm groove" oninput="italianData[1].items[4].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[4].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',4)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="8mm groove" oninput="italianData[1].items[5].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 60/R ft" oninput="italianData[1].items[5].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',5)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="12mm groove" oninput="italianData[1].items[6].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/R ft" oninput="italianData[1].items[6].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(1,'single',6)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(1,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 2, this)"><b>CUTTING &amp; MOLDING (For White Italian)</b><small>7 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="CUTTING &amp; MOLDING (For White Italian)" oninput="italianData[2].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(2)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Skirting patti (below 12 inch)" oninput="italianData[2].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 80/R ft" oninput="italianData[2].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Molding - tapar/half round/taccar" oninput="italianData[2].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 120/R ft" oninput="italianData[2].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="45° degree cutting" oninput="italianData[2].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/R ft" oninput="italianData[2].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',2)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Classic molding (as per design)" oninput="italianData[2].items[3].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="As per design" oninput="italianData[2].items[3].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',3)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="6mm groove" oninput="italianData[2].items[4].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 80/R ft" oninput="italianData[2].items[4].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',4)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="8mm groove" oninput="italianData[2].items[5].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 80/R ft" oninput="italianData[2].items[5].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',5)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="12mm groove" oninput="italianData[2].items[6].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 120/R ft" oninput="italianData[2].items[6].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(2,'single',6)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(2,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 3, this)"><b>GRANITE</b><small>3 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="GRANITE" oninput="italianData[3].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(3)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Granite fitting (big size, 16mm)" oninput="italianData[3].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 50/R ft" oninput="italianData[3].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(3,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Designer granite patti" oninput="italianData[3].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 25/R ft" oninput="italianData[3].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(3,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Granite molding" oninput="italianData[3].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Same as italian" oninput="italianData[3].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(3,'single',2)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(3,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 4, this)"><b>TILE WORK (Separate Section)</b><small>3 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="TILE WORK (Separate Section)" oninput="italianData[4].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(4)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Tile fitting (on-site)" oninput="italianData[4].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="As per tile size" oninput="italianData[4].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(4,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Tile fitting All Sizes" oninput="italianData[4].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 50/sq ft" oninput="italianData[4].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(4,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Tile patti" oninput="italianData[4].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 50/R ft" oninput="italianData[4].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(4,'single',2)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(4,'single')">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('it', 5, this)"><b>EXTRA WORK</b><small>5 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="EXTRA WORK" oninput="italianData[5].title=this.value;renderItalian()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecIt(5)">❌ Delete</button><div class="ag-item-row">
-          <input class="input" value="Manhole steel fitting" oninput="italianData[5].items[0].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 800/pc" oninput="italianData[5].items[0].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',0)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Epoxy grouting" oninput="italianData[5].items[1].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 100/sq ft" oninput="italianData[5].items[1].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',1)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Counter washbasin (simple)" oninput="italianData[5].items[2].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 1500/pc" oninput="italianData[5].items[2].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',2)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Sink fitting" oninput="italianData[5].items[3].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 500/pc" oninput="italianData[5].items[3].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',3)">X</button>
-        </div><div class="ag-item-row">
-          <input class="input" value="Fibermesh grinding (50% area)" oninput="italianData[5].items[4].n=this.value;renderItalian()" placeholder="Work">
-          <input class="input" value="Rs 10/sq ft" oninput="italianData[5].items[4].r=this.value;renderItalian()" placeholder="Rate">
-          <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',4)">X</button>
-        </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(5,'single')">+ Line</button></div></div></div>
+        <div id="editorItalian" style="margin-top: 12px;"></div>
 
         <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
@@ -2106,12 +1906,7 @@ id="dsCard"&gt;
           </div>
           <div id="agPrevBodyIt" style="display: none;"><div id="italianCard" class="italian-preview">
             <div class="italian-head">SHUKLA MARBLE CONTRACTOR</div>
-            <div id="italianPreviewBody"><div style="display:flex;flex-wrap:wrap;gap:12px;background:#0F172A;color:#FFFFFF;padding:10px 14px;font-size:11.5px;font-weight:700;border-bottom:2px solid #F59E0B">
-    <span>🏛️ Work Site: ____</span>
-    <span>👤 Client: ____</span>
-    <span>📱 Ph: ____</span>
-    <span>📅 Date: 5/11/2026</span>
-  </div><div class="italian-sec-title">ITALIAN MARBLE</div><div class="italian-grid"><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">Italian Grey/Beige</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 60/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 100/sq ft</b></span></div></div><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">White Italian</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 80/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 120/sq ft</b></span></div></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For Italian Grey and Beige)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 100/R ft</b></span></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For White Italian)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 120/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 120/R ft</b></span></div></div><div class="italian-sec-title">GRANITE</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Granite fitting (big size, 16mm)</span><span><b>Rs 50/R ft</b></span></div><div class="italian-item"><span>• Designer granite patti</span><span><b>Rs 25/R ft</b></span></div><div class="italian-item"><span>• Granite molding</span><span><b>Same as italian</b></span></div></div><div class="italian-sec-title">TILE WORK (Separate Section)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Tile fitting (on-site)</span><span><b>As per tile size</b></span></div><div class="italian-item"><span>• Tile fitting All Sizes</span><span><b>Rs 50/sq ft</b></span></div><div class="italian-item"><span>• Tile patti</span><span><b>Rs 50/R ft</b></span></div></div><div class="italian-sec-title">EXTRA WORK</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Manhole steel fitting</span><span><b>Rs 800/pc</b></span></div><div class="italian-item"><span>• Epoxy grouting</span><span><b>Rs 100/sq ft</b></span></div><div class="italian-item"><span>• Counter washbasin (simple)</span><span><b>Rs 1500/pc</b></span></div><div class="italian-item"><span>• Sink fitting</span><span><b>Rs 500/pc</b></span></div><div class="italian-item"><span>• Fibermesh grinding (50% area)</span><span><b>Rs 10/sq ft</b></span></div></div></div>
+            <div id="italianPreviewBody"></div>
             <div style="background: #0F172A; color: #F59E0B; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1px;">Professional | Reliable | Quality Work</div>
           </div></div>
         </div>
@@ -2129,99 +1924,7 @@ id="dsCard"&gt;
           <button class="btn-sm" style="background: #EEF2FF; color: #4F46E5; padding: 8px 12px;" onclick="addSecTile()">+ Section</button>
           <button class="btn btn-gold" style="width: auto; padding: 10px 16px; font-size: 12px; background: linear-gradient(135deg, #B68A4C, #8C5E2F);" onclick="saveAgreement('tile')">💾 Website Par Save</button>
         </div>
-        <div id="editorTile" style="margin-top: 12px;"><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 0, this)"><b>SECTION 1 • BATHROOM WORK</b><small>3 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 1 • BATHROOM WORK" oninput="tileData[0].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(0)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="Wall &amp; Floor Tile (6x4)" oninput="tileData[0].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 58/sq ft" oninput="tileData[0].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(0,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Patti" oninput="tileData[0].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 58/R ft" oninput="tileData[0].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(0,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Epoxy" oninput="tileData[0].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 10/R ft" oninput="tileData[0].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(0,2)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(0)">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 1, this)"><b>SECTION 2 • FLOORING (Without PCC)</b><small>4 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 2 • FLOORING (Without PCC)" oninput="tileData[1].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(1)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="Floor Tile (6x4)" oninput="tileData[1].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 48/sq ft" oninput="tileData[1].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Skirting" oninput="tileData[1].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 48/R ft" oninput="tileData[1].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Floor Tile (2x2) 9mm" oninput="tileData[1].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 40/sq ft" oninput="tileData[1].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,2)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Floor Tile (2x2) 15mm" oninput="tileData[1].items[3].n=this.value;renderTile()">
-        <input class="input" value="Rs 50/sq ft" oninput="tileData[1].items[3].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(1,3)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(1)">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 2, this)"><b>SECTION 3 • GRANITE WORK</b><small>7 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 3 • GRANITE WORK" oninput="tileData[2].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(2)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="Granite Floor &amp; Stair" oninput="tileData[2].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 50/ft" oninput="tileData[2].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Wall Cladding / Window Frame" oninput="tileData[2].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/ft" oninput="tileData[2].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Granite Moulding Without Polish" oninput="tileData[2].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 30/R ft" oninput="tileData[2].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,2)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Granite Moulding With Polish" oninput="tileData[2].items[3].n=this.value;renderTile()">
-        <input class="input" value="Rs 50/R ft" oninput="tileData[2].items[3].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,3)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Kitchen Slab Composite" oninput="tileData[2].items[4].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/ft" oninput="tileData[2].items[4].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,4)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Patti (design based)" oninput="tileData[2].items[5].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/R ft" oninput="tileData[2].items[5].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,5)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Elevation Tile/Marble" oninput="tileData[2].items[6].n=this.value;renderTile()">
-        <input class="input" value="Rs 100+ onwards" oninput="tileData[2].items[6].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(2,6)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(2)">+ Line</button></div></div><div class="ag-edit-box">
-      <div class="ag-sec-head" onclick="toggleAgSec('tile', 3, this)"><b>SECTION 4 • EXTRA CHARGES</b><small>5 लाइन</small><span class="chev">▸</span></div>
-      <div class="ag-sec-body" style="display:none">
-      <input class="input" value="SECTION 4 • EXTRA CHARGES" oninput="tileData[3].title=this.value;renderTile()" placeholder="Section Title">
-      <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px;margin-top:6px" onclick="removeSecTile(3)">❌ Delete</button><div class="ag-item-row">
-        <input class="input" value="L Corner Cutting" oninput="tileData[3].items[0].n=this.value;renderTile()">
-        <input class="input" value="Rs 45/R ft" oninput="tileData[3].items[0].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,0)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="45° Degree Cutting" oninput="tileData[3].items[1].n=this.value;renderTile()">
-        <input class="input" value="Rs 100/R ft" oninput="tileData[3].items[1].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,1)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Counter Washbasin Cutting" oninput="tileData[3].items[2].n=this.value;renderTile()">
-        <input class="input" value="Rs 800/pc extra" oninput="tileData[3].items[2].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,2)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Manhole Steel Fitting" oninput="tileData[3].items[3].n=this.value;renderTile()">
-        <input class="input" value="Rs 1000 extra" oninput="tileData[3].items[3].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,3)">X</button>
-      </div><div class="ag-item-row">
-        <input class="input" value="Wall Grinding (painted wall)" oninput="tileData[3].items[4].n=this.value;renderTile()">
-        <input class="input" value="Rs 10/ft" oninput="tileData[3].items[4].r=this.value;renderTile()">
-        <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,4)">X</button>
-      </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(3)">+ Line</button></div></div></div>
+        <div id="editorTile" style="margin-top: 12px;"></div>
 
         <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
@@ -2233,46 +1936,7 @@ id="dsCard"&gt;
             </div>
           </div>
           <div id="agPrevBodyTile" style="display: none;"><div id="tileCard" class="tile-preview">
-            <div id="tilePreviewBody">
-    <div class="tile-head">
-      <h2>SHUKLA MARBLE CONTRACTOR</h2>
-      <div style="font-size:13px;color:#1E293B;font-weight:600">Krishan Gopal Shukla • Tile &amp; Marble Specialist</div>
-      <div style="font-size:11px;color:#64748B">Mob: ____</div>
-      <div class="tile-badge">Labour Rate List • 5/11/2026</div>
-      <div style="color:#8C5E2F;font-weight:700;font-size:12px;margin-top:4px">📍 Work Site: ____</div>
-    </div>
-  
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>🛁</i> SECTION 1 • BATHROOM WORK
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• Wall &amp; Floor Tile (6x4)</span><span><b>Rs 58/sq ft</b></span></div><div class="tile-row"><span>• Patti</span><span><b>Rs 58/R ft</b></span></div><div class="tile-row"><span>• Epoxy</span><span><b>Rs 10/R ft</b></span></div></div></div>
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>🧱</i> SECTION 2 • FLOORING (Without PCC)
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• Floor Tile (6x4)</span><span><b>Rs 48/sq ft</b></span></div><div class="tile-row"><span>• Skirting</span><span><b>Rs 48/R ft</b></span></div><div class="tile-row"><span>• Floor Tile (2x2) 9mm</span><span><b>Rs 40/sq ft</b></span></div><div class="tile-row"><span>• Floor Tile (2x2) 15mm</span><span><b>Rs 50/sq ft</b></span></div></div></div>
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>🪨</i> SECTION 3 • GRANITE WORK
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• Granite Floor &amp; Stair</span><span><b>Rs 50/ft</b></span></div><div class="tile-row"><span>• Wall Cladding / Window Frame</span><span><b>Rs 100/ft</b></span></div><div class="tile-row"><span>• Granite Moulding Without Polish</span><span><b>Rs 30/R ft</b></span></div><div class="tile-row"><span>• Granite Moulding With Polish</span><span><b>Rs 50/R ft</b></span></div><div class="tile-row"><span>• Kitchen Slab Composite</span><span><b>Rs 100/ft</b></span></div><div class="tile-row"><span>• Patti (design based)</span><span><b>Rs 100/R ft</b></span></div><div class="tile-row"><span>• Elevation Tile/Marble</span><span><b>Rs 100+ onwards</b></span></div></div></div>
-      <div class="tile-sec">
-        <div class="tile-sec-h">
-          <i>⚙️</i> SECTION 4 • EXTRA CHARGES
-        </div>
-        <div class="tile-sec-b">
-    <div class="tile-row"><span>• L Corner Cutting</span><span><b>Rs 45/R ft</b></span></div><div class="tile-row"><span>• 45° Degree Cutting</span><span><b>Rs 100/R ft</b></span></div><div class="tile-row"><span>• Counter Washbasin Cutting</span><span><b>Rs 800/pc extra</b></span></div><div class="tile-row"><span>• Manhole Steel Fitting</span><span><b>Rs 1000 extra</b></span></div><div class="tile-row"><span>• Wall Grinding (painted wall)</span><span><b>Rs 10/ft</b></span></div></div></div>
-    <div style="margin:12px 14px;background:#FFF9EB;padding:10px 14px;border-radius:10px;font-size:11px;border:1px dashed #D4AF37;color:#92400E">
-      💡 <b>NOTE:</b> Patti less than 12 inch will be calculated in running feet.
-    </div>
-    <div style="background:#0F1E3D;color:#E8D5B5;text-align:center;padding:10px;font-size:11.5px;letter-spacing:1.5px;font-weight:700">
-      Professional • Reliable • Quality Work
-    </div>
-  </div>
+            <div id="tilePreviewBody"></div>
           </div></div>
         </div>
       </div>
@@ -3385,7 +3049,7 @@ Grand Total = 98,941/-" style="margin:0; min-height:280px; font-family:monospace
 
 
   <!-- PIN Lock Floating Button -->
-  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: rgb(15, 23, 42); border: 1.5px solid rgb(173, 131, 46); color: rgb(212, 169, 78); font-size: 22px; box-shadow: rgba(0, 0, 0, 0.35) 0px 6px 16px; z-index: 90; cursor: pointer;" title="Locked - टैप करें unlock करने के लिए">🔒</button>
+  <button id="lockFab" onclick="toggleLockBtn()" style="position: fixed; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(145deg, #21242C, #15171C); border: 1.5px solid #AD832E; color: #D4A94E; font-size: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.35); z-index: 90; cursor: pointer;">🔒</button>
 
   <!-- PIN Entry Modal -->
   <div id="pinOverlay" class="popup-overlay">
@@ -3473,7 +3137,6 @@ function smFixNums(obj, spec) {
   return out;
 }
 function initFirebase() {
-  // SAFE MODE - NO AUTO DELETE
   if (window.firebase && !window.firebase.apps.length) {
     window.firebase.initializeApp(firebaseConfig);
   }
@@ -4964,9 +4627,6 @@ function renderDashSites() {
   let html = "";
   ids.forEach((id) => {
     const s = sites[id];
-    if(!s) return;
-    const house = (s.house||'').trim();
-    if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)) return; // hide 13-digit fake sites
     const closed = isClosedSite(s);
     if (dsFilter === "ongoing" && closed) return;
     if (dsFilter === "closed" && !closed) return;
@@ -7363,7 +7023,14 @@ const BK_LABELS = { labours: "कारीगर", entries: "हाज़री 
 const BK_HIDE_COUNT = { settings: 1, finalAmount: 1 };
 let bkBusy = false;
 
-function bkRoot() { return db && db.raw ? db.raw.ref("companies/" + company) : null; }
+function bkRoot() { 
+  if(!db) return null;
+  try{
+    if(db.raw && db.raw.ref) return db.raw.ref("companies/" + company);
+    if(db.ref) return db.ref("companies/" + company);
+  }catch(e){}
+  return null;
+}
 function bkDevice() {
   const ua = navigator.userAgent || "";
   if (/iPhone|iPad|iPod/.test(ua)) return "iPhone/iPad";
@@ -8628,15 +8295,7 @@ function smSend(rawDb, o) {
     alert("⚠️ डेटा सेव नहीं हो पाया: " + (err && err.message ? err.message : err));
   });
 }
-function makeOfflineDb(rawDb) {
-  // CLEAR OLD V1 CACHE THAT CAUSES HUGE CALCULATIONS
-  try {
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-      const k = localStorage.key(i);
-      if (k && k.indexOf("sm_cache_v1:") === 0) localStorage.removeItem(k);
-    }
-    if (localStorage.getItem("sm_outbox_v1")) localStorage.removeItem("sm_outbox_v1");
-  } catch(e){}
+function makeOfflineDb(rawDb){ return rawDb; } catch(e){}
   // replay anything left from last session (idempotent operations)
   smOutbox.slice().forEach((o) => smSend(rawDb, o));
   rawDb.ref(".info/connected").on("value", (s) => { smOnline = !!s.val(); updateSyncBadge(); });
@@ -9858,34 +9517,41 @@ if (document.readyState === "loading") {
   }
   
 
-  
   window.clearOfflineCacheAndFix = function() {
-    console.log("Clear cache clicked - SAFE MODE");
-    if (!confirm("Phone ka cache clear karna hai?\n\nFirebase ka data SAFE rahega, sirf local cache clear hoga.")) return;
+    console.log("Clear cache clicked");
+    if (!confirm("⚠️ Phone ka purana cache clear karna hai?\n\nFirebase ka asli data SAFE rahega, sirf local cache clear hoga jo calculation ko bada kar raha hai.\n\nContinue?")) return;
     try {
+      // Remove ALL sm cache versions
       const toRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
         if (!k) continue;
-        // ONLY remove sm_cache and sm_outbox, NOT billSites or other important data
         if (k.indexOf('sm_cache_') === 0 || k.indexOf('sm_outbox_') === 0) toRemove.push(k);
       }
-      toRemove.forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
-      if(typeof _smIdx !== 'undefined') _smIdx = null;
-      if(typeof _smSiteIdx !== 'undefined') _smSiteIdx = null;
-      alert("✅ Cache clear ho gaya! Reload ho raha hai.");
-      setTimeout(() => location.reload(true), 500);
-    } catch(e) { alert("Error: " + e.message); }
+      toRemove.forEach(k => {
+        try { localStorage.removeItem(k); console.log("Removed", k); } catch(e){}
+      });
+      _smIdx = null; 
+      try { _smSiteIdx = null; } catch(e){}
+      localStorage.removeItem('shukla_marble_billing');
+      alert("✅ Cache clear ho gaya! Ab app reload hoga aur calculation sahi dikhegi.");
+      setTimeout(() => location.reload(), 500);
+    } catch(e) { alert("Error: " + e.message); console.error(e); }
   };
   window.forceRecalculate = function() {
+    console.log("Force recalc clicked");
     try {
-      if(typeof _smIdx !== 'undefined') _smIdx = null;
-      if(typeof _smSiteIdx !== 'undefined') _smSiteIdx = null;
-      renderAll();
-      alert("✅ Recalculate ho gaya!");
-    } catch(e){ alert("Error: "+e.message); }
+      _smIdx = null;
+      try { _smSiteIdx = null; } catch(e){}
+      // Force reload data from Firebase by clearing in-memory caches
+      if (typeof renderAll === 'function') renderAll();
+      if (typeof renderDash === 'function') {
+        // Trigger re-render via smRenderSoon if exists
+        try { _smRT = null; } catch(e){}
+      }
+      alert("✅ Recalculate ho gaya! Dashboard check karo - ab sahi amount dikhna chahiye.\n\nAgar fir bhi bada dikhe to Cache Clear wala button dabao.");
+    } catch(e) { alert("Error: "+e.message); }
   };
-
 
   window.bindFixButtons = function() {
     setTimeout(() => {
@@ -10146,7 +9812,7 @@ if (document.readyState === "loading") {
     show();
   };
 })();
-</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
+</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
 
 <script>
 /* ===== AUTO-FIT PACK: har phone ki screen ke hisab se numbers apne aap fit ho jayein ===== */
@@ -10373,237 +10039,5 @@ if (document.readyState === "loading") {
   });
 })();
 </script>
-
-<script>
-// Force dashboard open on app load
-(function(){
-  function forceDash(){
-    try{ if(window.showTab) window.showTab('d'); }catch(e){}
-  }
-  window.addEventListener('load', function(){ setTimeout(forceDash, 600); });
-  document.addEventListener('DOMContentLoaded', function(){ setTimeout(forceDash, 800); });
-})();
-</script>
-
-
-<!-- All Sites Date Wise Payment List Popup - v29 -->
-<div id="allSitesPayModal" class="site-detail-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(6px); z-index:2000; align-items:center; justify-content:center; padding:16px;">
-  <div style="background:white; border-radius:24px; width:100%; max-width:520px; max-height:85vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-    <div style="background:#0F172A; color:#FDE68A; padding:16px 20px; display:flex; justify-content:space-between; align-items:center;">
-      <div><div style="font-size:16px; font-weight:900;">📅 Date Wise Paise Liya</div><div style="font-size:11px; color:#94A3B8; margin-top:2px;">Har date pe kitna paisa liya, kaunsi site se</div></div>
-      <button onclick="closeAllSitesPaymentList()" style="background:#1E293B; color:white; border:none; width:32px; height:32px; border-radius:10px; font-size:18px; cursor:pointer;">✕</button>
-    </div>
-    <div style="padding:12px; background:#F8FAFC; border-bottom:1px solid #E2E8F0; display:flex; gap:8px; flex-wrap:wrap;">
-      <select id="payFilterSite" onchange="renderAllSitesPayList()" style="flex:1; min-width:120px; padding:8px 10px; border-radius:10px; border:1.5px solid #E2E8F0; font-size:11px; font-weight:700;">
-        <option value="all">🏗️ Sab Sites</option>
-      </select>
-      <select id="payFilterMonth" onchange="renderAllSitesPayList()" style="flex:1; min-width:120px; padding:8px 10px; border-radius:10px; border:1.5px solid #E2E8F0; font-size:11px; font-weight:700;">
-        <option value="all">📅 Sab Months</option>
-      </select>
-    </div>
-    <div id="allSitesPaySummary" style="padding:12px 16px; background:#FEF3C7; border-bottom:1px solid #FCD34D; display:flex; justify-content:space-between; font-size:11px; font-weight:800; color:#92400E;">
-      <span id="paySumCount">0 entries</span><span id="paySumTotal">Rs.0</span>
-    </div>
-    <div id="allSitesPayList" style="flex:1; overflow:auto; padding:12px; background:#F8FAFC;"></div>
-    <div style="padding:12px; background:white; border-top:1px solid #E2E8F0; display:flex; gap:8px; flex-wrap:wrap;">
-      <button onclick="closeAllSitesPaymentList()" style="flex:1; min-width:80px; background:#F1F5F9; color:#64748B; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">Close</button>
-      <button onclick="cleanupFakeEntries()" style="background:#DC2626; color:white; border:none; padding:12px 16px; border-radius:12px; font-weight:800; font-size:11px;">🗑️ Delete 13-Digit Fake</button>
-      <button onclick="exportAllSitesPayList()" style="flex:1; min-width:100px; background:#25D366; color:white; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px;">📤 WhatsApp Share</button>
-    </div>
-  </div>
-</div>
-
-<script>
-function openAllSitesPaymentList(){
-  var modal=document.getElementById('allSitesPayModal');
-  if(modal){ modal.style.display='flex'; }
-  populatePayFilters();
-  renderAllSitesPayList();
-}
-function closeAllSitesPaymentList(){
-  var modal=document.getElementById('allSitesPayModal');
-  if(modal){ modal.style.display='none'; }
-}
-function populatePayFilters(){
-  var siteSel=document.getElementById('payFilterSite');
-  var monthSel=document.getElementById('payFilterMonth');
-  if(siteSel){
-    var cur=siteSel.value;
-    var opts='<option value="all">🏗️ Sab Sites</option>';
-    try{
-      Object.keys(sites||{}).forEach(function(id){
-        var house=(sites[id].house||'').trim();
-        // Skip 13-digit fake houses in dropdown
-        if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)) return;
-        opts+='<option value="'+id+'">'+(sites[id].house||id)+'</option>';
-      });
-    }catch(e){}
-    siteSel.innerHTML=opts;
-    if(cur) siteSel.value=cur;
-  }
-  if(monthSel){
-    var curM=monthSel.value;
-    var months={};
-    try{
-      Object.values(sitePays||{}).forEach(function(p){
-        if(p.date) months[p.date.slice(0,7)]=1;
-      });
-    }catch(e){}
-    var sorted=Object.keys(months).sort().reverse();
-    var mopts='<option value="all">📅 Sab Months</option>';
-    sorted.forEach(function(m){ mopts+='<option value="'+m+'">'+m+'</option>'; });
-    monthSel.innerHTML=mopts;
-    if(curM) monthSel.value=curM;
-  }
-}
-function renderAllSitesPayList(){
-  var listEl=document.getElementById('allSitesPayList');
-  var sumCount=document.getElementById('paySumCount');
-  var sumTotal=document.getElementById('paySumTotal');
-  if(!listEl) return;
-  var siteFilter=document.getElementById('payFilterSite')?.value||'all';
-  var monthFilter=document.getElementById('payFilterMonth')?.value||'all';
-  var pays=[];
-  try{
-    pays=Object.entries(sitePays||{}).map(function(entry){ return {id:entry[0], siteId:entry[1].siteId, date:entry[1].date, amount:entry[1].amount, note:entry[1].note}; });
-  }catch(e){}
-  // FILTER OUT 13-digit fake entries - ye sites mai nahi hai
-  function isFakeEntry(p){
-    var sid = p.siteId||'';
-    var s = sites[sid];
-    // If site doesn't exist, it's orphaned fake entry
-    if(!s) return true;
-    var house = (s.house||'').trim();
-    // If house is 13 digit number (like 1793026339677), hide it
-    if(/^\d{12,13}$/.test(house)) return true;
-    // If house is pure number with 10+ digits, hide
-    if(/^\d{10,}$/.test(house) && house.length>=10) return true;
-    // If siteId itself is 13 digit but house also 13 digit, hide
-    if(/^\d{12,13}$/.test(sid) && /^\d{12,13}$/.test(house)) return true;
-    return false;
-  }
-  pays = pays.filter(function(p){ return !isFakeEntry(p); });
-  
-  if(siteFilter!=='all') pays=pays.filter(function(p){ return p.siteId===siteFilter; });
-  if(monthFilter!=='all') pays=pays.filter(function(p){ return p.date && p.date.indexOf(monthFilter)===0; });
-  pays=pays.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
-  var total=0;
-  pays.forEach(function(p){ total+=(parseFloat(p.amount)||0); });
-  if(sumCount) sumCount.innerText=pays.length+' entries | '+(siteFilter==='all'?'Sab sites':(sites[siteFilter]?.house||siteFilter));
-  if(sumTotal) sumTotal.innerText='Rs.'+total.toLocaleString('en-IN');
-  var byDate={};
-  pays.forEach(function(p){
-    var d=p.date||'No Date';
-    if(!byDate[d]) byDate[d]=[];
-    byDate[d].push(p);
-  });
-  var html='';
-  Object.keys(byDate).sort().reverse().forEach(function(date){
-    var dayPays=byDate[date];
-    var dayTotal=0;
-    dayPays.forEach(function(p){ dayTotal+=(parseFloat(p.amount)||0); });
-    html+='<div style="margin-bottom:12px;">';
-    html+='<div style="background:#0F172A; color:#FDE68A; padding:8px 12px; border-radius:10px 10px 0 0; display:flex; justify-content:space-between; font-size:11px; font-weight:900;"><span>📅 '+date+'</span><span>Rs.'+dayTotal.toLocaleString('en-IN')+' ('+dayPays.length+')</span></div>';
-    html+='<div style="background:white; border:1.5px solid #E2E8F0; border-top:none; border-radius:0 0 10px 10px; overflow:hidden;">';
-    dayPays.forEach(function(p){
-      var s=sites[p.siteId];
-      var house=s? s.house : '';
-      if(!house) return; // skip if no house
-      var client=s? s.client||'' : '';
-      html+='<div style="padding:10px 12px; border-bottom:1px solid #F1F5F9; display:flex; justify-content:space-between; align-items:center;">';
-      html+='<div><div style="font-weight:800; font-size:12px;">🏠 '+house+' <span style="font-weight:400; color:#64748B; font-size:10px;">| '+client+'</span></div><div style="font-size:10px; color:#64748B; margin-top:2px;">'+(p.note? '📝 '+p.note : '')+'</div></div>';
-      html+='<div style="text-align:right;"><div style="font-weight:900; color:#166534; font-size:13px;">Rs.'+(parseFloat(p.amount)||0).toLocaleString('en-IN')+'</div></div>';
-      html+='</div>';
-    });
-    html+='</div></div>';
-  });
-  if(pays.length===0){
-    html='<div style="text-align:center; padding:40px 20px; color:#94A3B8;"><div style="font-size:32px;">📭</div><div style="font-weight:800; margin-top:8px;">Koi payment nahi mila</div><div style="font-size:11px; margin-top:4px;">13-digit fake entries hide kar diye</div></div>';
-  }
-  listEl.innerHTML=html;
-}
-
-// Cleanup function to delete 13-digit fake sites and payments from Firebase
-function cleanupFakeEntries(){
-  if(!confirm('Kya aap 13-digit wali fake entries ko Firebase se delete karna chahte ho?\n\nYe sites mai nahi hai, sirf payment list mai dikh rahi hai.\n\nDelete kar du?')) return;
-  var fakeSiteIds=[];
-  var fakePayIds=[];
-  try{
-    Object.keys(sites||{}).forEach(function(id){
-      var house=(sites[id].house||'').trim();
-      if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)){
-        fakeSiteIds.push(id);
-      }
-    });
-    Object.entries(sitePays||{}).forEach(function(entry){
-      var pid=entry[0];
-      var p=entry[1];
-      var s=sites[p.siteId];
-      if(!s){
-        fakePayIds.push(pid);
-      } else {
-        var house=(s.house||'').trim();
-        if(/^\d{12,13}$/.test(house) || /^\d{10,}$/.test(house)){
-          fakePayIds.push(pid);
-        }
-      }
-    });
-  }catch(e){}
-  if(fakeSiteIds.length===0 && fakePayIds.length===0){
-    alert('Koi fake 13-digit entry nahi mili, sab clean hai!');
-    return;
-  }
-  var msg='Mil gayi:\n• Fake Sites: '+fakeSiteIds.length+'\n• Fake Payments: '+fakePayIds.length+'\n\nDelete kar raha hu...';
-  alert(msg);
-  try{
-    fakeSiteIds.forEach(function(id){
-      db.ref('companies/'+company+'/sites/'+id).remove();
-    });
-    fakePayIds.forEach(function(pid){
-      db.ref('companies/'+company+'/sitePayments/'+pid).remove();
-    });
-    setTimeout(function(){
-      alert('✅ Clean ho gaya! '+ (fakeSiteIds.length+fakePayIds.length) +' fake entries delete ho gayi. Page reload kar raha hu.');
-      location.reload();
-    }, 1000);
-  }catch(e){
-    alert('Error: '+e.message);
-  }
-}
-window.cleanupFakeEntries = cleanupFakeEntries;
-
-function exportAllSitesPayList(){
-  var siteFilter=document.getElementById('payFilterSite')?.value||'all';
-  var monthFilter=document.getElementById('payFilterMonth')?.value||'all';
-  var pays=[];
-  try{
-    pays=Object.entries(sitePays||{}).map(function(entry){ return {siteId:entry[1].siteId, date:entry[1].date, amount:entry[1].amount, note:entry[1].note}; });
-  }catch(e){}
-  if(siteFilter!=='all') pays=pays.filter(function(p){ return p.siteId===siteFilter; });
-  if(monthFilter!=='all') pays=pays.filter(function(p){ return p.date && p.date.indexOf(monthFilter)===0; });
-  pays=pays.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
-  if(pays.length===0){ alert('No payments to share'); return; }
-  var text='*📅 Date Wise Paisa Liya - Sab Sites*\n';
-  text+='Filter: '+(siteFilter==='all'?'Sab Sites':(sites[siteFilter]?.house||siteFilter))+' | '+(monthFilter==='all'?'Sab Months':monthFilter)+'\n\n';
-  var byDate={};
-  pays.forEach(function(p){ var d=p.date||'No Date'; if(!byDate[d]) byDate[d]=[]; byDate[d].push(p); });
-  Object.keys(byDate).sort().reverse().forEach(function(date){
-    var dayPays=byDate[date];
-    var dayTotal=0;
-    dayPays.forEach(function(p){ dayTotal+=(parseFloat(p.amount)||0); });
-    text+='📅 *'+date+'* - Rs.'+dayTotal.toLocaleString('en-IN')+'\n';
-    dayPays.forEach(function(p){
-      var s=sites[p.siteId];
-      text+='  • '+(s? s.house : p.siteId)+' - Rs.'+(parseFloat(p.amount)||0).toLocaleString('en-IN')+(p.note? ' - '+p.note : '')+'\n';
-    });
-    text+='\n';
-  });
-  var total=0;
-  pays.forEach(function(p){ total+=(parseFloat(p.amount)||0); });
-  text+='*Total: Rs.'+total.toLocaleString('en-IN')+' ('+pays.length+' payments)*';
-  window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(text), '_blank');
-}
-</script>
-
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
 </body></html>
