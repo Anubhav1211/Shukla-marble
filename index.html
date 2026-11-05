@@ -5012,10 +5012,11 @@ function showSiteMonthDihadi(siteId){
   if(data.length===0){
     html += '<div style="text-align:center;padding:20px;color:#94A3B8">इस साइट पर कोई हाज़री नहीं</div>';
   } else {
-    html += '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#0F172A;color:#FDE68A"><th style="padding:8px;text-align:left">महीना</th><th>दिन</th><th>दिहाड़ी</th><th>एंट्री</th></tr>';
+    html += `<div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;background:#F8FAFC;padding:8px;border-radius:10px;border:1px solid #E2E8F0"><div style="font-size:11px;font-weight:800">📅 महीना चुनो:</div><select id="mdMonthPicker" class="input" style="margin:0;flex:1;padding:6px" onchange="filterSiteMonthTable(this.value)"><option value="all">सभी महीने</option>${data.map(d=>{ const tt=new Date(d.month+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"}); return `<option value="${d.month}">${tt}</option>`; }).join('')}</select></div>`;
+    html += '<table id="mdTable" style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#0F172A;color:#FDE68A"><th style="padding:8px;text-align:left">महीना</th><th>दिन</th><th>दिहाड़ी</th><th>एंट्री</th></tr>';
     data.forEach(d=>{
       const mTxt = new Date(d.month+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
-      html += `<tr style="border-bottom:1px solid #F1F5F9"><td style="padding:8px;text-align:left;font-weight:700">${mTxt}<div style="font-size:10px;color:#64748B">${d.month}</div></td><td style="text-align:center;font-weight:700">${d.days.toFixed(1)}</td><td style="text-align:center;color:#B45309;font-weight:800">₹${Math.round(d.cost).toLocaleString('en-IN')}</td><td style="text-align:center">${d.count}</td></tr>`;
+      html += `<tr data-month="${d.month}" style="border-bottom:1px solid #F1F5F9"><td style="padding:8px;text-align:left;font-weight:700">${mTxt}<div style="font-size:10px;color:#64748B">${d.month}</div></td><td style="text-align:center;font-weight:700">${d.days.toFixed(1)}</td><td style="text-align:center;color:#B45309;font-weight:800">₹${Math.round(d.cost).toLocaleString('en-IN')}</td><td style="text-align:center">${d.count}</td></tr>`;
       const labList = Object.entries(d.labour).map(([n,dy])=> `${n} (${dy} दिन)`).join(", ");
       if(labList) html += `<tr><td colspan="4" style="padding:4px 8px 8px 8px;font-size:10.5px;color:#64748B;background:#F8FAFC">👷 ${labList}</td></tr>`;
     });
@@ -5025,6 +5026,15 @@ function showSiteMonthDihadi(siteId){
   overlay.style.display = "flex";
 }
 function closeMonthDihadi(){ const ov=document.getElementById("monthDihadiOverlay"); if(ov) ov.style.display="none"; }
+function filterSiteMonthTable(val){
+  const rows = document.querySelectorAll("#mdTable tr[data-month]");
+  rows.forEach(r=>{
+    if(val==="all" || r.getAttribute("data-month")===val) r.style.display="";
+    else r.style.display="none";
+  });
+  // also hide labour sub-rows
+  document.querySelectorAll("#mdTable + table, #mdBody tr:not([data-month])").forEach(()=>{});
+}
 
 // ===== Labour Month Wise Functions - NEW =====
 function getLabourAllMonths(labId){
@@ -5049,19 +5059,20 @@ function showSingleLabourMonthWise(labId){
   if(!overlay || !body) return;
   if(title) title.innerText = "📅 "+(l.name||"कारीगर")+" - महीने वार हिसाब";
   const months = getLabourAllMonths(labId);
-  let html = "";
+  let monthOptions = '<option value="all">सभी महीने</option>' + months.map(m=>{ const t=new Date(m+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"}); return `<option value="${m}">${t} (${m})</option>`; }).join('');
+  let html = `<div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;background:#F8FAFC;padding:8px;border-radius:12px;border:1px solid #E2E8F0"><div style="font-size:11px;font-weight:800;white-space:nowrap">📅 महीना चुनो:</div><select id="lmMonthPicker" class="input" style="margin:0;flex:1;padding:8px" onchange="filterLabourMonthTable(this.value)">${monthOptions}</select><button class="btn-sm" style="background:#F1F5F9" onclick="document.getElementById('lmMonthPicker').value='all';filterLabourMonthTable('all')">सब</button></div>`;
   let tDays=0,tEarn=0,tWith=0;
   if(months.length===0){
     html = '<div style="text-align:center;padding:20px;color:#94A3B8">कोई हाज़री नहीं</div>';
   } else {
-    html += '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#0F172A;color:#FDE68A"><th style="padding:8px;text-align:left">महीना</th><th>दिन</th><th>कमाई</th><th>निकासी</th><th>बकाया</th></tr>';
+    html += '<table id="lmTable" style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#0F172A;color:#FDE68A"><th style="padding:8px;text-align:left">महीना</th><th>दिन</th><th>कमाई</th><th>निकासी</th><th>बकाया</th></tr>';
     months.forEach(mon=>{
       const c = calcLabour(labId, mon);
       const mTxt = new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"short",year:"numeric"});
       tDays += c.days; tEarn += c.earn; tWith += c.with;
       const netClr = c.net>=0 ? "#166534" : "#B91C1C";
       const netTxt = c.net>=0 ? "देना ₹"+Math.round(c.net).toLocaleString('en-IN') : "लेना ₹"+Math.round(Math.abs(c.net)).toLocaleString('en-IN');
-      html += `<tr style="border-bottom:1px solid #F1F5F9"><td style="padding:8px;text-align:left;font-weight:700">${mTxt}<div style="font-size:10px;color:#64748B">${mon}</div></td><td style="text-align:center">${c.days.toFixed(1)}</td><td style="text-align:center;color:#1D4ED8">₹${Math.round(c.earn).toLocaleString('en-IN')}</td><td style="text-align:center;color:#92400E">₹${Math.round(c.with).toLocaleString('en-IN')}</td><td style="text-align:center;color:${netClr};font-weight:800;font-size:11px">${netTxt}</td></tr>`;
+      html += `<tr data-month="${mon}" style="border-bottom:1px solid #F1F5F9"><td style="padding:8px;text-align:left;font-weight:700">${mTxt}<div style="font-size:10px;color:#64748B">${mon}</div></td><td style="text-align:center">${c.days.toFixed(1)}</td><td style="text-align:center;color:#1D4ED8">₹${Math.round(c.earn).toLocaleString('en-IN')}</td><td style="text-align:center;color:#92400E">₹${Math.round(c.with).toLocaleString('en-IN')}</td><td style="text-align:center;color:${netClr};font-weight:800;font-size:11px">${netTxt}</td></tr>`;
     });
     html += '</table>';
     html = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div style="background:#F0FDF4;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#166534">कुल दिन</small><br><b>${tDays.toFixed(1)}</b></div><div style="background:#EEF2FF;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#4338CA">कुल कमाई</small><br><b>₹${Math.round(tEarn).toLocaleString('en-IN')}</b></div><div style="background:#FEF3C7;padding:8px;border-radius:10px;text-align:center"><small style="font-size:9px;color:#92400E">कुल निकासी</small><br><b>₹${Math.round(tWith).toLocaleString('en-IN')}</b></div></div>` + html;
@@ -5070,17 +5081,30 @@ function showSingleLabourMonthWise(labId){
   overlay.style.display = "flex";
 }
 function closeLabourMonth(){ const ov=document.getElementById("labourMonthOverlay"); if(ov) ov.style.display="none"; }
+function filterLabourMonthTable(val){
+  const rows = document.querySelectorAll("#lmTable tr[data-month]");
+  rows.forEach(r=>{
+    if(val==="all" || r.getAttribute("data-month")===val) r.style.display="";
+    else r.style.display="none";
+  });
+}
 
-function showAllLaboursMonthWise(){
+function showAllLaboursMonthWise(passedMon){
   const monInput = document.getElementById("kMonth") || document.getElementById("dMonth");
-  const mon = monInput ? monInput.value : fmtLocalDate(new Date()).slice(0,7);
+  let mon = passedMon || document.getElementById("almMonthPicker")?.value || (monInput ? monInput.value : fmtLocalDate(new Date()).slice(0,7));
+  if(!mon) mon = fmtLocalDate(new Date()).slice(0,7);
   const overlay = document.getElementById("allLabourMonthOverlay");
   const title = document.getElementById("almTitle");
   const body = document.getElementById("almBody");
   if(!overlay || !body) return;
   if(title) title.innerText = "👷 महीने वार मजदूर लिस्ट - "+ new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
   const activeIds = Object.keys(labs||{}).filter(id=> !labs[id].archived).sort((a,b)=> (labs[a].name||"").localeCompare(labs[b].name||""));
-  let html = "";
+  let html = `<div style="display:flex;gap:6px;align-items:center;margin-bottom:12px;background:#F8FAFC;padding:8px;border-radius:12px;border:1px solid #E2E8F0">
+    <div style="font-size:11px;font-weight:800;color:#334155;white-space:nowrap">📅 महीना:</div>
+    <input id="almMonthPicker" type="month" class="input" style="margin:0;flex:1;padding:8px" value="${mon}" onchange="showAllLaboursMonthWise(this.value)">
+    <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 10px" onclick="let d=document.getElementById('almMonthPicker'); if(d){ const cur=new Date(d.value+'-01T00:00:00'); cur.setMonth(cur.getMonth()-1); const v=cur.toISOString().slice(0,7); d.value=v; showAllLaboursMonthWise(v);} ">◀</button>
+    <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:8px 10px" onclick="let d=document.getElementById('almMonthPicker'); if(d){ const cur=new Date(d.value+'-01T00:00:00'); cur.setMonth(cur.getMonth()+1); const v=cur.toISOString().slice(0,7); d.value=v; showAllLaboursMonthWise(v);} ">▶</button>
+  </div>`;
   let totDays=0, totEarn=0, totWith=0, totNet=0;
   const rows=[];
   activeIds.forEach(id=>{
