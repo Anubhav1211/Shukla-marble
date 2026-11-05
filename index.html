@@ -1340,13 +1340,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- SITES (merged from the old Site tab) -->
-    <div id="quickFixBar" style="background:#FEF3C7; border:2px solid #F59E0B; border-radius:12px; padding:10px 12px; margin:10px 0; display:flex; gap:8px; align-items:center; justify-content:space-between;">
-      <div style="font-size:11px; font-weight:800; color:#92400E;">Calculation bada dikhe to:</div>
-      <div style="display:flex; gap:6px;">
-        <button id="dashClearCache" type="button" style="background:#DC2626; color:white; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🗑️ Clear Cache</button>
-        <button id="dashRecalc" type="button" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 Fix</button>
-      </div>
-    </div>
+    <!-- quickFixBar removed -->
     <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 30ms;">
       <div class="ds-head">
         <div>
@@ -1425,9 +1419,9 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 3: LABOURS -->
-  <div id="t-l" style="display: none;">
+  <div id="t-l" style="display: none;" class="sm-page-in">
     <!-- Kaarigar quick actions (one compact row) -->
-    <div class="card">
+    <div class="card sm-stagger" style="animation-delay: 0ms;">
       <div class="tg-row c3">
         <button type="button" class="tg-btn gold" data-box="addLabourBoxMain" onclick="toggleBoxX('addLabourBoxMain')">➕ नया कारीगर</button>
         <button type="button" class="tg-btn gold" data-box="rbListBox" onclick="toggleBoxX('rbListBox'); renderRentBijliLists();">🏠⚡ किराया / बिजली</button>
@@ -1483,17 +1477,14 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
     </div>
 
-    <div class="card">
+    <div class="card sm-stagger" style="animation-delay: 30ms;">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px;"><h3 style="margin: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3><button type="button" class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 7px 11px; font-weight: 800; flex-shrink: 0;" onclick="openAudit()">🔍 हिसाब जाँच</button></div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(-1)">◀</button>
         <input id="kMonth" type="month" class="input" style="margin-bottom: 0; flex: 1; max-width: 100%; box-sizing: border-box;" onchange="syncMonthFrom('kMonth')">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(1)">▶</button>
       </div>
-      <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button type="button" class="btn btn-gold" style="flex:1;padding:10px 12px;font-size:12px;font-weight:800" onclick="showAllLaboursMonthWise()">📅 महीने वार पूरी लिस्ट</button>
-        <button type="button" class="btn" style="flex:0 0 auto;background:#0F172A;color:#FDE68A;padding:10px 14px;font-size:12px;font-weight:800" onclick="showAllLaboursMonthWise()">👷 कुल</button>
-      </div>
+      <!-- karigar month wise buttons removed as per user request -->
       <input id="labSearch" class="input" placeholder="🔍 नाम से खोजो..." oninput="renderAll()">
       <div id="labList"></div>
       <div id="archivedList" style="margin-top: 16px;"></div>
@@ -1502,8 +1493,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
-  <div id="t-e" style="display: none;">
-    <div class="card" id="hzTopCard">
+  <div id="t-e" style="display: none;" class="sm-page-in">
+    <div class="card sm-stagger" id="hzTopCard" style="animation-delay: 0ms;">
       <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
@@ -1564,7 +1555,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card" id="whHolderCard" style="display: none;">
+    <div class="card sm-stagger" id="whHolderCard" style="display: none; animation-delay: 30ms;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -1588,7 +1579,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card" id="hzListCard" style="display: none;">
+    <div class="card sm-stagger" id="hzListCard" style="display: none; animation-delay: 60ms;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -1602,7 +1593,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card" id="hzCalCard" style="display: none;">
+    <div class="card sm-stagger" id="hzCalCard" style="display: none; animation-delay: 90ms;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
