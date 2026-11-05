@@ -1268,7 +1268,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body class="sm-page-out">
+<body class="">
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1347,7 +1347,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button id="dashRecalc" type="button" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 Fix</button>
       </div>
     </div>
-    <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 45ms;">
+    <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 30ms;">
       <div class="ds-head">
         <div>
           <div class="ds-title">🏗️ साइट्स</div>
@@ -1408,7 +1408,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
         <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
-      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 90ms;">
+      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 60ms;">
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
@@ -4224,6 +4224,42 @@ function showSiteDetail(siteId) {
       </div>
     </div>
   `;
+  // ===== Labour wise month wise in Detail - NEW =====
+  const siteLabourMonth = getSiteLabourMonthWise(siteId);
+  let labourMonthHtml = "";
+  if(siteLabourMonth.length===0){
+    labourMonthHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">कोई मजदूर नहीं</div>';
+  } else {
+    labourMonthHtml += `<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#475569;margin-bottom:8px"><span>${siteLabourMonth.length} मजदूर • कुल ${monthWise.reduce((s,m)=>s+m.days,0).toFixed(1)} दिन</span><span>महीने वार</span></div>`;
+    siteLabourMonth.forEach(lm=>{
+      const initials = (lm.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+      labourMonthHtml += `<div style="background:white;border:1px solid #E2E8F0;border-radius:12px;padding:10px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;gap:8px;align-items:center"><div style="width:32px;height:32px;border-radius:9px;background:#0F172A;color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">${initials}</div><div><b style="font-size:13px">${mEsc(lm.name)}</b><div style="font-size:10px;color:#64748B">${Object.keys(lm.months).length} महीने • ${lm.totalDays.toFixed(1)} दिन • ₹${Math.round(lm.totalCost).toLocaleString('en-IN')}</div></div></div>
+          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 8px;font-size:10px" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none' ? 'block' : 'none';">📅 देखें</button>
+          <div style="display:none;margin-top:8px;width:100%"></div>
+        </div>
+        <div style="display:none;margin-top:8px;background:#F8FAFC;border-radius:10px;padding:8px">
+          <table style="width:100%;font-size:11px"><tr style="color:#64748B"><th style="text-align:left">महीना</th><th>दिन</th><th>दिहाड़ी</th></tr>
+          ${Object.keys(lm.months).sort().reverse().map(mon=>{
+            const mm = lm.months[mon];
+            const mTxt = new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"short",year:"numeric"});
+            return `<tr style="border-top:1px solid #F1F5F9"><td style="padding:6px 4px;text-align:left;font-weight:700">${mTxt}<div style="font-size:9px;color:#94A3B8">${mon}</div></td><td style="text-align:center">${mm.days.toFixed(1)}</td><td style="text-align:center;color:#B45309;font-weight:800">₹${Math.round(mm.cost).toLocaleString('en-IN')}</td></tr>`;
+          }).join('')}
+          </table>
+        </div>
+      </div>`;
+    });
+  }
+  sumHtml += `
+    <div style="margin-top:14px">
+      <b>👷 मजदूर wise महीने वार लिस्ट (Detail)</b>
+      <div style="background:#FFFBEB;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #FDE68A">
+        ${labourMonthHtml}
+      </div>
+    </div>
+  `;
+
   sumHtml += `
     <div style="margin-top:14px">
       <b>🧾 पिछली लागत (Month Wise)</b>
@@ -4935,6 +4971,28 @@ function getSiteMonthWiseDihadi(siteId){
   });
   // sort by month desc
   return Object.values(map).sort((a,b)=> b.month.localeCompare(a.month));
+}
+function getSiteLabourMonthWise(siteId){
+  const map = {}; // labourId -> months
+  Object.values(ents||{}).forEach(e=>{
+    if(!e || e.siteId!==siteId) return;
+    const days = parseFloat(e.days||0);
+    if(days<=0) return;
+    const mon = (e.date||"").slice(0,7);
+    if(!mon) return;
+    const labId = e.labourId;
+    const lab = labs[labId];
+    const rate = entryRate ? entryRate(e, lab) : (lab? parseFloat(lab.wage||0):0);
+    const cost = days * rate;
+    if(!map[labId]) map[labId] = {labId, name: lab? lab.name : "?", months:{}, totalDays:0, totalCost:0};
+    if(!map[labId].months[mon]) map[labId].months[mon] = {days:0,cost:0,count:0};
+    map[labId].months[mon].days += days;
+    map[labId].months[mon].cost += cost;
+    map[labId].months[mon].count += 1;
+    map[labId].totalDays += days;
+    map[labId].totalCost += cost;
+  });
+  return Object.values(map).sort((a,b)=> b.totalDays - a.totalDays);
 }
 function showSiteMonthDihadi(siteId){
   const s = sites[siteId];
