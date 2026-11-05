@@ -4224,41 +4224,7 @@ function showSiteDetail(siteId) {
       </div>
     </div>
   `;
-  // ===== Labour wise month wise in Detail - NEW =====
-  const siteLabourMonth = getSiteLabourMonthWise(siteId);
-  let labourMonthHtml = "";
-  if(siteLabourMonth.length===0){
-    labourMonthHtml = '<div style="padding:10px;text-align:center;color:#888;font-size:12px">कोई मजदूर नहीं</div>';
-  } else {
-    labourMonthHtml += `<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#475569;margin-bottom:8px"><span>${siteLabourMonth.length} मजदूर • कुल ${monthWise.reduce((s,m)=>s+m.days,0).toFixed(1)} दिन</span><span>महीने वार</span></div>`;
-    siteLabourMonth.forEach(lm=>{
-      const initials = (lm.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
-      labourMonthHtml += `<div style="background:white;border:1px solid #E2E8F0;border-radius:12px;padding:10px;margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="display:flex;gap:8px;align-items:center"><div style="width:32px;height:32px;border-radius:9px;background:#0F172A;color:#D4A94E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px">${initials}</div><div><b style="font-size:13px">${mEsc(lm.name)}</b><div style="font-size:10px;color:#64748B">${Object.keys(lm.months).length} महीने • ${lm.totalDays.toFixed(1)} दिन • ₹${Math.round(lm.totalCost).toLocaleString('en-IN')}</div></div></div>
-          <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 8px;font-size:10px" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none' ? 'block' : 'none';">📅 देखें</button>
-          <div style="display:none;margin-top:8px;width:100%"></div>
-        </div>
-        <div style="display:none;margin-top:8px;background:#F8FAFC;border-radius:10px;padding:8px">
-          <table style="width:100%;font-size:11px"><tr style="color:#64748B"><th style="text-align:left">महीना</th><th>दिन</th><th>दिहाड़ी</th></tr>
-          ${Object.keys(lm.months).sort().reverse().map(mon=>{
-            const mm = lm.months[mon];
-            const mTxt = new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"short",year:"numeric"});
-            return `<tr style="border-top:1px solid #F1F5F9"><td style="padding:6px 4px;text-align:left;font-weight:700">${mTxt}<div style="font-size:9px;color:#94A3B8">${mon}</div></td><td style="text-align:center">${mm.days.toFixed(1)}</td><td style="text-align:center;color:#B45309;font-weight:800">₹${Math.round(mm.cost).toLocaleString('en-IN')}</td></tr>`;
-          }).join('')}
-          </table>
-        </div>
-      </div>`;
-    });
-  }
-  sumHtml += `
-    <div style="margin-top:14px">
-      <b>👷 मजदूर wise महीने वार लिस्ट (Detail)</b>
-      <div style="background:#FFFBEB;padding:10px;border-radius:12px;margin-top:6px;border:1.5px solid #FDE68A">
-        ${labourMonthHtml}
-      </div>
-    </div>
-  `;
+  // yellow box removed as per user request
 
   sumHtml += `
     <div style="margin-top:14px">
