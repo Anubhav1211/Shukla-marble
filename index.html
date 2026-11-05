@@ -1268,7 +1268,7 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
-<body class="">
+<body class="sm-page-out">
   <!-- Header -->
   <header>
     <div style="font-weight: 800; font-size: 17px; display: flex; align-items: center; gap: 7px; letter-spacing: 0.3px;">
@@ -1347,7 +1347,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button id="dashRecalc" type="button" style="background:#0F172A; color:#FDE68A; border:none; padding:8px 12px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 Fix</button>
       </div>
     </div>
-    <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 30ms;">
+    <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 45ms;">
       <div class="ds-head">
         <div>
           <div class="ds-title">🏗️ साइट्स</div>
@@ -1408,7 +1408,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
         <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
-      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 60ms;">
+      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 90ms;">
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
@@ -4950,7 +4950,9 @@ function siteCardHtml(id) {
   const _selMon = document.getElementById("dMonth")?.value || fmtLocalDate(new Date()).slice(0, 7);
   const _isNow = _selMon === fmtLocalDate(new Date()).slice(0, 7);
   const _monName = new Date(_selMon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long" });
-  const dihadiLine = `<span style="cursor:pointer" onclick="event.stopPropagation();showSiteMonthDihadi(\'${id}\')">${(_isNow ? "\u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940" : _monName + " \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940")} <b>\u20B9" + Math.round(siteMonthDihadi(id, _selMon)).toLocaleString("en-IN") + "</b> <span style=\"font-size:10px;color:#6366F1\">📊</span></span>`;
+  const dihadiVal = Math.round(siteMonthDihadi(id, _selMon)).toLocaleString("en-IN");
+  const dihadiTxt = _isNow ? "\u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940" : _monName + " \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940";
+  const dihadiLine = `<span style="cursor:pointer" onclick="event.stopPropagation();showSiteMonthDihadi('${id}')">${dihadiTxt} <b>\u20B9${dihadiVal}</b> <span style="font-size:10px;color:#6366F1">📊</span></span>`;
   return `
       <div class="site-card">
         <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-dihadi">${dihadiLine}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div></div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
