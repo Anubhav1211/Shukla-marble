@@ -1340,13 +1340,32 @@ window.checkFirebaseData = function(){
     html+='• Costs: '+(Object.keys(siteCosts||{}).length)+'<br>';
     html+='• Labs: '+(Object.keys(labs||{}).length)+'<br>';
     html+='• Expenses: '+(Object.keys(expenses||{}).length)+'<br>';
-    html+='<br><b>Agar 0 dikhe to Firebase khali hai, Backup se restore karo:</b><br>';
-    html+='Backup Center me jao -> Last backup pe Restore dabao';
+    html+='<br><b>Local Storage Check:</b><br>';
+    let hasLocal=false;
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k && k.indexOf('shukla')===0){
+        hasLocal=true;
+        html+='• '+k+'<br>';
+      }
+    }
+    if(!hasLocal) html+='No local backup found<br>';
+    html+='<br><b>Agar Firebase 0 hai to:</b><br>';
+    html+='1. Backup Center me jao -> Restore<br>';
+    html+='2. Agar wahan bhi 0 hai to purane wale v27 file kholo, usme data hoga';
     info.innerHTML=html;
   }catch(e){ info.innerHTML='Error: '+e.message; }
 };
 // Auto check on load
-setTimeout(checkFirebaseData, 2000);
+setTimeout(checkFirebaseData, 1500);
+setTimeout(function(){
+  // If backup center stuck on loading, show error
+  const panel=document.querySelector('[data-kind="bkcenter"]') || document.body;
+  if(document.body.innerHTML.indexOf('लोड हो रहा है')>-1){
+    console.log('Backup still loading after 5s, may need internet');
+  }
+}, 5000);
+
 </script>
 
 <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 45ms;">
@@ -7024,11 +7043,21 @@ const BK_HIDE_COUNT = { settings: 1, finalAmount: 1 };
 let bkBusy = false;
 
 function bkRoot() { 
-  if(!db) return null;
   try{
-    if(db.raw && db.raw.ref) return db.raw.ref("companies/" + company);
-    if(db.ref) return db.ref("companies/" + company);
-  }catch(e){}
+    if(!db){
+      console.log('bkRoot: db is null');
+      return null;
+    }
+    if(db.raw && db.raw.ref){
+      return db.raw.ref("companies/" + company);
+    }
+    if(db.ref){
+      return db.ref("companies/" + company);
+    }
+    console.log('bkRoot: db has no ref method', db);
+  }catch(e){
+    console.error('bkRoot error', e);
+  }
   return null;
 }
 function bkDevice() {
@@ -9601,11 +9630,20 @@ if (document.readyState === "loading") {
   };
 
   window.openBackupCenter = async function () {
-    openPanel('💾 Backup Center', '<div style="text-align:center;padding:30px 0;color:#64748B;font-weight:700">⏳ लोड हो रहा है…</div>');
+    openPanel('💾 Backup Center', '<div style="text-align:center;padding:30px 0;color:#64748B;font-weight:700">⏳ लोड हो रहा है...<br><small style="font-size:10px;">Firebase connect ho raha hai</small></div>');
     cur.cfg.kind = 'bkcenter';
     bkReturn = window.openBackupCenter;
     let list = [], legacy = null, err = '';
-    try { list = await bkList(); legacy = await bkLegacyInfo(); } catch (e) { err = String((e && e.message) || e); }
+    try { 
+      // Add timeout for Firebase
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase timeout - Internet check karo')), 8000));
+      const listPromise = bkList();
+      list = await Promise.race([listPromise, timeoutPromise]);
+      legacy = await bkLegacyInfo().catch(()=>null); 
+    } catch (e) { 
+      err = String((e && e.message) || e); 
+      console.error('Backup list error:', e);
+    }
     if (!cur || cur.cfg.kind !== 'bkcenter') return;
     let ok = null, bad = null;
     try { ok = JSON.parse(localStorage.getItem(BK_KEY_OK) || 'null'); } catch (e) {}
@@ -10039,5 +10077,37 @@ if (document.readyState === "loading") {
   });
 })();
 </script>
+
+<script>
+window.forceFixBackup = async function(){
+  try{
+    if(!db || !db.ref){
+      alert('Firebase connect nahi hai, internet check karo');
+      return;
+    }
+    const root = bkRoot();
+    if(!root){
+      alert('db null hai, 2 sec wait karo aur fir try karo');
+      return;
+    }
+    // Check if _backupIndex exists
+    const snap = await root.child('_backupIndex').once('value');
+    const val = snap.val();
+    if(!val || Object.keys(val).length===0){
+      if(confirm('Koi backup index nahi hai. Kya current data se naya backup bana du?')){
+        const m = await bkCreate('manual', 'Recovery backup');
+        alert('Backup ban gaya: '+m.id);
+        openBackupCenter();
+      }
+    } else {
+      alert('Backups mil gaye: '+Object.keys(val).length+' backups hai, list dikh rahi honi chahiye. Agar nahi dikh rahi to internet slow hai.');
+      openBackupCenter();
+    }
+  }catch(e){
+    alert('Error: '+e.message);
+  }
+};
+</script>
+
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
 </body></html>
