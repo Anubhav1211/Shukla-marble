@@ -1288,8 +1288,8 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
-    <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
+    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item active" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
@@ -1301,7 +1301,7 @@ img, canvas, svg, video { max-width: 100%; }
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d" class="sm-page-in" style="display: block;">
+  <div id="t-d" class="sm-page-in" style="display: none;">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -1493,8 +1493,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
-  <div id="t-e" style="display: none;">
-    <div class="card" id="hzTopCard">
+  <div id="t-e" style="display: block;" class="sm-page-in">
+    <div class="card sm-stagger" id="hzTopCard" style="animation-delay: 0ms;">
       <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
@@ -1555,7 +1555,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card" id="whHolderCard" style="display: none;">
+    <div class="card sm-stagger" id="whHolderCard" style="display: none; animation-delay: 30ms;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -1579,7 +1579,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card" id="hzListCard" style="display: none;">
+    <div class="card sm-stagger" id="hzListCard" style="display: none; animation-delay: 60ms;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -1593,7 +1593,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card" id="hzCalCard" style="display: none;">
+    <div class="card sm-stagger" id="hzCalCard" style="display: none; animation-delay: 90ms;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
@@ -1839,7 +1839,7 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Selected day entries -->
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
-        <span>🧾 मटेरियल - <span id="mDayTxt">06 नव॰ 2026</span></span>
+        <span>🧾 मटेरियल - <span id="mDayTxt">05 नव॰ 2026</span></span>
         <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;">0 एंट्री · ₹0</span>
       </h3>
       <div id="mDayList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">इस तारीख को कोई मटेरियल एंट्री नहीं</div></div>
@@ -1872,8 +1872,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 6: AGREEMENTS -->
-  <div id="t-a" style="display: none;">
-    <div class="card">
+  <div id="t-a" style="display: none;" class="sm-page-in">
+    <div class="card sm-stagger" style="animation-delay: 0ms;">
       <h3 style="text-align: center; margin-top: 0; font-size: 16px; font-weight: 800;">AGREEMENT RATE CARDS</h3>
       <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;">
         <button class="ag-subtab active" id="ag-bt-i" onclick="showAg('i')">🇮🇹 Italian Marble</button>
@@ -2039,7 +2039,7 @@ img, canvas, svg, video { max-width: 100%; }
           <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemIt(5,'single',4)">X</button>
         </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemIt(5,'single')">+ Line</button></div></div></div>
 
-        <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
+        <div class="card sm-stagger" style="margin: 12px 0px; width: 100%; padding: 8px; animation-delay: 30ms;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <b>Rate Card Preview</b>
             <button type="button" class="btn-sm" id="agPrevBtnIt" style="background: #EEF2FF; color: #4338CA; padding: 6px 12px; font-weight: 800;" onclick="toggleAgPreview('It')">👁️ Preview ▸</button>
@@ -2054,7 +2054,7 @@ img, canvas, svg, video { max-width: 100%; }
     <span>🏛️ Work Site: ____</span>
     <span>👤 Client: ____</span>
     <span>📱 Ph: ____</span>
-    <span>📅 Date: 6/11/2026</span>
+    <span>📅 Date: 5/11/2026</span>
   </div><div class="italian-sec-title">ITALIAN MARBLE</div><div class="italian-grid"><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">Italian Grey/Beige</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 60/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 100/sq ft</b></span></div></div><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">White Italian</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 80/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 120/sq ft</b></span></div></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For Italian Grey and Beige)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 100/R ft</b></span></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For White Italian)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 120/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 120/R ft</b></span></div></div><div class="italian-sec-title">GRANITE</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Granite fitting (big size, 16mm)</span><span><b>Rs 50/R ft</b></span></div><div class="italian-item"><span>• Designer granite patti</span><span><b>Rs 25/R ft</b></span></div><div class="italian-item"><span>• Granite molding</span><span><b>Same as italian</b></span></div></div><div class="italian-sec-title">TILE WORK (Separate Section)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Tile fitting (on-site)</span><span><b>As per tile size</b></span></div><div class="italian-item"><span>• Tile fitting All Sizes</span><span><b>Rs 50/sq ft</b></span></div><div class="italian-item"><span>• Tile patti</span><span><b>Rs 50/R ft</b></span></div></div><div class="italian-sec-title">EXTRA WORK</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Manhole steel fitting</span><span><b>Rs 800/pc</b></span></div><div class="italian-item"><span>• Epoxy grouting</span><span><b>Rs 100/sq ft</b></span></div><div class="italian-item"><span>• Counter washbasin (simple)</span><span><b>Rs 1500/pc</b></span></div><div class="italian-item"><span>• Sink fitting</span><span><b>Rs 500/pc</b></span></div><div class="italian-item"><span>• Fibermesh grinding (50% area)</span><span><b>Rs 10/sq ft</b></span></div></div></div>
             <div style="background: #0F172A; color: #F59E0B; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1px;">Professional | Reliable | Quality Work</div>
           </div></div>
@@ -2167,7 +2167,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn-sm" style="background:#FEE2E2" onclick="removeItemTile(3,4)">X</button>
       </div><button class="btn-sm" style="background:#EEF2FF;color:#6366F1" onclick="addItemTile(3)">+ Line</button></div></div></div>
 
-        <div class="card" style="margin: 12px 0; width: 100%; padding: 8px;">
+        <div class="card sm-stagger" style="margin: 12px 0px; width: 100%; padding: 8px; animation-delay: 60ms;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <b>Rate Card Preview</b>
             <button type="button" class="btn-sm" id="agPrevBtnTile" style="background: #EEF2FF; color: #4338CA; padding: 6px 12px; font-weight: 800;" onclick="toggleAgPreview('Tile')">👁️ Preview ▸</button>
@@ -2182,7 +2182,7 @@ img, canvas, svg, video { max-width: 100%; }
       <h2>SHUKLA MARBLE CONTRACTOR</h2>
       <div style="font-size:13px;color:#1E293B;font-weight:600">Krishan Gopal Shukla • Tile &amp; Marble Specialist</div>
       <div style="font-size:11px;color:#64748B">Mob: ____</div>
-      <div class="tile-badge">Labour Rate List • 6/11/2026</div>
+      <div class="tile-badge">Labour Rate List • 5/11/2026</div>
       <div style="color:#8C5E2F;font-weight:700;font-size:12px;margin-top:4px">📍 Work Site: ____</div>
     </div>
   
@@ -2223,7 +2223,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- Saved Agreements List -->
-    <div class="card">
+    <div class="card sm-stagger" style="animation-delay: 90ms;">
       <h3 style="text-align: center; margin-top: 0; font-size: 15px;">📁 Saved Agreements</h3>
       <input id="agSearch" class="input" placeholder="🔍 Search House No / Client" oninput="renderSavedList()">
       <div id="savedAgList">Loading...</div>
@@ -2234,6 +2234,23 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
+  
+  <!-- Agreement Preview Overlay - NEW -->
+  <div id="agPreviewOverlay" class="site-detail-modal" style="z-index:3000" onclick="if(event.target===this)closeAgPreview()">
+    <div class="site-detail-box" style="max-width:520px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-shrink:0">
+        <h3 id="agPreviewTitle" style="margin:0;font-size:14px;font-weight:800">📄 Agreement Preview</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B" onclick="closeAgPreview()">✕ बंद करें</button>
+      </div>
+      <div id="agPreviewBody" style="overflow-y:auto;flex:1;background:white;border-radius:12px;border:1px solid #E2E8F0;padding:0"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;flex-shrink:0">
+        <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:10px" onclick="editFromPreview()">✏️ Edit</button>
+        <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:10px" onclick="shareFromPreview()">📤 Share</button>
+        <button class="btn-sm" style="background:#0F172A;color:#FDE68A;padding:10px" onclick="closeAgPreview()">OK</button>
+      </div>
+    </div>
+  </div>
+
   <div id="t-bill" style="display: none; padding-bottom: 150px;">
     <style>
       #t-bill .bill-card { background:#fff; margin:10px 12px; padding:14px; border-radius:18px; border:1.5px solid #E2E8F0; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
@@ -6891,7 +6908,7 @@ function resetTile() {
     renderTile();
   }
 }
-async function shareImg(id) {
+async async function shareImg(id) {
   const card = document.getElementById(id);
   if (!card) return;
   try {
@@ -6970,9 +6987,10 @@ function renderSavedList() {
             <small style="color:#64748B">${d} ${mEsc(ag.client ? "- " + ag.client : "")} ${mEsc(ag.phone ? "- " + ag.phone : "")} ${ag.mob ? "- " + ag.mob : ""}</small>
           </div>
           <div style="display:flex;gap:4px;flex-wrap:wrap">
-            <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF" onclick="editSavedAg('${aid}')">Edit</button>
-            <button class="btn-sm" style="background:#DCFCE7;color:#166534" onclick="shareSavedAg('${aid}')">Share</button>
-            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteSavedAg('${aid}')">X</button>
+            <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px" onclick="previewSavedAg('${aid}')">👁️ Preview</button>
+            <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:6px 10px" onclick="editSavedAg('${aid}')">Edit</button>
+            <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:6px 10px" onclick="shareSavedAg('${aid}')">Share</button>
+            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="deleteSavedAg('${aid}')">X</button>
           </div>
         </div>
       </div>
@@ -7038,6 +7056,69 @@ function shareSavedAg(aid) {
     renderTile();
     setTimeout(() => shareImg("tileCard"), 500);
   }
+}
+function previewSavedAg(aid){
+  const ag = agreements[aid];
+  if(!ag) return;
+  const overlay = document.getElementById("agPreviewOverlay");
+  const body = document.getElementById("agPreviewBody");
+  const title = document.getElementById("agPreviewTitle");
+  if(!overlay || !body) return;
+  if(title) title.innerText = (ag.type==="italian" ? "🇮🇹 Italian" : "🧱 Tile") + " - " + (ag.site||ag.client||"No Name");
+  // temporarily set data and render
+  if(ag.type==="italian"){
+    const prevData = JSON.parse(JSON.stringify(italianData||[]));
+    italianData = JSON.parse(JSON.stringify(ag.data));
+    // fill header inputs for renderItalian
+    const cSite = document.getElementById("cSite");
+    const cName = document.getElementById("cName");
+    const cPhone = document.getElementById("cPhone");
+    const cDate = document.getElementById("cDate");
+    const oldVals = {site: cSite?.value||"", client: cName?.value||"", phone: cPhone?.value||"", date: cDate?.value||""};
+    if(cSite) cSite.value = ag.site||"";
+    if(cName) cName.value = ag.client||"";
+    if(cPhone) cPhone.value = ag.phone||"";
+    if(cDate) cDate.value = ag.agDate||"";
+    renderItalian();
+    const src = document.getElementById("italianCard");
+    if(src) body.innerHTML = src.innerHTML;
+    // restore
+    italianData = prevData;
+    if(cSite) cSite.value = oldVals.site;
+    if(cName) cName.value = oldVals.client;
+    if(cPhone) cPhone.value = oldVals.phone;
+    if(cDate) cDate.value = oldVals.date;
+    renderItalian();
+  } else {
+    const prevData = JSON.parse(JSON.stringify(tileData||[]));
+    tileData = JSON.parse(JSON.stringify(ag.data));
+    const tSite = document.getElementById("tSite");
+    const tMob = document.getElementById("tMob");
+    const tDate = document.getElementById("tDate");
+    const oldVals = {site: tSite?.value||"", mob: tMob?.value||"", date: tDate?.value||""};
+    if(tSite) tSite.value = ag.site||"";
+    if(tMob) tMob.value = ag.mob||"";
+    if(tDate) tDate.value = ag.agDate||"";
+    renderTile();
+    const src = document.getElementById("tileCard");
+    if(src) body.innerHTML = src.innerHTML;
+    tileData = prevData;
+    if(tSite) tSite.value = oldVals.site;
+    if(tMob) tMob.value = oldVals.mob;
+    if(tDate) tDate.value = oldVals.date;
+    renderTile();
+  }
+  overlay.style.display = "flex";
+  window._previewAid = aid;
+}
+function closeAgPreview(){ const ov=document.getElementById("agPreviewOverlay"); if(ov) ov.style.display="none"; }
+function editFromPreview(){
+  const aid = window._previewAid;
+  if(aid){ closeAgPreview(); setTimeout(()=> editSavedAg(aid), 200); }
+}
+function shareFromPreview(){
+  const aid = window._previewAid;
+  if(aid){ shareSavedAg(aid); }
 }
 function deleteSavedAg(aid) {
   if (confirm("Delete?")) {
@@ -8001,7 +8082,9 @@ function startMatSectionsListener() {
     const val = s.val();
     if (val && Object.keys(val).length) {
       matSections = val;
-    } else {
+    } else if (val===null) {
+      // Only set default if truly null (first time), not if empty due to cache
+      console.log("Creating default materialSections");
       db.ref("companies/" + company + "/materialSections").set(matSections);
     }
     Object.keys(matSections).forEach((id) => attachMatSectionListeners(id));
@@ -8940,7 +9023,19 @@ function smSaveCache(path, v) {
     try { localStorage.removeItem(SM_CACHE_PREFIX + path); } catch (e2) {}
   }
 }
-function smLoadCache(path) { try { const v = localStorage.getItem(SM_CACHE_PREFIX + path); return v ? JSON.parse(v) : undefined; } catch (e) { return undefined; } }
+function smLoadCache(path) { 
+  try { 
+    const raw = localStorage.getItem(SM_CACHE_PREFIX + path);
+    if(!raw) return undefined;
+    const v = JSON.parse(raw);
+    // SAFETY: If cached value is null for critical collections, treat as undefined to force server fetch
+    if(v===null && (path==="companies/"+company || path==="companies/"+company+"/labours" || path==="companies/"+company+"/sites" || path==="companies/"+company+"/entries" || path==="companies/"+company+"/agreements")){
+      console.warn("Ignoring null cache for", path);
+      return undefined;
+    }
+    return v;
+  } catch (e) { return undefined; } 
+}
 function smApplyOp(rootVal, rel, op, val) {
   // rel: array of keys below the root
   if (!rel.length) {
@@ -9001,10 +9096,30 @@ function makeOfflineDb(rawDb) {
     }
     if (localStorage.getItem("sm_outbox_v1")) localStorage.removeItem("sm_outbox_v1");
   } catch(e){}
-  // replay anything left from last session (idempotent operations)
+  // replay anything left from last session - FILTER dangerous ops
+  smOutbox = smOutbox.filter(o=>{
+    const parts = (o.path||"").split("/").filter(Boolean);
+    if((o.op==="remove" || (o.op==="set" && o.val===null)) && parts.length<=3){
+      console.warn("Dropping dangerous outbox op from old session:", o.path, o.op);
+      return false;
+    }
+    return true;
+  });
+  smSaveOutbox();
   smOutbox.slice().forEach((o) => smSend(rawDb, o));
   rawDb.ref(".info/connected").on("value", (s) => { smOnline = !!s.val(); updateSyncBadge(); });
   function write(path, op, val) {
+    // SAFETY: Prevent accidental wipe of entire company or collections
+    const parts = (path||"").split("/").filter(Boolean);
+    if(op==="remove" && parts.length<=3){
+      console.error("BLOCKED dangerous remove:", path);
+      alert("⚠️ सुरक्षा: पूरा डेटा डिलीट करने की कोशिश ब्लॉक की गई: "+path+"\nअगर आप सच में पूरा डेटा हटाना चाहते हो तो Backup Center से करो।");
+      return Promise.resolve();
+    }
+    if(op==="set" && val===null && parts.length<=3){
+      console.error("BLOCKED dangerous set null:", path);
+      return Promise.resolve();
+    }
     const o = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7), path, op, val: val === undefined ? null : smClone(val) };
     smOutbox.push(o);
     smSaveOutbox();
