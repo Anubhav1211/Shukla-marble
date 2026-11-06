@@ -1419,9 +1419,9 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 3: LABOURS -->
-  <div id="t-l" style="display: none;" class="sm-page-in">
+  <div id="t-l" style="display: none;">
     <!-- Kaarigar quick actions (one compact row) -->
-    <div class="card sm-stagger" style="animation-delay: 0ms;">
+    <div class="card">
       <div class="tg-row c3">
         <button type="button" class="tg-btn gold" data-box="addLabourBoxMain" onclick="toggleBoxX('addLabourBoxMain')">➕ नया कारीगर</button>
         <button type="button" class="tg-btn gold" data-box="rbListBox" onclick="toggleBoxX('rbListBox'); renderRentBijliLists();">🏠⚡ किराया / बिजली</button>
@@ -1477,7 +1477,7 @@ img, canvas, svg, video { max-width: 100%; }
       </div>
     </div>
 
-    <div class="card sm-stagger" style="animation-delay: 30ms;">
+    <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px;"><h3 style="margin: 0; font-size: 15px;">👷 सभी कारीगर सूची</h3><button type="button" class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 7px 11px; font-weight: 800; flex-shrink: 0;" onclick="openAudit()">🔍 हिसाब जाँच</button></div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 4px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 13px 14px;" onclick="shiftKMonth(-1)">◀</button>
@@ -1493,8 +1493,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
-  <div id="t-e" style="display: none;" class="sm-page-in">
-    <div class="card sm-stagger" id="hzTopCard" style="animation-delay: 0ms;">
+  <div id="t-e" style="display: none;">
+    <div class="card" id="hzTopCard">
       <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
@@ -1555,7 +1555,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card sm-stagger" id="whHolderCard" style="display: none; animation-delay: 30ms;">
+    <div class="card" id="whHolderCard" style="display: none;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -1579,7 +1579,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card sm-stagger" id="hzListCard" style="display: none; animation-delay: 60ms;">
+    <div class="card" id="hzListCard" style="display: none;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -1593,7 +1593,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card sm-stagger" id="hzCalCard" style="display: none; animation-delay: 90ms;">
+    <div class="card" id="hzCalCard" style="display: none;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
@@ -2234,6 +2234,23 @@ img, canvas, svg, video { max-width: 100%; }
 
 
   
+  
+  <!-- Agreement Preview Overlay - NEW -->
+  <div id="agPreviewOverlay" class="site-detail-modal" style="z-index:3000" onclick="if(event.target===this)closeAgPreview()">
+    <div class="site-detail-box" style="max-width:520px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-shrink:0">
+        <h3 id="agPreviewTitle" style="margin:0;font-size:14px;font-weight:800">📄 Agreement Preview</h3>
+        <button class="btn-sm" style="background:#F1F5F9;color:#64748B" onclick="closeAgPreview()">✕ बंद करें</button>
+      </div>
+      <div id="agPreviewBody" style="overflow-y:auto;flex:1;background:white;border-radius:12px;border:1px solid #E2E8F0;padding:0"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;flex-shrink:0">
+        <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:10px" onclick="editFromPreview()">✏️ Edit</button>
+        <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:10px" onclick="shareFromPreview()">📤 Share</button>
+        <button class="btn-sm" style="background:#0F172A;color:#FDE68A;padding:10px" onclick="closeAgPreview()">OK</button>
+      </div>
+    </div>
+  </div>
+
   <div id="t-bill" style="display: none; padding-bottom: 150px;">
     <style>
       #t-bill .bill-card { background:#fff; margin:10px 12px; padding:14px; border-radius:18px; border:1.5px solid #E2E8F0; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
@@ -6891,7 +6908,7 @@ function resetTile() {
     renderTile();
   }
 }
-async function shareImg(id) {
+async async function shareImg(id) {
   const card = document.getElementById(id);
   if (!card) return;
   try {
@@ -6970,9 +6987,10 @@ function renderSavedList() {
             <small style="color:#64748B">${d} ${mEsc(ag.client ? "- " + ag.client : "")} ${mEsc(ag.phone ? "- " + ag.phone : "")} ${ag.mob ? "- " + ag.mob : ""}</small>
           </div>
           <div style="display:flex;gap:4px;flex-wrap:wrap">
-            <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF" onclick="editSavedAg('${aid}')">Edit</button>
-            <button class="btn-sm" style="background:#DCFCE7;color:#166534" onclick="shareSavedAg('${aid}')">Share</button>
-            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteSavedAg('${aid}')">X</button>
+            <button class="btn-sm" style="background:#EEF2FF;color:#4338CA;padding:6px 10px" onclick="previewSavedAg('${aid}')">👁️ Preview</button>
+            <button class="btn-sm" style="background:#DBEAFE;color:#1E40AF;padding:6px 10px" onclick="editSavedAg('${aid}')">Edit</button>
+            <button class="btn-sm" style="background:#DCFCE7;color:#166534;padding:6px 10px" onclick="shareSavedAg('${aid}')">Share</button>
+            <button class="btn-sm" style="background:#FEE2E2;color:#991B1B;padding:6px 10px" onclick="deleteSavedAg('${aid}')">X</button>
           </div>
         </div>
       </div>
@@ -7038,6 +7056,69 @@ function shareSavedAg(aid) {
     renderTile();
     setTimeout(() => shareImg("tileCard"), 500);
   }
+}
+function previewSavedAg(aid){
+  const ag = agreements[aid];
+  if(!ag) return;
+  const overlay = document.getElementById("agPreviewOverlay");
+  const body = document.getElementById("agPreviewBody");
+  const title = document.getElementById("agPreviewTitle");
+  if(!overlay || !body) return;
+  if(title) title.innerText = (ag.type==="italian" ? "🇮🇹 Italian" : "🧱 Tile") + " - " + (ag.site||ag.client||"No Name");
+  // temporarily set data and render
+  if(ag.type==="italian"){
+    const prevData = JSON.parse(JSON.stringify(italianData||[]));
+    italianData = JSON.parse(JSON.stringify(ag.data));
+    // fill header inputs for renderItalian
+    const cSite = document.getElementById("cSite");
+    const cName = document.getElementById("cName");
+    const cPhone = document.getElementById("cPhone");
+    const cDate = document.getElementById("cDate");
+    const oldVals = {site: cSite?.value||"", client: cName?.value||"", phone: cPhone?.value||"", date: cDate?.value||""};
+    if(cSite) cSite.value = ag.site||"";
+    if(cName) cName.value = ag.client||"";
+    if(cPhone) cPhone.value = ag.phone||"";
+    if(cDate) cDate.value = ag.agDate||"";
+    renderItalian();
+    const src = document.getElementById("italianCard");
+    if(src) body.innerHTML = src.innerHTML;
+    // restore
+    italianData = prevData;
+    if(cSite) cSite.value = oldVals.site;
+    if(cName) cName.value = oldVals.client;
+    if(cPhone) cPhone.value = oldVals.phone;
+    if(cDate) cDate.value = oldVals.date;
+    renderItalian();
+  } else {
+    const prevData = JSON.parse(JSON.stringify(tileData||[]));
+    tileData = JSON.parse(JSON.stringify(ag.data));
+    const tSite = document.getElementById("tSite");
+    const tMob = document.getElementById("tMob");
+    const tDate = document.getElementById("tDate");
+    const oldVals = {site: tSite?.value||"", mob: tMob?.value||"", date: tDate?.value||""};
+    if(tSite) tSite.value = ag.site||"";
+    if(tMob) tMob.value = ag.mob||"";
+    if(tDate) tDate.value = ag.agDate||"";
+    renderTile();
+    const src = document.getElementById("tileCard");
+    if(src) body.innerHTML = src.innerHTML;
+    tileData = prevData;
+    if(tSite) tSite.value = oldVals.site;
+    if(tMob) tMob.value = oldVals.mob;
+    if(tDate) tDate.value = oldVals.date;
+    renderTile();
+  }
+  overlay.style.display = "flex";
+  window._previewAid = aid;
+}
+function closeAgPreview(){ const ov=document.getElementById("agPreviewOverlay"); if(ov) ov.style.display="none"; }
+function editFromPreview(){
+  const aid = window._previewAid;
+  if(aid){ closeAgPreview(); setTimeout(()=> editSavedAg(aid), 200); }
+}
+function shareFromPreview(){
+  const aid = window._previewAid;
+  if(aid){ shareSavedAg(aid); }
 }
 function deleteSavedAg(aid) {
   if (confirm("Delete?")) {
