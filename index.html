@@ -1318,8 +1318,8 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
-    <button class="tab bnav-item active" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
+    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
@@ -1331,7 +1331,7 @@ img, canvas, svg, video { max-width: 100%; }
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d" class="sm-page-in" style="display: none;">
+  <div id="t-d" class="sm-page-in" style="display: block;">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -1523,8 +1523,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
-  <div id="t-e" style="display: block;" class="sm-page-in">
-    <div class="card sm-stagger" id="hzTopCard" style="animation-delay: 0ms;">
+  <div id="t-e" style="display: none;">
+    <div class="card" id="hzTopCard">
       <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
@@ -1534,7 +1534,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setEDateToday()">आज</button>
       </div>
       </div>
-      <div id="hzSingleBox" style="display: none; margin-top: 12px;" class="">
+      <div id="hzSingleBox" style="display: none; margin-top: 12px;">
       <input id="eLabSearch" type="hidden" oninput="renderAll()">
       <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ हाज़री एडिट हो रही है (<span id="eDateTxt"></span>)</div>
       
@@ -1558,23 +1558,23 @@ img, canvas, svg, video { max-width: 100%; }
         </div>
         <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0; flex: 1 1 0; width: auto;">
       </div>
-      <label style="display:flex;align-items:center;gap:8px;background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;color:#92400E;margin-bottom:10px;cursor:pointer;" class="sm-success"><input type="checkbox" id="eBikeCheck" onchange="toggleBikeAmt()" style="width:18px;height:18px;accent-color:#D97706;"> 🏍 Apni bike se gaya - Bike bhada add karna hai</label>
-      <div id="eBikeRow" style="display: block; margin-bottom: 12px;"><input id="eBikeAmt" type="number" class="input" placeholder="Bike bhada Rs - kitna add karna hai? (jaise 50 / 100)" style="margin-bottom:0;"></div>
+      <label style="display:flex;align-items:center;gap:8px;background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;color:#92400E;margin-bottom:10px;cursor:pointer;"><input type="checkbox" id="eBikeCheck" onchange="toggleBikeAmt()" style="width:18px;height:18px;accent-color:#D97706;"> 🏍 Apni bike se gaya - Bike bhada add karna hai</label>
+      <div id="eBikeRow" style="display:none;margin-bottom:12px;"><input id="eBikeAmt" type="number" class="input" placeholder="Bike bhada Rs - kitna add karna hai? (jaise 50 / 100)" style="margin-bottom:0;"></div>
       <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">💾 हाज़री सेव</button>
       <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
       <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
       </div>
-      <div id="bhBox" style="display: none; margin-top: 12px;" class="">
-        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt">07 नव॰ 2026</span> (ऊपर से बदलें)</div>
+      <div id="bhBox" style="display: none; margin-top: 12px;">
+        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
         <select id="bhSite" class="input"><option value="">🏠 साइट (सबके लिए, Optional)</option></select>
         <div style="display: flex; gap: 6px; margin-bottom: 10px;">
           <button class="btn-sm" style="flex: 1; background: #DCFCE7; color: #166534; padding: 10px 6px;" onclick="bulkHazriAll(1)">सबको P</button>
           <button class="btn-sm" style="flex: 1; background: #FEF3C7; color: #92400E; padding: 10px 6px;" onclick="bulkHazriAll(0.5)">सबको आधा</button>
           <button class="btn-sm" style="flex: 1; background: #F1F5F9; color: #475569; padding: 10px 6px;" onclick="bulkHazriAll(null)">सब साफ</button>
         </div>
-        <div id="bhList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">कोई Active कारीगर नहीं</div></div>
-        <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;">0 कारीगर चुने · कुल 0 दिन</div>
+        <div id="bhList"></div>
+        <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;"></div>
         <button class="btn btn-save" onclick="saveBulkHazri()">💾 सबकी हाज़री सेव करें</button>
         <div id="bhMsg" style="font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       </div>
@@ -1587,7 +1587,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card sm-stagger" id="whHolderCard" style="display: none; animation-delay: 30ms;">
+    <div class="card" id="whHolderCard" style="display: none;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -1611,7 +1611,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card sm-stagger" id="hzListCard" style="display: none; animation-delay: 60ms;">
+    <div class="card" id="hzListCard" style="display: none;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -1625,7 +1625,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card sm-stagger" id="hzCalCard" style="display: none; animation-delay: 90ms;">
+    <div class="card" id="hzCalCard" style="display: none;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
@@ -3720,6 +3720,21 @@ function shiftDMonth(delta) { shiftMonthInput("dMonth", delta); }
 // ---- Per-entry rate: each hazri keeps the rate it was earned at (e.rate).
 // Old entries without e.rate fall back to the labour's current wage.
 function bikeAmt(e) { return e ? (parseFloat(e.bike) || 0) : 0; }
+function bikeEntriesFor(labId, mon) {
+  return Object.values(ents || {}).filter((e) => e && e.labourId === labId && e.date && e.date.startsWith(mon) && bikeAmt(e) > 0).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+}
+function bikeDatesHtml(labId, mon) {
+  const list = bikeEntriesFor(labId, mon);
+  if (!list.length) return "";
+  const rows = list.map((e) => {
+    const dTxt = new Date(e.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
+    const sName = e.siteId && sites[e.siteId] ? sites[e.siteId].house : "";
+    return `<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px dashed #E5EAF1;"><span>${dTxt}${sName ? ' <span style="color:#64748B;">(' + mEsc(sName) + ')</span>' : ""}</span><b>+₹${Math.round(bikeAmt(e)).toLocaleString("en-IN")}</b></div>`;
+  }).join("");
+  const total = list.reduce((s, e) => s + bikeAmt(e), 0);
+  return `<details style="margin-top:8px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:8px 10px;"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:#92400E;">🏍️ Petrol / Bike - kis-kis date ko? (${list.length} din • +₹${Math.round(total).toLocaleString("en-IN")}) - dekhne ke liye dabao</summary><div style="margin-top:8px;">${rows}</div></details>`;
+}
+window.bikeDatesHtml = bikeDatesHtml;
 function entryRate(e, l) {
   if (e && e.rate != null && e.rate !== "" && !isNaN(parseFloat(e.rate))) return parseFloat(e.rate);
   return l ? (parseFloat(l.wage) || 0) : 0;
@@ -6048,6 +6063,7 @@ function showHazriHisabInner(items, date) {
         ${line("\u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E" + (c.bal < 0 ? " (\u0932\u0947\u0928\u093E)" : ""), money(c.bal))}
         ${line("\u0907\u0938 \u092E\u093E\u0939 \u0915\u0940 \u0915\u092E\u093E\u0908 (" + c.days + " \u0926\u093F\u0928)", money(c.earn))}
         ${c.bike > 0 ? line("\u{1F3CD} Bike bhada (is mahine)", "+ " + money(c.bike)) : ""}
+        ${bikeDatesHtml(it.id, mon)}
         ${line("\u0905\u092C \u0924\u0915 \u0915\u093E \u092D\u0941\u0917\u0924\u093E\u0928 / \u0928\u093F\u0915\u093E\u0938\u0940", "\u2212 " + money(c.with))}
         ${other > 0 ? line("\u0915\u093F\u0930\u093E\u092F\u093E + \u092C\u093F\u091C\u0932\u0940", "\u2212 " + money(other)) : ""}
       </div>
@@ -6344,6 +6360,7 @@ function renderKarigarProfile(){
         <div class="kp-row"><span>बिजली</span><b>₹${Math.round(c.bijli+c.bijliCalc).toLocaleString("en-IN")}</b></div>
         <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
       </div></div>
+      ${c.bike > 0 ? `<div class="kp-section"><div class="kp-section-title">🏍️ Petrol / Bike - kis-kis date ko</div><div class="kp-list">${bikeDatesHtml(id, mon)}</div></div>` : ""}
       <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${mEsc(v.name)}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${mEsc(e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other")}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
@@ -6542,6 +6559,7 @@ function makeReport() {
             <b>\u20B9${earn.toLocaleString("en-IN")}</b>
           </div>
           ${c.bike > 0 ? `<div class="rc-row"><span>\u{1F3CD} Bike bhada (apni bike se)</span><b>+\u20B9${c.bike.toLocaleString("en-IN")}</b></div>` : ""}
+          ${bikeDatesHtml(labId, mon)}
           <div class="rc-row">
             <span>\u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E (Opening Balance)</span>
             <b>\u20B9${c.bal.toLocaleString("en-IN")}</b>
@@ -10591,7 +10609,7 @@ if (document.readyState === "loading") {
     show();
   };
 })();
-</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">👥 सबकी हाज़री — 7 नव॰ 2026</b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕<i class="sm-ripple" style="height: 0px; width: 0px; left: 339px; top: 154px;"></i></button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
+</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕<i class="sm-ripple" style="height: 0px; width: 0px; left: 339px; top: 154px;"></i></button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
 
 <script>
 /* ===== AUTO-FIT PACK: har phone ki screen ke hisab se numbers apne aap fit ho jayein ===== */
