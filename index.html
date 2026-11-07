@@ -40,6 +40,27 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -1267,6 +1288,15 @@ img, canvas, svg, video { max-width: 100%; }
 .sm-edit-body{padding:14px 16px 18px}
 .sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
 .sm-edit-body > .sm-in-edit{margin-top:0 !important}
+@keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style><style>.sm-edit-ov{display:none;position:fixed;inset:0;z-index:990;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);align-items:flex-start;justify-content:center;padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sm-edit-ov.show{display:flex}
+.sm-edit-box{width:100%;max-width:560px;margin:auto 0;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden;animation:smEditPop .22s cubic-bezier(.2,.9,.25,1)}
+.sm-edit-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(145deg,#21242C,#15171C);color:#fff;border-bottom:2px solid #AD832E}
+.sm-edit-head b{font-size:15px;font-weight:800}
+.sm-edit-head button{flex:0 0 auto;width:34px;height:34px;padding:0;border:0;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer}
+.sm-edit-body{padding:14px 16px 18px}
+.sm-edit-body > .card{margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;background:transparent !important}
+.sm-edit-body > .sm-in-edit{margin-top:0 !important}
 @keyframes smEditPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}</style></head>
 <body class="">
   <!-- Header -->
@@ -1288,8 +1318,8 @@ img, canvas, svg, video { max-width: 100%; }
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav" data-swipe-ready="1">
-    <button class="tab bnav-item active" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
-    <button class="tab bnav-item" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
+    <button class="tab bnav-item" id="bt-d" onclick="showTab('d')"><span class="ti">📊</span><span class="tl">डैश</span></button>
+    <button class="tab bnav-item active" id="bt-e" onclick="showTab('e')"><span class="ti">📝</span><span class="tl">हाज़री</span></button>
     <button class="tab bnav-item" id="bt-r" onclick="showTab('r')"><span class="ti">🧾</span><span class="tl">हिसाब</span></button>
     <button class="tab bnav-item" id="bt-l" onclick="showTab('l')"><span class="ti">👷</span><span class="tl">कारीगर</span></button>
     <button class="tab bnav-item" id="bt-x" onclick="showTab('x')"><span class="ti">💸</span><span class="tl">खर्च</span></button>
@@ -1301,7 +1331,7 @@ img, canvas, svg, video { max-width: 100%; }
   
 
   <!-- TAB 1: DASHBOARD -->
-  <div id="t-d" class="sm-page-in" style="display: block;">
+  <div id="t-d" class="sm-page-in" style="display: none;">
     <div class="card sm-stagger" id="dashTopCard" style="padding: 12px 14px; animation-delay: 0ms;">
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 10px;">
         <button class="btn-sm" style="background: #EEF2FF; color: #4338CA; padding: 10px 14px;" onclick="shiftDMonth(-1)">◀</button>
@@ -1493,8 +1523,8 @@ img, canvas, svg, video { max-width: 100%; }
   </div>
 
   <!-- TAB 4: HAZRI / ATTENDANCE -->
-  <div id="t-e" style="display: none;">
-    <div class="card" id="hzTopCard">
+  <div id="t-e" style="display: block;" class="sm-page-in">
+    <div class="card sm-stagger" id="hzTopCard" style="animation-delay: 0ms;">
       <div id="hzDateBlock">
       <div style="font-size: 12px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">📅 तारीख चुनो (किसी भी दिन की हाज़री देखो / एडिट करो)</div>
       <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 12px;">
@@ -1504,7 +1534,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn-sm" style="background: #DCFCE7; color: #166534; padding: 13px 14px;" onclick="setEDateToday()">आज</button>
       </div>
       </div>
-      <div id="hzSingleBox" style="display: none; margin-top: 12px;">
+      <div id="hzSingleBox" style="display: none; margin-top: 12px;" class="">
       <input id="eLabSearch" type="hidden" oninput="renderAll()">
       <div id="editTag" style="background: #FEF3C7; color: #92400E; padding: 6px 12px; border-radius: 10px; font-size: 11.5px; display: none; font-weight: 700; margin-bottom: 10px; text-align: center;">✏️ हाज़री एडिट हो रही है (<span id="eDateTxt"></span>)</div>
       
@@ -1528,21 +1558,23 @@ img, canvas, svg, video { max-width: 100%; }
         </div>
         <input id="eNote" class="input" placeholder="काम विवरण / Note" style="margin-bottom: 0; flex: 1 1 0; width: auto;">
       </div>
+      <label style="display:flex;align-items:center;gap:8px;background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;color:#92400E;margin-bottom:10px;cursor:pointer;" class="sm-success"><input type="checkbox" id="eBikeCheck" onchange="toggleBikeAmt()" style="width:18px;height:18px;accent-color:#D97706;"> 🏍 Apni bike se gaya - Bike bhada add karna hai</label>
+      <div id="eBikeRow" style="display: block; margin-bottom: 12px;"><input id="eBikeAmt" type="number" class="input" placeholder="Bike bhada Rs - kitna add karna hai? (jaise 50 / 100)" style="margin-bottom:0;"></div>
       <button class="btn btn-save" onclick="saveHazri()" id="saveBtn">💾 हाज़री सेव</button>
       <button class="btn" style="background: #F1F5F9; color: #64748B; margin-top: 8px; display: none;" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
       <div id="eMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       <div id="dupMsg" style="padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-top: 8px; display: none;"></div>
       </div>
-      <div id="bhBox" style="display: none; margin-top: 12px;">
-        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt"></span> (ऊपर से बदलें)</div>
+      <div id="bhBox" style="display: none; margin-top: 12px;" class="">
+        <div style="background: #EEF2FF; color: #3730A3; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; text-align: center;">📅 तारीख: <span id="bhDateTxt">07 नव॰ 2026</span> (ऊपर से बदलें)</div>
         <select id="bhSite" class="input"><option value="">🏠 साइट (सबके लिए, Optional)</option></select>
         <div style="display: flex; gap: 6px; margin-bottom: 10px;">
           <button class="btn-sm" style="flex: 1; background: #DCFCE7; color: #166534; padding: 10px 6px;" onclick="bulkHazriAll(1)">सबको P</button>
           <button class="btn-sm" style="flex: 1; background: #FEF3C7; color: #92400E; padding: 10px 6px;" onclick="bulkHazriAll(0.5)">सबको आधा</button>
           <button class="btn-sm" style="flex: 1; background: #F1F5F9; color: #475569; padding: 10px 6px;" onclick="bulkHazriAll(null)">सब साफ</button>
         </div>
-        <div id="bhList"></div>
-        <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;"></div>
+        <div id="bhList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">कोई Active कारीगर नहीं</div></div>
+        <div id="bhSummary" style="background: #0F172A; color: white; padding: 10px 14px; border-radius: 12px; margin: 10px 0; font-size: 13px; font-weight: 700; text-align: center;">0 कारीगर चुने · कुल 0 दिन</div>
         <button class="btn btn-save" onclick="saveBulkHazri()">💾 सबकी हाज़री सेव करें</button>
         <div id="bhMsg" style="font-size: 12px; margin-top: 6px; font-weight: 700; text-align: center;"></div>
       </div>
@@ -1555,7 +1587,7 @@ img, canvas, svg, video { max-width: 100%; }
     </div>
 
     <!-- EXTRA PAYMENT (same labourer, same day, more than one payment) -->
-    <div class="card" id="whHolderCard" style="display: none;">
+    <div class="card sm-stagger" id="whHolderCard" style="display: none; animation-delay: 30ms;">
       <div id="whBox" style="display: none; margin-top: 12px;">
         <div style="font-size: 11px; color: #94A3B8; font-weight: 600; margin-bottom: 8px;">ऊपर जो निकासी वाला बॉक्स है वो हाज़िरी के साथ एक ही एंट्री है — यहाँ से उसी दिन, उसी कारीगर को दूसरी/तीसरी बार दिया गया पैसा अलग से जोड़ो</div>
         <select id="whLab" class="input"></select>
@@ -1579,7 +1611,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <div id="missingBox" style="margin-top: 12px;"></div>
 
-    <div class="card" id="hzListCard" style="display: none;">
+    <div class="card sm-stagger" id="hzListCard" style="display: none; animation-delay: 60ms;">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
         <span>📅 हाज़री - <span id="todayDateTxt"></span></span>
         <span id="todayCount" style="background: #EEF2FF; color: #4F46E5; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;"></span>
@@ -1593,7 +1625,7 @@ img, canvas, svg, video { max-width: 100%; }
       <div id="todayTable"></div>
     </div>
 
-    <div class="card" id="hzCalCard" style="display: none;">
+    <div class="card sm-stagger" id="hzCalCard" style="display: none; animation-delay: 90ms;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
         <h3 style="font-size: 14px; margin:0;">🗓️ कैलेंडर - <span id="selLabName2" style="color:#4F46E5;"></span></h3>
         <div style="display:flex;gap:5px;align-items:center;">
@@ -1839,7 +1871,7 @@ img, canvas, svg, video { max-width: 100%; }
     <!-- Selected day entries -->
     <div class="card">
       <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
-        <span>🧾 मटेरियल - <span id="mDayTxt">06 नव॰ 2026</span></span>
+        <span>🧾 मटेरियल - <span id="mDayTxt">07 नव॰ 2026</span></span>
         <span id="mDayTotal" style="background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800;">0 एंट्री · ₹0</span>
       </h3>
       <div id="mDayList"><div style="color:#94A3B8;padding:12px;text-align:center;font-size:12px;">इस तारीख को कोई मटेरियल एंट्री नहीं</div></div>
@@ -2054,7 +2086,7 @@ img, canvas, svg, video { max-width: 100%; }
     <span>🏛️ Work Site: ____</span>
     <span>👤 Client: ____</span>
     <span>📱 Ph: ____</span>
-    <span>📅 Date: 6/11/2026</span>
+    <span>📅 Date: 7/11/2026</span>
   </div><div class="italian-sec-title">ITALIAN MARBLE</div><div class="italian-grid"><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">Italian Grey/Beige</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 60/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 100/sq ft</b></span></div></div><div class="italian-col"><div style="font-weight:900;text-align:center;text-decoration:underline;font-size:12px">White Italian</div><div class="italian-item"><span>• Floor fitting</span><span><b>Rs 80/sq ft</b></span></div><div class="italian-item"><span>• Wall cladding</span><span><b>Rs 120/sq ft</b></span></div></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For Italian Grey and Beige)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 60/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 100/R ft</b></span></div></div><div class="italian-sec-title">CUTTING &amp; MOLDING (For White Italian)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Skirting patti (below 12 inch)</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• Molding - tapar/half round/taccar</span><span><b>Rs 120/R ft</b></span></div><div class="italian-item"><span>• 45° degree cutting</span><span><b>Rs 100/R ft</b></span></div><div class="italian-item"><span>• Classic molding (as per design)</span><span><b>As per design</b></span></div><div class="italian-item"><span>• 6mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 8mm groove</span><span><b>Rs 80/R ft</b></span></div><div class="italian-item"><span>• 12mm groove</span><span><b>Rs 120/R ft</b></span></div></div><div class="italian-sec-title">GRANITE</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Granite fitting (big size, 16mm)</span><span><b>Rs 50/R ft</b></span></div><div class="italian-item"><span>• Designer granite patti</span><span><b>Rs 25/R ft</b></span></div><div class="italian-item"><span>• Granite molding</span><span><b>Same as italian</b></span></div></div><div class="italian-sec-title">TILE WORK (Separate Section)</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Tile fitting (on-site)</span><span><b>As per tile size</b></span></div><div class="italian-item"><span>• Tile fitting All Sizes</span><span><b>Rs 50/sq ft</b></span></div><div class="italian-item"><span>• Tile patti</span><span><b>Rs 50/R ft</b></span></div></div><div class="italian-sec-title">EXTRA WORK</div><div class="italian-col" style="border:0.5px solid #FCD34D"><div class="italian-item"><span>• Manhole steel fitting</span><span><b>Rs 800/pc</b></span></div><div class="italian-item"><span>• Epoxy grouting</span><span><b>Rs 100/sq ft</b></span></div><div class="italian-item"><span>• Counter washbasin (simple)</span><span><b>Rs 1500/pc</b></span></div><div class="italian-item"><span>• Sink fitting</span><span><b>Rs 500/pc</b></span></div><div class="italian-item"><span>• Fibermesh grinding (50% area)</span><span><b>Rs 10/sq ft</b></span></div></div></div>
             <div style="background: #0F172A; color: #F59E0B; text-align: center; padding: 8px; font-size: 11px; letter-spacing: 1px;">Professional | Reliable | Quality Work</div>
           </div></div>
@@ -2182,7 +2214,7 @@ img, canvas, svg, video { max-width: 100%; }
       <h2>SHUKLA MARBLE CONTRACTOR</h2>
       <div style="font-size:13px;color:#1E293B;font-weight:600">Krishan Gopal Shukla • Tile &amp; Marble Specialist</div>
       <div style="font-size:11px;color:#64748B">Mob: ____</div>
-      <div class="tile-badge">Labour Rate List • 6/11/2026</div>
+      <div class="tile-badge">Labour Rate List • 7/11/2026</div>
       <div style="color:#8C5E2F;font-weight:700;font-size:12px;margin-top:4px">📍 Work Site: ____</div>
     </div>
   
@@ -3687,6 +3719,7 @@ function shiftKMonth(delta) { shiftMonthInput("kMonth", delta); }
 function shiftDMonth(delta) { shiftMonthInput("dMonth", delta); }
 // ---- Per-entry rate: each hazri keeps the rate it was earned at (e.rate).
 // Old entries without e.rate fall back to the labour's current wage.
+function bikeAmt(e) { return e ? (parseFloat(e.bike) || 0) : 0; }
 function entryRate(e, l) {
   if (e && e.rate != null && e.rate !== "" && !isNaN(parseFloat(e.rate))) return parseFloat(e.rate);
   return l ? (parseFloat(l.wage) || 0) : 0;
@@ -3954,7 +3987,7 @@ function smIndex() {
   const I = { k0: ents, k1: withdrawals, k2: bijliBills, k3: labourMonthly, k4: labs, ent: {}, bj: {}, months: {}, res: {} };
   const bucket = (id, m) => {
     const byM = I.ent[id] || (I.ent[id] = {});
-    return byM[m] || (byM[m] = { d: 0, w: 0, earn: 0 });
+    return byM[m] || (byM[m] = { d: 0, w: 0, earn: 0, bike: 0 });
   };
   const addMonth = (id, m) => { (I.months[id] || (I.months[id] = new Set())).add(m); };
   Object.values(ents).forEach((e) => {
@@ -3965,6 +3998,7 @@ function smIndex() {
     o.d += dd;
     o.w += parseFloat(e.withdraw || 0);
     o.earn += dd * entryRate(e, labs[e.labourId]);
+    o.bike += bikeAmt(e);
     addMonth(e.labourId, m);
   });
   Object.values(withdrawals).forEach((wd) => {
@@ -3987,7 +4021,7 @@ function smIndex() {
 // rent/bijli now come from labourMonthly[id][mon] (month-specific, default 0 — never carried forward).
 function calcLabourForMonth(id, mon, bal) {
   const I = smIndex();
-  const o = (I.ent[id] && I.ent[id][mon]) || { d: 0, w: 0, earn: 0 };
+  const o = (I.ent[id] && I.ent[id][mon]) || { d: 0, w: 0, earn: 0, bike: 0 };
   const monthly = (labourMonthly[id] && labourMonthly[id][mon]) || {};
   const rent = parseFloat(monthly.rent) || 0;
   const bijli = parseFloat(monthly.bijli) || 0;
@@ -3995,11 +4029,12 @@ function calcLabourForMonth(id, mon, bal) {
   return {
     days: o.d,
     earn: o.earn,
+    bike: o.bike || 0,
     with: o.w,
     rent,
     bijli,
     bijliCalc,
-    net: o.earn + bal - o.w - rent - bijli - bijliCalc,
+    net: o.earn + (o.bike || 0) + bal - o.w - rent - bijli - bijliCalc,
     bal
   };
 }
@@ -4008,7 +4043,7 @@ function calcLabourForMonth(id, mon, bal) {
 // बकाया — so September's देना/लेना automatically becomes October's opening balance.
 function calcLabour(id, mon) {
   const l = labs[id];
-  if (!l) return { days: 0, earn: 0, with: 0, rent: 0, bijli: 0, bijliCalc: 0, net: 0, bal: 0 };
+  if (!l) return { days: 0, earn: 0, bike: 0, with: 0, rent: 0, bijli: 0, bijliCalc: 0, net: 0, bal: 0 };
   const I = smIndex();
   let R = I.res[id];
   if (!R) {
@@ -4041,7 +4076,7 @@ function smSiteEntIdx() {
     if (!e || !e.siteId) return;
     const l = labs[e.labourId];
     if (!l) return;
-    const c = parseFloat(e.days || 0) * entryRate(e, l);
+    const c = parseFloat(e.days || 0) * entryRate(e, l) + bikeAmt(e);
     const m = map[e.siteId] || (map[e.siteId] = { cost: 0, labourMap: {}, byMonth: {} });
     m.cost += c;
     const mk = (e.date || "").slice(0, 7);
@@ -4133,12 +4168,13 @@ function showSiteDetail(siteId) {
       const labId = e.labourId;
       const lab = labs[labId];
       if(!lab) return;
-      if(!labMap[labId]) labMap[labId] = {labId, name: lab.name||"?", wage: parseFloat(lab.wage||0), days:0, cost:0, entries:[]};
+      if(!labMap[labId]) labMap[labId] = {labId, name: lab.name||"?", wage: parseFloat(lab.wage||0), days:0, cost:0, bike:0, entries:[]};
       const rate = entryRate ? entryRate(e, lab) : (parseFloat(lab.wage||0));
-      const c = days * rate;
+      const c = days * rate + bikeAmt(e);
       labMap[labId].days += days;
       labMap[labId].cost += c;
-      labMap[labId].entries.push({date:e.date, days, rate, cost:c, note:e.note||""});
+      labMap[labId].bike = (labMap[labId].bike || 0) + bikeAmt(e);
+      labMap[labId].entries.push({date:e.date, days, rate, cost:c, bike: bikeAmt(e), note:e.note||""});
     });
     const list = Object.values(labMap).sort((a,b)=> b.days - a.days);
     if(list.length===0) return '<div style="padding:16px;text-align:center;color:#94A3B8;font-size:12px">इस महीने कोई हाज़री नहीं</div>';
@@ -4154,6 +4190,7 @@ function showSiteDetail(siteId) {
           <div style="flex:1;min-width:0">
             <div style="font-weight:800;font-size:14px">${mEsc(l.name)} <span style="font-size:10px;color:#64748B">₹${l.wage}/दिन</span></div>
             <div style="font-size:12px;color:#334155;margin-top:2px"><b>${l.days.toFixed(1)} दिन</b> × ₹${l.wage} = <b style="color:#B45309">₹${Math.round(l.cost).toLocaleString('en-IN')}</b></div>
+            ${l.bike>0 ? `<div style="font-size:11px;color:#166534;font-weight:700;margin-top:2px">\u{1F3CD} Bike bhada: + Rs ${Math.round(l.bike).toLocaleString('en-IN')}</div>` : ""}
             <div style="font-size:10px;color:#64748B;margin-top:2px">${l.entries.length} एंट्री • Avg ₹${l.days>0? Math.round(l.cost/l.days) : l.wage}/दिन</div>
           </div>
           <button class="btn-sm" style="background:#F1F5F9;color:#334155;padding:6px 10px;font-size:11px;flex-shrink:0" onclick="let el=this.parentElement.nextElementSibling; el.style.display = el.style.display==='none' ? 'block' : 'none';">📋</button>
@@ -4920,7 +4957,7 @@ function renderAll() {
         tHtml += `<tr>
       <td style="text-align:left"><b>${mEsc(l.name)}</b></td>
       <td style="font-size:10px;color:#64748B">${mEsc(key === "__none__" ? "-" : g.name)}</td>
-      <td>${e.days} \u0926\u093F\u0928 <small style="color:#DC2626">\u20B9${e.withdraw || 0}</small>${extraRowHtml}</td>
+      <td>${e.days} \u0926\u093F\u0928 <small style="color:#DC2626">\u20B9${e.withdraw || 0}</small>${bikeAmt(e) > 0 ? `<br><small style="color:#166534;font-weight:700">\u{1F3CD} Bike Rs ${Math.round(bikeAmt(e)).toLocaleString("en-IN")}</small>` : ""}${extraRowHtml}</td>
       <td>
         <button class="btn-sm" onclick="editEntry('${eid}')">\u270F\uFE0F</button>
         <button class="btn-sm" style="background:#FEE2E2;color:#991B1B" onclick="deleteEntry('${eid}')">X</button>
@@ -4982,7 +5019,7 @@ function getSiteMonthWiseDihadi(siteId){
     if(!mon) return;
     const lab = labs[e.labourId];
     const rate = entryRate ? entryRate(e, lab) : (lab? parseFloat(lab.wage||0):0);
-    const cost = days * rate;
+    const cost = days * rate + bikeAmt(e);
     if(!map[mon]) map[mon] = {month:mon, days:0, cost:0, count:0, labour:{}};
     map[mon].days += days;
     map[mon].cost += cost;
@@ -5003,7 +5040,7 @@ function getSiteLabourMonthWise(siteId){
     const labId = e.labourId;
     const lab = labs[labId];
     const rate = entryRate ? entryRate(e, lab) : (lab? parseFloat(lab.wage||0):0);
-    const cost = days * rate;
+    const cost = days * rate + bikeAmt(e);
     if(!map[labId]) map[labId] = {labId, name: lab? lab.name : "?", months:{}, totalDays:0, totalCost:0};
     if(!map[labId].months[mon]) map[labId].months[mon] = {days:0,cost:0,count:0};
     map[labId].months[mon].days += days;
@@ -5480,7 +5517,7 @@ function calcMonthlyTotalProfit(mon) {
   let totalSiteProfit = 0;
   Object.keys(sites).forEach((sid) => {
     let received = 0, cost = 0;
-    Object.values(ents).forEach((e) => { if (e.siteId === sid && e.date && e.date.startsWith(mon)) { const l = labs[e.labourId]; if (l) cost += (parseFloat(e.days || 0) * entryRate(e, l)) || 0; } });
+    Object.values(ents).forEach((e) => { if (e.siteId === sid && e.date && e.date.startsWith(mon)) { const l = labs[e.labourId]; if (l) cost += ((parseFloat(e.days || 0) * entryRate(e, l)) + bikeAmt(e)) || 0; } });
     Object.values(siteCosts).forEach((c) => { if (c.siteId === sid && c.date && c.date.startsWith(mon)) cost += parseFloat(c.amount) || 0; });
     Object.values(sitePays).forEach((p) => { if (p.siteId === sid && p.date && p.date.startsWith(mon)) received += parseFloat(p.amount || 0); });
     totalSiteProfit += received - cost;
@@ -5530,7 +5567,7 @@ function showBreakdownProfit() {
     let amount = 0;
     if (profitViewMode === "month") {
       let received = 0, cost = 0;
-      Object.values(ents).forEach((e) => { if (e.siteId === sid && e.date && e.date.startsWith(mon)) { const l = labs[e.labourId]; if (l) cost += (parseFloat(e.days || 0) * entryRate(e, l)) || 0; } });
+      Object.values(ents).forEach((e) => { if (e.siteId === sid && e.date && e.date.startsWith(mon)) { const l = labs[e.labourId]; if (l) cost += ((parseFloat(e.days || 0) * entryRate(e, l)) + bikeAmt(e)) || 0; } });
       Object.values(siteCosts).forEach((c) => { if (c.siteId === sid && c.date && c.date.startsWith(mon)) cost += parseFloat(c.amount) || 0; });
       Object.values(sitePays).forEach((p) => { if (p.siteId === sid && p.date && p.date.startsWith(mon)) received += parseFloat(p.amount || 0); });
       amount = received - cost;
@@ -6003,13 +6040,14 @@ function showHazriHisabInner(items, date) {
     const c = calcLabour(it.id, mon);
     const due = c.net >= 0;
     const other = (c.rent || 0) + (c.bijli || 0) + (c.bijliCalc || 0);
-    const tag = `${it.days} \u0926\u093F\u0928` + (it.withdraw > 0 ? ` \u2022 \u0928\u093F\u0915\u093E\u0938\u0940 ${money(it.withdraw)}` : "");
+    const tag = `${it.days} \u0926\u093F\u0928` + (it.withdraw > 0 ? ` \u2022 \u0928\u093F\u0915\u093E\u0938\u0940 ${money(it.withdraw)}` : "") + (it.bike > 0 ? ` \u2022 \u{1F3CD} Bike ${money(it.bike)}` : "");
     return `<div style="border:1px solid #E5EAF1;border-radius:16px;padding:12px;margin-bottom:10px;background:#fff;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><b style="font-size:14.5px;color:#0F172A;">\u{1F477} ${mEsc(l.name || "")}</b><span style="font-size:11px;background:#ECFDF5;color:#047857;padding:3px 8px;border-radius:99px;font-weight:800;white-space:nowrap;">${tag}</span></div>
       ${it.siteName ? `<div style="font-size:11px;color:#64748B;margin-top:3px;">\u{1F3E0} ${mEsc(it.siteName)}</div>` : ""}
       <div style="margin-top:8px;">
         ${line("\u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E" + (c.bal < 0 ? " (\u0932\u0947\u0928\u093E)" : ""), money(c.bal))}
         ${line("\u0907\u0938 \u092E\u093E\u0939 \u0915\u0940 \u0915\u092E\u093E\u0908 (" + c.days + " \u0926\u093F\u0928)", money(c.earn))}
+        ${c.bike > 0 ? line("\u{1F3CD} Bike bhada (is mahine)", "+ " + money(c.bike)) : ""}
         ${line("\u0905\u092C \u0924\u0915 \u0915\u093E \u092D\u0941\u0917\u0924\u093E\u0928 / \u0928\u093F\u0915\u093E\u0938\u0940", "\u2212 " + money(c.with))}
         ${other > 0 ? line("\u0915\u093F\u0930\u093E\u092F\u093E + \u092C\u093F\u091C\u0932\u0940", "\u2212 " + money(other)) : ""}
       </div>
@@ -6066,6 +6104,12 @@ function updateDupInfo() {
   const dupMsg = document.getElementById("dupMsg");
   if (dupMsg) dupMsg.style.display = "none";
 }
+function toggleBikeAmt() {
+  const chk = document.getElementById("eBikeCheck");
+  const row = document.getElementById("eBikeRow");
+  if (row) row.style.display = chk && chk.checked ? "block" : "none";
+}
+window.toggleBikeAmt = toggleBikeAmt;
 function saveHazri() {
   const eDate = document.getElementById("eDate");
   const eLabour = document.getElementById("eLabour");
@@ -6073,10 +6117,13 @@ function saveHazri() {
   const eWith = document.getElementById("eWith");
   const eNote = document.getElementById("eNote");
   const eCustom = document.getElementById("eCustom");
+  const eBikeCheck = document.getElementById("eBikeCheck");
+  const eBikeAmt = document.getElementById("eBikeAmt");
   const date = eDate?.value;
   const lab = eLabour?.value;
   const site = eSite?.value || "";
   const withd = eWith?.value || 0;
+  const bike = eBikeCheck && eBikeCheck.checked ? (parseFloat(eBikeAmt && eBikeAmt.value) || 0) : 0;
   if (!date || !lab) {
     alert("\u0924\u093E\u0930\u0940\u0916 \u0914\u0930 \u0915\u093E\u0930\u0940\u0917\u0930 \u091A\u0941\u0928\u094B");
     return;
@@ -6116,14 +6163,17 @@ function saveHazri() {
     days,
     rate: (editingId && ents[editingId] && ents[editingId].rate != null) ? ents[editingId].rate : rateForDate(labs[lab], date),
     withdraw: parseFloat(String(withd)),
+    bike,
     note: eNote?.value || "",
     ts: Date.now()
   }).then(() => {
     const eMsg = document.getElementById("eMsg");
     if (eMsg) eMsg.innerText = "\u2705 \u0938\u0947\u0935";
     if (eWith) eWith.value = "";
+    if (eBikeCheck) eBikeCheck.checked = false;
+    if (typeof toggleBikeAmt === "function") toggleBikeAmt();
     if (eNote) eNote.value = "";
-    showHazriHisab([{ id: lab, days, withdraw: parseFloat(String(withd)) || 0, siteName }], date);
+    showHazriHisab([{ id: lab, days, withdraw: parseFloat(String(withd)) || 0, bike, siteName }], date);
     cancelEdit();
   });
 }
@@ -6142,6 +6192,11 @@ function editEntry(eid) {
   if (eSite) eSite.value = e.siteId || "";
   if (eWith) eWith.value = e.withdraw || 0;
   if (eNote) eNote.value = e.note || "";
+  const eBikeCheck = document.getElementById("eBikeCheck");
+  const eBikeAmt = document.getElementById("eBikeAmt");
+  if (eBikeCheck) eBikeCheck.checked = bikeAmt(e) > 0;
+  if (eBikeAmt) eBikeAmt.value = bikeAmt(e) > 0 ? bikeAmt(e) : "";
+  if (typeof toggleBikeAmt === "function") toggleBikeAmt();
   selDay = e.days;
   document.querySelectorAll(".pt").forEach((p) => {
     p.classList.remove("sel");
@@ -6173,6 +6228,9 @@ function cancelEdit() {
   if (editTag) editTag.style.display = "none";
   if (cancelBtn) cancelBtn.style.display = "none";
   if (saveBtn) saveBtn.innerText = "\u{1F4BE} \u0939\u093E\u091C\u093C\u0930\u0940 \u0938\u0947\u0935";
+  const eBikeCheck2 = document.getElementById("eBikeCheck");
+  if (eBikeCheck2) eBikeCheck2.checked = false;
+  if (typeof toggleBikeAmt === "function") toggleBikeAmt();
   updateDupInfo();
 }
 function deleteEntry(eid) {
@@ -6257,7 +6315,7 @@ function renderKarigarProfile(){
   const initials=(l.name||"K").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();
   const entries=Object.values(ents).filter(e=>e.labourId===id&&e.date&&e.date.startsWith(mon)).sort((a,b)=>a.date.localeCompare(b.date));
   const siteMap={};
-  entries.forEach(e=>{const key=e.siteId||"nosite"; if(!siteMap[key])siteMap[key]={days:0,earn:0,name:e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}; siteMap[key].days+=parseFloat(e.days||0); siteMap[key].earn+=(parseFloat(e.days||0)*entryRate(e,l));});
+  entries.forEach(e=>{const key=e.siteId||"nosite"; if(!siteMap[key])siteMap[key]={days:0,earn:0,name:e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other"}; siteMap[key].days+=parseFloat(e.days||0); siteMap[key].earn+=(parseFloat(e.days||0)*entryRate(e,l) + bikeAmt(e));});
   const recent=entries.slice(-6).reverse();
   const monthLabel=new Date(mon+"-01T00:00:00").toLocaleDateString("hi-IN",{month:"long",year:"numeric"});
   const status=l.archived?"ARCHIVED":"ACTIVE";
@@ -6274,7 +6332,7 @@ function renderKarigarProfile(){
       <div class="kp-month"><label>📅 हिसाब का महीना</label><input type="month" id="kpMonth" value="${mon}" onchange="document.getElementById('rMonth').value=this.value;renderKarigarProfile()"></div>
       <div class="kp-grid">
         <div class="kp-stat green"><small>हाज़िरी</small><b>${c.days} दिन</b></div>
-        <div class="kp-stat blue"><small>कुल कमाई</small><b>₹${Math.round(c.earn).toLocaleString("en-IN")}</b></div>
+        <div class="kp-stat blue"><small>कुल कमाई</small><b>₹${Math.round(c.earn + (c.bike || 0)).toLocaleString("en-IN")}</b></div>
         <div class="kp-stat gold"><small>कुल भुगतान</small><b>₹${Math.round(c.with).toLocaleString("en-IN")}</b></div>
         <div class="kp-stat ${c.net>=0?'green':'red'}"><small>फाइनल बैलेंस</small><b style="color:${dueColor}">${c.net>=0?'देना':'लेना'} ₹${Math.abs(Math.round(c.net)).toLocaleString("en-IN")}</b></div>
       </div>
@@ -6409,7 +6467,7 @@ function makeReport() {
   const earn = c.earn;
   const rateSet = [...new Set(entries.map((e) => entryRate(e, l)))];
   const rateTxt = rateSet.length ? rateSet.map((r) => "\u20B9" + r).join(" / ") : "\u20B9" + l.wage;
-  const totalEarn = earn + c.bal - c.rent - c.bijli - c.bijliCalc;
+  const totalEarn = earn + (c.bike || 0) + c.bal - c.rent - c.bijli - c.bijliCalc;
   const advList = entries.filter((e) => e.withdraw > 0);
   const extraWh = Object.values(withdrawals).filter((w) => w.labourId === labId && w.date && w.date.startsWith(mon));
   const totalAdv = advList.reduce((s, e) => s + parseFloat(e.withdraw || 0), 0) + extraWh.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
@@ -6483,6 +6541,7 @@ function makeReport() {
             <span>\u0939\u093E\u091C\u093C\u093F\u0930\u0940 \u0915\u092E\u093E\u0908 (${presentDays} \u0926\u093F\u0928 \xD7 ${rateTxt})</span>
             <b>\u20B9${earn.toLocaleString("en-IN")}</b>
           </div>
+          ${c.bike > 0 ? `<div class="rc-row"><span>\u{1F3CD} Bike bhada (apni bike se)</span><b>+\u20B9${c.bike.toLocaleString("en-IN")}</b></div>` : ""}
           <div class="rc-row">
             <span>\u092A\u093F\u091B\u0932\u093E \u092C\u0915\u093E\u092F\u093E (Opening Balance)</span>
             <b>\u20B9${c.bal.toLocaleString("en-IN")}</b>
@@ -9143,6 +9202,7 @@ function renderBulkHazri(force) {
       <div style="display: flex; gap: 4px; align-items: center;">
         ${opts.map(([v, l]) => `<button class="btn-sm" style="flex:1;padding:8px 0;font-weight:800;${st.days === v ? "background:#0F172A;color:white;" : "background:#F1F5F9;color:#334155;"}" onclick="bulkHazriPick('${id}',${v})">${l}</button>`).join("")}
         <input type="number" class="input" placeholder="निकासी ₹" value="${st.withdraw || ""}" oninput="bulkHazriWith('${id}',this.value)" style="width:86px;margin:0;padding:8px;font-size:12px;">
+        <input type="number" class="input" placeholder="Bike Rs" value="${st.bike || ""}" oninput="bulkHazriBike('${id}',this.value)" style="width:72px;margin:0;padding:8px;font-size:12px;">
       </div>
     </div>`;
   });
@@ -9159,6 +9219,11 @@ function bulkHazriWith(id, v) {
   bhState[id].withdraw = v;
   updateBulkHazriSummary();
 }
+function bulkHazriBike(id, v) {
+  if (!bhState[id]) bhState[id] = {};
+  bhState[id].bike = v;
+  updateBulkHazriSummary();
+}
 function bulkHazriAll(v) {
   const date = document.getElementById("eDate").value || fmtLocalDate(new Date());
   Object.keys(labs).filter((id) => !labs[id].archived).forEach((id) => {
@@ -9170,19 +9235,20 @@ function bulkHazriAll(v) {
   renderBulkHazri(true);
 }
 function updateBulkHazriSummary() {
-  let n = 0, d = 0, w = 0;
+  let n = 0, d = 0, w = 0, bk = 0;
   Object.values(bhState).forEach((s) => {
     if (s.days != null) { n++; d += s.days; }
     w += parseFloat(s.withdraw || 0) || 0;
+    bk += parseFloat(s.bike || 0) || 0;
   });
   const el = document.getElementById("bhSummary");
-  if (el) el.innerText = `${n} कारीगर चुने · कुल ${d} दिन${w ? " · निकासी ₹" + w.toLocaleString("en-IN") : ""}`;
+  if (el) el.innerText = `${n} कारीगर चुने · कुल ${d} दिन${w ? " · निकासी ₹" + w.toLocaleString("en-IN") : ""}${bk ? " \u00b7 Bike Rs " + bk.toLocaleString("en-IN") : ""}`;
 }
 function saveBulkHazri() {
   const date = document.getElementById("eDate").value;
   if (!date) { alert("तारीख चुनो"); return; }
   const site = document.getElementById("bhSite").value || "";
-  const chosen = Object.entries(bhState).filter(([id, s]) => labs[id] && (s.days != null || parseFloat(s.withdraw || 0) > 0));
+  const chosen = Object.entries(bhState).filter(([id, s]) => labs[id] && (s.days != null || parseFloat(s.withdraw || 0) > 0 || parseFloat(s.bike || 0) > 0));
   if (!chosen.length) { alert("कम से कम एक कारीगर की हाज़री चुनें"); return; }
   const saved = [], skipped = [], savedItems = [];
   chosen.forEach(([id, s], i) => {
@@ -9195,10 +9261,11 @@ function saveBulkHazri() {
       date, labourId: id, siteId: site, days,
       rate: rateForDate(labs[id], date),
       withdraw: parseFloat(s.withdraw || 0) || 0,
+      bike: parseFloat(s.bike || 0) || 0,
       note: "", ts: Date.now()
     });
     saved.push(labs[id].name);
-    savedItems.push({ id, days, withdraw: parseFloat(s.withdraw || 0) || 0, siteName: site && sites[site] ? sites[site].house : "" });
+    savedItems.push({ id, days, withdraw: parseFloat(s.withdraw || 0) || 0, bike: parseFloat(s.bike || 0) || 0, siteName: site && sites[site] ? sites[site].house : "" });
   });
   if (savedItems.length) showHazriHisab(savedItems, date);
   const msg = document.getElementById("bhMsg");
@@ -9294,6 +9361,7 @@ function saveBulkMat() {
 window.renderBulkHazri = renderBulkHazri;
 window.bulkHazriPick = bulkHazriPick;
 window.bulkHazriWith = bulkHazriWith;
+window.bulkHazriBike = bulkHazriBike;
 window.bulkHazriAll = bulkHazriAll;
 window.saveBulkHazri = saveBulkHazri;
 window.renderBulkMat = renderBulkMat;
@@ -10523,7 +10591,7 @@ if (document.readyState === "loading") {
     show();
   };
 })();
-</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕<i class="sm-ripple" style="height: 0px; width: 0px; left: 339px; top: 154px;"></i></button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
+</script><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">👥 सबकी हाज़री — 7 नव॰ 2026</b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle"></b><button type="button" id="smEditX" aria-label="बंद करें">✕</button></div><div class="sm-edit-body" id="smEditBody"></div></div></div><div class="sm-edit-ov" id="smEditOv"><div class="sm-edit-box" role="dialog" aria-modal="true"><div class="sm-edit-head"><b id="smEditTitle">💾 Backup Center</b><button type="button" id="smEditX" aria-label="बंद करें">✕<i class="sm-ripple" style="height: 0px; width: 0px; left: 339px; top: 154px;"></i></button></div><div class="sm-edit-body" id="smEditBody"></div></div></div>
 
 <script>
 /* ===== AUTO-FIT PACK: har phone ki screen ke hisab se numbers apne aap fit ho jayein ===== */
@@ -10983,4 +11051,5 @@ function exportAllSitesPayList(){
 </script>
 
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
+</body></html>
