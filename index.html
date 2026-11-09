@@ -1707,7 +1707,7 @@ img, canvas, svg, video { max-width: 100%; }
         <small style="color: #94A3B8; font-weight: 700;">कुल व्यापार खर्च ›</small>
         <b id="xTotAmt" style="font-size: 22px; color: #F87171; white-space: nowrap;">₹0</b>
       </div>
-      <button type="button" id="finalAmtBtn" class="btn" style="display: none; margin: 10px 0 0; background: linear-gradient(135deg, #D9B55A, #99701F); color: #1a1405;" onclick="openFinalAmount()">💰 Final Amount</button>
+      <button type="button" id="finalAmtBtn" class="btn" style="display: block; margin: 10px 0 0; background: linear-gradient(135deg, #D9B55A, #99701F); color: #1a1405;" onclick="openFinalAmount()">💰 Final Amount</button>
     </div>
 
     <!-- Add New Expense Form -->
@@ -9423,14 +9423,13 @@ window.saveBulkMat = saveBulkMat;
 let appUnlocked = false;
 try { appUnlocked = localStorage.getItem("adminUnlocked") === "1"; } catch (e) {}
 let adminPin = "1947";
-const FINAL_AMOUNT_PIN = "9999";
-let secretFinalVisible = false;
+let secretFinalVisible = true; // passwordless: Final Amount always visible
 function syncFinalBtn() {
   const b = document.getElementById("finalAmtBtn");
-  if (b) b.style.display = secretFinalVisible ? "block" : "none";
+  if (b) b.style.display = "block"; // passwordless: always show
 }
 window.syncFinalBtn = syncFinalBtn;
-function hideFinalBtn() { secretFinalVisible = false; syncFinalBtn(); }
+function hideFinalBtn() { secretFinalVisible = true; syncFinalBtn(); } // passwordless: never hide Final Amount button
 window.hideFinalBtn = hideFinalBtn;
 let pendingPinAction = null;
 const PIN_PROTECTED_FNS = [
@@ -9484,12 +9483,6 @@ function submitPin() {
     const action = pendingPinAction;
     pendingPinAction = null;
     if (action) action();
-  } else if (val && val === FINAL_AMOUNT_PIN) {
-    secretFinalVisible = true;
-    syncFinalBtn();
-    pendingPinAction = null;
-    const ov = document.getElementById("pinOverlay");
-    if (ov) ov.style.display = "none";
   } else {
     const err = document.getElementById("pinError");
     if (err) err.style.display = "block";
@@ -10217,7 +10210,7 @@ if (document.readyState === "loading") {
       '<div style="border-top:2px solid #FDE68A; padding-top:8px; display:flex; justify-content:space-between; font-size:14px; font-weight:900; color:#FBBF24;"><span>CLOSING BALANCE:</span><span>₹'+closing.toLocaleString('en-IN')+'</span></div>' +
       '<div style="font-size:10px; color:#94A3B8; margin-top:4px;">'+(closing>=0?'Client/Company se lena hai':'Aapko dena hai')+'</div>' +
       '</div>' +
-      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin-top:14px;" onclick="hideFinalBtn();document.getElementById(\'smEditX\').click()">🙈 बटन छुपाओ</button>';
+      '<button type="button" class="btn" style="background:#F1F5F9;color:#475569;margin-top:14px;" onclick="document.getElementById(\'smEditX\').click()">❌ बंद करो</button>';
   }
   function faDraw() {
     if (cur && cur.cfg && cur.cfg.kind === 'finalamt') { bodyEl.innerHTML = faHtml(); }
