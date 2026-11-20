@@ -1475,7 +1475,6 @@ img, canvas, svg, video { max-width: 100%; }
         <input id="sHouse" class="input" placeholder="House No">
         <input id="sAddress" class="input" placeholder="पता / लोकेशन">
         <input id="sClient" class="input" placeholder="क्लाइंट का नाम">
-        <input id="sFinalEstimate" type="number" inputmode="decimal" class="input" placeholder="Final Estimate Amount ₹">
         <select id="sStatus" class="input">
           <option>चल रहा</option>
           <option>पूरा</option>
@@ -4218,7 +4217,7 @@ function showSiteDetail(siteId) {
   if (sdTitle) sdTitle.innerText = "\u{1F3E0} " + s.house;
   const sc = calcSite(siteId);
   const feAmtDetail = parseFloat(s.finalEstimate) || 0;
-  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">📋 Final Estimate Amount</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b><button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div>` : "") + `
+  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🏗️ Work Done Till Now</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b><button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div>` : "") + `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
       <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
@@ -5327,13 +5326,13 @@ function siteCardHtml(id) {
   const dihadiLine = `<span style="cursor:pointer" onclick="event.stopPropagation();showSiteMonthDihadi('${id}')">${dihadiTxt} <b>\u20B9${dihadiVal}</b> <span style="font-size:10px;color:#6366F1">📊</span></span>`;
   return `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-dihadi">${dihadiLine}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div>${(parseFloat(s.finalEstimate) || 0) > 0 ? `<div class="sm-site-client" style="color:#7C3AED;font-weight:800;">📋 Final Estimate: ₹${Math.round(parseFloat(s.finalEstimate)).toLocaleString("en-IN")}</div>` : ""}</div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-dihadi">${dihadiLine}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div>${(parseFloat(s.finalEstimate) || 0) > 0 ? `<div class="sm-site-client" style="color:#7C3AED;font-weight:800;">🏗️ Work Done Till Now: ₹${Math.round(parseFloat(s.finalEstimate)).toLocaleString("en-IN")}</div>` : ""}</div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff;cursor:pointer" onclick="toggleProfitEye(event)">${profitUnlocked ? `<small style="color:#1e40af">🙈 लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">👁️ लिया</small><b style="color:#475569">••••</b>`}</div>
           ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"};cursor:pointer" onclick="toggleProfitEye(event)"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">🙈 लाभ ${Math.round(sc.profitPct)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="toggleProfitEye(event)"><small style="color:#475569">👁️ लाभ</small><b style="color:#475569">••••</b></div>`}
         </div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#7C3AED;color:white;padding:8px 13px" onclick="openWorkDone('${id}')">🏗️ Work Done</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
       </div>
     `;
 }
@@ -5810,7 +5809,6 @@ function addSite() {
   const sHouse = document.getElementById("sHouse");
   const sAddress = document.getElementById("sAddress");
   const sClient = document.getElementById("sClient");
-  const sFinalEstimate = document.getElementById("sFinalEstimate");
   const sStatus = document.getElementById("sStatus");
   const h = (sHouse?.value || "").trim();
   if (!h) {
@@ -5821,7 +5819,6 @@ function addSite() {
     house: h,
     address: sAddress?.value || "",
     client: sClient?.value || "",
-    finalEstimate: parseFloat(sFinalEstimate?.value) || 0,
     status: sStatus?.value || "\u091A\u0932 \u0930\u0939\u093E"
   };
   if (editingSiteId) {
@@ -5850,13 +5847,11 @@ function editSite(id) {
   const sHouse = document.getElementById("sHouse");
   const sAddress = document.getElementById("sAddress");
   const sClient = document.getElementById("sClient");
-  const sFinalEstimate = document.getElementById("sFinalEstimate");
   const sStatus = document.getElementById("sStatus");
   if (sHouse) sHouse.value = s.house || "";
   if (sAddress) sAddress.value = s.address || "";
   if (sClient) sClient.value = s.client || "";
-  if (sFinalEstimate) sFinalEstimate.value = (parseFloat(s.finalEstimate) || 0) > 0 ? parseFloat(s.finalEstimate) : "";
-  if (sStatus) sStatus.value = s.status || "\u091A\u0932 \u0930\u0939\u093E";
+    if (sStatus) sStatus.value = s.status || "\u091A\u0932 \u0930\u0939\u093E";
   const toggleTxt = document.getElementById("addSiteToggleTxt");
   const saveBtn = document.getElementById("siteSaveBtn");
   const cancelBtn = document.getElementById("siteCancelBtn");
@@ -5870,12 +5865,10 @@ function cancelSiteEdit() {
   const sHouse = document.getElementById("sHouse");
   const sAddress = document.getElementById("sAddress");
   const sClient = document.getElementById("sClient");
-  const sFinalEstimate = document.getElementById("sFinalEstimate");
   const sStatus = document.getElementById("sStatus");
   if (sHouse) sHouse.value = "";
   if (sAddress) sAddress.value = "";
   if (sClient) sClient.value = "";
-  if (sFinalEstimate) sFinalEstimate.value = "";
   if (sStatus) sStatus.value = "\u091A\u0932 \u0930\u0939\u093E";
   const toggleTxt = document.getElementById("addSiteToggleTxt");
   const saveBtn = document.getElementById("siteSaveBtn");
@@ -5887,7 +5880,7 @@ function cancelSiteEdit() {
 function deleteFinalEstimate(siteId) {
   const s = sites[siteId];
   if (!s) return;
-  if (!confirm("Final Estimate Amount delete karein? Site ka baaki hisab nahi hatega.")) return;
+  if (!confirm("Work Done Till Now delete karein? Site ka baaki hisab nahi hatega.")) return;
   if (sites[siteId]) sites[siteId].finalEstimate = 0;
   db.ref("companies/" + company + "/sites/" + siteId).update({ finalEstimate: 0 }).then(() => {
     showSiteDetail(siteId);
@@ -9948,6 +9941,42 @@ if (document.readyState === "loading") {
     db.ref('companies/' + company + '/siteCosts/' + id).set({ siteId, month: date.slice(0, 7), date, amount: amt, note, extra: true, ts: Date.now() }).then(() => {
       finish();
       try {
+        const sd = $('siteDetailOverlay');
+        if (sd && getComputedStyle(sd).display !== 'none' && typeof _currentSiteId !== 'undefined' && _currentSiteId) showSiteDetail(_currentSiteId);
+      } catch (e) {}
+    });
+  };
+
+  /* Site banne ke baad: Work Done Till Now popup - Extra kharch jaisa */
+  window.openWorkDone = function (siteId) {
+    if (cur) userClose();
+    let name = '';
+    try { name = (sites[siteId] && sites[siteId].house) ? sites[siteId].house : ''; } catch (e) {}
+    const curAmt = (sites[siteId] && parseFloat(sites[siteId].finalEstimate)) || 0;
+    titleEl.textContent = '🏗️ Work Done Till Now' + (name ? ' — ' + name : '');
+    bodyEl.innerHTML =
+      '<div style="font-size:12px;color:#64748B;font-weight:700;margin-bottom:8px">' + (curAmt > 0 ? 'Abhi: ₹' + Math.round(curAmt).toLocaleString('en-IN') + ' — badalna ho to nayi rakam likho' : 'Site banne ke baad yahan rakam likho') + '</div>' +
+      '<input id="wdAmt" type="number" inputmode="decimal" class="input" placeholder="Work Done Till Now ₹">' +
+      '<button type="button" class="btn btn-gold" id="wdSave">💾 सेव करो</button>' +
+      '<button type="button" class="btn" id="wdCancel" style="background:#F1F5F9;color:#64748B;margin-top:8px">Cancel</button>' +
+      '<div id="wdMsg" style="margin-top:8px;text-align:center;font-size:12px;font-weight:700;color:#B91C1C"></div>';
+    const amtEl = $('wdAmt');
+    if (amtEl && curAmt > 0) amtEl.value = curAmt;
+    $('wdSave').addEventListener('click', () => window.saveWorkDone(siteId));
+    $('wdCancel').addEventListener('click', () => userClose());
+    cur = { cfg: {}, recs: [], obs: null, timer: null };
+    show();
+    setTimeout(() => { const a = $('wdAmt'); if (a && cur) a.focus(); }, 150);
+  };
+  window.saveWorkDone = function (siteId) {
+    const amt = parseFloat(($('wdAmt') && $('wdAmt').value) || '0');
+    const msg = $('wdMsg');
+    if (!siteId || !amt || amt <= 0) { if (msg) msg.innerText = 'Sahi rakam bharo'; return; }
+    if (sites[siteId]) sites[siteId].finalEstimate = amt;
+    db.ref('companies/' + company + '/sites/' + siteId).update({ finalEstimate: amt }).then(() => {
+      finish();
+      try {
+        if (typeof renderDashSites === 'function') renderDashSites();
         const sd = $('siteDetailOverlay');
         if (sd && getComputedStyle(sd).display !== 'none' && typeof _currentSiteId !== 'undefined' && _currentSiteId) showSiteDetail(_currentSiteId);
       } catch (e) {}
