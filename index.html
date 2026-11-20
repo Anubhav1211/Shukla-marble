@@ -4217,7 +4217,8 @@ function showSiteDetail(siteId) {
   if (sdTitle) sdTitle.innerText = "\u{1F3E0} " + s.house;
   const sc = calcSite(siteId);
   const feAmtDetail = parseFloat(s.finalEstimate) || 0;
-  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🏗️ Work Done Till Now</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b><button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div>` : "") + `
+  const feDateTxtDetail = s.finalEstimateDate ? new Date(s.finalEstimateDate + "T00:00:00").toLocaleDateString("hi-IN", {day:"2-digit",month:"short",year:"numeric"}) : "";
+  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🧾 Last Bill${feDateTxtDetail ? " • " + feDateTxtDetail : ""}</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b><button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div>` : "") + `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
       <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
@@ -5324,15 +5325,16 @@ function siteCardHtml(id) {
   const dihadiVal = Math.round(siteMonthDihadi(id, _selMon)).toLocaleString("en-IN");
   const dihadiTxt = _isNow ? "\u0907\u0938 \u092E\u0939\u0940\u0928\u0947 \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940" : _monName + " \u0915\u0940 \u0926\u093F\u0939\u093E\u0921\u093C\u0940";
   const dihadiLine = `<span style="cursor:pointer" onclick="event.stopPropagation();showSiteMonthDihadi('${id}')">${dihadiTxt} <b>\u20B9${dihadiVal}</b> <span style="font-size:10px;color:#6366F1">📊</span></span>`;
+  const lastBillDateTxt = s.finalEstimateDate ? new Date(s.finalEstimateDate + "T00:00:00").toLocaleDateString("hi-IN", {day:"2-digit",month:"short",year:"numeric"}) : "";
   return `
       <div class="site-card">
-        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-dihadi">${dihadiLine}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div>${(parseFloat(s.finalEstimate) || 0) > 0 ? `<div class="sm-site-client" style="color:#7C3AED;font-weight:800;">🏗️ Work Done Till Now: ₹${Math.round(parseFloat(s.finalEstimate)).toLocaleString("en-IN")}</div>` : ""}</div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
+        <div class="sm-site-head"><div class="sm-site-title"><div><div class="sm-site-name">🏠 ${mEsc(s.house)}</div><div class="sm-site-dihadi">${dihadiLine}</div><div class="sm-site-client">${mEsc(s.client || "")}${mEsc(s.address ? " • " + s.address : "")}</div>${(parseFloat(s.finalEstimate) || 0) > 0 ? `<div class="sm-site-client" style="color:#7C3AED;font-weight:800;">🧾 Last Bill: ₹${Math.round(parseFloat(s.finalEstimate)).toLocaleString("en-IN")}${lastBillDateTxt ? " • " + lastBillDateTxt : ""}</div>` : ""}</div><span style="display:flex;align-items:center;gap:6px"><span class="sm-site-status" style="background:${isClosed ? "#64748b" : "#16a34a"};color:white">${isClosed ? "ARCHIVED" : "ON GOING"}</span><button type="button" style="border:0;background:#EEF2F7;color:#334155;width:32px;height:32px;min-height:0;padding:0;border-radius:10px;font-size:18px;font-weight:800;line-height:1;cursor:pointer" onclick="openSiteMenu('${id}',1)" aria-label="और विकल्प">⋯</button></span></div></div>
         <div class="sm-site-metrics">
           <div class="sm-site-metric" style="background:#fffbeb"><small style="color:#92400e">लागत</small><b style="color:#b45309">₹${sc.cost.toLocaleString("en-IN")}</b></div>
           <div class="sm-site-metric" style="background:#eff6ff;cursor:pointer" onclick="toggleProfitEye(event)">${profitUnlocked ? `<small style="color:#1e40af">🙈 लिया</small><b style="color:#1d4ed8">₹${sc.received.toLocaleString("en-IN")}</b>` : `<small style="color:#475569">👁️ लिया</small><b style="color:#475569">••••</b>`}</div>
           ${profitUnlocked ? `<div class="sm-site-metric" style="background:${sc.profit>=0?"#f0fdf4":"#fef2f2"};cursor:pointer" onclick="toggleProfitEye(event)"><small style="color:${sc.profit>=0?"#166534":"#991b1b"}">🙈 लाभ ${Math.round(sc.profitPct)}%</small><b style="color:${profitColor}">₹${sc.profit.toLocaleString("en-IN")}</b></div>` : `<div class="sm-site-metric" style="background:#f8fafc;cursor:pointer" onclick="toggleProfitEye(event)"><small style="color:#475569">👁️ लाभ</small><b style="color:#475569">••••</b></div>`}
         </div>
-        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#7C3AED;color:white;padding:8px 13px" onclick="openWorkDone('${id}')">🏗️ Work Done</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
+        <div class="sm-site-actions"><button class="btn-sm" style="background:#065F46;color:white;padding:8px 13px" onclick="openSitePay('${id}')">💰 पैसा लिया</button><button class="btn-sm" style="background:#B45309;color:white;padding:8px 13px" onclick="openSiteExtra('${id}')">➕ Extra खर्च</button><button class="btn-sm" style="background:#7C3AED;color:white;padding:8px 13px" onclick="openWorkDone('${id}')">🧾 Last Bill</button><button class="btn-sm" style="background:#4f46e5;color:white;padding:8px 13px" onclick="showSiteDetail('${id}')">📋 Detail</button></div>
       </div>
     `;
 }
@@ -5880,9 +5882,9 @@ function cancelSiteEdit() {
 function deleteFinalEstimate(siteId) {
   const s = sites[siteId];
   if (!s) return;
-  if (!confirm("Work Done Till Now delete karein? Site ka baaki hisab nahi hatega.")) return;
-  if (sites[siteId]) sites[siteId].finalEstimate = 0;
-  db.ref("companies/" + company + "/sites/" + siteId).update({ finalEstimate: 0 }).then(() => {
+  if (!confirm("Last Bill delete karein? Site ka baaki hisab nahi hatega.")) return;
+  if (sites[siteId]) { sites[siteId].finalEstimate = 0; sites[siteId].finalEstimateDate = ""; }
+  db.ref("companies/" + company + "/sites/" + siteId).update({ finalEstimate: 0, finalEstimateDate: "" }).then(() => {
     showSiteDetail(siteId);
   });
 }
@@ -9947,21 +9949,26 @@ if (document.readyState === "loading") {
     });
   };
 
-  /* Site banne ke baad: Work Done Till Now popup - Extra kharch jaisa */
+  /* Site banne ke baad: Last Bill popup - Extra kharch jaisa */
   window.openWorkDone = function (siteId) {
     if (cur) userClose();
     let name = '';
     try { name = (sites[siteId] && sites[siteId].house) ? sites[siteId].house : ''; } catch (e) {}
     const curAmt = (sites[siteId] && parseFloat(sites[siteId].finalEstimate)) || 0;
-    titleEl.textContent = '🏗️ Work Done Till Now' + (name ? ' — ' + name : '');
+    const curDate = (sites[siteId] && sites[siteId].finalEstimateDate) || "";
+    const curDateTxt = curDate ? new Date(curDate + "T00:00:00").toLocaleDateString("hi-IN", {day:"2-digit",month:"short",year:"numeric"}) : "";
+    titleEl.textContent = '🧾 Last Bill' + (name ? ' — ' + name : '');
     bodyEl.innerHTML =
-      '<div style="font-size:12px;color:#64748B;font-weight:700;margin-bottom:8px">' + (curAmt > 0 ? 'Abhi: ₹' + Math.round(curAmt).toLocaleString('en-IN') + ' — badalna ho to nayi rakam likho' : 'Site banne ke baad yahan rakam likho') + '</div>' +
-      '<input id="wdAmt" type="number" inputmode="decimal" class="input" placeholder="Work Done Till Now ₹">' +
+      '<div style="font-size:12px;color:#64748B;font-weight:700;margin-bottom:8px">' + (curAmt > 0 ? 'Abhi: ₹' + Math.round(curAmt).toLocaleString('en-IN') + (curDateTxt ? ' • ' + curDateTxt : '') + ' — badalna ho to nayi rakam likho' : 'Site banne ke baad yahan rakam likho') + '</div>' +
+      '<input id="wdAmt" type="number" inputmode="decimal" class="input" placeholder="Last Bill ₹">' +
+      '<input id="wdDate" type="date" class="input">' +
       '<button type="button" class="btn btn-gold" id="wdSave">💾 सेव करो</button>' +
       '<button type="button" class="btn" id="wdCancel" style="background:#F1F5F9;color:#64748B;margin-top:8px">Cancel</button>' +
       '<div id="wdMsg" style="margin-top:8px;text-align:center;font-size:12px;font-weight:700;color:#B91C1C"></div>';
     const amtEl = $('wdAmt');
     if (amtEl && curAmt > 0) amtEl.value = curAmt;
+    const dateEl = $('wdDate');
+    if (dateEl) dateEl.value = curDate || fmtLocalDate(new Date());
     $('wdSave').addEventListener('click', () => window.saveWorkDone(siteId));
     $('wdCancel').addEventListener('click', () => userClose());
     cur = { cfg: {}, recs: [], obs: null, timer: null };
@@ -9972,8 +9979,10 @@ if (document.readyState === "loading") {
     const amt = parseFloat(($('wdAmt') && $('wdAmt').value) || '0');
     const msg = $('wdMsg');
     if (!siteId || !amt || amt <= 0) { if (msg) msg.innerText = 'Sahi rakam bharo'; return; }
-    if (sites[siteId]) sites[siteId].finalEstimate = amt;
-    db.ref('companies/' + company + '/sites/' + siteId).update({ finalEstimate: amt }).then(() => {
+    const billDate = (($('wdDate') && $('wdDate').value) || '');
+    const saveDate = billDate || fmtLocalDate(new Date());
+    if (sites[siteId]) { sites[siteId].finalEstimate = amt; sites[siteId].finalEstimateDate = saveDate; }
+    db.ref('companies/' + company + '/sites/' + siteId).update({ finalEstimate: amt, finalEstimateDate: saveDate }).then(() => {
       finish();
       try {
         if (typeof renderDashSites === 'function') renderDashSites();
