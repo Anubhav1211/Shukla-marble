@@ -3786,15 +3786,9 @@ function bikeEntriesFor(labId, mon) {
   return Object.values(ents || {}).filter((e) => e && e.labourId === labId && e.date && e.date.startsWith(mon) && bikeAmt(e) > 0).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
 }
 function bikeDatesHtml(labId, mon) {
-  const list = bikeEntriesFor(labId, mon);
-  if (!list.length) return "";
-  const rows = list.map((e) => {
-    const dTxt = new Date(e.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
-    const sName = e.siteId && sites[e.siteId] ? sites[e.siteId].house : "";
-    return `<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px dashed #E5EAF1;"><span>${dTxt}${sName ? ' <span style="color:#64748B;">(' + mEsc(sName) + ')</span>' : ""}</span><b>+₹${Math.round(bikeAmt(e)).toLocaleString("en-IN")}</b></div>`;
-  }).join("");
-  const total = list.reduce((s, e) => s + bikeAmt(e), 0);
-  return `<details style="margin-top:8px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:8px 10px;"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:#92400E;">🏍️ Petrol / Bike - kis-kis date ko? (${list.length} din • +₹${Math.round(total).toLocaleString("en-IN")}) - dekhne ke liye dabao</summary><div style="margin-top:8px;">${rows}</div></details>`;
+  // Petrol/Bike ki date-wise detail band kar di — sirf total dikhega (Bike bhada wali row me).
+  // Wajah: <details> se html2canvas me overlap hota tha — khuli list ke neeche wali lines usi ke upar chipak jaati thi.
+  return "";
 }
 window.bikeDatesHtml = bikeDatesHtml;
 function entryRate(e, l) {
@@ -6393,7 +6387,7 @@ async function shareAsImage() {
   const btn = document.getElementById("waBtn");
   if (btn) btn.innerHTML = "\u23F3 Image \u0924\u0948\u092F\u093E\u0930 \u0939\u094B \u0930\u0939\u0940 \u0939\u0948...";
   try {
-    // Clone me capture karte hain taaki <details> fix + popup ke bahar saaf layout mile.
+    // Clone me capture karte hain taaki popup ke bahar saaf layout mile.
     const holder = document.createElement("div");
     holder.style.cssText = "position:fixed;left:-10000px;top:0;width:560px;background:#ffffff;overflow:visible;";
     const clone = card.cloneNode(true);
@@ -6403,24 +6397,6 @@ async function shareAsImage() {
     document.body.appendChild(holder);
     let canvas;
     try {
-    // FIX: parchi me <details> (Petrol/Bike dates) hai — html2canvas use theek se nahi samajhta,
-    // isliye khuli hui bike-dates list ke neeche wali lines (Opening Balance, Kiraya, Gross Total, Advances)
-    // usi ke upar chipak jaati thi. Clone me khule <details> ko saade <div> me badal kar capture karte hain.
-    // Screen wali parchi jaisi hai waisi hi rahegi.
-    clone.querySelectorAll("details").forEach((d) => {
-      if (!d.open) return;
-      const wrap = document.createElement("div");
-      wrap.setAttribute("style", d.getAttribute("style") || "");
-      const sum = d.querySelector("summary");
-      if (sum) {
-        const head = document.createElement("div");
-        head.setAttribute("style", sum.getAttribute("style") || "");
-        head.innerHTML = sum.innerHTML.replace(" - dekhne ke liye dabao", "");
-        wrap.appendChild(head);
-      }
-      Array.from(d.childNodes).forEach((n) => { if (n !== sum) wrap.appendChild(n); });
-      d.replaceWith(wrap);
-    });
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       canvas = await html2canvas(clone, {
         scale: 3,
@@ -6520,7 +6496,7 @@ function renderKarigarProfile(){
         <div class="kp-row"><span>बिजली</span><b>₹${Math.round(c.bijli+c.bijliCalc).toLocaleString("en-IN")}</b></div>
         <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
       </div></div>
-      ${c.bike > 0 ? `<div class="kp-section"><div class="kp-section-title">🏍️ Petrol / Bike - kis-kis date ko</div><div class="kp-list">${bikeDatesHtml(id, mon)}</div></div>` : ""}
+      ${c.bike > 0 ? `<div class="kp-section"><div class="kp-section-title">🏍️ Petrol / Bike</div><div class="kp-list"><div class="kp-row"><span>Petrol / Bike bhada (कुल)</span><b>+₹${Math.round(c.bike).toLocaleString("en-IN")}</b></div></div></div>` : ""}
       <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${mEsc(v.name)}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${mEsc(e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other")}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
@@ -7884,24 +7860,6 @@ async function downloadRateCardPdf() {
     clone.style.margin = "0";
     holder.appendChild(clone);
     document.body.appendChild(holder);
-    // FIX: parchi me <details> (Petrol/Bike dates) hai — html2canvas use theek se nahi samajhta,
-    // isliye khuli hui bike-dates list ke neeche wali lines (Opening Balance, Kiraya, Gross Total, Advances)
-    // usi ke upar chipak jaati thi. Clone me khule <details> ko saade <div> me badal kar capture karte hain.
-    // Screen wali parchi jaisi hai waisi hi rahegi.
-    clone.querySelectorAll("details").forEach((d) => {
-      if (!d.open) return;
-      const wrap = document.createElement("div");
-      wrap.setAttribute("style", d.getAttribute("style") || "");
-      const sum = d.querySelector("summary");
-      if (sum) {
-        const head = document.createElement("div");
-        head.setAttribute("style", sum.getAttribute("style") || "");
-        head.innerHTML = sum.innerHTML.replace(" - dekhne ke liye dabao", "");
-        wrap.appendChild(head);
-      }
-      Array.from(d.childNodes).forEach((n) => { if (n !== sum) wrap.appendChild(n); });
-      d.replaceWith(wrap);
-    });
     let canvas;
     try {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
