@@ -1431,7 +1431,7 @@ img, canvas, svg, video { max-width: 100%; }
 
     <!-- SITES (merged from the old Site tab) -->
     <!-- quickFixBar removed -->
-    <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 45ms;">
+    <div class="card ds-card sm-stagger" id="dsCard" style="animation-delay: 30ms;">
       <div class="ds-head">
         <div>
           <div class="ds-title">🏗️ साइट्स</div>
@@ -1492,7 +1492,7 @@ img, canvas, svg, video { max-width: 100%; }
         <button class="btn btn-gold" onclick="addSiteCost()">सेव करो</button>
         <div id="scMsg" style="color: #16A34A; font-size: 12px; margin-top: 6px; font-weight: 700;"></div>
       </div>
-      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 90ms;">
+      <div class="card sm-stagger" id="payHolderCard" style="display: none; animation-delay: 60ms;">
       <div id="addPayBox2" style="display: none; margin-top: 12px;">
         <select id="spSite" class="input"></select>
         <div style="display: flex; gap: 8px;">
@@ -7832,42 +7832,60 @@ async function downloadMonthlyPdf() {
 async function downloadRateCardPdf() {
   const card = document.getElementById("rateCardImg");
   if (!card) {
-    alert('\u0930\u0947\u091F \u0915\u093E\u0930\u094D\u0921 \u0909\u092A\u0932\u092C\u094D\u0927 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0915\u0943\u092A\u092F\u093E \u092A\u0939\u0932\u0947 "\u0930\u0947\u091F \u0915\u093E\u0930\u094D\u0921 \u0926\u0947\u0916\u0947\u0902" \u092C\u091F\u0928 \u0926\u092C\u093E\u090F\u0902');
+    alert('रेट कार्ड उपलब्ध नहीं है, कृपया पहले "रेट कार्ड देखें" बटन दबाएं');
     return;
   }
   const mon = document.getElementById("rMonth")?.value || getMon();
   const labSel = document.getElementById("rLabour");
   const labId = labSel ? labSel.value : "";
   const rawName = labSel && labSel.selectedOptions[0] ? labSel.selectedOptions[0].text : "Hisab";
-  const safeName = rawName.replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, "_");
+  const safeName = rawName.replace(/[^a-zA-Z0-9_ऀ-ॿ]/g, "_");
   try {
-    const canvas = await html2canvas(card, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff"
-    });
+    try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
+    // FIX: live card popup ke andar hai (backdrop-filter + open animation + overflow:hidden).
+    // html2canvas uske neeche text ki position galat nikaalta hai, isliye saara text ek ke upar ek chipak jaata tha.
+    // Isliye card ka CLONE bana kar popup se bahar saaf holder me rakh kar capture karte hain — parchi dikhegi bilkul same.
+    const holder = document.createElement("div");
+    holder.style.cssText = "position:fixed;left:-10000px;top:0;width:560px;background:#ffffff;overflow:visible;";
+    const clone = card.cloneNode(true);
+    clone.removeAttribute("id");
+    clone.style.margin = "0";
+    holder.appendChild(clone);
+    document.body.appendChild(holder);
+    let canvas;
+    try {
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      canvas = await html2canvas(clone, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff"
+      });
+    } finally {
+      holder.remove();
+    }
     const pdf = getJsPdfInstance("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     addCanvasToPdfSmart(pdf, canvas);
-    // ---- Page 2 onward: that month's attendance calendar for this labourer ----
+    // ---- Page 2 onward: us mahine ka attendance calendar ----
     if (labId && labs[labId]) {
       const monLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
-      const calTemp = document.createElement("div");
-      calTemp.style.cssText = "position:fixed;top:-9999px;left:0;width:380px;background:#ffffff;padding:16px;";
-      calTemp.innerHTML = `
+      const calHolder = document.createElement("div");
+      calHolder.style.cssText = "position:fixed;left:-10000px;top:0;width:380px;background:#ffffff;padding:16px;overflow:visible;";
+      calHolder.innerHTML = `
         <div style="text-align:center;font-weight:800;font-size:16px;color:#0F172A;margin-bottom:2px;">${rawName}</div>
-        <div style="text-align:center;font-weight:700;font-size:12.5px;color:#64748B;margin-bottom:12px;">\u{1F5D3}\uFE0F \u0939\u093E\u095B\u0930\u0940 \u0915\u0948\u0932\u0947\u0902\u0921\u0930 \u2014 ${monLabel}</div>
+        <div style="text-align:center;font-weight:700;font-size:12.5px;color:#64748B;margin-bottom:12px;">🗓️ हाज़री कैलेंडर — ${monLabel}</div>
         ${buildCalendarGridHtml(labId, mon)}
       `;
-      document.body.appendChild(calTemp);
+      document.body.appendChild(calHolder);
       try {
-        const calCanvas = await html2canvas(calTemp, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-        const calImgData = calCanvas.toDataURL("image/png");
-        const calPdfHeight = calCanvas.height * pdfWidth / calCanvas.width;
+        // html2canvas ko aspect-ratio samajh nahi aata — calendar ke din wale dabbe collapse ho kar text overlap kar dete the
+        calHolder.querySelectorAll(".cal-day").forEach((d) => { d.style.aspectRatio = "auto"; d.style.minHeight = "68px"; });
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        const calCanvas = await html2canvas(calHolder, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
         pdf.addPage();
-        pdf.addImage(calImgData, "PNG", 0, 0, pdfWidth, calPdfHeight);
+        addCanvasToPdfSmart(pdf, calCanvas);
       } finally {
-        document.body.removeChild(calTemp);
+        calHolder.remove();
       }
     }
     const fileName = `${safeName}_${mon}.pdf`;
