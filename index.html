@@ -3786,9 +3786,15 @@ function bikeEntriesFor(labId, mon) {
   return Object.values(ents || {}).filter((e) => e && e.labourId === labId && e.date && e.date.startsWith(mon) && bikeAmt(e) > 0).sort((a, b) => (a.date || "").localeCompare(b.date || ""));
 }
 function bikeDatesHtml(labId, mon) {
-  // Petrol/Bike ki date-wise detail band kar di — sirf total dikhega (Bike bhada wali row me).
-  // Wajah: <details> se html2canvas me overlap hota tha — khuli list ke neeche wali lines usi ke upar chipak jaati thi.
-  return "";
+  const list = bikeEntriesFor(labId, mon);
+  if (!list.length) return "";
+  const rows = list.map((e) => {
+    const dTxt = new Date(e.date + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" });
+    const sName = e.siteId && sites[e.siteId] ? sites[e.siteId].house : "";
+    return `<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:12.5px;border-bottom:1px dashed #E5EAF1;"><span>${dTxt}${sName ? ' <span style="color:#64748B;">(' + mEsc(sName) + ')</span>' : ""}</span><b>+₹${Math.round(bikeAmt(e)).toLocaleString("en-IN")}</b></div>`;
+  }).join("");
+  const total = list.reduce((s, e) => s + bikeAmt(e), 0);
+  return `<details style="margin-top:8px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:8px 10px;"><summary style="cursor:pointer;font-size:12.5px;font-weight:800;color:#92400E;">🏍️ Petrol / Bike - kis-kis date ko? (${list.length} din • +₹${Math.round(total).toLocaleString("en-IN")}) - dekhne ke liye dabao</summary><div style="margin-top:8px;">${rows}</div></details>`;
 }
 window.bikeDatesHtml = bikeDatesHtml;
 function entryRate(e, l) {
@@ -6395,6 +6401,9 @@ async function shareAsImage() {
     clone.style.margin = "0";
     holder.appendChild(clone);
     document.body.appendChild(holder);
+    // Share/PDF me sirf TOTAL dikhega — Petrol/Bike ki date-wise detail wala <details> box clone se poora hata dete hain.
+    // App me detail jaisi thi waisi hi rahegi. <details> se html2canvas me overlap hota tha, isliye share wali copy me ye box hi nahi rahega.
+    clone.querySelectorAll("details").forEach((d) => d.remove());
     let canvas;
     try {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -6496,7 +6505,7 @@ function renderKarigarProfile(){
         <div class="kp-row"><span>बिजली</span><b>₹${Math.round(c.bijli+c.bijliCalc).toLocaleString("en-IN")}</b></div>
         <div class="kp-row"><span>महीना</span><b>${monthLabel}</b></div>
       </div></div>
-      ${c.bike > 0 ? `<div class="kp-section"><div class="kp-section-title">🏍️ Petrol / Bike</div><div class="kp-list"><div class="kp-row"><span>Petrol / Bike bhada (कुल)</span><b>+₹${Math.round(c.bike).toLocaleString("en-IN")}</b></div></div></div>` : ""}
+      ${c.bike > 0 ? `<div class="kp-section"><div class="kp-section-title">🏍️ Petrol / Bike - kis-kis date ko</div><div class="kp-list">${bikeDatesHtml(id, mon)}</div></div>` : ""}
       <div class="kp-section"><div class="kp-section-title">🏠 इस महीने की साइट्स</div><div class="kp-list">${Object.values(siteMap).map(v=>`<div class="kp-site"><div class="kp-site-top"><span>🏠 ${mEsc(v.name)}</span><b>₹${Math.round(v.earn).toLocaleString("en-IN")}</b></div><div class="kp-site-meta">${v.days} दिन काम</div></div>`).join("")||'<div class="kp-row"><span>कोई साइट एंट्री नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-section"><div class="kp-section-title">🕘 हाल की हाज़िरी</div><div class="kp-list">${recent.map(e=>`<div class="kp-row"><span>${new Date(e.date+"T00:00:00").toLocaleDateString("hi-IN",{day:"2-digit",month:"short"})} • ${mEsc(e.siteId&&sites[e.siteId]?sites[e.siteId].house:"Other")}</span><b>${e.days||0} दिन${e.withdraw?" • ₹"+Number(e.withdraw).toLocaleString("en-IN"):""}</b></div>`).join("")||'<div class="kp-row"><span>कोई रिकॉर्ड नहीं</span><b>—</b></div>'}</div></div>
       <div class="kp-actions"><button class="kp-primary" onclick="makeLabourReport('${id}');closeKarigarProfile()">📄 पूरा हिसाब</button><button class="kp-secondary" onclick="closeKarigarProfile();editWage('${id}')">✏️ दिहाड़ी बदलें</button></div>
@@ -7840,19 +7849,16 @@ async function downloadMonthlyPdf() {
 async function downloadRateCardPdf() {
   const card = document.getElementById("rateCardImg");
   if (!card) {
-    alert('रेट कार्ड उपलब्ध नहीं है, कृपया पहले "रेट कार्ड देखें" बटन दबाएं');
+    alert('\u0930\u0947\u091F \u0915\u093E\u0930\u094D\u0921 \u0909\u092A\u0932\u092C\u094D\u0927 \u0928\u0939\u0940\u0902 \u0939\u0948, \u0915\u0943\u092A\u092F\u093E \u092A\u0939\u0932\u0947 "\u0930\u0947\u091F \u0915\u093E\u0930\u094D\u0921 \u0926\u0947\u0916\u0947\u0902" \u092C\u091F\u0928 \u0926\u092C\u093E\u090F\u0902');
     return;
   }
   const mon = document.getElementById("rMonth")?.value || getMon();
   const labSel = document.getElementById("rLabour");
   const labId = labSel ? labSel.value : "";
   const rawName = labSel && labSel.selectedOptions[0] ? labSel.selectedOptions[0].text : "Hisab";
-  const safeName = rawName.replace(/[^a-zA-Z0-9_ऀ-ॿ]/g, "_");
+  const safeName = rawName.replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, "_");
   try {
-    try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
-    // FIX: live card popup ke andar hai (backdrop-filter + open animation + overflow:hidden).
-    // html2canvas uske neeche text ki position galat nikaalta hai, isliye saara text ek ke upar ek chipak jaata tha.
-    // Isliye card ka CLONE bana kar popup se bahar saaf holder me rakh kar capture karte hain — parchi dikhegi bilkul same.
+    // Clone me capture karte hain taaki popup ke bahar saaf layout mile.
     const holder = document.createElement("div");
     holder.style.cssText = "position:fixed;left:-10000px;top:0;width:560px;background:#ffffff;overflow:visible;";
     const clone = card.cloneNode(true);
@@ -7860,6 +7866,9 @@ async function downloadRateCardPdf() {
     clone.style.margin = "0";
     holder.appendChild(clone);
     document.body.appendChild(holder);
+    // Share/PDF me sirf TOTAL dikhega — Petrol/Bike ki date-wise detail wala <details> box clone se poora hata dete hain.
+    // App me detail jaisi thi waisi hi rahegi. <details> se html2canvas me overlap hota tha, isliye share wali copy me ye box hi nahi rahega.
+    clone.querySelectorAll("details").forEach((d) => d.remove());
     let canvas;
     try {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -7874,26 +7883,25 @@ async function downloadRateCardPdf() {
     const pdf = getJsPdfInstance("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     addCanvasToPdfSmart(pdf, canvas);
-    // ---- Page 2 onward: us mahine ka attendance calendar ----
+    // ---- Page 2 onward: that month's attendance calendar for this labourer ----
     if (labId && labs[labId]) {
       const monLabel = new Date(mon + "-01T00:00:00").toLocaleDateString("hi-IN", { month: "long", year: "numeric" });
-      const calHolder = document.createElement("div");
-      calHolder.style.cssText = "position:fixed;left:-10000px;top:0;width:380px;background:#ffffff;padding:16px;overflow:visible;";
-      calHolder.innerHTML = `
+      const calTemp = document.createElement("div");
+      calTemp.style.cssText = "position:fixed;top:-9999px;left:0;width:380px;background:#ffffff;padding:16px;";
+      calTemp.innerHTML = `
         <div style="text-align:center;font-weight:800;font-size:16px;color:#0F172A;margin-bottom:2px;">${rawName}</div>
-        <div style="text-align:center;font-weight:700;font-size:12.5px;color:#64748B;margin-bottom:12px;">🗓️ हाज़री कैलेंडर — ${monLabel}</div>
+        <div style="text-align:center;font-weight:700;font-size:12.5px;color:#64748B;margin-bottom:12px;">\u{1F5D3}\uFE0F \u0939\u093E\u095B\u0930\u0940 \u0915\u0948\u0932\u0947\u0902\u0921\u0930 \u2014 ${monLabel}</div>
         ${buildCalendarGridHtml(labId, mon)}
       `;
-      document.body.appendChild(calHolder);
+      document.body.appendChild(calTemp);
       try {
-        // html2canvas ko aspect-ratio samajh nahi aata — calendar ke din wale dabbe collapse ho kar text overlap kar dete the
-        calHolder.querySelectorAll(".cal-day").forEach((d) => { d.style.aspectRatio = "auto"; d.style.minHeight = "68px"; });
-        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-        const calCanvas = await html2canvas(calHolder, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        const calCanvas = await html2canvas(calTemp, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        const calImgData = calCanvas.toDataURL("image/png");
+        const calPdfHeight = calCanvas.height * pdfWidth / calCanvas.width;
         pdf.addPage();
-        addCanvasToPdfSmart(pdf, calCanvas);
+        pdf.addImage(calImgData, "PNG", 0, 0, pdfWidth, calPdfHeight);
       } finally {
-        calHolder.remove();
+        document.body.removeChild(calTemp);
       }
     }
     const fileName = `${safeName}_${mon}.pdf`;
