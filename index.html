@@ -4220,7 +4220,30 @@ function showSiteDetail(siteId) {
   const feDateTxtDetail = s.finalEstimateDate ? new Date(s.finalEstimateDate + "T00:00:00").toLocaleDateString("hi-IN", {day:"2-digit",month:"short",year:"numeric"}) : "";
   const feHasPdf = !!s.finalEstimatePdf;
   const fePdfName = s.finalEstimatePdfName || "";
-  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🧾 Last Bill${feDateTxtDetail ? " • " + feDateTxtDetail : ""}</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b>${feHasPdf ? `<button type="button" onclick="event.stopPropagation();viewLastBillPdf('${siteId}')" style="background:#FEF3C7;color:#92400E;border:1.5px solid #FDE68A;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📄 PDF Dekho</button>` : ""}<button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div><div style="background:#FFFBEB;border:1.5px solid #FDE68A;padding:10px 12px;border-radius:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-weight:800;font-size:12px;color:#92400E;">📄 Last Bill PDF: <span style="color:#334155;">${feHasPdf ? mEsc(fePdfName || "Bill.pdf") : "No PDF"}</span></span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">${feHasPdf ? `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">✏️ PDF Badlo<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><label style="background:#7C3AED;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;"><span>📷 Photos se PDF</span><input type="file" accept="image/*" multiple style="display:none" onchange="makeBillPdfFromPhotos(this, '${siteId}')"></label><button type="button" onclick="event.stopPropagation();deleteLastBillPdf('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ PDF Delete</button>` : `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📤 PDF Upload<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><label style="background:#7C3AED;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;"><span>📷 Photos se PDF</span><input type="file" accept="image/*" multiple style="display:none" onchange="makeBillPdfFromPhotos(this, '${siteId}')"></label>`}</span></div>` : "") + `
+  // Multiple Bill PDFs — date-wise list (purane Last Bill PDF se alag, usko kuch nahi hoga)
+  const billPdfsList = getSiteBillPdfs(s);
+  const billPdfsHtml = `
+    <div style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <b style="font-size:13px">📁 Bill PDFs <span style="font-size:11px;color:#64748B">(${billPdfsList.length})</span></b>
+        <label style="background:#7C3AED;color:white;padding:6px 12px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">➕ PDF Add karo<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="addSiteBillPdf(this, '${siteId}')"></label>
+      </div>
+      <div style="background:#F8FAFF;border:1px solid #E2E8F0;border-radius:12px;padding:6px 8px;margin-top:8px">
+        ${billPdfsList.length ? billPdfsList.map(p => `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #F1F5F9">
+            <div style="min-width:0">
+              <div style="font-weight:800;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${mEsc(p.name || "Bill.pdf")}</div>
+              <div style="font-size:11px;color:#64748B">📅 ${p.dateTxt}</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <button type="button" onclick="event.stopPropagation();viewSiteBillPdf('${siteId}','${p.id}')" style="background:#FEF3C7;color:#92400E;border:1.5px solid #FDE68A;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📄 Dekho</button>
+              <button type="button" onclick="event.stopPropagation();deleteSiteBillPdf('${siteId}','${p.id}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️</button>
+            </div>
+          </div>`).join("") : `<div style="padding:10px;text-align:center;color:#94A3B8;font-size:12px">Abhi koi Bill PDF add nahi hai</div>`}
+      </div>
+    </div>
+  `;
+  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🧾 Last Bill${feDateTxtDetail ? " • " + feDateTxtDetail : ""}</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b>${feHasPdf ? `<button type="button" onclick="event.stopPropagation();viewLastBillPdf('${siteId}')" style="background:#FEF3C7;color:#92400E;border:1.5px solid #FDE68A;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📄 PDF Dekho</button>` : ""}<button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div><div style="background:#FFFBEB;border:1.5px solid #FDE68A;padding:10px 12px;border-radius:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-weight:800;font-size:12px;color:#92400E;">📄 Last Bill PDF: <span style="color:#334155;">${feHasPdf ? mEsc(fePdfName || "Bill.pdf") : "No PDF"}</span></span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">${feHasPdf ? `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">✏️ PDF Badlo<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><label style="background:#7C3AED;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;"><span>📷 Photos se PDF</span><input type="file" accept="image/*" multiple style="display:none" onchange="makeBillPdfFromPhotos(this, '${siteId}')"></label><button type="button" onclick="event.stopPropagation();deleteLastBillPdf('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ PDF Delete</button>` : `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📤 PDF Upload<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><label style="background:#7C3AED;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;"><span>📷 Photos se PDF</span><input type="file" accept="image/*" multiple style="display:none" onchange="makeBillPdfFromPhotos(this, '${siteId}')"></label>`}</span></div>` : "") + billPdfsHtml + `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
       <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
@@ -6045,6 +6068,81 @@ function makeBillPdfFromPhotos(input, siteId) {
       if (lblSpan) lblSpan.textContent = oldTxt;
     }
   })();
+}
+function getSiteBillPdfs(site) {
+  let arr = (site && site.billPdfs) || [];
+  if (!Array.isArray(arr)) arr = Object.values(arr);
+  return arr.filter(function (p) { return p && p.pdf; }).map(function (p) {
+    const d = p.date || "";
+    return {
+      id: p.id || "",
+      name: p.name || "Bill.pdf",
+      pdf: p.pdf,
+      date: d,
+      dateTxt: d ? new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"
+    };
+  }).sort(function (a, b) { return (b.date || "").localeCompare(a.date || ""); });
+}
+function addSiteBillPdf(input, siteId) {
+  const file = input && input.files && input.files[0];
+  if (input) input.value = "";
+  if (!file) return;
+  if (file.type && file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) { alert("Sirf PDF file chuno."); return; }
+  if (file.size > 2 * 1024 * 1024) { alert("PDF bahut bada hai. 2MB se chhota PDF chuno."); return; }
+  const today = new Date().toISOString().slice(0, 10);
+  let d = prompt("Is Bill PDF ki date kya hai? (YYYY-MM-DD)", today);
+  if (d === null) return;
+  d = (d || "").trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { alert("Date sahi format me likho: YYYY-MM-DD (jaise 2026-11-22)"); return; }
+  const reader = new FileReader();
+  reader.onload = function () {
+    const dataUrl = reader.result;
+    const raw = (sites[siteId] && sites[siteId].billPdfs) || [];
+    const arr = Array.isArray(raw) ? raw.slice() : Object.values(raw);
+    arr.push({ id: "bp_" + Date.now() + "_" + Math.floor(Math.random() * 1000), name: file.name, date: d, pdf: dataUrl });
+    if (sites[siteId]) sites[siteId].billPdfs = arr;
+    db.ref("companies/" + company + "/sites/" + siteId).update({ billPdfs: arr }).then(() => {
+      try { if (typeof renderDashSites === "function") renderDashSites(); } catch (e) {}
+      showSiteDetail(siteId);
+    });
+  };
+  reader.onerror = function () { alert("PDF read nahi ho paya, dobara try karo."); };
+  reader.readAsDataURL(file);
+}
+function viewSiteBillPdf(siteId, pdfId) {
+  const list = getSiteBillPdfs(sites[siteId]);
+  const p = list.find(function (x) { return x.id === pdfId; });
+  if (!p || !p.pdf) { alert("Ye PDF nahi mila."); return; }
+  try {
+    const parts = p.pdf.split(",");
+    const base64 = parts.length > 1 ? parts[1] : p.pdf;
+    const bin = atob(base64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const blob = new Blob([bytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    const opened = window.open(url, "_blank");
+    if (!opened) {
+      const a = document.createElement("a");
+      a.href = url; a.target = "_blank"; a.rel = "noopener";
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+    setTimeout(() => { try { URL.revokeObjectURL(url); } catch (e) {} }, 30000);
+  } catch (e) {
+    window.open(p.pdf, "_blank");
+  }
+}
+function deleteSiteBillPdf(siteId, pdfId) {
+  const s = sites[siteId];
+  if (!s) return;
+  if (!confirm("Ye Bill PDF delete karein?")) return;
+  const raw = s.billPdfs || [];
+  const arr = (Array.isArray(raw) ? raw.slice() : Object.values(raw)).filter(function (p) { return p && p.id !== pdfId; });
+  if (sites[siteId]) sites[siteId].billPdfs = arr;
+  db.ref("companies/" + company + "/sites/" + siteId).update({ billPdfs: arr }).then(() => {
+    try { if (typeof renderDashSites === "function") renderDashSites(); } catch (e) {}
+    showSiteDetail(siteId);
+  });
 }
 function deleteLastBillPdf(siteId) {
   const s = sites[siteId];
