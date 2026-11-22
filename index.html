@@ -4220,7 +4220,7 @@ function showSiteDetail(siteId) {
   const feDateTxtDetail = s.finalEstimateDate ? new Date(s.finalEstimateDate + "T00:00:00").toLocaleDateString("hi-IN", {day:"2-digit",month:"short",year:"numeric"}) : "";
   const feHasPdf = !!s.finalEstimatePdf;
   const fePdfName = s.finalEstimatePdfName || "";
-  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🧾 Last Bill${feDateTxtDetail ? " • " + feDateTxtDetail : ""}</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b>${feHasPdf ? `<button type="button" onclick="event.stopPropagation();viewLastBillPdf('${siteId}')" style="background:#FEF3C7;color:#92400E;border:1.5px solid #FDE68A;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📄 PDF Dekho</button>` : ""}<button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div><div style="background:#FFFBEB;border:1.5px solid #FDE68A;padding:10px 12px;border-radius:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-weight:800;font-size:12px;color:#92400E;">📄 Last Bill PDF: <span style="color:#334155;">${feHasPdf ? mEsc(fePdfName || "Bill.pdf") : "No PDF"}</span></span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">${feHasPdf ? `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">✏️ PDF Badlo<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><button type="button" onclick="event.stopPropagation();deleteLastBillPdf('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ PDF Delete</button>` : `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📤 PDF Upload<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label>`}</span></div>` : "") + `
+  let sumHtml = (feAmtDetail > 0 ? `<div style="background:#EDE9FE;border:1.5px solid #C7D2FE;padding:10px 12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:800;font-size:12px;color:#4338CA;">🧾 Last Bill${feDateTxtDetail ? " • " + feDateTxtDetail : ""}</span><span style="display:flex;gap:6px;align-items:center;"><b style="color:#4338CA;font-size:14px;">₹${Math.round(feAmtDetail).toLocaleString("en-IN")}</b>${feHasPdf ? `<button type="button" onclick="event.stopPropagation();viewLastBillPdf('${siteId}')" style="background:#FEF3C7;color:#92400E;border:1.5px solid #FDE68A;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📄 PDF Dekho</button>` : ""}<button type="button" onclick="event.stopPropagation();deleteFinalEstimate('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ Delete</button></span></div><div style="background:#FFFBEB;border:1.5px solid #FDE68A;padding:10px 12px;border-radius:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-weight:800;font-size:12px;color:#92400E;">📄 Last Bill PDF: <span style="color:#334155;">${feHasPdf ? mEsc(fePdfName || "Bill.pdf") : "No PDF"}</span></span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">${feHasPdf ? `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">✏️ PDF Badlo<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><label style="background:#7C3AED;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;"><span>📷 Photos se PDF</span><input type="file" accept="image/*" multiple style="display:none" onchange="makeBillPdfFromPhotos(this, '${siteId}')"></label><button type="button" onclick="event.stopPropagation();deleteLastBillPdf('${siteId}')" style="background:#FEE2E2;color:#991B1B;border:1.5px solid #FECACA;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">🗑️ PDF Delete</button>` : `<label style="background:#065F46;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;">📤 PDF Upload<input type="file" accept="application/pdf,.pdf" style="display:none" onchange="uploadLastBillPdf(this, '${siteId}')"></label><label style="background:#7C3AED;color:white;padding:5px 10px;border-radius:9px;font-weight:800;font-size:11px;cursor:pointer;"><span>📷 Photos se PDF</span><input type="file" accept="image/*" multiple style="display:none" onchange="makeBillPdfFromPhotos(this, '${siteId}')"></label>`}</span></div>` : "") + `
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px">
       <div style="background:#FEF3C7;padding:8px 4px;border-radius:12px;text-align:center;overflow:hidden">
         <small style="color:#92400E;font-weight:700;font-size:10px">\u0932\u093E\u0917\u0924</small><br><b style="color:#B45309;font-size:13px;white-space:nowrap;overflow-wrap:normal;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis">\u20B9${sc.cost.toLocaleString("en-IN")}</b>
@@ -5984,6 +5984,67 @@ function uploadLastBillPdf(input, siteId) {
   };
   reader.onerror = function () { alert("PDF read nahi ho paya, dobara try karo."); };
   reader.readAsDataURL(file);
+}
+function makeBillPdfFromPhotos(input, siteId) {
+  const files = Array.from((input && input.files) || []).filter(function (f) { return f.type && f.type.indexOf("image/") === 0; });
+  if (input) input.value = "";
+  if (!files.length) { alert("Koi photo select nahi hui."); return; }
+  if (files.length > 8) { alert("Zyada se zyada 8 photos ek saath chuno."); return; }
+  const lblSpan = input && input.parentElement ? input.parentElement.querySelector("span") : null;
+  const oldTxt = lblSpan ? lblSpan.textContent : "";
+  if (lblSpan) lblSpan.textContent = "⏳ PDF ban raha hai...";
+  function compressOne(file) {
+    return new Promise(function (resolve, reject) {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function () {
+        try {
+          URL.revokeObjectURL(url);
+          const maxW = 1000;
+          let w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+          if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+          const c = document.createElement("canvas");
+          c.width = w; c.height = h;
+          const ctx = c.getContext("2d");
+          ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve({ dataUrl: c.toDataURL("image/jpeg", 0.7), w: w, h: h });
+        } catch (e) { reject(e); }
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("Photo load nahi hui")); };
+      img.src = url;
+    });
+  }
+  (async function () {
+    try {
+      const imgs = [];
+      for (const f of files) imgs.push(await compressOne(f));
+      const pdf = getJsPdfInstance("p", "mm", "a4");
+      const pw = pdf.internal.pageSize.getWidth();
+      const ph = pdf.internal.pageSize.getHeight();
+      const m = 10, aw = pw - 2 * m, ah = ph - 2 * m;
+      imgs.forEach(function (im, idx) {
+        if (idx > 0) pdf.addPage();
+        const sc = Math.min(aw / im.w, ah / im.h);
+        const dw = im.w * sc, dh = im.h * sc;
+        pdf.addImage(im.dataUrl, "JPEG", m + (aw - dw) / 2, m + (ah - dh) / 2, dw, dh);
+      });
+      const dataUrl = pdf.output("dataurlstring");
+      const b64 = dataUrl.split(",")[1] || "";
+      if (Math.round(b64.length * 0.75) > 2 * 1024 * 1024) { alert("PDF 2MB se bada ho gaya. Kam photos chuno."); return; }
+      const fileName = "Bill-Photos-" + new Date().toISOString().slice(0, 10) + ".pdf";
+      if (sites[siteId]) { sites[siteId].finalEstimatePdf = dataUrl; sites[siteId].finalEstimatePdfName = fileName; }
+      db.ref("companies/" + company + "/sites/" + siteId).update({ finalEstimatePdf: dataUrl, finalEstimatePdfName: fileName }).then(() => {
+        try { if (typeof renderDashSites === "function") renderDashSites(); } catch (e) {}
+        showSiteDetail(siteId);
+      });
+    } catch (e) {
+      console.error("Bill photos PDF error:", e);
+      alert("Photos se PDF nahi ban paya, dobara try karo.");
+    } finally {
+      if (lblSpan) lblSpan.textContent = oldTxt;
+    }
+  })();
 }
 function deleteLastBillPdf(siteId) {
   const s = sites[siteId];
